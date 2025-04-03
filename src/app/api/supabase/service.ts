@@ -1,11 +1,12 @@
+import { ContactList, ContactWithPlansDetail } from '@/types/contacts';
 import { supabase } from './client';
 
 // contacts 데이터 가져오기
-export const fetchContacts = async (userId) => {
+export const fetchContacts = async (userId: string): Promise<ContactList[]> => {
   try {
     const { data, error } = await supabase
       .from('contacts')
-      .select('contacts_id, name, relationship_level, contact_profile_img')
+      .select('contacts_id, name, relationship_level, contacts_profile_img')
       .eq('user_id', userId)
       .order('name');
       
@@ -22,12 +23,12 @@ export const fetchContacts = async (userId) => {
 }
 
 // contacts, plans 데이터 함께 가져오기
-export const fetchContactsWithPlans = async (userId, contactsId) => {
+export const fetchContactsWithPlans = async (userId: string, contactsId: string): Promise<ContactWithPlansDetail> => {
   const { data, error } = await supabase
     .from('contacts')
     .select(
       `
-      contacts_id, user_id, name, email, relationship_level, notes, phone, birth, contact_profile_img,
+      contacts_id, user_id, name, email, relationship_level, notes, phone, birth, contacts_profile_img,
       plans:plans(plan_id, title, start_date, end_date, priority, detail)
     `
     )
