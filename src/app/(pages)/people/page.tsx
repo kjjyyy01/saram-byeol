@@ -1,30 +1,40 @@
 'use client'
 import { fetchContacts } from '@/app/api/supabase/service';
-import { ContactList } from '@/types/contacts';
+// import { ContactList } from '@/types/contacts';
+import { useQuery } from '@tanstack/react-query';
 import Image from 'next/image';
-import React, { useEffect, useState } from 'react'
+// import React, { useEffect, useState } from 'react'
 
 const TEST_USER_ID = 'a27fc897-4216-4863-9e7b-f8868a8369ff';
 
 const People = () => {
-  const [contacts, setContacts] = useState<ContactList[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  // const [contacts, setContacts] = useState<ContactList[]>([]);
+  // const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  // 연락처 목록 가져오기
-  useEffect(() => {
-    const loadContacts = async () => {
-      try {
-        const data = await fetchContacts(TEST_USER_ID);
-        setContacts(data);
-      } catch (error) {
-        console.error('연락처 로딩 실패:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
+  // // 연락처 목록 가져오기
+  // useEffect(() => {
+  //   const loadContacts = async () => {
+  //     try {
+  //       const data = await fetchContacts(TEST_USER_ID);
+  //       setContacts(data);
+  //     } catch (error) {
+  //       console.error('연락처 로딩 실패:', error);
+  //     } finally {
+  //       setIsLoading(false);
+  //     }
+  //   };
 
-    loadContacts();
-  }, []);
+  //   loadContacts();
+  // }, []);
+
+  const { data: contacts = [], isLoading, error} = useQuery({
+    queryKey: ['contacts', TEST_USER_ID],
+    queryFn: () => fetchContacts(TEST_USER_ID),
+  });
+
+  if (error) {
+    console.error('연락처 로딩 실패', error);
+  }
   
   return (
     <div className="container mx-auto p-4">
