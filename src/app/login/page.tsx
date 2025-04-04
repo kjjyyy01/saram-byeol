@@ -22,7 +22,7 @@ const LoginPage = () => {
       // 전역상태관리 추가 시 사용
       // setUser(data.user);
       alert('로그인되었습니다.');
-      router.push('/person');
+      router.push('/people');
     }
   };
 

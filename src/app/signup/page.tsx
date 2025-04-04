@@ -23,7 +23,7 @@ const SignupPage = () => {
       // 전역상태관리 추가 시 사용
       // setUser(data.user);
       alert('회원가입이 완료되었습니다. 자동으로 로그인되어 내 사람 페이지로 이동합니다.');
-      router.push('/person');
+      router.push('/people');
     }
   };
 
