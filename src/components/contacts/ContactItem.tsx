@@ -12,9 +12,9 @@ const ContactItem: React.FC<ContactItemProps> = ({ contact }) => {
     <li className='rounded-lg border p-4'>
       <div className='flex items-center gap-4'>
         <div className='h-12 w-12 flex-shrink-0 overflow-hidden rounded-full bg-gray-200'>
-          {contact.contact_profile_img ? (
+          {contact.contacts_profile_img ? (
             <Image
-              src={contact.contact_profile_img}
+              src={contact.contacts_profile_img}
               alt={contact.name}
               width={48}
               height={48}
