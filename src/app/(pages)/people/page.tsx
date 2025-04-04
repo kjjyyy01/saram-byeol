@@ -1,9 +1,12 @@
-import React from 'react'
+'use client'
+
+import ContactList from '@/components/contacts/ContactList';
 
 const People = () => {
+ 
   return (
-    <div>People</div>
-  )
+   <ContactList />
+  );
 }
 
 export default People
