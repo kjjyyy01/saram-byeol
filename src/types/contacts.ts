@@ -1,5 +1,5 @@
 // 사용자 타입
-export interface User {
+export interface UserType {
   id: string;
   user_id: string;
   email: string;
@@ -10,7 +10,7 @@ export interface User {
 }
 
 // 연락처 타입
-export interface Contact {
+export interface ContactType {
   id: string;
   contacts_id: string;
   user_id: string;
@@ -24,7 +24,7 @@ export interface Contact {
 }
 
 // 약속 타입
-export interface Plan {
+export interface PlanType {
   plan_id: string;
   user_id: string;
   contacts_id: string;
@@ -36,28 +36,28 @@ export interface Plan {
 }
 
 // 연락처와 약속을 함께 반환하는 타입
-export interface ContactWithPlans {
-  contact: Contact;
-  plans: Plan[];
+export interface ContactWithPlansType {
+  contact: ContactType;
+  plans: PlanType[];
 }
 
 // 리스트용 연락처 타입
-export type ContactList = Pick<Contact, 'contacts_id' | 'name' | 'relationship_level' | 'contact_profile_img'>;
+export type ContactItemType = Pick<ContactType, 'contacts_id' | 'name' | 'relationship_level' | 'contact_profile_img'>;
 
 // 연락처 상세 정보 타입
-export type ContactDetail = Pick<
-  Contact, 
+export type ContactDetailType = Pick<
+  ContactType, 
   'contacts_id' | 'user_id' | 'name' | 'email' | 'relationship_level' | 'notes' | 'phone' | 'birth' | 'contact_profile_img'
 >;
 
 // 약속 상세정보 타입
-export type PlanDetail = Pick<
-  Plan,
+export type PlanDetailType = Pick<
+  PlanType,
   'plan_id' | 'title' | 'start_date' | 'end_date' | 'priority' | 'detail'
 >;
 
 // 연락처 상세정보와 약속 상세 정보를 함께 반환하는 타입
-export interface ContactWithPlansDetail {
-  contact: ContactDetail;
-  plans: PlanDetail[];
+export interface ContactWithPlansDetailType {
+  contact: ContactDetailType;
+  plans: PlanDetailType[];
 }
