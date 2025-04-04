@@ -1,5 +1,5 @@
 import { PlansType } from '@/types/plans';
-import { supabase } from './supabaseClient';
+import { supabase } from '@/lib/utils/supabaseClient';
 
 export const getPlans = async (): Promise<PlansType[]> => {
   const { data: plans, error } = await supabase.from('plans').select('*');
