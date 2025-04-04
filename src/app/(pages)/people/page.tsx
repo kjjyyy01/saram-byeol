@@ -3,6 +3,7 @@ import { fetchContacts } from '@/app/api/supabase/service';
 // import { ContactList } from '@/types/contacts';
 import { useQuery } from '@tanstack/react-query';
 import Image from 'next/image';
+import Link from 'next/link';
 // import React, { useEffect, useState } from 'react'
 
 const TEST_USER_ID = 'a27fc897-4216-4863-9e7b-f8868a8369ff';
@@ -46,7 +47,7 @@ const People = () => {
         <ul className="grid grid-cols-1 gap-4">
           {contacts.map((contact) => (
             <li key={contact.contacts_id} className="border rounded-lg p-4">
-              <div className="flex items-center gap-4">
+              <Link href={`/people/${contact.contacts_id}`} className="flex items-center gap-4">
                 <div className="w-12 h-12 rounded-full overflow-hidden bg-gray-200 flex-shrink-0">
                   {contact.contact_profile_img ? (
                     <Image 
@@ -69,7 +70,7 @@ const People = () => {
                     {contact.relationship_level}
                   </span>
                 </div>
-              </div>
+              </Link>
             </li>
           ))}
         </ul>
