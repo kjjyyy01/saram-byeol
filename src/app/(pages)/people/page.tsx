@@ -49,9 +49,9 @@ const People = () => {
             <li key={contact.contacts_id} className="border rounded-lg p-4">
               <Link href={`/people/${contact.contacts_id}`} className="flex items-center gap-4">
                 <div className="w-12 h-12 rounded-full overflow-hidden bg-gray-200 flex-shrink-0">
-                  {contact.contact_profile_img ? (
+                  {contact.contacts_profile_img ? (
                     <Image 
-                      src={contact.contact_profile_img} 
+                      src={contact.contacts_profile_img} 
                       alt={contact.name} 
                       width={48} 
                       height={48} 
