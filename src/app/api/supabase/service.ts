@@ -10,10 +10,7 @@ export const getContacts = async (userId: string): Promise<ContactItemType[]> =>
       .eq('user_id', userId)
       .order('name', { ascending: true });
 
-    if (error) {
-      console.error('연락처를 가져오는 중 오류가 발생했습니다:', error);
-      throw error;
-    }
+    if (error) throw error;
 
     return data || [];
   } catch (error) {
