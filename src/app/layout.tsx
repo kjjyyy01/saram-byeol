@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import './globals.css';
-import { QueryProviders } from './provider';
+import { Providers } from '@/app/providers';
 
 export const metadata: Metadata = {
   title: '사람 별',
@@ -15,7 +15,7 @@ export default function RootLayout({
   return (
     <html lang='ko'>
       <body>
-        <QueryProviders>{children}</QueryProviders>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

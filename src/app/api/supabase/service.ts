@@ -1,5 +1,5 @@
 import { ContactItemType, ContactWithPlansDetailType } from '@/types/contacts';
-import { supabase } from './client';
+import { supabase } from '@/app/api/supabase/client';
 
 // contacts 데이터 가져오기
 export const getContacts = async (userId: string): Promise<ContactItemType[]> => {
