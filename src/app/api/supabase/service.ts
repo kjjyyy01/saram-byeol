@@ -1,8 +1,8 @@
-import { ContactList, ContactWithPlansDetail } from '@/types/contacts';
+import { ContactItemType, ContactWithPlansDetailType } from '@/types/contacts';
 import { supabase } from './client';
 
 // contacts 데이터 가져오기
-export const fetchContacts = async (userId: string): Promise<ContactList[]> => {
+export const getContacts = async (userId: string): Promise<ContactItemType[]> => {
   try {
     const { data, error } = await supabase
       .from('contacts')
@@ -23,7 +23,7 @@ export const fetchContacts = async (userId: string): Promise<ContactList[]> => {
 }
 
 // contacts, plans 데이터 함께 가져오기
-export const fetchContactsWithPlans = async (userId: string, contactsId: string): Promise<ContactWithPlansDetail> => {
+export const getContactsWithPlans = async (userId: string, contactsId: string): Promise<ContactWithPlansDetailType> => {
   const { data, error } = await supabase
     .from('contacts')
     .select(

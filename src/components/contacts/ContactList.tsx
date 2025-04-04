@@ -1,4 +1,4 @@
-import { fetchContacts } from '@/app/api/supabase/service';
+import { getContacts } from '@/app/api/supabase/service';
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 import ContactItem from './ContactItem';
@@ -13,7 +13,7 @@ const ContactList = () => {
     error,
   } = useQuery<ContactItemType[]>({
     queryKey: ['contacts', TEST_USER_ID],
-    queryFn: () => fetchContacts(TEST_USER_ID),
+    queryFn: () => getContacts(TEST_USER_ID),
   });
 
   if (error) {
