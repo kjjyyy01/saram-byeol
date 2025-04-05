@@ -22,7 +22,7 @@ const Signin = () => {
       throw error;
     } else {
       setUser(data.user);
-      alert('로그인되었습니다.');
+      alert(`로그인되었습니다.'내 사람' 페이지로 이동합니다.`);
       router.push('/people');
     }
   };
