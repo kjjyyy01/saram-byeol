@@ -3,9 +3,7 @@ import { Calendar, dateFnsLocalizer } from 'react-big-calendar';
 import { format, parse, startOfWeek, getDay } from 'date-fns';
 import { enUS } from 'date-fns/locale/en-US';
 import { ko } from 'date-fns/locale/ko';
-import { getPlans } from '@/lib/utils/supabaseApi';
-import { useEffect, useState } from 'react';
-import { CalendarEventType } from '@/types/plans';
+import { useGetCalendarPlans } from '@/hooks/useGetCalendarPlans';
 
 // 로케일(지역화) 설정
 const locales = {
@@ -22,28 +20,15 @@ const localizer = dateFnsLocalizer({
 });
 
 const MainCalendar = () => {
-  const [events, setEvents] = useState<CalendarEventType[]>([]);
+  const { data: events, isPending, isError, error } = useGetCalendarPlans();
 
-  useEffect(() => {
-    const fetchEvents = async () => {
-      try {
-        const plans = await getPlans();
+  if (isPending) {
+    return <div>로딩 중입니다...</div>;
+  }
 
-        const formatted = plans.map(
-          (plan): CalendarEventType => ({
-            id: plan.plan_id,
-            title: plan.title,
-            start: new Date(plan.start_date),
-            end: new Date(plan.end_date),
-          })
-        );
-        setEvents(formatted);
-      } catch (error) {
-        console.error('일정 목록 가져오기 에러', error);
-      }
-    };
-    fetchEvents();
-  }, []);
+  if (isError) {
+    return <div>캘린더 에러 발생 : {error.message}</div>;
+  }
 
   return (
     <div>
