@@ -3,6 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 import ContactItem from './ContactItem';
 import { ContactItemType } from '@/types/contacts';
+import Link from 'next/link';
 
 const TEST_USER_ID = 'a27fc897-4216-4863-9e7b-f8868a8369ff';
 
@@ -29,7 +30,11 @@ const ContactList = () => {
       ) : (
         <ul className='grid grid-cols-1 gap-4'>
           {contacts.map((contact) => (
-            <ContactItem key={contact.contacts_id} contact={contact} />
+            <li key={contact.contacts_id}>
+              <Link href={`/people/${contact.contacts_id}`}>
+                <ContactItem contact={contact} />
+              </Link>
+            </li>
           ))}
         </ul>
       )}

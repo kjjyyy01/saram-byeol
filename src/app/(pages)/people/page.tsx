@@ -1,12 +1,9 @@
-'use client'
+'use client';
 
 import ContactList from '@/components/contacts/ContactList';
 
 const People = () => {
- 
-  return (
-   <ContactList />
-  );
-}
+  return <ContactList />;
+};
 
-export default People
+export default People;
