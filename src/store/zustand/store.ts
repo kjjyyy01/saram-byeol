@@ -3,14 +3,14 @@ import { User } from '@supabase/supabase-js';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
-export interface AuthState {
+export interface AuthStateType {
   user: User | null;
   isSignin: boolean;
   setUser: (user: User | null) => void;
   logout: () => void;
 }
 
-export const useAuthStore = create<AuthState>()(
+export const useAuthStore = create<AuthStateType>()(
   persist(
     (set) => ({
       user: null,
