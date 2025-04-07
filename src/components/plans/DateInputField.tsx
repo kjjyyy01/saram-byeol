@@ -5,9 +5,12 @@ import { useFormContext } from 'react-hook-form';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import { format } from 'date-fns';
+import { format, setDefaultOptions } from 'date-fns';
 import { CalendarIcon } from 'lucide-react';
 import { Calendar } from '@/components/ui/calendar';
+import { ko } from 'date-fns/locale/ko';
+
+setDefaultOptions({ locale: ko });
 
 const DateInputField = () => {
   const { control } = useFormContext();
@@ -30,9 +33,9 @@ const DateInputField = () => {
                   >
                     {field.value?.from ? (
                       field.value.to ? (
-                        <>{`${format(field.value.from, 'PPP')} - ${format(field.value.to, 'ppp')}`}</>
+                        <>{`${format(field.value.from, 'y.LL.dd (ccc)')} - ${format(field.value.to, 'y.LL.dd (ccc)')}`}</>
                       ) : (
-                        format(field.value.from, 'ppp')
+                        format(field.value.from, 'y.LL.dd (ccc)')
                       )
                     ) : (
                       <span> 날짜 선택</span>

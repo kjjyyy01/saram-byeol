@@ -14,10 +14,8 @@ const PlansSchema = z.object({
     message: '제목을 입력해주세요.',
   }),
   dateInput: z.object({
-    from: z.date({
-      required_error: '날짜를 지정해주세요.',
-    }),
-    to: z.date(),
+    from: z.date(),
+    to: z.date().optional(),
   }),
   contacts: z.string(),
   detail: z.string().optional(),
@@ -26,15 +24,26 @@ const PlansSchema = z.object({
 //타입정의의 선언방식은 interface로 컨벤션되어있지만, interface는 조드가 지원해주는 자동 타입추론을 사용할 수 없습니다.
 //조드의 타입추론을 쓰면 스키마와 타입이 항상 동기화되는 장점이 있어서, 예외적으로 type을 사용한 타입선언을 했습니다.
 type PlanFormType = z.infer<typeof PlansSchema>;
-
 const PlanForm = () => {
+  const today = new Date();
   const form = useForm<PlanFormType>({
     resolver: zodResolver(PlansSchema),
+    mode: 'onBlur',
+    defaultValues: {
+      title: '',
+      dateInput: {
+        from: today,
+        to: undefined,
+      }, //오늘날짜를 기본값으로 넣어주고 싶은데 맞는 방식일까?
+      contacts: '',
+      detail: '',
+    },
   });
 
   const planSubmitHandler = (data: PlanFormType) => {
     //입력값 확인을 위한 임시 코드
     alert(JSON.stringify(data));
+    form.reset();
   };
 
   return (
@@ -44,8 +53,9 @@ const PlanForm = () => {
         <DateInputField />
         <ContactsField />
         <DetailField />
-
-        <Button type='submit'> 약속 저장 </Button>
+        <Button type='submit' disabled={form.formState.isSubmitting}>
+          약속 저장
+        </Button>
       </form>
     </FormProvider>
   );
