@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/store/zustand/store';
 import { supabase } from '@/app/api/supabase/client';
 import { PATHS } from '@/constants/paths';
+import { EMAIL_PLACEHOLDER, NICKNAME_PLACEHOLDER, PASSWORD_PLACEHOLDER } from '@/constants/placeholders';
 
 export interface SignupFormType {
   email: string;
@@ -42,7 +43,7 @@ const Signup = () => {
         <input
           type='text'
           id='nickname'
-          placeholder='헤엄치는 수달'
+          placeholder={NICKNAME_PLACEHOLDER}
           {...register('nickname', {
             required: '닉네임 입력은 필수입니다.',
           })}
@@ -54,7 +55,7 @@ const Signup = () => {
         <input
           type='email'
           id='email'
-          placeholder='sarambyeol@sarambyeol.com'
+          placeholder={EMAIL_PLACEHOLDER}
           {...register('email', {
             required: '이메일 입력은 필수입니다.',
           })}
@@ -66,7 +67,7 @@ const Signup = () => {
         <input
           type='password'
           id='password'
-          placeholder='비밀번호를 입력해주세요'
+          placeholder={PASSWORD_PLACEHOLDER}
           {...register('password', {
             required: '비밀번호 입력은 필수입니다.',
           })}
