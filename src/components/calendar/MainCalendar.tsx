@@ -6,6 +6,7 @@ import { ko } from 'date-fns/locale/ko';
 import { useGetCalendarPlans } from '@/hooks/useGetCalendarPlans';
 import CustomToolbar from '@/components/calendar/CustomToolbar';
 import { useState } from 'react';
+import type { CalendarEventType } from '@/types/plans';
 
 // 로케일(지역화) 설정
 const locales = {
@@ -35,7 +36,8 @@ const MainCalendar = () => {
 
   return (
     <div>
-      <Calendar
+      <Calendar<CalendarEventType>
+        culture='ko-KR' // 한국 기본 설정
         localizer={localizer}
         events={events}
         date={month} // 현재 날짜(달)
@@ -49,7 +51,7 @@ const MainCalendar = () => {
         components={{
           toolbar: CustomToolbar, // 상단 툴바 분리
         }}
-        style={{ height: 500 }}
+        style={{ height: '100vh' }}
       />
     </div>
   );
