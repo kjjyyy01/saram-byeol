@@ -15,8 +15,7 @@ export const initialState = { user: null, isSignIn: false };
 export const useAuthStore = create<AuthStateType>()(
   persist(
     (set) => ({
-      user: null,
-      isSignIn: false,
+      ...initialState,
       setUser: (user) => set({ user, isSignIn: true }),
       signOut: async () => {
         await mutateSignOut();
