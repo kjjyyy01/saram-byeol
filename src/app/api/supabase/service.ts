@@ -1,7 +1,7 @@
 import { ContactItemType, ContactWithPlansDetailType } from '@/types/contacts';
 import { supabase } from '@/app/api/supabase/client';
-import type { SignUpFormType } from '@/app/(pages)/signUp/page';
-import type { SignInFormType } from '@/app/(pages)/signIn/page';
+import type { SignUpFormType } from '@/app/(pages)/signup/page';
+import type { SignInFormType } from '@/app/(pages)/signin/page';
 
 // contacts 데이터 가져오기
 export const getContacts = async (userId: string): Promise<ContactItemType[]> => {
