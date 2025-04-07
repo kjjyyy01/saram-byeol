@@ -1,13 +1,19 @@
 import { getContacts } from '@/app/api/supabase/service';
 import { useQuery } from '@tanstack/react-query';
-import React, { useState } from 'react';
+import React, { ReactNode, useState } from 'react';
 import ContactItem from './ContactItem';
 import { ContactItemType } from '@/types/contacts';
 import { UserPlus, X } from '@phosphor-icons/react';
 
 const TEST_USER_ID = 'a27fc897-4216-4863-9e7b-f8868a8369ff';
 
-const SideSheet = ({ isOpen, onClose, children }) => {
+interface SideSheetProps {
+  isOpen: boolean;
+  onClose: () => void;
+  children: ReactNode;
+}
+
+const SideSheet: React.FC<SideSheetProps> = ({ isOpen, onClose, children }) => {
   return (
     <div>
       {/* 사이드 시트 */}
@@ -30,6 +36,10 @@ const SideSheet = ({ isOpen, onClose, children }) => {
       </div>
     </div>
   );
+};
+
+const AddContactForm = () => {
+  return <div></div>;
 };
 
 const ContactList = () => {
@@ -80,7 +90,9 @@ const ContactList = () => {
       </div>
 
       {/* 사이드 시트 */}
-      <SideSheet isOpen={isAddContactOpen} onClose={() => setIsAddContactOpen(false)} />
+      <SideSheet isOpen={isAddContactOpen} onClose={() => setIsAddContactOpen(false)}>
+        <AddContactForm />
+      </SideSheet>
     </div>
   );
 };
