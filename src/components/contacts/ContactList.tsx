@@ -25,8 +25,8 @@ const SideSheet: React.FC<SideSheetProps> = ({ isOpen, onClose, children }) => {
         style={{ maxHeight: '1080px' }}
       >
         <div className='flex h-full flex-col p-4'>
-          <div className='flex items-center justify-between border-b pb-4'>
-            <h2 className='text-xl font-medium'>내 사람 추가</h2>
+          <div className='flex items-center justify-between mt-6 ml-6 pb-4'>
+            <h2 className='text-2xl font-bold'>내 사람 추가</h2>
             <button onClick={onClose} className='rounded-full p-1 hover:bg-gray-100'>
               <X size={24} />
             </button>
@@ -58,7 +58,7 @@ const ContactList: React.FC = () => {
   return (
     <div className='flex h-full flex-col'>
       {/* 헤더 - 내 사람 목록 텍스트 */}
-      <h1 className='pl-[24px] pt-[24px] text-2xl font-bold'>내 사람 목록</h1>
+      <h1 className='pl-6 pt-6 text-2xl font-bold'>내 사람 목록</h1>
 
       {/* 내 사람 추가 버튼 */}
       <div className='mt-12 flex justify-center'>
@@ -74,7 +74,7 @@ const ContactList: React.FC = () => {
       </div>
 
       {/* 연락처 리스트 */}
-      <div className='mt-[50px] flex-1'>
+      <div className='mt-12 flex-1'>
         {isPending ? (
           <div className='py-8 text-center'>로딩 중...</div>
         ) : (
