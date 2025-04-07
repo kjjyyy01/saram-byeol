@@ -10,6 +10,8 @@ export interface AuthStateType {
   logout: () => void;
 }
 
+export const initialState = { user: null, isSignin: false };
+
 export const useAuthStore = create<AuthStateType>()(
   persist(
     (set) => ({
@@ -20,7 +22,7 @@ export const useAuthStore = create<AuthStateType>()(
         const { error } = await supabase.auth.signOut();
         if (error) console.error('로그아웃에 실패했습니다. 다시 시도해주세요.', error);
 
-        set({ user: null, isSignin: false });
+        set(initialState);
         localStorage.removeItem('user-state');
       },
     }),
