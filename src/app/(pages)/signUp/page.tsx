@@ -7,18 +7,18 @@ import { PATHS } from '@/constants/paths';
 import { PLACEHOLDER } from '@/constants/placeholders';
 import { mutateSignUp } from '@/app/api/supabase/service';
 
-export interface SignupFormType {
+export interface SignUpFormType {
   email: string;
   password: string;
   nickname: string;
 }
 
-const Signup = () => {
-  const { register, handleSubmit } = useForm<SignupFormType>();
+const SignUp = () => {
+  const { register, handleSubmit } = useForm<SignUpFormType>();
   const router = useRouter();
   const setUser = useAuthStore((state) => state.setUser);
 
-  const onSignupHandler = async (value: SignupFormType) => {
+  const onSignUpHandler = async (value: SignUpFormType) => {
     const user = await mutateSignUp(value);
 
     setUser(user);
@@ -27,7 +27,7 @@ const Signup = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSignupHandler)}>
+    <form onSubmit={handleSubmit(onSignUpHandler)}>
       <div>
         <label htmlFor='nickname'>닉네임</label>
         <input
@@ -69,4 +69,4 @@ const Signup = () => {
   );
 };
 
-export default Signup;
+export default SignUp;
