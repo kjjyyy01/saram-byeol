@@ -1,4 +1,4 @@
-import PlanForm from '@/components/commons/PlanForm'
+import PlanForm from '@/components/plans/PlanForm'
 import React from 'react'
 
 const Home = () => {
