@@ -3,9 +3,9 @@
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/store/zustand/store';
-import { supabase } from '@/app/api/supabase/client';
 import { PATHS } from '@/constants/paths';
 import { PLACEHOLDER } from '@/constants/placeholders';
+import { mutateSignIn } from '@/app/api/supabase/service';
 
 export interface SigninFormType {
   email: string;
@@ -18,20 +18,11 @@ const Signin = () => {
   const setUser = useAuthStore((state) => state.setUser);
 
   const onSigninHandler = async (value: SigninFormType) => {
-    const { email, password } = value;
+    const user = await mutateSignIn(value);
 
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
-    if (error) {
-      console.error('로그인에 실패했습니다. 다시 시도해주세요.', error);
-      throw error;
-    } else {
-      setUser(data.user);
-      alert(`로그인되었습니다.'내 사람' 페이지로 이동합니다.`);
-      router.push(PATHS.PEOPLE.to);
-    }
+    setUser(user);
+    alert(`로그인되었습니다.'내 사람' 페이지로 이동합니다.`);
+    router.push(PATHS.PEOPLE.to);
   };
 
   return (
