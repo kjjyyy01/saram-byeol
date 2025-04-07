@@ -25,22 +25,23 @@ const ContactProfile: React.FC<Props> = ({ contact }) => {
         )}
       </div>
 
-      <h1 className='mb-4 text-2xl font-bold'>{contact.name}</h1>
+      <span className='rounded-full bg-gray-100 px-2 py-1 text-xs text-gray-800'>{contact.relationship_level}</span>
+      <h1 className='text-2xl font-bold'>{contact.name}</h1>
+      <p className='mb-4 font-bold'>{contact.email}</p>
+
       <ul className='space-y-1'>
+        <h2 className='text-2xl font-bold'>연락처</h2>
         <li>
-          <strong>이메일 주소:</strong> {contact.email}
+          <strong>휴대폰</strong> {contact.phone}
         </li>
         <li>
-          <strong>휴대폰:</strong> {contact.phone}
+            <strong>이메일 주소</strong> {contact.email}
         </li>
         <li>
-          <strong>관계:</strong> {contact.relationship_level}
+          <strong>생년월일</strong> {contact.birth}
         </li>
         <li>
-          <strong>생년월일:</strong> {contact.birth}
-        </li>
-        <li>
-          <strong>메모:</strong> {contact.notes}
+          <strong>메모</strong> {contact.notes}
         </li>
       </ul>
     </div>
