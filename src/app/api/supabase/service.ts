@@ -1,29 +1,29 @@
-import { ContactList, ContactWithPlansDetail } from '@/types/contacts';
-import { supabase } from './client';
+import { ContactItemType, ContactWithPlansDetailType } from '@/types/contacts';
+import { supabase } from '@/app/api/supabase/client';
 
 // contacts 데이터 가져오기
-export const fetchContacts = async (userId: string): Promise<ContactList[]> => {
+export const getContacts = async (userId: string): Promise<ContactItemType[]> => {
   try {
     const { data, error } = await supabase
       .from('contacts')
       .select('contacts_id, name, relationship_level, contacts_profile_img')
       .eq('user_id', userId)
-      .order('name');
-      
+      .order('name', { ascending: true });
+
     if (error) {
-      console.error('연락처를 가져오는 중 오류가 발생했습니다:', error);
+      console.error('Supabase에서 Contact 테이블 데이터를 가져오는 중 오류가 발생했습니다:', error);
       throw error;
     }
-    
+
     return data || [];
   } catch (error) {
     console.error('연락처를 불러오는 중 오류가 발생했습니다:', error);
     throw error;
   }
-}
+};
 
 // contacts, plans 데이터 함께 가져오기
-export const fetchContactsWithPlans = async (userId: string, contactsId: string): Promise<ContactWithPlansDetail> => {
+export const getContactsWithPlans = async (userId: string, contactsId: string): Promise<ContactWithPlansDetailType> => {
   const { data, error } = await supabase
     .from('contacts')
     .select(
