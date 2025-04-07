@@ -1,16 +1,21 @@
 'use client';
 
-import { FieldValues, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/store/zustand/store';
 import { supabase } from '@/app/api/supabase/client';
 
+export interface SigninFormType {
+  email: string;
+  password: string;
+}
+
 const Signin = () => {
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit } = useForm<SigninFormType>();
   const router = useRouter();
   const setUser = useAuthStore((state) => state.setUser);
 
-  const onSigninHandler = async (value: FieldValues) => {
+  const onSigninHandler = async (value: SigninFormType) => {
     const { email, password } = value;
 
     const { data, error } = await supabase.auth.signInWithPassword({
