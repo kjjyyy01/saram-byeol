@@ -1,4 +1,4 @@
-import { supabase } from '@/app/api/supabase/client';
+import { mutateSignOut } from '@/app/api/supabase/service';
 import { User } from '@supabase/supabase-js';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
@@ -19,8 +19,7 @@ export const useAuthStore = create<AuthStateType>()(
       isSignIn: false,
       setUser: (user) => set({ user, isSignIn: true }),
       signOut: async () => {
-        const { error } = await supabase.auth.signOut();
-        if (error) console.error('로그아웃에 실패했습니다. 다시 시도해주세요.', error);
+        await mutateSignOut();
 
         set(initialState);
         localStorage.removeItem('user-state');
