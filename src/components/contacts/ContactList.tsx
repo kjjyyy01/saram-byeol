@@ -4,6 +4,7 @@ import React, { ReactNode, useState } from 'react';
 import ContactItem from './ContactItem';
 import { ContactItemType } from '@/types/contacts';
 import { UserPlus, X } from '@phosphor-icons/react';
+import AddContactForm from './AddContactForm';
 
 const TEST_USER_ID = 'a27fc897-4216-4863-9e7b-f8868a8369ff';
 
@@ -38,11 +39,7 @@ const SideSheet: React.FC<SideSheetProps> = ({ isOpen, onClose, children }) => {
   );
 };
 
-const AddContactForm = () => {
-  return <div></div>;
-};
-
-const ContactList = () => {
+const ContactList: React.FC = () => {
   const [isAddContactOpen, setIsAddContactOpen] = useState(false);
 
   const {
@@ -76,7 +73,7 @@ const ContactList = () => {
         </button>
       </div>
 
-      {/* 연락처 리스트 - 스크롤 제거 */}
+      {/* 연락처 리스트 */}
       <div className='mt-[50px] flex-1'>
         {isPending ? (
           <div className='py-8 text-center'>로딩 중...</div>
