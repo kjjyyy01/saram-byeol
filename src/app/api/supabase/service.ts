@@ -2,6 +2,7 @@ import { ContactItemType, ContactWithPlansDetailType } from '@/types/contacts';
 import { supabase } from '@/app/api/supabase/client';
 import type { SignUpFormType } from '@/app/(pages)/signup/page';
 import type { SignInFormType } from '@/app/(pages)/signin/page';
+import { PlansType } from '@/types/plans';
 
 // contacts 데이터 가져오기
 export const getContacts = async (userId: string): Promise<ContactItemType[]> => {
@@ -87,4 +88,15 @@ export const mutateSignOut = async () => {
     console.error('로그아웃에 실패했습니다. 다시 시도해주세요.', error);
     throw error;
   }
+
+// plans 데이터 가져오기 - calendar 사용
+export const getPlans = async (): Promise<PlansType[]> => {
+  const { data: plans, error } = await supabase
+    .from('plans')
+    .select('plan_id, user_id, contacts_id, title, detail, priority, start_date, end_date');
+  if (error) {
+    throw new Error(error.message);
+  }
+  return plans;
+
 };
