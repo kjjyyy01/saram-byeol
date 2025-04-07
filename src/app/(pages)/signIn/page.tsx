@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/store/zustand/store';
 import { supabase } from '@/app/api/supabase/client';
+import { PATHS } from '@/constants/paths';
 
 export interface SigninFormType {
   email: string;
@@ -28,7 +29,7 @@ const Signin = () => {
     } else {
       setUser(data.user);
       alert(`로그인되었습니다.'내 사람' 페이지로 이동합니다.`);
-      router.push('/people');
+      router.push(PATHS.PEOPLE.to);
     }
   };
 
