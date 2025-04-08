@@ -25,16 +25,15 @@ const PlansSchema = z.object({
 //조드의 타입추론을 쓰면 스키마와 타입이 항상 동기화되는 장점이 있어서, 예외적으로 type을 사용한 타입선언을 했습니다.
 type PlanFormType = z.infer<typeof PlansSchema>;
 const PlanForm = () => {
-  const today = new Date();
   const form = useForm<PlanFormType>({
     resolver: zodResolver(PlansSchema),
     mode: 'onBlur',
     defaultValues: {
       title: '',
       dateInput: {
-        from: today,
+        from: new Date(),
         to: undefined,
-      }, //오늘날짜를 기본값으로 넣어주고 싶은데 맞는 방식일까?
+      },
       contacts: '',
       detail: '',
     },

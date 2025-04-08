@@ -15,3 +15,15 @@ export interface CalendarEventType {
   start: Date;
   end: Date;
 }
+
+export interface InsertNewPlansType {
+  contacts_id?: string | null;
+  created_at?: string;
+  detail?: string | null;
+  end_date?: string | null;
+  plan_id?: string;
+  priority?: string | null;
+  start_date?: string | null;
+  title?: string | null;
+  user_id?: string | null;
+}

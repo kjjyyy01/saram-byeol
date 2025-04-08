@@ -1,7 +1,6 @@
 import { ContactItemType, ContactWithPlansDetailType } from '@/types/contacts';
 import { supabase } from '@/app/api/supabase/client';
-
-import { PlansType } from '@/types/plans';
+import { InsertNewPlansType, PlansType } from '@/types/plans';
 import { SignUpFormType } from '@/app/(pages)/signUp/page';
 import { SignInFormType } from '@/app/(pages)/signIn/page';
 
@@ -90,6 +89,7 @@ export const mutateSignOut = async () => {
     throw error;
   }
 };
+
 // plans 데이터 가져오기 - calendar 사용
 export const getPlans = async (): Promise<PlansType[]> => {
   const { data: plans, error } = await supabase
@@ -99,4 +99,17 @@ export const getPlans = async (): Promise<PlansType[]> => {
     throw new Error(error.message);
   }
   return plans;
+};
+
+// plans - 약속추가
+export const mutateInsertNewPlan = async (formdata: InsertNewPlansType) => {
+  try {
+    const { data: plan, error } = await supabase.from('plans').insert({ formdata }).select();
+    if (error) throw new Error(`약속 추가 중 오류가 발생했습니다 : ${error.message}`);
+
+    return plan;
+  } catch (err) {
+    console.error(err);
+    throw err;
+  }
 };
