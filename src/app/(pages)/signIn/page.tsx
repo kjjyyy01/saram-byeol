@@ -43,15 +43,19 @@ const SignIn = () => {
 
   return (
     <form onSubmit={handleSubmit(onSignInHandler)}>
-      <div>
-        <label htmlFor='email'>이메일</label>
-        <input type='email' id='email' placeholder={PLACEHOLDER_EMAIL} {...register('email')} />
+      <div className='flex flex-col'>
+        <section>
+          <label htmlFor='email'>이메일</label>
+          <input type='email' id='email' placeholder={PLACEHOLDER_EMAIL} {...register('email')} />
+        </section>
         {formState.errors.email && <span>{formState.errors.email.message}</span>}
       </div>
 
-      <div>
-        <label htmlFor='password'>비밀번호</label>
-        <input type='password' id='password' placeholder={PLACEHOLDER_PASSWORD} {...register('password')} />
+      <div className='flex flex-col'>
+        <section>
+          <label htmlFor='password'>비밀번호</label>
+          <input type='password' id='password' placeholder={PLACEHOLDER_PASSWORD} {...register('password')} />
+        </section>
         {formState.errors.password && <span>{formState.errors.password.message}</span>}
       </div>
       <button type='submit'>로그인</button>
