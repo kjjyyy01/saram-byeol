@@ -57,12 +57,7 @@ export const mutateSignUp = async (value: SignUpFormType) => {
     options: { data: { nickname } },
   });
 
-  if (error) {
-    console.error('회원가입에 실패했습니다. 다시 시도해주세요.', error);
-    throw error;
-  }
-
-  return data.user;
+  return { data, error };
 };
 
 // 로그인

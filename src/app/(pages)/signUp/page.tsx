@@ -16,15 +16,20 @@ export interface SignUpFormType {
 }
 
 const signUpSchema = z.object({
-  email: z.string().email({ message: '올바른 이메일 형식을 입력해주세요.' }),
+  email: z
+    .string()
+    .min(1, { message: '이메일을 입력해주세요.' })
+    .email({ message: '올바른 이메일 형식을 입력해주세요.' }),
   password: z
     .string()
+    .min(1, { message: '비밀번호를 입력해주세요.' })
     .regex(/[!@#$%^&*(),.?":{}|<>]/, {
       message: '하나 이상의 특수문자가 포함되어야 합니다.',
     })
     .min(8, { message: '8자 이상으로 입력해주세요.' }),
   nickname: z
     .string()
+    .min(1, { message: '닉네임을 입력해주세요.' })
     .min(2, { message: '2자 이상으로 입력해주세요.' })
     .regex(/^[A-Za-z0-9가-힣\s]+$/, {
       message: '띄어쓰기를 제외한 특수문자를 사용할 수 없습니다.',
@@ -41,11 +46,14 @@ const SignUp = () => {
   const setUser = useAuthStore((state) => state.setUser);
 
   const onSignUpHandler = async (value: SignUpFormType) => {
-    const user = await mutateSignUp(value);
-
-    setUser(user);
-    alert(`회원가입이 완료되었습니다. 자동으로 로그인되어 '내 사람' 페이지로 이동합니다.`);
-    router.push(PEOPLE);
+    const { data, error } = await mutateSignUp(value);
+    if (data.user) {
+      setUser(data.user);
+      alert(`회원가입이 완료되었습니다. 자동으로 로그인되어 '내 사람' 페이지로 이동합니다.`);
+      router.push(PEOPLE);
+    } else if (error) {
+      alert('입력한 정보를 다시 한 번 확인해주세요.');
+    }
   };
 
   const NicknameDuplicateTestHandler = async () => {
