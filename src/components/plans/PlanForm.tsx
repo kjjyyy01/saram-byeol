@@ -37,6 +37,7 @@ const PlanForm = () => {
       { user_id: TEST_USER_ID, ...formData },
       {
         onSuccess: () => {
+          // console.log(formData)
           form.reset();
         },
       }

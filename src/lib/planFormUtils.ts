@@ -6,10 +6,14 @@ export const addTimeHour = (date: Date) => {
   return add(date, { hours: 1 });
 };
 
+export const addTimeMore = (date: Date) => {
+  return add(date, { minutes: 30 });
+};
+
 //종료일이 없으면 시작일을 종료일에 대입
 export const getStartAndEndDate = (from: Date, to?: Date) => {
   const start_date = addTimeHour(from);
-  const end_date = to ? addTimeHour(to) : start_date;
+  const end_date = to ? addTimeHour(to) : addTimeMore(start_date);
   return { start_date, end_date };
 };
 
