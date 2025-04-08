@@ -5,10 +5,12 @@ import { ko } from 'date-fns/locale/ko';
 import { useGetCalendarPlans } from '@/hooks/queries/useGetCalendarPlans';
 import CustomToolbar from '@/components/calendar/CustomToolbar';
 import { useState } from 'react';
-import type { CalendarEventType } from '@/types/plans';
+import type { CalendarEventType, Holidays } from '@/types/plans';
 import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop';
 import { useUpadateEventMutate } from '@/hooks/mutations/useUpadateEventMutate';
 import { CustomDateHeader } from './CustomDateHeader';
+import { useGetHolidays } from '@/hooks/queries/useGetHolidays';
+import { holidayStyle } from '@/lib/utils/calendarStyle';
 
 // 드래그 이벤트 타입
 interface Props {
@@ -35,6 +37,21 @@ const MainCalendar = () => {
   const { mutate: updateEvent } = useUpadateEventMutate();
   const [month, setMonth] = useState(new Date());
 
+  const calendarYear = month.getFullYear();
+  const { data: holidays } = useGetHolidays(String(calendarYear));
+
+  // 약속 + 공휴일
+  const combinedEvents: CalendarEventType[] = [
+    ...(events || []),
+    ...(holidays || []).map((holiday: Holidays, idx: number) => ({
+      id: `holiday-${idx}`,
+      title: holiday.title,
+      start: holiday.date,
+      end: holiday.date, // 단일 일정
+      isHoliday: true, // 스타일 구분용
+    })),
+  ];
+
   const DnDCalendar = withDragAndDrop<CalendarEventType>(Calendar); //DnD 사용 캘린더
 
   // 드래그 종료 함수(mutate 실행 핸들러)
@@ -55,7 +72,7 @@ const MainCalendar = () => {
     <div>
       <DnDCalendar
         localizer={localizer}
-        events={events}
+        events={combinedEvents}
         date={month} // 현재 달 state
         onNavigate={(newDate) => {
           setMonth(newDate); // 달 변동
@@ -71,6 +88,7 @@ const MainCalendar = () => {
             dateHeader: CustomDateHeader,
           },
         }}
+        eventPropGetter={holidayStyle}
         style={{ height: '100vh' }}
       />
     </div>
