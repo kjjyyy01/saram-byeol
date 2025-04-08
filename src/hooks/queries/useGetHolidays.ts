@@ -1,4 +1,3 @@
-import { getHolidays } from '@/app/api/holiday/service';
 import { QUERY_KEY } from '@/constants/queryKey';
 import { Holidays, Item } from '@/types/plans';
 import { useQuery } from '@tanstack/react-query';
@@ -6,8 +5,9 @@ import { useQuery } from '@tanstack/react-query';
 export const useGetHolidays = (calendarYear: string) => {
   // 공휴일 데이터 전체 가져오기
   const fetchHolidays = async () => {
-    const res = await getHolidays(calendarYear);
-    const items = res.response?.body?.items?.item || [];
+    const res = await fetch(`/api/holidays?year=${calendarYear}`); // 년도에 맞는 데이터
+    const data = await res.json();
+    const items = data.response?.body?.items?.item || [];
 
     // 필요한 값만 추출
     const holidays = items.map((item: Item) => ({
@@ -32,7 +32,8 @@ export const useGetHolidays = (calendarYear: string) => {
   };
 
   return useQuery({
-    queryKey: [QUERY_KEY.HOLIDAYS],
+    queryKey: [QUERY_KEY.HOLIDAYS, calendarYear], // 년도에 따라 쿼리키 변동
     queryFn: fetchHolidays,
+    staleTime: 1000 * 60 * 60 * 24, // 1일
   });
 };

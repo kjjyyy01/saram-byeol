@@ -37,7 +37,7 @@ const MainCalendar = () => {
   const { mutate: updateEvent } = useUpadateEventMutate();
   const [month, setMonth] = useState(new Date());
 
-  const calendarYear = month.getFullYear();
+  const calendarYear = month.getFullYear(); // 해당 달의 년도
   const { data: holidays } = useGetHolidays(String(calendarYear));
 
   // 약속 + 공휴일
