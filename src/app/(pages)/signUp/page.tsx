@@ -3,7 +3,7 @@
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/store/zustand/store';
-import { mutateSignUp } from '@/app/api/supabase/service';
+import { mutateSignUp, NicknameDuplicateTest } from '@/app/api/supabase/service';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { PLACEHOLDER_EMAIL, PLACEHOLDER_NICKNAME, PLACEHOLDER_PASSWORD } from '@/constants/placeholders';
@@ -33,7 +33,7 @@ const signUpSchema = z.object({
 });
 
 const SignUp = () => {
-  const { register, handleSubmit, formState } = useForm<SignUpFormType>({
+  const { register, handleSubmit, getValues, formState } = useForm<SignUpFormType>({
     mode: 'onChange',
     resolver: zodResolver(signUpSchema),
   });
@@ -48,17 +48,49 @@ const SignUp = () => {
     router.push(PEOPLE);
   };
 
+  const NicknameDuplicateTestHandler = async () => {
+    const nickname = getValues('nickname');
+    const data = await NicknameDuplicateTest(nickname);
+
+    if (data) {
+      alert('중복된 닉네임이 존재합니다.');
+    } else if (formState.errors.nickname) {
+      alert('닉네임 형식을 확인해주세요.');
+    } else {
+      alert('사용가능한 닉네임입니다.');
+    }
+  };
+
+  const EmailDuplicateTestHandler = async () => {
+    const email = getValues('email');
+    const data = await NicknameDuplicateTest(email);
+
+    if (data) {
+      alert('중복된 이메일이 존재합니다.');
+    } else if (formState.errors.email) {
+      alert('이메일 형식을 확인해주세요.');
+    } else {
+      alert('사용가능한 이메일입니다.');
+    }
+  };
+
   return (
     <form onSubmit={handleSubmit(onSignUpHandler)}>
       <div>
         <label htmlFor='nickname'>닉네임</label>
         <input type='text' id='nickname' maxLength={8} placeholder={PLACEHOLDER_NICKNAME} {...register('nickname')} />
+        <button type='button' onClick={NicknameDuplicateTestHandler}>
+          중복 검사
+        </button>
         {formState.errors.nickname && <span>{formState.errors.nickname.message as string}</span>}
       </div>
 
       <div>
         <label htmlFor='email'>이메일</label>
         <input type='email' id='email' placeholder={PLACEHOLDER_EMAIL} {...register('email')} />
+        <button type='button' onClick={EmailDuplicateTestHandler}>
+          중복 검사
+        </button>
         {formState.errors.email && <span>{formState.errors.email.message as string}</span>}
       </div>
 

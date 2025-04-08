@@ -90,6 +90,18 @@ export const mutateSignOut = async () => {
   }
 };
 
+// 입력한 닉네임과 일치하는 사용자 조회
+export const NicknameDuplicateTest = async (nickname: string) => {
+  const { data } = await supabase.from('users').select('nickname').eq('nickname', nickname).single();
+  return data;
+};
+
+// 입력한 이메일과 일치하는 사용자 조회
+export const emailDuplicateTest = async (email: string) => {
+  const { data } = await supabase.from('users').select('email').eq('email', email).single();
+  return data;
+};
+
 // plans 데이터 가져오기 - calendar 사용
 export const getPlans = async (): Promise<PlansType[]> => {
   const { data: plans, error } = await supabase
