@@ -104,7 +104,7 @@ export const getPlans = async (): Promise<PlansType[]> => {
 // plans - 약속추가
 export const mutateInsertNewPlan = async (formdata: InsertNewPlansType) => {
   try {
-    const { data: plan, error } = await supabase.from('plans').insert({ formdata }).select();
+    const { data: plan, error } = await supabase.from('plans').insert(formdata).select();
     if (error) throw new Error(`약속 추가 중 오류가 발생했습니다 : ${error.message}`);
 
     return plan;
