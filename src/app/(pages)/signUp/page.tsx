@@ -6,35 +6,50 @@ import { useAuthStore } from '@/store/zustand/store';
 import { emailDuplicateTest, mutateSignUp, NicknameDuplicateTest } from '@/app/api/supabase/service';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { PLACEHOLDER_EMAIL, PLACEHOLDER_NICKNAME, PLACEHOLDER_PASSWORD } from '@/constants/placeholders';
+import {
+  PLACEHOLDER_EMAIL,
+  PLACEHOLDER_NICKNAME,
+  PLACEHOLDER_PASSWORD,
+  PLACEHOLDER_PASSWORD_CHECK,
+} from '@/constants/placeholders';
 import { PEOPLE } from '@/constants/paths';
 
 export interface SignUpFormType {
   email: string;
   password: string;
   nickname: string;
+  passwordCheck: string;
 }
 
-const signUpSchema = z.object({
-  email: z
-    .string()
-    .min(1, { message: '이메일을 입력해주세요.' })
-    .email({ message: '올바른 이메일 형식을 입력해주세요.' }),
-  password: z
-    .string()
-    .min(1, { message: '비밀번호를 입력해주세요.' })
-    .regex(/[!@#$%^&*(),.?":{}|<>]/, {
-      message: '하나 이상의 특수문자가 포함되어야 합니다.',
-    })
-    .min(8, { message: '8자 이상으로 입력해주세요.' }),
-  nickname: z
-    .string()
-    .min(1, { message: '닉네임을 입력해주세요.' })
-    .min(2, { message: '2자 이상으로 입력해주세요.' })
-    .regex(/^[A-Za-z0-9가-힣\s]+$/, {
-      message: '띄어쓰기를 제외한 특수문자를 사용할 수 없습니다.',
-    }),
-});
+const signUpSchema = z
+  .object({
+    email: z
+      .string()
+      .min(1, { message: '이메일을 입력해주세요.' })
+      .email({ message: '올바른 이메일 형식을 입력해주세요.' }),
+
+    password: z
+      .string()
+      .min(1, { message: '비밀번호를 입력해주세요.' })
+      .regex(/[!@#$%^&*]/, {
+        message: '하나 이상의 특수문자가 포함되어야 합니다.',
+      })
+      .min(8, { message: '8자 이상으로 입력해주세요.' }),
+
+    passwordCheck: z.string().min(1, { message: '비밀번호를 다시 입력해주세요.' }),
+
+    nickname: z
+      .string()
+      .min(1, { message: '닉네임을 입력해주세요.' })
+      .min(2, { message: '2자 이상으로 입력해주세요.' })
+      .regex(/^[A-Za-z0-9가-힣\s]+$/, {
+        message: '띄어쓰기를 제외한 특수문자를 사용할 수 없습니다.',
+      }),
+  })
+  .refine((data) => data.password === data.passwordCheck, {
+    path: ['passwordCheck'],
+    message: '비밀번호가 일치하지 않습니다.',
+  });
 
 const SignUp = () => {
   const { register, handleSubmit, getValues, formState } = useForm<SignUpFormType>({
@@ -117,8 +132,21 @@ const SignUp = () => {
         {formState.errors.password ? (
           <span>{formState.errors.password.message}</span>
         ) : (
-          <span>특수문자를 최소 1자 이상 포함해주세요.</span>
+          <span>특수문자(!@#$%^&*)를 1개 이상 포함하여 입력해주세요.</span>
         )}
+      </div>
+
+      <div className='flex flex-col'>
+        <section>
+          <label htmlFor='passwordCheck'>비밀번호 확인</label>
+          <input
+            type='password'
+            id='passwordCheck'
+            placeholder={PLACEHOLDER_PASSWORD_CHECK}
+            {...register('passwordCheck')}
+          />
+        </section>
+        {formState.errors.passwordCheck && <span>{formState.errors.passwordCheck.message}</span>}
       </div>
 
       <button type='submit'>회원가입</button>
