@@ -2,9 +2,9 @@ export interface PlansType {
   plan_id: string;
   user_id: string;
   contacts_id: string;
-  title: string | null;
-  detail: string | null;
-  priority: string | null;
+  title: string;
+  detail: string;
+  priority: string;
   start_date: string;
   end_date: string;
 }
