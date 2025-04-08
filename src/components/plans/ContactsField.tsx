@@ -9,13 +9,16 @@ import { cn } from '@/lib/utils';
 import { Check, ChevronsUpDown } from 'lucide-react';
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command';
 import { useState } from 'react';
+import { UserType } from '@/types/contacts';
 
-const TEST_USER_ID = 'a27fc897-4216-4863-9e7b-f8868a8369ff'; // 나중에 props로 받을것
+interface Props {
+  userId: UserType['user_id'];
+}
 
-const ContactsField = () => {
+const ContactsField = ({ userId }: Props) => {
   const { control, setValue } = useFormContext();
   const [open, setOpen] = useState(false);
-  const { data: contacts = [] } = useGetContactsByUserID(TEST_USER_ID);
+  const { data: contacts = [] } = useGetContactsByUserID(userId);
   // console.log(contacts);
 
   return (
@@ -35,7 +38,7 @@ const ContactsField = () => {
                     aria-expanded={open}
                     className={cn('w-full justify-between', !field.value && 'text-muted-foreground')}
                   >
-                    {field.value ? contacts.find((person) => person.name === field.value)?.name : '내 사람 선택'}
+                    {field.value ? contacts.find((person) => person.contacts_id === field.value)?.name : '내 사람 선택'}
                     <ChevronsUpDown className='opacity-50' />
                   </Button>
                 </FormControl>
@@ -48,15 +51,15 @@ const ContactsField = () => {
                     <CommandGroup>
                       {contacts.map((person, i) => (
                         <CommandItem
-                          value={person.name}
+                          value={person.contacts_id}
                           key={i}
                           onSelect={() => {
-                            setValue('contacts', person.name);
+                            setValue('contacts', person.contacts_id);
                             setOpen(false);
                           }}
                         >
                           {person.name}
-                          <Check className={cn('ml-auto', person.name === field.value ? 'opacity-100' : 'opacity-0')} />
+                          <Check className={cn('ml-auto', person.contacts_id === field.value ? 'opacity-100' : 'opacity-0')} />
                         </CommandItem>
                       ))}
                     </CommandGroup>
