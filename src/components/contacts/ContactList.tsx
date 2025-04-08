@@ -7,7 +7,7 @@ import { UserPlus } from '@phosphor-icons/react';
 import AddContactForm from './AddContactForm';
 import SideSheet from './SideSheet';
 
-const TEST_USER_ID = 'a27fc897-4216-4863-9e7b-f8868a8369ff';
+export const TEST_USER_ID = 'a27fc897-4216-4863-9e7b-f8868a8369ff';
 
 const ContactList: React.FC = () => {
   const [isAddContactOpen, setIsAddContactOpen] = useState(false);
