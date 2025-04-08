@@ -56,3 +56,18 @@ export const getPlans = async (): Promise<PlansType[]> => {
   }
   return plans;
 };
+
+// plans 데이터 업데이트 (캘린더 DnD)
+export const updateEventInSupabase = async (id: string, { start, end }: { start: Date; end: Date }) => {
+  const { error } = await supabase
+    .from(PLANS)
+    .update({
+      start_date: start.toISOString(),
+      end_date: end.toISOString(),
+    })
+    .eq('plan_id', id);
+
+  if (error) {
+    console.error('약속 업데이트에 실패했습니다.', error.message);
+  }
+};
