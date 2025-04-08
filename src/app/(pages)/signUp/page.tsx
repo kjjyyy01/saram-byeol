@@ -89,7 +89,11 @@ const SignUp = () => {
         <button type='button' onClick={NicknameDuplicateTestHandler}>
           중복 검사
         </button>
-        {formState.errors.nickname && <span>{formState.errors.nickname.message}</span>}
+        {formState.errors.nickname ? (
+          <span>{formState.errors.nickname.message}</span>
+        ) : (
+          <span>2자 이상 8자 이하로 입력해주세요.</span>
+        )}
       </div>
 
       <div>
@@ -104,7 +108,11 @@ const SignUp = () => {
       <div>
         <label htmlFor='password'>비밀번호</label>
         <input type='password' id='password' placeholder={PLACEHOLDER_PASSWORD} {...register('password')} />
-        {formState.errors.password && <span>{formState.errors.password.message}</span>}
+        {formState.errors.password ? (
+          <span>{formState.errors.password.message}</span>
+        ) : (
+          <span>특수문자를 최소 1자 이상 포함해주세요.</span>
+        )}
       </div>
 
       <button type='submit'>회원가입</button>
