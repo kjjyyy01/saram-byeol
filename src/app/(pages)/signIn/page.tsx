@@ -45,7 +45,7 @@ const SignIn = () => {
     <form onSubmit={handleSubmit(onSignInHandler)}>
       <div className='flex flex-col'>
         <section>
-          <label htmlFor='email'>이메일</label>
+          <label htmlFor='email'>아이디</label>
           <input type='email' id='email' placeholder={PLACEHOLDER_EMAIL} {...register('email')} />
         </section>
         {formState.errors.email && <span>{formState.errors.email.message}</span>}

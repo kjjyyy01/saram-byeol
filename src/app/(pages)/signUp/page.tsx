@@ -130,7 +130,7 @@ const SignUp = () => {
 
       <div className='flex flex-col'>
         <section>
-          <label htmlFor='email'>이메일</label>
+          <label htmlFor='email'>아이디(이메일)</label>
           <input type='email' id='email' placeholder={PLACEHOLDER_EMAIL} {...register('email')} />
           <button type='button' onClick={EmailDuplicateTestHandler}>
             중복 검사
