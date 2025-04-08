@@ -1,15 +1,16 @@
 'use client';
 
 import { getContactsWithPlans } from '@/app/api/supabase/service';
-import ContactPlans from '@/components/contacts/ContactPlans';
-import ContactProfile from '@/components/contacts/ContactProfile';
 import { useQuery } from '@tanstack/react-query';
 import { useParams } from 'next/navigation';
+import ContactProfile from '@/components/contacts/ContactProfile';
+import ContactPlans from '@/components/contacts/ContactPlans';
+import Tabs from '@/components/ui/Tabs';
 
 const TEST_USER_ID = 'a27fc897-4216-4863-9e7b-f8868a8369ff';
 
 const PeopleDetail = () => {
-  const params = useParams(); //contacts_id
+  const params = useParams();
   const contactsId = typeof params.id === 'string' ? params.id : undefined;
 
   const { data, isPending, error } = useQuery({
@@ -27,9 +28,10 @@ const PeopleDetail = () => {
   const { contact, plans } = data;
 
   return (
-    <div className='container mx-auto p-6'>
-      <ContactProfile contact={contact} />  
-      <ContactPlans plans={plans} />
+    <div className='container mx-auto px-4 pt-8'>
+      <Tabs tabs={['내사람정보', '약속']}>
+        {[<ContactProfile key='profile' contact={contact} />, <ContactPlans key='plans' plans={plans} />]}
+      </Tabs>
     </div>
   );
 };
