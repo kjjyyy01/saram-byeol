@@ -6,6 +6,7 @@ export const addTimeHour = (date: Date) => {
   return add(date, { hours: 1 });
 };
 
+//종료일에 30분 추가용
 export const addTimeMore = (date: Date) => {
   return add(date, { minutes: 30 });
 };

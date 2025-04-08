@@ -16,7 +16,7 @@ const TEST_USER_ID = 'a27fc897-4216-4863-9e7b-f8868a8369ff';
 const PlanForm = () => {
   const form = useForm<PlanFormType>({
     resolver: zodResolver(PlansSchema),
-    mode: 'onBlur',
+    mode: 'onChange',
     defaultValues: {
       title: '',
       dateInput: {
