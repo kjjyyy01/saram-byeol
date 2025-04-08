@@ -3,7 +3,7 @@
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/store/zustand/store';
-import { mutateSignUp, NicknameDuplicateTest } from '@/app/api/supabase/service';
+import { emailDuplicateTest, mutateSignUp, NicknameDuplicateTest } from '@/app/api/supabase/service';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { PLACEHOLDER_EMAIL, PLACEHOLDER_NICKNAME, PLACEHOLDER_PASSWORD } from '@/constants/placeholders';
@@ -71,7 +71,7 @@ const SignUp = () => {
 
   const EmailDuplicateTestHandler = async () => {
     const email = getValues('email');
-    const data = await NicknameDuplicateTest(email);
+    const data = await emailDuplicateTest(email);
 
     if (data) {
       alert('중복된 이메일이 존재합니다.');
