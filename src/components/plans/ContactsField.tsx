@@ -2,7 +2,7 @@
 
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { useFormContext } from 'react-hook-form';
-import useGetContactsByUserID from '@/hooks/useGetContactsByUserID';
+import useGetContactsByUserID from '@/hooks/queries/useGetContactsByUserID';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
