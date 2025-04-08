@@ -1,4 +1,4 @@
-import { ContactItemType, ContactWithPlansDetailType } from '@/types/contacts';
+import { ContactDetailType, ContactItemType, ContactWithPlansDetailType } from '@/types/contacts';
 import { supabase } from '@/app/api/supabase/client';
 import { PlansType } from '@/types/plans';
 
@@ -54,4 +54,26 @@ export const getPlans = async (): Promise<PlansType[]> => {
     throw new Error(error.message);
   }
   return plans;
+};
+
+// contacts 데이터 저장하기
+export const mutateInsertContacts = async (
+  contactData: Omit<ContactDetailType, 'contacts_id'>
+): Promise<ContactDetailType> => {
+  try {
+    const { data, error } = await supabase
+      .from('contacts')
+      .insert(contactData)
+      .select();
+
+    if (error) {
+      console.error('연락처 저장 중 오류가 발생했습니다:', error);
+      throw error;
+    }
+
+    return data[0];
+  } catch (error) {
+    console.error('연락처 저장 중 오류가 발생했습니다:', error);
+    throw error;
+  }
 };
