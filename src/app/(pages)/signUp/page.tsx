@@ -90,7 +90,7 @@ const SignUp = () => {
         <button type='button' onClick={NicknameDuplicateTestHandler}>
           중복 검사
         </button>
-        {formState.errors.nickname && <span>{formState.errors.nickname.message as string}</span>}
+        {formState.errors.nickname && <span>{formState.errors.nickname.message}</span>}
       </div>
 
       <div>
@@ -99,13 +99,13 @@ const SignUp = () => {
         <button type='button' onClick={EmailDuplicateTestHandler}>
           중복 검사
         </button>
-        {formState.errors.email && <span>{formState.errors.email.message as string}</span>}
+        {formState.errors.email && <span>{formState.errors.email.message}</span>}
       </div>
 
       <div>
         <label htmlFor='password'>비밀번호</label>
         <input type='password' id='password' placeholder={PLACEHOLDER_PASSWORD} {...register('password')} />
-        {formState.errors.password && <span>{formState.errors.password.message as string}</span>}
+        {formState.errors.password && <span>{formState.errors.password.message}</span>}
       </div>
 
       <button type='submit'>회원가입</button>
