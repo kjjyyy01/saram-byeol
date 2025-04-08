@@ -1,5 +1,7 @@
 import { ContactItemType, ContactWithPlansDetailType } from '@/types/contacts';
 import { supabase } from '@/app/api/supabase/client';
+import type { SignUpFormType } from '@/app/(pages)/signup/page';
+import type { SignInFormType } from '@/app/(pages)/signin/page';
 import { PlansType } from '@/types/plans';
 import { CONTACTS, PLANS } from '@/constants/supabase';
 
@@ -46,6 +48,48 @@ export const getContactsWithPlans = async (userId: string, contactsId: string): 
   return { contact: data, plans: data.plans || [] };
 };
 
+// 회원가입
+export const mutateSignUp = async (value: SignUpFormType) => {
+  const { email, password, nickname } = value;
+
+  const { data, error } = await supabase.auth.signUp({
+    email,
+    password,
+    options: { data: { nickname } },
+  });
+
+  if (error) {
+    console.error('회원가입에 실패했습니다. 다시 시도해주세요.', error);
+    throw error;
+  }
+
+  return data.user;
+};
+
+// 로그인
+export const mutateSignIn = async (value: SignInFormType) => {
+  const { email, password } = value;
+
+  const { data, error } = await supabase.auth.signInWithPassword({
+    email,
+    password,
+  });
+  if (error) {
+    console.error('로그인에 실패했습니다. 다시 시도해주세요.', error);
+    throw error;
+  }
+
+  return data.user;
+};
+
+// 로그아웃
+export const mutateSignOut = async () => {
+  const { error } = await supabase.auth.signOut();
+  if (error) {
+    console.error('로그아웃에 실패했습니다. 다시 시도해주세요.', error);
+    throw error;
+  }
+
 // plans 데이터 가져오기 - calendar 사용
 export const getPlans = async (): Promise<PlansType[]> => {
   const { data: plans, error } = await supabase
@@ -55,6 +99,7 @@ export const getPlans = async (): Promise<PlansType[]> => {
     throw new Error(error.message);
   }
   return plans;
+
 };
 
 // plans 데이터 업데이트 (캘린더 DnD)
