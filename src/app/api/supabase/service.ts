@@ -1,12 +1,13 @@
 import { ContactItemType, ContactWithPlansDetailType } from '@/types/contacts';
 import { supabase } from '@/app/api/supabase/client';
 import { PlansType } from '@/types/plans';
+import { CONTACTS, PLANS } from '@/constants/supabase';
 
 // contacts 데이터 가져오기
 export const getContacts = async (userId: string): Promise<ContactItemType[]> => {
   try {
     const { data, error } = await supabase
-      .from('contacts')
+      .from(CONTACTS)
       .select('contacts_id, name, relationship_level, contacts_profile_img')
       .eq('user_id', userId)
       .order('name', { ascending: true });
@@ -26,7 +27,7 @@ export const getContacts = async (userId: string): Promise<ContactItemType[]> =>
 // contacts, plans 데이터 함께 가져오기
 export const getContactsWithPlans = async (userId: string, contactsId: string): Promise<ContactWithPlansDetailType> => {
   const { data, error } = await supabase
-    .from('contacts')
+    .from(CONTACTS)
     .select(
       `
       contacts_id, user_id, name, email, relationship_level, notes, phone, birth, contacts_profile_img,
@@ -48,7 +49,7 @@ export const getContactsWithPlans = async (userId: string, contactsId: string): 
 // plans 데이터 가져오기 - calendar 사용
 export const getPlans = async (): Promise<PlansType[]> => {
   const { data: plans, error } = await supabase
-    .from('plans')
+    .from(PLANS)
     .select('plan_id, user_id, contacts_id, title, detail, priority, start_date, end_date');
   if (error) {
     throw new Error(error.message);
