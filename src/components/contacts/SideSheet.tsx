@@ -1,5 +1,5 @@
 import { X } from '@phosphor-icons/react';
-import React, { ReactNode } from 'react'
+import React, { ReactNode, useEffect } from 'react';
 
 interface SideSheetProps {
   isOpen: boolean;
@@ -8,6 +8,19 @@ interface SideSheetProps {
 }
 
 const SideSheet: React.FC<SideSheetProps> = ({ isOpen, onClose, children }) => {
+  // 사이드시트가 열릴 때 body에 클래스 추가하여 스크롤 방지
+  useEffect(() => {
+    if (isOpen) {
+      document.body.classList.add('overflow-hidden');
+    } else {
+      document.body.classList.remove('overflow-hidden');
+    }
+
+    return () => {
+      document.body.classList.remove('overflow-hidden');
+    };
+  }, [isOpen]);
+
   return (
     <div>
       {/* 사이드 시트 */}
@@ -25,12 +38,17 @@ const SideSheet: React.FC<SideSheetProps> = ({ isOpen, onClose, children }) => {
             </button>
           </div>
 
-          <div className='flex-1 py-4'>{children}</div>
+          {/* 스크롤 영역 - 항상 스크롤바 공간 확보 */}
+          <div 
+            className='flex-1 py-4 overflow-y-auto'
+            style={{ scrollbarGutter: 'stable' }}
+          >
+            {children}
+          </div>
         </div>
       </div>
     </div>
   );
 };
 
-
-export default SideSheet
+export default SideSheet;
