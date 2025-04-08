@@ -28,7 +28,7 @@ const PeopleDetail = () => {
 
   return (
     <div className='container mx-auto p-6'>
-      <ContactProfile contact={contact} />
+      <ContactProfile contact={contact} />  
       <ContactPlans plans={plans} />
     </div>
   );

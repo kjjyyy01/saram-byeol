@@ -18,9 +18,6 @@ const ContactProfile: React.FC<Props> = ({ contact }) => {
             className='h-full w-full object-cover'
           />
         ) : (
-          //   <div className='flex h-full w-full items-center justify-center text-lg font-bold text-gray-500'>
-          //     {contact.name.charAt(0)}
-          //   </div>
           <Plus className='absolute top-1/2 left-1/2 h-6 w-6 -translate-x-1/2 -translate-y-1/2' />
         )}
       </div>
