@@ -8,6 +8,7 @@ import { useState } from 'react';
 import type { CalendarEventType } from '@/types/plans';
 import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop';
 import { useUpadateEventMutate } from '@/hooks/mutations/useUpadateEventMutate';
+import { CustomDateHeader } from './CustomDateHeader';
 
 // 드래그 이벤트 타입
 interface Props {
@@ -24,7 +25,7 @@ const locales = {
 const localizer = dateFnsLocalizer({
   format,
   parse,
-  startOfWeek: () => startOfWeek(new Date(), { weekStartsOn: 1 }), // 1: 월요일
+  startOfWeek,
   getDay,
   locales,
 });
@@ -62,13 +63,13 @@ const MainCalendar = () => {
         startAccessor='start'
         endAccessor='end'
         onEventDrop={moveEventsHandler} // 드래그 종료
-        onEventResize={moveEventsHandler} // 약속 길이 조정
-        resizable
         defaultView='month'
         views={['month']}
         components={{
           toolbar: CustomToolbar, // 상단 툴바 분리
-          // eventWrapper: wrapper,
+          month: {
+            dateHeader: CustomDateHeader,
+          },
         }}
         style={{ height: '100vh' }}
       />
