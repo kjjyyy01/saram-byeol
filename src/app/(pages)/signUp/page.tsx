@@ -13,6 +13,7 @@ import {
   PLACEHOLDER_PASSWORD_CHECK,
 } from '@/constants/placeholders';
 import { PEOPLE } from '@/constants/paths';
+import { useState } from 'react';
 
 export interface SignUpFormType {
   email: string;
@@ -52,6 +53,9 @@ const signUpSchema = z
   });
 
 const SignUp = () => {
+  const [isNicknameChecked, setIsNicknameChecked] = useState<boolean>(false);
+  const [isEmailChecked, setIsEmailChecked] = useState<boolean>(false);
+
   const { register, handleSubmit, getValues, formState } = useForm<SignUpFormType>({
     mode: 'onChange',
     resolver: zodResolver(signUpSchema),
@@ -60,6 +64,11 @@ const SignUp = () => {
   const setUser = useAuthStore((state) => state.setUser);
 
   const onSignUpHandler = async (value: SignUpFormType) => {
+    if (!isEmailChecked || !isNicknameChecked) {
+      alert('이메일과 닉네임 중복 검사를 완료해주세요.');
+      return;
+    }
+
     const { data, error } = await mutateSignUp(value);
     if (data.user) {
       setUser(data.user);
@@ -76,10 +85,13 @@ const SignUp = () => {
 
     if (data) {
       alert('중복된 닉네임이 존재합니다.');
+      setIsNicknameChecked(false);
     } else if (formState.errors.nickname) {
       alert('닉네임 형식을 확인해주세요.');
+      setIsNicknameChecked(false);
     } else {
       alert('사용가능한 닉네임입니다.');
+      setIsNicknameChecked(true);
     }
   };
 
@@ -89,10 +101,13 @@ const SignUp = () => {
 
     if (data) {
       alert('중복된 이메일이 존재합니다.');
+      setIsEmailChecked(false);
     } else if (formState.errors.email) {
       alert('이메일 형식을 확인해주세요.');
+      setIsEmailChecked(false);
     } else {
       alert('사용가능한 이메일입니다.');
+      setIsEmailChecked(true);
     }
   };
 
