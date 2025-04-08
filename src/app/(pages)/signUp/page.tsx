@@ -33,8 +33,7 @@ const signUpSchema = z.object({
     .min(2, { message: '2자 이상으로 입력해주세요.' })
     .regex(/^[A-Za-z0-9가-힣\s]+$/, {
       message: '띄어쓰기를 제외한 특수문자를 사용할 수 없습니다.',
-    })
-    .max(7, { message: '띄어쓰기 포함 8자 이하로 입력해주세요.' }),
+    }),
 });
 
 const SignUp = () => {
