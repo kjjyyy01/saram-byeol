@@ -17,6 +17,12 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Camera } from 'lucide-react';
 import Image from 'next/image';
+import { mutateInsertContacts } from '@/app/api/supabase/service';
+import { ContactDetailType } from '@/types/contacts';
+import { TEST_USER_ID } from './ContactList';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { useQueryClient } from '@tanstack/react-query';
 
 // Form Schema Definition
 const formSchema = z.object({
@@ -24,9 +30,12 @@ const formSchema = z.object({
   relationshipType: z.string().optional(),
   name: z.string().min(1, { message: '이름을 입력해주세요.' }),
   bio: z.string().min(5, { message: '최소 5자 이상 입력해주세요.' }).optional().or(z.literal('')),
-  phone: z.string().refine(val => val === '' || (/^[0-9]*$/.test(val) && (val.length === 10 || val.length === 11)), { 
-    message: '숫자만 입력해주세요.' 
-  }).optional(),
+  phone: z
+    .string()
+    .refine((val) => val === '' || (/^[0-9]*$/.test(val) && (val.length === 10 || val.length === 11)), {
+      message: '숫자만 입력해주세요.',
+    })
+    .optional(),
   email: z.string().email({ message: '유효한 이메일 주소를 입력해주세요.' }).optional().or(z.literal('')),
   birthday: z.string().optional(),
 });
@@ -36,6 +45,8 @@ type ContactFormValues = z.infer<typeof formSchema>;
 const AddContactForm: React.FC = () => {
   const [imageSource, setImageSource] = useState<string | null>(null);
   const [relationshipType, setRelationshipType] = useState('친구');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const queryClient = useQueryClient();
 
   // 폼 초기화
   const form = useForm<ContactFormValues>({
@@ -72,14 +83,49 @@ const AddContactForm: React.FC = () => {
   };
 
   // 폼 제출 함수
-  const onSubmit = (data: ContactFormValues) => {
-    console.log('연락처 추가:', data);
+  const onSubmit = async (data: ContactFormValues) => {
+    try {
+      setIsSubmitting(true);
+      
+      // 연락처 데이터 준비
+      const contactData: Omit<ContactDetailType, 'contacts_id'> = {
+        user_id: TEST_USER_ID,
+        name: data.name,
+        relationship_level: data.relationshipType || '친구',
+        notes: data.bio || '',
+        phone: data.phone || '',
+        email: data.email || '',
+        birth: data.birthday || '',
+        contacts_profile_img: data.profileImage || ''
+      };
+
+      // 연락처 저장
+      await mutateInsertContacts(contactData);
+
+      // 연락처 목록 쿼리 무효화
+      queryClient.invalidateQueries({ queryKey: ['contacts', TEST_USER_ID] });
+      
+      // 성공 토스트 메시지
+      toast.success(`${data.name} 연락처가 성공적으로 추가되었습니다.`);
+      
+      // 폼 리셋
+      form.reset();
+      setImageSource(null);
+         
+    } catch (error) {
+      console.error('연락처 추가 중 오류 발생:', error);
+      
+      // 오류 토스트 메시지
+      toast.error("연락처를 추가하는 중 오류가 발생했습니다.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
     <div className='space-y-8 pl-12 pr-12'>
       {/* 이미지 업로드 버튼 */}
-      <div className='mt-10 mb-10'>
+      <div className='mb-10 mt-10'>
         <div className='relative'>
           <input type='file' id='profile-image' accept='image/*' className='hidden' onChange={handleFileSelect} />
           <label
@@ -101,7 +147,7 @@ const AddContactForm: React.FC = () => {
       </div>
 
       {/* 관계 드롭다운 */}
-      <div className='mt-10 mb-10'>
+      <div className='mb-10 mt-10'>
         <div className='flex items-center'>
           <div className='w-24 text-lg font-bold'>관계</div>
           <div className='flex-1'>
@@ -142,13 +188,13 @@ const AddContactForm: React.FC = () => {
                   </FormControl>
                 </div>
                 {/* 에러 메시지를 위한 고정된 높이의 공간 */}
-                <div className='h-6 mt-1 flex justify-center'>
-                  <FormMessage className='text-red-500 text-sm' />
+                <div className='mt-1 flex h-6 justify-center'>
+                  <FormMessage className='text-sm text-red-500' />
                 </div>
               </div>
             )}
           />
-          
+
           {/* 한줄소개 필드 */}
           <FormField
             control={form.control}
@@ -161,8 +207,8 @@ const AddContactForm: React.FC = () => {
                     <Input placeholder='이 사람을 한 마디로 표현한다면? (최소 5자)' {...field} />
                   </FormControl>
                 </div>
-                <div className='h-6 mt-1 flex justify-center'>
-                  <FormMessage className='text-red-500 text-sm' />
+                <div className='mt-1 flex h-6 justify-center'>
+                  <FormMessage className='text-sm text-red-500' />
                 </div>
               </div>
             )}
@@ -177,15 +223,11 @@ const AddContactForm: React.FC = () => {
                 <div className='flex items-center'>
                   <FormLabel className='w-24 text-lg font-bold'>전화번호</FormLabel>
                   <FormControl className='flex-1'>
-                    <Input 
-                      type='tel' 
-                      placeholder='전화번호를 입력해주세요.' 
-                      {...field}
-                    />
+                    <Input type='tel' placeholder='전화번호를 입력해주세요.' {...field} />
                   </FormControl>
                 </div>
-                <div className='h-6 mt-1 flex justify-center'>
-                  <FormMessage className='text-red-500 text-sm' />
+                <div className='mt-1 flex h-6 justify-center'>
+                  <FormMessage className='text-sm text-red-500' />
                 </div>
               </div>
             )}
@@ -203,8 +245,8 @@ const AddContactForm: React.FC = () => {
                     <Input type='email' placeholder='이메일을 입력해주세요.' {...field} />
                   </FormControl>
                 </div>
-                <div className='h-6 mt-1 flex justify-center'>
-                  <FormMessage className='text-red-500 text-sm' />
+                <div className='mt-1 flex h-6 justify-center'>
+                  <FormMessage className='text-sm text-red-500' />
                 </div>
               </div>
             )}
@@ -222,16 +264,17 @@ const AddContactForm: React.FC = () => {
                     <Input type='date' {...field} />
                   </FormControl>
                 </div>
-                <div className='h-6 mt-1 flex justify-center'>
-                  <FormMessage className='text-red-500 text-sm' />
+                <div className='mt-1 flex h-6 justify-center'>
+                  <FormMessage className='text-sm text-red-500' />
                 </div>
               </div>
             )}
           />
-
           {/* 제출 버튼 */}
           <div className='flex justify-end pt-10'>
-            <Button type='submit'>추가</Button>
+            <Button type='submit' disabled={isSubmitting}>
+              {isSubmitting ? '추가 중...' : '추가'}
+            </Button>
           </div>
         </form>
       </Form>
