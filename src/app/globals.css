@@ -72,29 +72,36 @@
     @apply bg-background text-foreground;
   }
 }
-/* 일정 */
+/* 기본 약속 */
 .rbc-event {
-  background-color: #ef5938 !important;
-  color: white;
-  font-size: 13px;
-  padding: 2px !important;
-  border-radius: 4px;
+  @apply rounded-[4px] p-[2px] text-[13px] text-white;
+  background-color: #27ae60 !important;
 }
-/* 일정 마우스 오버 시 스타일 */
+/* 약속 호버 */
 .rbc-event:hover {
-  background-color: #ca492c !important;
+  background-color: #2f8f57 !important;
 }
 /* 오늘 */
 .rbc-today {
-  background-color: #e2e2e2 !important;
+  background-color: #f1f7e2 !important;
 }
 
-/* 다른 달 날짜 */
-/* 숫자 셀 */
+/* 다른 달 날짜 - 숫자 */
 .rbc-off-range {
-  color: #d2d2d2 !important;
+  color: #aeaeae !important;
 }
-/* 날짜 셀 */
+
+/* 다른 달 날짜 - 셀 */
 .rbc-off-range-bg {
-  background-color: #ffffff !important;
+  background-color: #ebebeb !important;
+}
+
+/* 공휴일 */
+.rbc-event-holiday {
+  @apply rounded-[4px] p-[2px] text-[13px];
+  background-color: #dbdbdb !important;
+  color: #000000 !important;
+}
+.rbc-event-holiday:hover {
+  background-color: #a7a7a7 !important;
 }
