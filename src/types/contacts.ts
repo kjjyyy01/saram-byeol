@@ -28,7 +28,7 @@ export interface PlanType {
   plan_id: string;
   user_id: string;
   contacts_id: string;
-  start_date: string;
+  start_date:string;
   end_date: string;
   title: string;
   detail: string;
@@ -46,20 +46,15 @@ export type ContactItemType = Pick<ContactType, 'contacts_id' | 'name' | 'relati
 
 // 연락처 상세 정보 타입
 export type ContactDetailType = Pick<
-  ContactType,
-  | 'contacts_id'
-  | 'user_id'
-  | 'name'
-  | 'email'
-  | 'relationship_level'
-  | 'notes'
-  | 'phone'
-  | 'birth'
-  | 'contacts_profile_img'
+  ContactType, 
+  'contacts_id' | 'user_id' | 'name' | 'email' | 'relationship_level' | 'notes' | 'phone' | 'birth' | 'contacts_profile_img'
 >;
 
 // 약속 상세정보 타입
-export type PlanDetailType = Pick<PlanType, 'plan_id' | 'title' | 'start_date' | 'end_date' | 'priority' | 'detail'>;
+export type PlanDetailType = Pick<
+  PlanType,
+  'plan_id' | 'title' | 'start_date' | 'end_date' | 'priority' | 'detail'
+>;
 
 // 연락처 상세정보와 약속 상세 정보를 함께 반환하는 타입
 export interface ContactWithPlansDetailType {

@@ -23,7 +23,7 @@ const PeopleDetail = () => {
   });
 
   if (isPending) return <div className='p-8 text-center'>로딩 중...</div>;
-  if (error) return <div className='p-8 text-center'>데이터를 불러오던 중 오류가 발생했습니다</div>;
+  if (error) return <div className='p-8 text-center'>내 사람 데이터를 불러오던 중 오류가 발생했습니다</div>;
 
   const { contact, plans } = data;
 
