@@ -8,7 +8,7 @@ import { useState } from 'react';
 import type { CalendarEventType, Holidays } from '@/types/plans';
 import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop';
 import { useUpadateEventMutate } from '@/hooks/mutations/useUpadateEventMutate';
-import { CustomDateHeader } from './CustomDateHeader';
+import { CustomDateHeader } from '@/components/calendar/CustomDateHeader';
 import { useGetHolidays } from '@/hooks/queries/useGetHolidays';
 import { holidayStyle } from '@/lib/utils/calendarStyle';
 
