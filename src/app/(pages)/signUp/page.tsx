@@ -103,6 +103,11 @@ const SignUp = () => {
     const email = getValues('email');
     const data = await emailDuplicateTest(email);
 
+    if (!email) {
+      alert('이메일을 입력해주세요.');
+      return;
+    }
+
     if (data) {
       alert('중복된 이메일이 존재합니다.');
       setIsEmailChecked(false);
