@@ -16,7 +16,7 @@ export interface CalendarEventType {
   end: Date;
 }
 
-//약속 추가용 데이터 타입 //
+//약속 추가용 데이터 타입
 export interface InsertNewPlansType {
   user_id: string;
   contacts_id?: string | null;
@@ -25,4 +25,37 @@ export interface InsertNewPlansType {
   start_date?: Date | null;
   end_date?: Date | null;
   priority?: string | null;
+}
+
+// 약속 장소검색 api관련 타입
+export interface KakaoSearchResultType {
+  documents: KakaoPlaceType[];
+  meta: KaKaoMetaType;
+}
+
+export interface KakaoPlaceType {
+  id: string;
+  place_name: string;
+  category_name: string;
+  category_group_code: string;
+  category_group_name: string;
+  phone: string;
+  address_name: string;
+  road_address_name: string;
+  x: string; // longitude
+  y: string; // latitude
+  place_url: string;
+  distance: string;
+}
+export interface KaKaoSameNameType {
+  region: string[];
+  keyword: string;
+  selected_region: string;
+}
+
+export interface KaKaoMetaType {
+  is_end: boolean;
+  pageable_count: number;
+  total_count: number;
+  same_name?: KaKaoSameNameType;
 }
