@@ -22,6 +22,7 @@ export interface SignUpFormType {
   passwordCheck: string;
 }
 
+//회원가입 유효성검사 스키마
 const signUpSchema = z
   .object({
     email: z
@@ -63,6 +64,7 @@ const SignUp = () => {
   const router = useRouter();
   const setUser = useAuthStore((state) => state.setUser);
 
+  //회원가입 기능 핸들러
   const onSignUpHandler = async (value: SignUpFormType) => {
     if (!isEmailChecked || !isNicknameChecked) {
       alert('이메일과 닉네임 중복 검사를 완료해주세요.');
@@ -79,6 +81,7 @@ const SignUp = () => {
     }
   };
 
+  //닉네임 중복 검사 핸들러
   const NicknameDuplicateTestHandler = async () => {
     const nickname = getValues('nickname');
     const data = await NicknameDuplicateTest(nickname);
@@ -95,6 +98,7 @@ const SignUp = () => {
     }
   };
 
+  //이메일 중복 검사 핸들러
   const EmailDuplicateTestHandler = async () => {
     const email = getValues('email');
     const data = await emailDuplicateTest(email);

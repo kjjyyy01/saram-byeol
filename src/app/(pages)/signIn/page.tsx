@@ -13,7 +13,7 @@ export interface SignInFormType {
   email: string;
   password: string;
 }
-
+// 로그인 유효성검사 스키마
 const signInSchema = z.object({
   email: z
     .string()
@@ -30,6 +30,7 @@ const SignIn = () => {
   const router = useRouter();
   const setUser = useAuthStore((state) => state.setUser);
 
+  //로그인 기능 핸들러
   const onSignInHandler = async (value: SignInFormType) => {
     const { data, error } = await mutateSignIn(value);
     if (data.user) {
