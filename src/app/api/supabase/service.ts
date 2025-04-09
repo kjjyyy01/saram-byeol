@@ -1,14 +1,15 @@
 import { ContactDetailType, ContactItemType, ContactWithPlansDetailType } from '@/types/contacts';
 import { supabase } from '@/app/api/supabase/client';
-import { SignInFormType } from '@/app/(pages)/signin/page';
-import { SignUpFormType } from '@/app/(pages)/signup/page';
 import { InsertNewPlansType, PlansType } from '@/types/plans';
+import { SignUpFormType } from '@/app/(pages)/signUp/page';
+import { SignInFormType } from '@/app/(pages)/signIn/page';
+import { CONTACTS, PLANS } from '@/constants/supabaseTable';
 
 // contacts 데이터 가져오기
 export const getContacts = async (userId: string): Promise<ContactItemType[]> => {
   try {
     const { data, error } = await supabase
-      .from('contacts')
+      .from(CONTACTS)
       .select('contacts_id, name, relationship_level, contacts_profile_img')
       .eq('user_id', userId)
       .order('name', { ascending: true });
@@ -28,7 +29,7 @@ export const getContacts = async (userId: string): Promise<ContactItemType[]> =>
 // contacts, plans 데이터 함께 가져오기
 export const getContactsWithPlans = async (userId: string, contactsId: string): Promise<ContactWithPlansDetailType> => {
   const { data, error } = await supabase
-    .from('contacts')
+    .from(CONTACTS)
     .select(
       `
       contacts_id, user_id, name, email, relationship_level, notes, phone, birth, contacts_profile_img,
@@ -96,12 +97,27 @@ export const emailDuplicateTest = async (email: string) => {
 // plans 데이터 가져오기 - calendar 사용
 export const getPlans = async (): Promise<PlansType[]> => {
   const { data: plans, error } = await supabase
-    .from('plans')
+    .from(PLANS)
     .select('plan_id, user_id, contacts_id, title, detail, priority, start_date, end_date');
   if (error) {
     throw new Error(error.message);
   }
   return plans;
+};
+
+// plans 데이터 업데이트 (캘린더 DnD)
+export const updateEventInSupabase = async (id: string, { start, end }: { start: Date; end: Date }) => {
+  const { error } = await supabase
+    .from(PLANS)
+    .update({
+      start_date: start.toISOString(),
+      end_date: end.toISOString(),
+    })
+    .eq('plan_id', id);
+
+  if (error) {
+    console.error('약속 업데이트에 실패했습니다.', error.message);
+  }
 };
 
 // plans - 약속추가
@@ -122,10 +138,7 @@ export const mutateInsertContacts = async (
   contactData: Omit<ContactDetailType, 'contacts_id'>
 ): Promise<ContactDetailType> => {
   try {
-    const { data, error } = await supabase
-      .from('contacts')
-      .insert(contactData)
-      .select();
+    const { data, error } = await supabase.from('contacts').insert(contactData).select();
 
     if (error) {
       console.error('연락처 저장 중 오류가 발생했습니다:', error);
