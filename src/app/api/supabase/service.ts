@@ -117,9 +117,3 @@ export const mutateInsertNewPlan = async (formdata: InsertNewPlansType) => {
   }
 };
 
-// contacts - 내 사람 수정
-// export const mutateUpdateContacts = async () => {}
-
-// plans - 약속 수정
-// export const mutateUpdatePlan = async () => {}
-
