@@ -86,6 +86,11 @@ const SignUp = () => {
     const nickname = getValues('nickname');
     const data = await NicknameDuplicateTest(nickname);
 
+    if (!nickname) {
+      alert('닉네임을 입력해주세요.');
+      return;
+    }
+
     if (data) {
       alert('중복된 닉네임이 존재합니다.');
       setIsNicknameChecked(false);
