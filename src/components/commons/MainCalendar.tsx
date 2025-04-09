@@ -3,7 +3,7 @@ import { Calendar, dateFnsLocalizer } from 'react-big-calendar';
 import { format, parse, startOfWeek, getDay } from 'date-fns';
 import { enUS } from 'date-fns/locale/en-US';
 import { ko } from 'date-fns/locale/ko';
-import { useGetCalendarPlans } from '@/hooks/useGetCalendarPlans';
+import { useGetCalendarPlans } from '@/hooks/queries/useGetCalendarPlans';
 
 // 로케일(지역화) 설정
 const locales = {
