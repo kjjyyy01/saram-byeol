@@ -33,11 +33,10 @@ const localizer = dateFnsLocalizer({
 });
 
 const MainCalendar = () => {
-  const { data: events, isPending, isError, error } = useGetCalendarPlans();
-  const { mutate: updateEvent } = useUpadateEventMutate();
   const [month, setMonth] = useState(new Date());
-
   const calendarYear = month.getFullYear(); // 해당 달의 년도
+  const { mutate: updateEvent } = useUpadateEventMutate();
+  const { data: events, isPending, isError, error } = useGetCalendarPlans(calendarYear, month);
   const { data: holidays } = useGetHolidays(String(calendarYear));
 
   // 약속 + 공휴일
@@ -83,9 +82,9 @@ const MainCalendar = () => {
         defaultView='month'
         views={['month']}
         components={{
-          toolbar: CustomToolbar, // 상단 툴바 분리
+          toolbar: CustomToolbar, // 상단 툴바(달 이동)
           month: {
-            dateHeader: CustomDateHeader,
+            dateHeader: CustomDateHeader, // 날짜 셀의 숫자
           },
         }}
         eventPropGetter={holidayStyle}
