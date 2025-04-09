@@ -8,7 +8,7 @@ interface ContactItemProps {
 
 const ContactItem: React.FC<ContactItemProps> = ({ contact }) => {
   return (
-    <li className="w-[104] h-24 flex items-center justify-center border-b border-gray-200 hover:bg-gray-50 cursor-pointer">
+    <li className="w-[410px] h-24 flex items-center justify-center border-b border-gray-200 hover:bg-gray-50 cursor-pointer">
       {/* 내부 상자 - 위아래 좌우 20px 줄어든 크기 */}
       <div className="w-[370px] h-[50px] flex items-center">
         {/* 프로필 이미지 */}
