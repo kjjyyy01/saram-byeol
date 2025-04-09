@@ -1,11 +1,11 @@
 import { getContacts } from '@/app/api/supabase/service';
 import { useQuery } from '@tanstack/react-query';
 import React, { useState } from 'react';
-import ContactItem from './ContactItem';
+import ContactItem from '@/components/contacts/ContactItem';
 import { ContactItemType } from '@/types/contacts';
 import { UserPlus } from '@phosphor-icons/react';
-import AddContactForm from './AddContactForm';
-import SideSheet from './SideSheet';
+import AddContactForm from '@/components/contacts/AddContactForm';
+import SideSheet from '@/components/contacts/SideSheet';
 
 export const TEST_USER_ID = 'a27fc897-4216-4863-9e7b-f8868a8369ff';
 

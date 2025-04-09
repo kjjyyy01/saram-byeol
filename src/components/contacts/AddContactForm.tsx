@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Form, FormControl, FormField, FormLabel, FormMessage } from '../ui/form';
-import { Input } from '../ui/input';
-import { Button } from '../ui/button';
+import { Form, FormControl, FormField, FormLabel, FormMessage } from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -19,7 +19,7 @@ import { Camera } from 'lucide-react';
 import Image from 'next/image';
 import { mutateInsertContacts } from '@/app/api/supabase/service';
 import { ContactDetailType } from '@/types/contacts';
-import { TEST_USER_ID } from './ContactList';
+import { TEST_USER_ID } from '@/components/contacts/ContactList';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useQueryClient } from '@tanstack/react-query';
