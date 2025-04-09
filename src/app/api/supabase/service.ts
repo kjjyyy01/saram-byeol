@@ -91,11 +91,19 @@ export const mutateSignOut = async () => {
   }
 };
 
-// plans 데이터 가져오기 - calendar 사용
-export const getPlans = async (): Promise<PlansType[]> => {
+// 매 달의 plans 데이터 가져오기
+export const getPlans = async (year: number, month: number): Promise<PlansType[]> => {
+  const startOfMonth = new Date(year, month - 1, 1); //첫 날
+  const endOfMonth = new Date(year, month, 0); //마지막 날 (4/30 00:00:00)
+  // 현재 start_date가 4/30 01:00 이기 때문에 연속 일정의 첫 날도 함께 포함시키기 위함
+  endOfMonth.setHours(23, 59, 59, 999);
+
   const { data: plans, error } = await supabase
     .from(PLANS)
-    .select('plan_id, user_id, contacts_id, title, detail, priority, start_date, end_date');
+    .select('plan_id, user_id, contacts_id, title, detail, priority, start_date, end_date')
+    //해당 달의 데이터만 가져오기(넘어가는 연속 일정 포함)
+    .lte('start_date', endOfMonth.toISOString()) // 일정이 달의 마지막 날과 같거나 이전에 시작
+    .gte('end_date', startOfMonth.toISOString()); // 일정이 달의 첫 날보다 같거나 이후에 끝
   if (error) {
     throw new Error(error.message);
   }
