@@ -1,8 +1,8 @@
-import { ContactItemType, ContactWithPlansDetailType } from '@/types/contacts';
+import { ContactDetailType, ContactItemType, ContactWithPlansDetailType } from '@/types/contacts';
 import { supabase } from '@/app/api/supabase/client';
+import { SignInFormType } from '@/app/(pages)/signin/page';
+import { SignUpFormType } from '@/app/(pages)/signup/page';
 import { InsertNewPlansType, PlansType } from '@/types/plans';
-import { SignUpFormType } from '@/app/(pages)/signUp/page';
-import { SignInFormType } from '@/app/(pages)/signIn/page';
 
 // contacts 데이터 가져오기
 export const getContacts = async (userId: string): Promise<ContactItemType[]> => {
@@ -57,12 +57,7 @@ export const mutateSignUp = async (value: SignUpFormType) => {
     options: { data: { nickname } },
   });
 
-  if (error) {
-    console.error('회원가입에 실패했습니다. 다시 시도해주세요.', error);
-    throw error;
-  }
-
-  return data.user;
+  return { data, error };
 };
 
 // 로그인
@@ -73,12 +68,8 @@ export const mutateSignIn = async (value: SignInFormType) => {
     email,
     password,
   });
-  if (error) {
-    console.error('로그인에 실패했습니다. 다시 시도해주세요.', error);
-    throw error;
-  }
 
-  return data.user;
+  return { data, error };
 };
 
 // 로그아웃
@@ -88,6 +79,18 @@ export const mutateSignOut = async () => {
     console.error('로그아웃에 실패했습니다. 다시 시도해주세요.', error);
     throw error;
   }
+};
+
+// 입력한 닉네임과 일치하는 사용자 조회
+export const NicknameDuplicateTest = async (nickname: string) => {
+  const { data } = await supabase.from('users').select('nickname').eq('nickname', nickname).single();
+  return data;
+};
+
+// 입력한 이메일과 일치하는 사용자 조회
+export const emailDuplicateTest = async (email: string) => {
+  const { data } = await supabase.from('users').select('email').eq('email', email).single();
+  return data;
 };
 
 // plans 데이터 가져오기 - calendar 사용
@@ -111,5 +114,27 @@ export const mutateInsertNewPlan = async (formdata: InsertNewPlansType) => {
   } catch (err) {
     console.error(err);
     throw err;
+  }
+};
+
+// contacts 데이터 저장하기
+export const mutateInsertContacts = async (
+  contactData: Omit<ContactDetailType, 'contacts_id'>
+): Promise<ContactDetailType> => {
+  try {
+    const { data, error } = await supabase
+      .from('contacts')
+      .insert(contactData)
+      .select();
+
+    if (error) {
+      console.error('연락처 저장 중 오류가 발생했습니다:', error);
+      throw error;
+    }
+
+    return data[0];
+  } catch (error) {
+    console.error('연락처 저장 중 오류가 발생했습니다:', error);
+    throw error;
   }
 };

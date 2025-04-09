@@ -10,6 +10,7 @@ export interface AuthStateType {
   signOut: () => void;
 }
 
+// 상태 초기값
 export const initialState = { user: null, isSignIn: false };
 
 export const useAuthStore = create<AuthStateType>()(
