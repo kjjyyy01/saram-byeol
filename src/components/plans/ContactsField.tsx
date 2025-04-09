@@ -16,10 +16,9 @@ interface Props {
 }
 
 const ContactsField = ({ userId }: Props) => {
-  const { control, setValue } = useFormContext();
   const [open, setOpen] = useState(false);
+  const { control, setValue } = useFormContext();
   const { data: contacts = [] } = useGetContactsByUserID(userId);
-  // console.log(contacts);
 
   return (
     <FormField
