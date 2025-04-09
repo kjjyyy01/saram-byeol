@@ -6,21 +6,13 @@ import { useAuthStore } from '@/store/zustand/store';
 import { mutateSignIn } from '@/app/api/supabase/service';
 import { PLACEHOLDER_EMAIL, PLACEHOLDER_PASSWORD } from '@/constants/placeholders';
 import { PEOPLE } from '@/constants/paths';
-import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { signInSchema } from '@/lib/schemas/signinSchema';
 
 export interface SignInFormType {
   email: string;
   password: string;
 }
-// 로그인 유효성검사 스키마
-const signInSchema = z.object({
-  email: z
-    .string()
-    .min(1, { message: '이메일을 입력해주세요.' })
-    .email({ message: '올바른 이메일 형식을 입력해주세요.' }),
-  password: z.string().min(1, { message: '비밀번호를 입력해주세요.' }),
-});
 
 const SignIn = () => {
   const { register, handleSubmit, formState } = useForm<SignInFormType>({
