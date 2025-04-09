@@ -88,6 +88,7 @@ export const mutateSignOut = async () => {
     console.error('로그아웃에 실패했습니다. 다시 시도해주세요.', error);
     throw error;
   }
+};
 
 // plans 데이터 가져오기 - calendar 사용
 export const getPlans = async (): Promise<PlansType[]> => {
@@ -98,5 +99,4 @@ export const getPlans = async (): Promise<PlansType[]> => {
     throw new Error(error.message);
   }
   return plans;
-
 };
