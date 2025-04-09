@@ -6,7 +6,7 @@ const People = () => {
   return (
     <div className='flex h-screen'>
       {/* 왼쪽 연락처 리스트 영역 */}
-      <div className='min-h-[996px] w-[410px] overflow-hidden rounded-[20px] border border-gray-200'>
+      <div className="w-[410px] h-full overflow-y-auto border border-gray-200 rounded-[20px]">
         <ContactList />
       </div>
 
