@@ -3,10 +3,10 @@
 import { FormProvider, useForm } from 'react-hook-form';
 import { Button } from '@/components/ui/button';
 import { zodResolver } from '@hookform/resolvers/zod';
-import TitleField from './TitleField';
-import DateInputField from './DateInputField';
-import ContactsField from './ContactsField';
-import DetailField from './DetailField';
+import TitleField from '@/components/plans/TitleField';
+import DateInputField from '@/components/plans/DateInputField';
+import ContactsField from '@/components/plans/ContactsField';
+import DetailField from '@/components/plans/DetailField';
 import useMutateInsertNewPlan from '@/hooks/mutations/useMutateInsertNewPlan';
 import { PlanFormType, PlansSchema } from '@/lib/schemas/plansSchema';
 import { mappingFormData } from '@/lib/planFormUtils';
