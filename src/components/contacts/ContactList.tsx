@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import ContactItem from '@/components/contacts/ContactItem';
 import { ContactItemType } from '@/types/contacts';
 import { UserPlus } from '@phosphor-icons/react';
-import AddContactForm from '@/components/contacts/AddContactForm';
+import AddContactForm from '@/components/contacts/addContactForm/Index';
 import SideSheet from '@/components/contacts/SideSheet';
 
 export const TEST_USER_ID = 'a27fc897-4216-4863-9e7b-f8868a8369ff';
