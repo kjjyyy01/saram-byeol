@@ -1,8 +1,8 @@
 import { ContactItemType, ContactWithPlansDetailType } from '@/types/contacts';
 import { supabase } from '@/app/api/supabase/client';
-import type { SignUpFormType } from '@/app/(pages)/signUp/page';
-import type { SignInFormType } from '@/app/(pages)/signIn/page';
-import { PlansType } from '@/types/plans';
+import { InsertNewPlansType, PlansType } from '@/types/plans';
+import { SignUpFormType } from '@/app/(pages)/signUp/page';
+import { SignInFormType } from '@/app/(pages)/signIn/page';
 import { CONTACTS, PLANS } from '@/constants/supabaseTable';
 
 // contacts 데이터 가져오기
@@ -114,5 +114,18 @@ export const updateEventInSupabase = async (id: string, { start, end }: { start:
 
   if (error) {
     console.error('약속 업데이트에 실패했습니다.', error.message);
+  }
+};
+
+// plans - 약속추가
+export const mutateInsertNewPlan = async (formdata: InsertNewPlansType) => {
+  try {
+    const { data: plan, error } = await supabase.from(PLANS).insert(formdata).select();
+    if (error) throw new Error(`약속 추가 중 오류가 발생했습니다 : ${error.message}`);
+
+    return plan;
+  } catch (err) {
+    console.error(err);
+    throw err;
   }
 };

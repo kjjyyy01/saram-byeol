@@ -4,6 +4,7 @@ import React from 'react';
 import ContactItem from './ContactItem';
 import { ContactItemType } from '@/types/contacts';
 import {UserPlus} from '@phosphor-icons/react'
+import Link from 'next/link';
 
 const TEST_USER_ID = 'a27fc897-4216-4863-9e7b-f8868a8369ff';
 
@@ -41,9 +42,13 @@ const ContactList = () => {
         {isPending ? (
           <div className="py-8 text-center">로딩 중...</div>
         ) : (
-          <ul className="flex flex-col">
+          <ul className='grid grid-cols-1 gap-4'>
             {contacts.map((contact) => (
-              <ContactItem key={contact.contacts_id} contact={contact} />
+              <li key={contact.contacts_id}>
+                <Link href={`/people/${contact.contacts_id}`}>
+                  <ContactItem contact={contact} />
+                </Link>
+              </li>
             ))}
           </ul>
         )}
