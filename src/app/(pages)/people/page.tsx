@@ -1,7 +1,7 @@
 'use client';
 
 import ContactList from '@/components/contacts/ContactList';
-import PeopleDetailPanel from '@/components/contacts/PeopleDetailPanel';
+import PeopleDetailPanel from '@/components/contactDetail/PeopleDetailPanel';
 import { useState } from 'react';
 
 const People = () => {
