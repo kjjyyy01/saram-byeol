@@ -14,13 +14,9 @@ import {
 import { PEOPLE } from '@/constants/paths';
 import { useState } from 'react';
 import { signUpSchema } from '@/lib/schemas/signupSchema';
+import { z } from 'zod';
 
-export interface SignUpFormType {
-  email: string;
-  password: string;
-  nickname: string;
-  passwordCheck: string;
-}
+type SignUpFormType = z.infer<typeof signUpSchema>;
 
 const SignUp = () => {
   const [isNicknameChecked, setIsNicknameChecked] = useState<boolean>(false);
