@@ -1,12 +1,17 @@
 import { ContactDetailType } from '@/types/contacts';
 import Image from 'next/image';
 import { Plus } from 'lucide-react';
+import { useState } from 'react';
+import SideSheet from '@/components/contacts/SideSheet';
+import EditContactForm from './EditContactForm';
 
 interface Props {
   contact: ContactDetailType;
 }
 
 const ContactProfile: React.FC<Props> = ({ contact }) => {
+  const [isEditContactOpen, setIsEditContactOpen] = useState(false); // 사이드시트 상태
+
   return (
     <div className='space-y-8'>
       {/* 상단 프로필 + 기본 정보 */}
@@ -42,7 +47,7 @@ const ContactProfile: React.FC<Props> = ({ contact }) => {
         {/* 우측 버튼 */}
         <div className='space-x-2'>
           <button className='rounded-full border border-gray-300 px-4 py-1 text-sm'>약속추가</button>
-          <button className='rounded-full border border-gray-300 px-4 py-1 text-sm'>정보수정</button>
+          <button onClick={() => setIsEditContactOpen(true)} className='rounded-full border border-gray-300 px-4 py-1 text-sm'>정보수정</button>
         </div>
       </div>
 
@@ -76,6 +81,11 @@ const ContactProfile: React.FC<Props> = ({ contact }) => {
           <strong>메모</strong> {contact.notes}
         </p>
       </div>
+
+      {/* 사이드 시트 - 연락처 수정 */}
+      <SideSheet isOpen={isEditContactOpen} onClose={() => setIsEditContactOpen(false)} title="내 사람 수정">
+        <EditContactForm contactData={contact} onClose={() => setIsEditContactOpen(false)} />
+      </SideSheet>
     </div>
   );
 };
