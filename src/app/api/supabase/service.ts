@@ -10,7 +10,7 @@ export const getContacts = async (userId: string): Promise<ContactItemType[]> =>
   try {
     const { data, error } = await supabase
       .from(CONTACTS)
-      .select('contacts_id, name, relationship_level, contacts_profile_img')
+      .select('contacts_id, name, relationship_level, contacts_profile_img, is_pinned')
       .eq('user_id', userId)
       .order('name', { ascending: true });
 
@@ -148,6 +148,26 @@ export const mutateInsertContacts = async (
     return data[0];
   } catch (error) {
     console.error('연락처 저장 중 오류가 발생했습니다:', error);
+    throw error;
+  }
+};
+
+// 핀 업데이트 함수
+export const updateContactPin = async (contactId: string, isPinned: boolean) => {
+  try {
+    const { data, error } = await supabase
+      .from('contacts')
+      .update({ is_pinned: isPinned })
+      .eq('contacts_id', contactId)
+      .select();  
+    
+    if (error) {
+      throw error;
+    }
+    
+    return data;
+  } catch (error) {
+    console.error('연락처 핀 업데이트 실패:', error);
     throw error;
   }
 };
