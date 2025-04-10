@@ -5,8 +5,9 @@ import { useQuery } from '@tanstack/react-query';
 
 export const useGetCalendarPlans = (year: number, monthDate: Date) => {
   const month = monthDate.getMonth() + 1; // Date 객체 -> 숫자 전환
+
   return useQuery<CalendarEventType[]>({
-    queryKey: [QUERY_KEY.CALENDAR_PLANS, year, month], //달마다 캐싱
+    queryKey: [QUERY_KEY.PLANS, year, month], //달마다 캐싱
     queryFn: async () => {
       const plans: PlansType[] = await getPlans(year, month); // supabase에서 plans 데이터 가져오기
 
@@ -19,6 +20,6 @@ export const useGetCalendarPlans = (year: number, monthDate: Date) => {
       }));
       return events;
     },
-    staleTime: 60 * 1000, // 1분
+    staleTime: 24 * 60 * 60 * 1000, // 1일
   });
 };

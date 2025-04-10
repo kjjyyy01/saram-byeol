@@ -10,6 +10,7 @@ const useMutateInsertNewPlan = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEY.PLANS],
+        predicate: (query) => query.queryKey[0] === QUERY_KEY.PLANS,
       });
     },
   });
