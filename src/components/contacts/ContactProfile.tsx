@@ -33,6 +33,9 @@ const ContactProfile: React.FC<Props> = ({ contact }) => {
         {/* 중앙 - 이름 및 이메일 */}
         <div className='flex flex-1 flex-col'>
           <h1 className='text-xl font-bold'>{contact.name}</h1>
+          <div className="w-[53px] h-[24px] rounded-[20px] bg-gray-100 flex items-center justify-center mt-[2px]">
+            <span className="text-[12px] font-bold text-gray-800">{contact.relationship_level}</span>
+          </div>
           <p className='text-sm text-gray-600'>{contact.email}</p>
         </div>
 
