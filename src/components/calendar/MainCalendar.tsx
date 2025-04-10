@@ -34,13 +34,13 @@ const localizer = dateFnsLocalizer({
 });
 
 const MainCalendar = () => {
-  const [month, setMonth] = useState(new Date()); //해당 달
+  const [moment, setMoment] = useState(new Date()); //해당 달
   const [selectedDate, setSelectedDate] = useState<Date | null>(null); //선택한 셀 날짜
   const [isPopOverOpen, setIsPopOverOpen] = useState(false); //팝오버 오픈 여부
-  const calendarYear = month.getFullYear(); // 해당 달의 년도
+  const calendarYear = moment.getFullYear(); // 해당 달의 년도
   const { mutate: updateEvent } = useUpadateEventMutate();
   const { data: holidays } = useGetHolidays(String(calendarYear));
-  const { data: events, isPending, isError, error } = useGetCalendarPlans(calendarYear, month);
+  const { data: events, isPending, isError, error } = useGetCalendarPlans(calendarYear, moment);
 
   // 약속 + 공휴일
   const combinedEvents: CalendarEventType[] = [
@@ -76,9 +76,9 @@ const MainCalendar = () => {
         selectable
         localizer={localizer}
         events={combinedEvents}
-        date={month} // 현재 달 state
+        date={moment} // 현재 달 state
         onNavigate={(newDate) => {
-          setMonth(newDate); // 달 변동
+          setMoment(newDate); // 달 변동
         }}
         startAccessor='start'
         endAccessor='end'
