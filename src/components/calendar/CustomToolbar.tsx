@@ -10,10 +10,12 @@ const CustomToolbar = ({ date, onNavigate }: ToolbarProps<CalendarEventType>) =>
   const customLabel = format(date, 'yyyy MMMM', { locale: ko });
   return (
     <div>
-      <button onClick={() => onNavigate('PREV')}>⬅️</button>
+      <section>
+        <button onClick={() => onNavigate('PREV')}>⬅️</button>
+        <button onClick={() => onNavigate('NEXT')}>➡️</button>
+        <button onClick={() => onNavigate('TODAY')}>오늘</button>
+      </section>
       <span>{customLabel}</span>
-      <button onClick={() => onNavigate('NEXT')}>➡️</button>
-      <button onClick={() => onNavigate('TODAY')}>Today</button>
       <section>
         {/* 검색창 추가 */}
         <ComingPlans />
