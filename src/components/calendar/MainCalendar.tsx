@@ -11,6 +11,7 @@ import { useUpadateEventMutate } from '@/hooks/mutations/useUpadateEventMutate';
 import { CustomDateHeader } from '@/components/calendar/CustomDateHeader';
 import { useGetHolidays } from '@/hooks/queries/useGetHolidays';
 import { holidayStyle } from '@/lib/utils/calendarStyle';
+import CalendarPopOver from './CalendarPopOver';
 
 // 드래그 이벤트 타입
 interface Props {
@@ -33,11 +34,13 @@ const localizer = dateFnsLocalizer({
 });
 
 const MainCalendar = () => {
-  const [month, setMonth] = useState(new Date());
+  const [month, setMonth] = useState(new Date()); //해당 달
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null); //선택한 셀 날짜
+  const [isPopOverOpen, setIsPopOverOpen] = useState(false); //팝오버 오픈 여부
   const calendarYear = month.getFullYear(); // 해당 달의 년도
   const { mutate: updateEvent } = useUpadateEventMutate();
-  const { data: events, isPending, isError, error } = useGetCalendarPlans(calendarYear, month);
   const { data: holidays } = useGetHolidays(String(calendarYear));
+  const { data: events, isPending, isError, error } = useGetCalendarPlans(calendarYear, month);
 
   // 약속 + 공휴일
   const combinedEvents: CalendarEventType[] = [
@@ -70,6 +73,7 @@ const MainCalendar = () => {
   return (
     <div>
       <DnDCalendar
+        selectable
         localizer={localizer}
         events={combinedEvents}
         date={month} // 현재 달 state
@@ -88,8 +92,16 @@ const MainCalendar = () => {
           },
         }}
         eventPropGetter={holidayStyle}
+        onSelectSlot={(slotInfo) => {
+          setSelectedDate(slotInfo.start); // 클릭한 날짜(시작일)
+          setIsPopOverOpen(true); // 모달 열기
+        }}
         style={{ height: '100vh' }}
       />
+      {/* 팝오버 */}
+      {isPopOverOpen && selectedDate && (
+        <CalendarPopOver open={isPopOverOpen} onOpenChange={setIsPopOverOpen} date={selectedDate} />
+      )}
     </div>
   );
 };
