@@ -11,6 +11,7 @@ import { useEffect } from 'react';
 import { Input } from '../ui/input';
 import { Form, FormControl, FormField, FormItem } from '../ui/form';
 import ContactsField from '../plans/ContactsField';
+import { toast } from 'react-toastify';
 
 interface Props {
   open: boolean;
@@ -59,6 +60,7 @@ const CalendarPopOver = ({ open, onOpenChange, date }: Props) => {
         },
       }
     );
+    toast.success('약속이 추가되었습니다!');
   };
   return (
     <FormProvider {...form}>
