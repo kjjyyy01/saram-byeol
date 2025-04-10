@@ -45,7 +45,7 @@ const CalendarPopOver = ({ open, onOpenChange, date }: Props) => {
         },
       });
     }
-  }, [date, open]);
+  }, [date, open, form]);
 
   // mutate함수 호출
   const { mutate: insertNewPlan } = useMutateInsertNewPlan();
