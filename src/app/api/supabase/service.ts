@@ -1,8 +1,8 @@
 import { ContactDetailType, ContactItemType, ContactWithPlansDetailType } from '@/types/contacts';
 import { supabase } from '@/app/api/supabase/client';
 import { InsertNewPlansType, PlansType } from '@/types/plans';
-import { SignUpFormType } from '@/app/(pages)/signUp/page';
-import { SignInFormType } from '@/app/(pages)/signIn/page';
+import { SignUpFormType } from '@/app/(pages)/signup/page';
+import { SignInFormType } from '@/app/(pages)/signin/page';
 import { CONTACTS, PLANS } from '@/constants/supabaseTable';
 
 // contacts 데이터 가져오기
@@ -94,7 +94,6 @@ export const emailDuplicateTest = async (email: string) => {
   return data;
 };
 
-// plans 데이터 가져오기 - calendar 사용
 // 매 달의 plans 데이터 가져오기
 export const getPlans = async (year: number, month: number): Promise<PlansType[]> => {
   const startOfMonth = new Date(year, month - 1, 1); //첫 날
