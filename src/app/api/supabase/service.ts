@@ -1,8 +1,8 @@
 import { ContactDetailType, ContactItemType, ContactWithPlansDetailType } from '@/types/contacts';
 import { supabase } from '@/app/api/supabase/client';
 import { InsertNewPlansType, PlansType } from '@/types/plans';
-import { SignUpFormType } from '@/app/(pages)/signUp/page';
-import { SignInFormType } from '@/app/(pages)/signIn/page';
+import { SignUpFormType } from '@/app/(pages)/signup/page';
+import { SignInFormType } from '@/app/(pages)/signin/page';
 import { CONTACTS, PLANS } from '@/constants/supabaseTable';
 
 // contacts 데이터 가져오기
