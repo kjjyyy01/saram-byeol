@@ -5,21 +5,24 @@ import { SignUpFormType } from '@/app/(pages)/signUp/page';
 import { SignInFormType } from '@/app/(pages)/signIn/page';
 import { CONTACTS, PLANS } from '@/constants/supabaseTable';
 
-// contacts 데이터 가져오기
 export const getContacts = async (userId: string): Promise<ContactItemType[]> => {
   try {
     const { data, error } = await supabase
       .from(CONTACTS)
       .select('contacts_id, name, relationship_level, contacts_profile_img, is_pinned')
-      .eq('user_id', userId)
-      .order('name', { ascending: true });
+      .eq('user_id', userId);
 
     if (error) {
       console.error('Supabase에서 Contact 테이블 데이터를 가져오는 중 오류가 발생했습니다:', error);
       throw error;
     }
 
-    return data || [];
+    // 한국어 로케일을 사용한 정렬
+    const sortedData = [...(data || [])].sort((a, b) => 
+      a.name.localeCompare(b.name, 'ko-KR')
+    );
+
+    return sortedData;
   } catch (error) {
     console.error('연락처를 불러오는 중 오류가 발생했습니다:', error);
     throw error;
