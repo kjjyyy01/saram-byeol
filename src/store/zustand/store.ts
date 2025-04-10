@@ -22,7 +22,6 @@ export const useAuthStore = create<AuthStateType>()(
         await mutateSignOut();
 
         set(initialState);
-        localStorage.removeItem('user-state');
       },
     }),
     {
