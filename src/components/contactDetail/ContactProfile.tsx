@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { Plus } from 'lucide-react';
 import { useState } from 'react';
 import SideSheet from '@/components/contacts/SideSheet';
-import EditContactForm from './EditContactForm';
+import EditContactForm from '@/components/contactDetail/editContactForm/EditContactForm';
 
 interface Props {
   contact: ContactDetailType;

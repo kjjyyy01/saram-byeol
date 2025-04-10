@@ -2,9 +2,9 @@
 import { Form } from '@/components/ui/form';
 import { ContactFormValues } from '@/lib/schemas/contactFormSchema';
 import { UseFormReturn } from 'react-hook-form';
-import ProfileImageUpload from '../contacts/addContactForm/ProfileImageUpload';
-import RelationshipSelector from '../contacts/addContactForm/RelationshipSelector';
-import ContactTextField from '../contacts/addContactForm/ContactTextField';
+import ProfileImageUpload from '@/components/contacts/addContactForm/ProfileImageUpload';
+import RelationshipSelector from '@/components/contacts/addContactForm/RelationshipSelector';
+import ContactTextField from '@/components/contacts/addContactForm/ContactTextField';
 
 interface ContactFormProps {
   form: UseFormReturn<ContactFormValues>;
