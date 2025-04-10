@@ -16,7 +16,7 @@ import { useState } from 'react';
 import { signUpSchema } from '@/lib/schemas/signupSchema';
 import { z } from 'zod';
 
-type SignUpFormType = z.infer<typeof signUpSchema>;
+export type SignUpFormType = z.infer<typeof signUpSchema>;
 
 const SignUp = () => {
   const [isNicknameChecked, setIsNicknameChecked] = useState<boolean>(false);
