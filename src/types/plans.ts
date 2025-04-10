@@ -36,6 +36,7 @@ export interface Holidays {
 export interface InsertNewPlansType {
   user_id: string;
   contacts_id?: string | null;
+  location?: Partial<KakaoPlaceType> | null;
   title?: string | null;
   detail?: string | null;
   start_date?: Date | null;
