@@ -65,7 +65,7 @@ const CalendarPopOver = ({ open, onOpenChange, date }: Props) => {
   return (
     <FormProvider {...form}>
       <Popover open={open} onOpenChange={onOpenChange}>
-        <PopoverContent side='right' align='start' style={{ position: 'absolute', top: 200, left: 400 }} asChild>
+        <PopoverContent side='right' align='start' style={{ position: 'absolute', top: 200, left: 600 }} asChild>
           <form onSubmit={form.handleSubmit(planSubmitHandler)}>
             <Form {...form}>
               <FormField
