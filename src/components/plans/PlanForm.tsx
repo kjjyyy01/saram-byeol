@@ -16,7 +16,7 @@ import { useState } from 'react';
 const TEST_USER_ID = 'a27fc897-4216-4863-9e7b-f8868a8369ff';
 
 const PlanForm = () => {
-    const [inputValue, setInputValue] = useState('');
+  const [inputValue, setInputValue] = useState('');
   const form = useForm<PlanFormType>({
     resolver: zodResolver(PlansSchema),
     mode: 'onChange',
@@ -33,8 +33,8 @@ const PlanForm = () => {
       { user_id: TEST_USER_ID, ...formData },
       {
         onSuccess: () => {
-          form.reset()
-          setInputValue('')
+          form.reset();
+          setInputValue('');
         },
       }
     );
@@ -46,7 +46,7 @@ const PlanForm = () => {
         <TitleField />
         <DateInputField />
         <ContactsField userId={TEST_USER_ID} />
-        <PlaceField inputValue={inputValue} setInputValue={setInputValue}/>
+        <PlaceField inputValue={inputValue} setInputValue={setInputValue} />
         <DetailField />
         <Button type='submit' disabled={form.formState.isSubmitting}>
           약속 저장
