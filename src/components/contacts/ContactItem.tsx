@@ -1,16 +1,26 @@
 import { ContactItemType } from '@/types/contacts';
+import { MapPinSimple } from '@phosphor-icons/react';
 import Image from 'next/image';
-import React from 'react';
+import React, { useState } from 'react';
 
 interface ContactItemProps {
   contact: ContactItemType;
+  onTogglePin: (contactId: string, isPinned: boolean) => void;
 }
 
-const ContactItem: React.FC<ContactItemProps> = ({ contact }) => {
+const ContactItem: React.FC<ContactItemProps> = ({ contact, onTogglePin }) => {
+  const [isPinHovering, setIsPinHovering] = useState(false);
+
+  const handlePinClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    onTogglePin(contact.contacts_id, !contact.is_pinned);
+  }
+  
   return (
-    <li className="w-[410px] h-24 flex items-center justify-center border-b border-gray-200 hover:bg-gray-50 cursor-pointer">
-      {/* 내부 상자 - 위아래 좌우 20px 줄어든 크기 */}
-      <div className="w-[370px] h-[50px] flex items-center">
+    <div className="w-[410px] h-24 flex items-center justify-between border-b border-gray-200 hover:bg-gray-50 cursor-pointer">
+      {/* 내부 상자 - 프로필 및 이름 영역 */}
+      <div className="w-[330px] h-[50px] flex items-center ml-5">
         {/* 프로필 이미지 */}
         <div className="h-10 w-10 flex-shrink-0 overflow-hidden rounded-full bg-gray-200">
           {contact.contacts_profile_img ? (
@@ -28,7 +38,7 @@ const ContactItem: React.FC<ContactItemProps> = ({ contact }) => {
           )}
         </div>
 
-        {/* 연락처 정보 - 좌우 정렬 맞춤 */}
+        {/* 연락처 정보 */}
         <div className="ml-5 flex flex-col">
           <h3 className="text-lg font-bold leading-tight text-center">{contact.name}</h3>
           <div className="w-14 h-6 rounded-2xl bg-gray-100 flex items-center justify-center mt-0.5">
@@ -36,7 +46,18 @@ const ContactItem: React.FC<ContactItemProps> = ({ contact }) => {
           </div>
         </div>
       </div>
-    </li>
+
+      {/* Pin 버튼 */}
+      <button 
+        onClick={handlePinClick}
+        onMouseEnter={() => setIsPinHovering(true)}
+        onMouseLeave={() => setIsPinHovering(false)}
+        className={`mr-5 transition-opacity duration-200 ${contact.is_pinned ? 'text-gray-800' : isPinHovering ? 'opacity-70' : 'opacity-20'}`}
+        aria-label={contact.is_pinned ? "즐겨찾기 해제" : "즐겨찾기 추가"}
+      >
+        <MapPinSimple size={24} weight={contact.is_pinned ? "fill" : "regular"} />
+      </button>
+    </div>
   );
 };
 
