@@ -8,8 +8,6 @@
   }
 }
 
-
-
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -66,8 +64,6 @@
   }
 }
 
-
-
 @layer base {
   * {
     @apply border-border;
@@ -75,4 +71,37 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+/* 기본 약속 */
+.rbc-event {
+  @apply rounded-[4px] p-[2px] text-[13px] text-white;
+  background-color: #27ae60 !important;
+}
+/* 약속 호버 */
+.rbc-event:hover {
+  background-color: #2f8f57 !important;
+}
+/* 오늘 */
+.rbc-today {
+  background-color: #f1f7e2 !important;
+}
+
+/* 다른 달 날짜 - 숫자 */
+.rbc-off-range {
+  color: #aeaeae !important;
+}
+
+/* 다른 달 날짜 - 셀 */
+.rbc-off-range-bg {
+  background-color: #ebebeb !important;
+}
+
+/* 공휴일 */
+.rbc-event-holiday {
+  @apply rounded-[4px] p-[2px] text-[13px];
+  background-color: #dbdbdb !important;
+  color: #000000 !important;
+}
+.rbc-event-holiday:hover {
+  background-color: #a7a7a7 !important;
 }

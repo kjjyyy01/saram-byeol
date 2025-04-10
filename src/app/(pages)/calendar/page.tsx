@@ -1,4 +1,4 @@
-import MainCalendar from '@/components/commons/MainCalendar';
+import MainCalendar from '@/components/calendar/MainCalendar';
 import { Metadata } from 'next';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 
