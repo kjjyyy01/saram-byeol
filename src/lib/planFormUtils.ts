@@ -20,8 +20,8 @@ export const getStartAndEndDate = (from: Date, to?: Date) => {
 
 //입력 데이터 구조분해 할당
 export const mappingFormData = (data: PlanFormType) => {
-  const { title, detail, contacts, dateInput } = data;
+  const { title, detail, contacts, dateInput, location } = data;
   const { start_date, end_date } = getStartAndEndDate(dateInput.from, dateInput.to);
 
-  return { title, detail, contacts_id: contacts, start_date, end_date };
+  return { title, detail, contacts_id: contacts, start_date, end_date, location };
 };
