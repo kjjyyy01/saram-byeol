@@ -1,6 +1,6 @@
-import { getContacts } from '@/app/api/supabase/service';
-import { useQuery } from '@tanstack/react-query';
-import React, { useState } from 'react';
+import { getContacts, mutateUpdateContactPin } from '@/app/api/supabase/service';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import React, { useMemo, useState } from 'react';
 import ContactItem from '@/components/contacts/ContactItem';
 import { ContactItemType } from '@/types/contacts';
 import { UserPlus } from '@phosphor-icons/react';
@@ -12,6 +12,7 @@ export const TEST_USER_ID = 'a27fc897-4216-4863-9e7b-f8868a8369ff';
 
 const ContactList: React.FC = () => {
   const [isAddContactOpen, setIsAddContactOpen] = useState(false);
+  const queryClient = useQueryClient();
 
   const {
     data: contacts = [],
@@ -21,6 +22,28 @@ const ContactList: React.FC = () => {
     queryKey: ['contacts', TEST_USER_ID],
     queryFn: () => getContacts(TEST_USER_ID),
   });
+
+    // Pin 업데이트 뮤테이션
+    const pinMutation = useMutation({
+      mutationFn: ({ contactId, isPinned }: { contactId: string; isPinned: boolean }) => 
+        mutateUpdateContactPin(contactId, isPinned),
+      onSuccess: () => {
+        // 성공 시 연락처 목록 갱신
+        queryClient.invalidateQueries({ queryKey: ['contacts', TEST_USER_ID] });
+      }
+    });
+  
+    // 핀된 연락처와 일반 연락처 분리
+    const { pinnedContacts, regularContacts } = useMemo(() => {
+      const pinned = contacts.filter(contact => contact.is_pinned);
+      const regular = contacts.filter(contact => !contact.is_pinned);
+      return { pinnedContacts: pinned, regularContacts: regular };
+    }, [contacts]);
+  
+    // 핀 토글 핸들러
+    const handleTogglePin = (contactId: string, isPinned: boolean) => {
+      pinMutation.mutate({ contactId, isPinned });
+    };
 
   if (error) {
     console.error('연락처 로딩 실패', error);
@@ -49,15 +72,49 @@ const ContactList: React.FC = () => {
         {isPending ? (
           <div className='py-8 text-center'>연락처를 불러오는 중...</div>
         ) : (
-          <ul className='flex flex-col'>
-            {contacts.map((contact) => (
-              <li key={contact.contacts_id}>
-                <Link href={`/people/${contact.contacts_id}`}>
-                  <ContactItem contact={contact} />
-                </Link>
-              </li>
-            ))}
-          </ul>
+          <div>
+            {/* 핀 고정 영역 */}
+            {pinnedContacts.length > 0 && (
+              <div className="mb-6">
+                <div className="flex items-center px-6 py-3 bg-gray-50">
+                  <h2 className="text-sm font-semibold text-gray-700">고정됨</h2>
+                </div>
+                <ul className="flex flex-col">
+                  {pinnedContacts.map((contact) => (
+                    <li key={`pinned-${contact.contacts_id}`}>
+                      <Link href={`/people/${contact.contacts_id}`}>
+                        <ContactItem 
+                          contact={contact} 
+                          onTogglePin={handleTogglePin} 
+                        />
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+            
+            {/* 일반 연락처 영역 */}
+            <div>
+              {pinnedContacts.length > 0 && (
+                <div className="flex items-center px-6 py-3 bg-gray-50">
+                  <h2 className="text-sm font-semibold text-gray-700">연락처</h2>
+                </div>
+              )}
+              <ul className="flex flex-col">
+                {regularContacts.map((contact) => (
+                  <li key={contact.contacts_id}>
+                    <Link href={`/people/${contact.contacts_id}`}>
+                      <ContactItem 
+                        contact={contact} 
+                        onTogglePin={handleTogglePin} 
+                      />
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
         )}
       </div>
 
