@@ -22,7 +22,7 @@ const SignUp = () => {
   const [isNicknameChecked, setIsNicknameChecked] = useState<boolean>(false);
   const [isEmailChecked, setIsEmailChecked] = useState<boolean>(false);
 
-  const { register, handleSubmit, getValues, formState } = useForm<SignUpFormType>({
+  const { register, handleSubmit, getValues, formState, setFocus } = useForm<SignUpFormType>({
     mode: 'onChange',
     resolver: zodResolver(signUpSchema),
   });
@@ -53,14 +53,17 @@ const SignUp = () => {
 
     if (!nickname) {
       alert('닉네임을 입력해주세요.');
+      setFocus('nickname');
       return;
     }
 
     if (data) {
       alert('중복된 닉네임이 존재합니다.');
+      setFocus('nickname');
       setIsNicknameChecked(false);
     } else if (formState.errors.nickname) {
       alert('닉네임 형식을 확인해주세요.');
+      setFocus('nickname');
       setIsNicknameChecked(false);
     } else {
       alert('사용가능한 닉네임입니다.');
@@ -75,14 +78,17 @@ const SignUp = () => {
 
     if (!email) {
       alert('이메일을 입력해주세요.');
+      setFocus('email');
       return;
     }
 
     if (data) {
       alert('중복된 이메일이 존재합니다.');
+      setFocus('email');
       setIsEmailChecked(false);
     } else if (formState.errors.email) {
       alert('이메일 형식을 확인해주세요.');
+      setFocus('email');
       setIsEmailChecked(false);
     } else {
       alert('사용가능한 이메일입니다.');
