@@ -1,6 +1,7 @@
 import { useMutateEditContact } from '@/hooks/mutations/useMutateEditContact';
 import { ContactDetailType } from '@/types/contacts';
 import ContactForm from './ContactForm';
+import EditContactFormSubmitButton from './EditContactFormSubmitButton';
 
 interface EditContactFormProps {
   contactData: ContactDetailType;
@@ -20,6 +21,7 @@ const EditContactForm: React.FC<EditContactFormProps> = ({ contactData, onClose 
       setImageSource={setImageSource}
       relationshipType={relationshipType}
       setRelationshipType={setRelationshipType}
+      SubmitButtonComponent={EditContactFormSubmitButton}
     />
   );
 };

@@ -5,7 +5,6 @@ import { UseFormReturn } from 'react-hook-form';
 import ProfileImageUpload from '../contacts/addContactForm/ProfileImageUpload';
 import RelationshipSelector from '../contacts/addContactForm/RelationshipSelector';
 import ContactTextField from '../contacts/addContactForm/ContactTextField';
-import ContactFormSubmitButton from '../contacts/addContactForm/ContactFormSubmitButton';
 
 interface ContactFormProps {
   form: UseFormReturn<ContactFormValues>;
@@ -15,6 +14,7 @@ interface ContactFormProps {
   setImageSource: (val: string | null) => void;
   relationshipType: string;
   setRelationshipType: (val: string) => void;
+  SubmitButtonComponent: React.FC<{ isSubmitting: boolean }>;
 }
 
 const ContactForm: React.FC<ContactFormProps> = ({
@@ -25,6 +25,7 @@ const ContactForm: React.FC<ContactFormProps> = ({
   setImageSource,
   relationshipType,
   setRelationshipType,
+  SubmitButtonComponent,
 }) => {
   return (
     <div className='space-y-8 pl-12 pr-12'>
@@ -52,7 +53,7 @@ const ContactForm: React.FC<ContactFormProps> = ({
           />
           <ContactTextField control={form.control} name='email' label='이메일' placeholder='이메일 입력' type='email' />
           <ContactTextField control={form.control} name='birthday' label='생일' placeholder='' type='date' />
-          <ContactFormSubmitButton isSubmitting={isSubmitting} />
+          <SubmitButtonComponent isSubmitting={isSubmitting} />
         </form>
       </Form>
     </div>

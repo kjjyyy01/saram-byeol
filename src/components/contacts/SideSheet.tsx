@@ -33,6 +33,7 @@ const SideSheet: React.FC<SideSheetProps> = ({ isOpen, onClose, children, title 
       >
         <div className='flex h-full flex-col p-4'>
           <div className='flex items-center justify-between mt-6 ml-6 pb-4'>
+            {/* 사이드시트 타이틀 */}
             <h2 className='text-2xl font-bold'>{title}</h2>
             <button onClick={onClose} className='rounded-full p-1 hover:bg-gray-100'>
               <X size={24} />
