@@ -72,6 +72,11 @@
     @apply bg-background text-foreground;
   }
 }
+/* 빈 셀 */
+.rbc-day-bg:hover {
+  cursor: pointer;
+}
+
 /* 기본 약속 */
 .rbc-event {
   @apply rounded-[4px] p-[2px] text-[13px] text-white;
