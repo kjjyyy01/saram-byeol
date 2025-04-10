@@ -153,7 +153,7 @@ export const mutateInsertContacts = async (
 };
 
 // 핀 업데이트 함수
-export const updateContactPin = async (contactId: string, isPinned: boolean) => {
+export const mutateUpdateContactPin = async (contactId: string, isPinned: boolean) => {
   try {
     const { data, error } = await supabase
       .from('contacts')
