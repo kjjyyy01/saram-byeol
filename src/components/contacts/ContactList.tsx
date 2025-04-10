@@ -6,11 +6,14 @@ import { ContactItemType } from '@/types/contacts';
 import { UserPlus } from '@phosphor-icons/react';
 import AddContactForm from '@/components/contacts/addContactForm/Index';
 import SideSheet from '@/components/contacts/SideSheet';
-import Link from 'next/link';
 
 export const TEST_USER_ID = 'a27fc897-4216-4863-9e7b-f8868a8369ff';
 
-const ContactList: React.FC = () => {
+interface ContactListProps {
+  onSelectedContact: (id: string) => void;
+}
+
+const ContactList: React.FC<ContactListProps> = ({ onSelectedContact }) => {
   const [isAddContactOpen, setIsAddContactOpen] = useState(false);
   const queryClient = useQueryClient();
 
@@ -104,12 +107,12 @@ const ContactList: React.FC = () => {
               <ul className="flex flex-col">
                 {regularContacts.map((contact) => (
                   <li key={contact.contacts_id}>
-                    <Link href={`/people/${contact.contacts_id}`}>
+                    <button onClick={() => onSelectedContact(contact.contacts_id)} className='w-full'>
                       <ContactItem 
                         contact={contact} 
                         onTogglePin={handleTogglePin} 
                       />
-                    </Link>
+                    </button>
                   </li>
                 ))}
               </ul>
