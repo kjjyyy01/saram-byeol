@@ -1,24 +1,19 @@
-'use client';
-
-import { getContactsWithPlans } from '@/app/api/supabase/service';
 import { useQuery } from '@tanstack/react-query';
-import { useParams } from 'next/navigation';
+import { getContactsWithPlans } from '@/app/api/supabase/service';
 import ContactProfile from '@/components/contacts/ContactProfile';
 import ContactPlans from '@/components/contacts/ContactPlans';
 import Tabs from '@/components/ui/Tabs';
 
 const TEST_USER_ID = 'a27fc897-4216-4863-9e7b-f8868a8369ff';
 
-const PeopleDetail = () => {
-  const params = useParams();
-  const contactsId = typeof params.id === 'string' ? params.id : undefined;
+interface Props {
+  contactsId: string;
+}
 
+const PeopleDetailPanel = ({ contactsId }: Props) => {
   const { data, isPending, error } = useQuery({
     queryKey: ['contactWithPlans', contactsId],
-    queryFn: () => {
-      if (!contactsId) throw new Error('Invalid contact ID');
-      return getContactsWithPlans(TEST_USER_ID, contactsId);
-    },
+    queryFn: () => getContactsWithPlans(TEST_USER_ID, contactsId),
     enabled: !!contactsId,
   });
 
@@ -36,4 +31,4 @@ const PeopleDetail = () => {
   );
 };
 
-export default PeopleDetail;
+export default PeopleDetailPanel;

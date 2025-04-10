@@ -5,6 +5,8 @@ interface Props {
 }
 
 const ContactPlans: React.FC<Props> = ({ plans }) => {
+  const formatDate = (datetime: string) => datetime.split('T')[0];
+
   return (
     <div>
       <h2 className='mb-2 text-xl font-semibold'>약속 목록</h2>
@@ -20,7 +22,7 @@ const ContactPlans: React.FC<Props> = ({ plans }) => {
                 <strong>우선순위:</strong> {plan.priority}
               </p>
               <p className='text-sm'>
-                <strong>기간:</strong> {plan.start_date} ~ {plan.end_date}
+                <strong>기간:</strong> {formatDate(plan.start_date)} ~ {formatDate(plan.end_date)}
               </p>
             </li>
           ))}
