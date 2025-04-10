@@ -22,6 +22,7 @@ export const useAuthStore = create<AuthStateType>()(
       signOut: async () => {
         await mutateSignOut();
         set(initialState);
+        alert(`로그아웃되었습니다.`);
       },
     }),
     {
@@ -35,6 +36,7 @@ export const AuthStateChangeHandler = () => {
 
   const { data: unsubscribe } = supabase.auth.onAuthStateChange((event, session) => {
     if (event === 'SIGNED_IN' && session) {
+      alert(`로그인되었습니다.'내 사람' 페이지로 이동합니다.`);
       setUser(session.user); // 사용자 정보 저장, isSignIn 을 true로 변경
     } else if (event === 'SIGNED_OUT') {
       signOut(); // 사용자 정보 null로 초기화, isSignIn 을 false로 변경
