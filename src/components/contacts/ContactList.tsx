@@ -85,12 +85,10 @@ const ContactList: React.FC<ContactListProps> = ({ onSelectedContact }) => {
                 <ul className="flex flex-col">
                   {pinnedContacts.map((contact) => (
                     <li key={`pinned-${contact.contacts_id}`}>
-                      <Link href={`/people/${contact.contacts_id}`}>
                         <ContactItem 
                           contact={contact} 
                           onTogglePin={handleTogglePin} 
                         />
-                      </Link>
                     </li>
                   ))}
                 </ul>
