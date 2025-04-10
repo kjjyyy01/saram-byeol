@@ -41,7 +41,7 @@ const ContactItem: React.FC<ContactItemProps> = ({ contact, onTogglePin }) => {
         {/* 연락처 정보 */}
         <div className="ml-5 flex flex-col">
           <h3 className="text-lg font-bold leading-tight text-center">{contact.name}</h3>
-          <div className="w-14 h-6 rounded-2xl bg-gray-100 flex items-center justify-center mt-0.5">
+          <div className="w-16 h-6 rounded-2xl bg-yellow-300 flex items-center justify-center mt-0.5">
             <span className="text-xs font-bold text-gray-800">{contact.relationship_level}</span>
           </div>
         </div>

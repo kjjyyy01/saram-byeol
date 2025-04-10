@@ -99,7 +99,7 @@ const ContactList: React.FC<ContactListProps> = ({ onSelectedContact }) => {
             <div>
               {pinnedContacts.length > 0 && (
                 <div className="flex items-center px-6 py-3 bg-gray-50">
-                  <h2 className="text-sm font-semibold text-gray-700">연락처</h2>
+                  <h2 className="text-sm font-semibold text-gray-700">리스트</h2>
                 </div>
               )}
               <ul className="flex flex-col">
