@@ -37,9 +37,10 @@ const SignUp = () => {
     }
 
     const { data, error } = await mutateSignUp(value);
-    if (data.user) {
-      setUser(data.user);
+    if (data.session) {
+      localStorage.setItem('alreadySignIn', 'true');
       alert(`회원가입이 완료되었습니다. 자동으로 로그인되어 '내 사람' 페이지로 이동합니다.`);
+      setUser(data.session.user);
       router.push(PEOPLE);
     } else if (error) {
       alert('입력한 정보를 다시 한 번 확인해주세요.');

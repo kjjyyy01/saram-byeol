@@ -25,9 +25,10 @@ const SignIn = () => {
   //로그인 기능 핸들러
   const onSignInHandler = async (value: SignInFormType) => {
     const { data, error } = await mutateSignIn(value);
-    if (data.user) {
-      setUser(data.user);
+    if (data.session) {
+      localStorage.setItem('alreadySignIn', 'true');
       alert(`로그인되었습니다.'내 사람' 페이지로 이동합니다.`);
+      setUser(data.session.user);
       router.push(PEOPLE);
     } else if (error) {
       alert('아이디 또는 비밀번호를 확인해주세요.');
