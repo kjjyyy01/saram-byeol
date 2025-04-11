@@ -2,12 +2,12 @@ import { z } from 'zod';
 
 export const PlaceSchema = z.object({
   place_name: z.string(),
-  road_address_name: z.string(),
-  place_url: z.string(),
-  id: z.string(),
-  phone: z.string(),
-  x: z.string(), // longitude
-  y: z.string(), // latitude
+  road_address_name: z.string().optional(),
+  place_url: z.string().optional(),
+  id: z.string().optional(),
+  phone: z.string().optional(),
+  x: z.string().optional(), // longitude
+  y: z.string().optional(), // latitude
 });
 
 export const PlansSchema = z.object({
@@ -17,7 +17,7 @@ export const PlansSchema = z.object({
   location: PlaceSchema.optional(),
   dateInput: z.object({
     from: z.date(),
-    to: z.date().optional(),
+    to: z.date()
   }),
   contacts: z.string().min(1, {
     message: '내사람을 선택해주세요',
@@ -42,7 +42,7 @@ export const planFormDefaultValues = {
   },
   dateInput: {
     from: new Date(),
-    to: undefined,
+    to: new Date(),
   },
   contacts: '',
   detail: '',

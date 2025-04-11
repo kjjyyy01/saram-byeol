@@ -17,6 +17,13 @@ const PlaceField = ({ inputValue, setInputValue }: PlaceFieldProps) => {
   const [placeList, setPlaceList] = useState<KakaoPlaceType[]>([]);
   const { control, setValue } = useFormContext();
 
+  const inputToPlace = (input: string) => {
+    const place = {
+      place_name: input,
+    };
+    return place;
+  };
+
   const searchHandler = async (e: React.MouseEvent, keyword: string) => {
     e.preventDefault();
     e.stopPropagation();
@@ -46,6 +53,8 @@ const PlaceField = ({ inputValue, setInputValue }: PlaceFieldProps) => {
                   value={inputValue}
                   onChange={(e) => {
                     setInputValue(e.target.value);
+                    const selected = inputToPlace(e.target.value);
+                    setValue('location', selected);
                   }}
                 />
                 <Button onClick={(e) => searchHandler(e, inputValue)} type='button'>
@@ -78,7 +87,7 @@ const PlaceField = ({ inputValue, setInputValue }: PlaceFieldProps) => {
                       );
                     })
                   ) : (
-                    <SelectItem value='null'>
+                    <SelectItem value={inputValue}>
                       검색결과가 없습니다.
                       <Button type='button' onClick={() => setOpen(false)}>
                         다시검색
