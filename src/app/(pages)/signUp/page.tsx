@@ -3,7 +3,13 @@
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/store/zustand/store';
-import { emailDuplicateTest, NicknameDuplicateTest, signUpUser } from '@/app/api/supabase/service';
+import {
+  emailDuplicateTest,
+  NicknameDuplicateTest,
+  signInWithGoogle,
+  signInWithKakao,
+  signUpUser,
+} from '@/app/api/supabase/service';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
   PLACEHOLDER_EMAIL,
@@ -97,6 +103,20 @@ const SignUp = () => {
     }
   };
 
+  //구글 로그인 기능 핸들러
+  const googleSignin = async () => {
+    const error = await signInWithGoogle();
+
+    if (error) alert('구글 로그인에 실패했습니다. 새로고침 후 다시 시도해주세요.');
+  };
+
+  //카카오 로그인 기능 핸들러
+  const kakaoSignin = async () => {
+    const error = await signInWithKakao();
+
+    if (error) alert('로그인 중 오류가 발생했습니다. 새로고침 후 다시 로그인해주세요.');
+  };
+
   return (
     <form onSubmit={handleSubmit(onSignUpHandler)}>
       <div className='flex flex-col'>
@@ -151,6 +171,14 @@ const SignUp = () => {
       </div>
 
       <button type='submit'>회원가입</button>
+      <section>
+        <button type='button' onClick={googleSignin}>
+          구글 로그인
+        </button>
+        <button type='button' onClick={kakaoSignin}>
+          카카오 로그인
+        </button>
+      </section>
     </form>
   );
 };
