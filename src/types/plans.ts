@@ -7,6 +7,7 @@ export interface PlansType {
   priority: string;
   start_date: string;
   end_date: string;
+  colors?: string;
 }
 
 export interface CalendarEventType {
@@ -14,6 +15,7 @@ export interface CalendarEventType {
   title: string | null;
   start: Date;
   end: Date;
+  colors?: string;
 }
 
 // 공휴일 타입
@@ -41,4 +43,5 @@ export interface InsertNewPlansType {
   start_date?: Date | null;
   end_date?: Date | null;
   priority?: string | null;
+  colors?: string;
 }
