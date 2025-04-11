@@ -11,7 +11,7 @@ import { useUpadateEventMutate } from '@/hooks/mutations/useUpadateEventMutate';
 import { CustomDateHeader } from '@/components/calendar/CustomDateHeader';
 import { useGetHolidays } from '@/hooks/queries/useGetHolidays';
 import { holidayStyle } from '@/lib/utils/calendarStyle';
-import CalendarPopOver from './CalendarPopOver';
+import CalendarPopOver from '@/components/calendar/CalendarPopOver';
 
 // 드래그 이벤트 타입
 interface Props {

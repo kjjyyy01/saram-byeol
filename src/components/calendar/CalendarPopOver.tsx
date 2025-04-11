@@ -1,16 +1,16 @@
 import { Popover, PopoverContent } from '@/components/ui/popover';
-import DateInputField from '../plans/DateInputField';
+import DateInputField from '@/components/plans/DateInputField';
 import useMutateInsertNewPlan from '@/hooks/mutations/useMutateInsertNewPlan';
 import { mappingFormData } from '@/lib/planFormUtils';
 import { PlanFormType, PlansSchema } from '@/lib/schemas/plansSchema';
-import { TEST_USER_ID } from '../contacts/ContactList';
+import { TEST_USER_ID } from '@/components/contacts/ContactList';
 import { FormProvider, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Button } from '../ui/button';
+import { Button } from '@/components/ui/button';
 import { useEffect } from 'react';
-import { Input } from '../ui/input';
-import { Form, FormControl, FormField, FormItem } from '../ui/form';
-import ContactsField from '../plans/ContactsField';
+import { Input } from '@/components/ui/input';
+import { Form, FormControl, FormField, FormItem } from '@/components/ui/form';
+import ContactsField from '@/components//plans/ContactsField';
 import { toast } from 'react-toastify';
 
 interface Props {
