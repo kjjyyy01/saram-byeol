@@ -20,18 +20,20 @@ interface Props {
 }
 
 const CalendarPopOver = ({ open, onOpenChange, date }: Props) => {
+  const dateInput = {
+    from: new Date(),
+    to: undefined,
+  };
+  const defaultValues = {
+    title: '',
+    dateInput,
+    contacts: '',
+    detail: '',
+  };
   const form = useForm<PlanFormType>({
     resolver: zodResolver(PlansSchema),
     mode: 'onChange',
-    defaultValues: {
-      title: '',
-      dateInput: {
-        from: new Date(),
-        to: undefined,
-      },
-      contacts: '',
-      detail: '',
-    },
+    defaultValues,
   });
 
   // 팝오버가 열릴 때마다 선택한 날짜로 form 업데이트
@@ -57,10 +59,10 @@ const CalendarPopOver = ({ open, onOpenChange, date }: Props) => {
       {
         onSuccess: () => {
           form.reset();
+          toast.success('약속이 추가되었습니다!');
         },
       }
     );
-    toast.success('약속이 추가되었습니다!');
   };
   return (
     <FormProvider {...form}>
