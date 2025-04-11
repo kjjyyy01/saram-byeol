@@ -1,6 +1,6 @@
 import React from 'react';
 
-const ComingPlans = () => {
+const UpcomingPlans = () => {
   return (
     <div>
       <button className='rounded-md border-2'>다가오는 약속</button>
@@ -8,4 +8,4 @@ const ComingPlans = () => {
   );
 };
 
-export default ComingPlans;
+export default UpcomingPlans;

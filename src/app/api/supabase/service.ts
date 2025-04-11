@@ -95,7 +95,7 @@ export const emailDuplicateTest = async (email: string) => {
 };
 
 // 매 달의 plans 데이터 가져오기
-export const getPlans = async (year: number, month: number): Promise<PlansType[]> => {
+export const getMonthlyPlans = async (year: number, month: number): Promise<PlansType[]> => {
   const startOfMonth = new Date(year, month - 1, 1); //첫 날
   const endOfMonth = new Date(year, month, 0); //마지막 날 (4/30 00:00:00)
   // 현재 start_date가 4/30 01:00 이기 때문에 연속 일정의 첫 날도 함께 포함시키기 위함

@@ -1,4 +1,4 @@
-import { getPlans } from '@/app/api/supabase/service';
+import { getMonthlyPlans } from '@/app/api/supabase/service';
 import { QUERY_KEY } from '@/constants/queryKey';
 import { CalendarEventType, PlansType } from '@/types/plans';
 import { useQuery } from '@tanstack/react-query';
@@ -9,7 +9,7 @@ export const useGetCalendarPlans = (year: number, monthDate: Date) => {
   return useQuery<CalendarEventType[]>({
     queryKey: [QUERY_KEY.PLANS, year, month], //달마다 캐싱
     queryFn: async () => {
-      const plans: PlansType[] = await getPlans(year, month); // supabase에서 plans 데이터 가져오기
+      const plans: PlansType[] = await getMonthlyPlans(year, month); // supabase에서 plans 데이터 가져오기
 
       // 캘린더에 적용되도록 데이터 가공하기
       const events: CalendarEventType[] = plans.map((plan) => ({
