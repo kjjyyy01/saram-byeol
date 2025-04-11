@@ -1,10 +1,9 @@
-// src/components/contacts/shared/ContactForm.tsx
 import { Form } from '@/components/ui/form';
 import { ContactFormValues } from '@/lib/schemas/contactFormSchema';
 import { UseFormReturn } from 'react-hook-form';
-import ProfileImageUpload from '@/components/contacts/addContactForm/ProfileImageUpload';
 import RelationshipSelector from '@/components/contacts/addContactForm/RelationshipSelector';
 import ContactTextField from '@/components/contacts/addContactForm/ContactTextField';
+import EditProfileImageUpload from '@/components/contactDetail/editContactForm/EditProfileImageUpload';
 
 interface ContactFormProps {
   form: UseFormReturn<ContactFormValues>;
@@ -22,14 +21,13 @@ const ContactForm: React.FC<ContactFormProps> = ({
   onSubmit,
   isSubmitting,
   imageSource,
-  setImageSource,
   relationshipType,
   setRelationshipType,
   SubmitButtonComponent,
 }) => {
   return (
     <div className='space-y-8 pl-12 pr-12'>
-      <ProfileImageUpload imageSource={imageSource} setImageSource={setImageSource} setValue={form.setValue} />
+      <EditProfileImageUpload initialImage={imageSource} setValue={form.setValue} />
       <RelationshipSelector
         relationshipType={relationshipType}
         setRelationshipType={setRelationshipType}
