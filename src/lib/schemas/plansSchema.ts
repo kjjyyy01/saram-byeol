@@ -17,7 +17,7 @@ export const PlansSchema = z.object({
   location: PlaceSchema.optional(),
   dateInput: z.object({
     from: z.date(),
-    to: z.date()
+    to: z.date().optional(),
   }),
   contacts: z.string().min(1, {
     message: '내사람을 선택해주세요',

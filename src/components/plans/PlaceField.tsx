@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { searchPlaces } from '@/app/api/planForm/search/service';
 import { SelectItem } from '@radix-ui/react-select';
 import { KakaoPlaceType } from '@/types/plans';
+import { inputToPlace } from '@/lib/planFormUtils';
 
 interface PlaceFieldProps {
   inputValue: string;
@@ -17,26 +18,16 @@ const PlaceField = ({ inputValue, setInputValue }: PlaceFieldProps) => {
   const [placeList, setPlaceList] = useState<KakaoPlaceType[]>([]);
   const { control, setValue } = useFormContext();
 
-  const inputToPlace = (input: string) => {
-    const place = {
-      place_name: input,
-    };
-    return place;
-  };
-
   const searchHandler = async (e: React.MouseEvent, keyword: string) => {
-    e.preventDefault();
-    e.stopPropagation();
     if (!keyword.trim()) return;
     try {
-      const documents = await searchPlaces(keyword);
+      const { documents } = await searchPlaces(keyword);
       setPlaceList(documents);
       setOpen(true);
     } catch (error) {
       console.error('검색 실패', error);
     }
   };
-
   return (
     <FormField
       control={control}
@@ -87,7 +78,7 @@ const PlaceField = ({ inputValue, setInputValue }: PlaceFieldProps) => {
                       );
                     })
                   ) : (
-                    <SelectItem value={inputValue}>
+                    <SelectItem value={field.value}>
                       검색결과가 없습니다.
                       <Button type='button' onClick={() => setOpen(false)}>
                         다시검색
