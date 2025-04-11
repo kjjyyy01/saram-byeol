@@ -8,25 +8,23 @@ import { searchPlaces } from '@/app/api/planForm/search/service';
 import { SelectItem } from '@radix-ui/react-select';
 import { KakaoPlaceType } from '@/types/plans';
 
-interface Props {
+interface PlaceFieldProps {
   inputValue: string;
   setInputValue: React.Dispatch<React.SetStateAction<string>>;
 }
-const PlaceField = ({ inputValue, setInputValue }: Props) => {
+const PlaceField = ({ inputValue, setInputValue }: PlaceFieldProps) => {
   const [open, setOpen] = useState(false);
   const [placeList, setPlaceList] = useState<KakaoPlaceType[]>([]);
   const { control, setValue } = useFormContext();
 
-  const searchHandler = async (keyword: string) => {
+  const searchHandler = async (e: React.MouseEvent, keyword: string) => {
+    e.preventDefault();
+    e.stopPropagation();
     if (!keyword.trim()) return;
     try {
-      const data = await searchPlaces(keyword);
-      setPlaceList(data.documents);
-      if (!!data) {
-        setOpen(true);
-      } else {
-        setOpen(false);
-      }
+      const documents = await searchPlaces(keyword);
+      setPlaceList(documents);
+      setOpen(true);
     } catch (error) {
       console.error('검색 실패', error);
     }
@@ -50,7 +48,7 @@ const PlaceField = ({ inputValue, setInputValue }: Props) => {
                     setInputValue(e.target.value);
                   }}
                 />
-                <Button onClick={() => searchHandler(inputValue)} type='button'>
+                <Button onClick={(e) => searchHandler(e, inputValue)} type='button'>
                   검색
                 </Button>
               </>
