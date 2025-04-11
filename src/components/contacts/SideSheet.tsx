@@ -6,6 +6,7 @@ interface SideSheetProps {
   onClose: () => void;
   children: ReactNode;
   title?: string; // 이미 만들어두신 SideSheet 활용하기 위해 타이틀을 동적(내 사람 추가, 내 사람 수정)으로 수정했습니다
+                  // 추후 해당 사이드시트 다른 곳에서도 사용하게 될 시 용이할 것 같습니다
 }
 
 const SideSheet: React.FC<SideSheetProps> = ({ isOpen, onClose, children, title = "내 사람 추가" }) => {
