@@ -3,12 +3,11 @@
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/store/zustand/store';
-import { mutateSignIn } from '@/app/api/supabase/service';
+import { signInUser, signInWithGoogle, signInWithKakao } from '@/app/api/supabase/service';
 import { PLACEHOLDER_EMAIL, PLACEHOLDER_PASSWORD } from '@/constants/placeholders';
 import { PEOPLE, SIGNUP } from '@/constants/paths';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { signInSchema } from '@/lib/schemas/signinSchema';
-import { supabase } from '@/app/api/supabase/client';
 import { z } from 'zod';
 import Link from 'next/link';
 
@@ -24,7 +23,7 @@ const SignIn = () => {
 
   //로그인 기능 핸들러
   const onSignInHandler = async (value: SignInFormType) => {
-    const { data, error } = await mutateSignIn(value);
+    const { data, error } = await signInUser(value);
     if (data.session) {
       localStorage.setItem('alreadySignIn', 'true');
       alert(`로그인되었습니다.'내 사람' 페이지로 이동합니다.`);
@@ -37,32 +36,14 @@ const SignIn = () => {
 
   //구글 로그인 기능 핸들러
   const googleSignin = async () => {
-    const { error } = await supabase.auth.signInWithOAuth({
-      provider: 'google',
-      options: {
-        redirectTo: 'http://localhost:3000/people',
-        queryParams: {
-          access_type: 'offline',
-          prompt: 'consent',
-        },
-      },
-    });
+    const error = await signInWithGoogle();
 
     if (error) alert('구글 로그인에 실패했습니다. 새로고침 후 다시 시도해주세요.');
   };
 
   //카카오 로그인 기능 핸들러
   const kakaoSignin = async () => {
-    const { error } = await supabase.auth.signInWithOAuth({
-      provider: 'kakao',
-      options: {
-        redirectTo: 'http://localhost:3000/people',
-        queryParams: {
-          access_type: 'offline',
-          prompt: 'consent',
-        },
-      },
-    });
+    const error = await signInWithKakao();
 
     if (error) alert('로그인 중 오류가 발생했습니다. 새로고침 후 다시 로그인해주세요.');
   };

@@ -3,7 +3,7 @@
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/store/zustand/store';
-import { emailDuplicateTest, mutateSignUp, NicknameDuplicateTest } from '@/app/api/supabase/service';
+import { emailDuplicateTest, NicknameDuplicateTest, signUpUser } from '@/app/api/supabase/service';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
   PLACEHOLDER_EMAIL,
@@ -36,7 +36,7 @@ const SignUp = () => {
       return;
     }
 
-    const { data, error } = await mutateSignUp(value);
+    const { data, error } = await signUpUser(value);
     if (data.session) {
       localStorage.setItem('alreadySignIn', 'true');
       alert(`회원가입이 완료되었습니다. 자동으로 로그인되어 '내 사람' 페이지로 이동합니다.`);
