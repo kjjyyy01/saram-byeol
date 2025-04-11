@@ -12,6 +12,7 @@ import { Input } from '@/components/ui/input';
 import { Form, FormControl, FormField, FormItem } from '@/components/ui/form';
 import ContactsField from '@/components//plans/ContactsField';
 import { toast } from 'react-toastify';
+import ColorOptions from './ColorOptions';
 
 interface Props {
   open: boolean;
@@ -72,35 +73,38 @@ const CalendarPopOver = ({ open, onOpenChange, date }: Props) => {
   );
 
   return (
-    <FormProvider {...form}>
-      <Popover open={open} onOpenChange={onOpenChange}>
-        <PopoverContent side='right' align='start' style={{ position: 'absolute', top: 200, left: 600 }} asChild>
-          <form onSubmit={form.handleSubmit(planSubmitHandler)}>
-            <fieldset disabled={isPending}>
-              <Form {...form}>
-                <FormField
-                  control={form.control}
-                  name='title'
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormControl>
-                        <Input type='text' placeholder='제목' {...field} />
-                      </FormControl>
-                    </FormItem>
-                  )}
-                />
-                <DateInputField />
-                <ContactsField userId={TEST_USER_ID} />
-                <Button>옵션 더보기</Button>
-                <Button type='submit' disabled={isPending}>
-                  {isPending ? '저장 중...' : '저장'}
-                </Button>
-              </Form>
-            </fieldset>
-          </form>
-        </PopoverContent>
-      </Popover>
-    </FormProvider>
+    <>
+      <FormProvider {...form}>
+        <Popover open={open} onOpenChange={onOpenChange}>
+          <PopoverContent side='right' align='start' style={{ position: 'absolute', top: 200, left: 600 }}>
+            <ColorOptions />
+            <form onSubmit={form.handleSubmit(planSubmitHandler)}>
+              <fieldset disabled={isPending}>
+                <Form {...form}>
+                  <FormField
+                    control={form.control}
+                    name='title'
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormControl>
+                          <Input type='text' placeholder='제목' {...field} />
+                        </FormControl>
+                      </FormItem>
+                    )}
+                  />
+                  <DateInputField />
+                  <ContactsField userId={TEST_USER_ID} />
+                  <Button>옵션 더보기</Button>
+                  <Button type='submit' disabled={isPending}>
+                    {isPending ? '저장 중...' : '저장'}
+                  </Button>
+                </Form>
+              </fieldset>
+            </form>
+          </PopoverContent>
+        </Popover>
+      </FormProvider>
+    </>
   );
 };
 export default CalendarPopOver;
