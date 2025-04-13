@@ -14,6 +14,7 @@ import { Form, FormControl, FormField, FormItem } from '@/components/ui/form';
 import ContactsField from '@/components//plans/ContactsField';
 import { toast } from 'react-toastify';
 import ColorOptions from './ColorOptions';
+import { X } from '@phosphor-icons/react';
 
 interface Props {
   open: boolean;
@@ -81,6 +82,7 @@ const CalendarPopOver = ({ open, onOpenChange, date }: Props) => {
       <FormProvider {...form}>
         <Popover open={open} onOpenChange={onOpenChange}>
           <PopoverContent side='right' align='start' style={{ position: 'absolute', top: 200, left: 600 }}>
+            <X size={24} onClick={() => onOpenChange(false)} className='cursor-pointer' />
             <ColorOptions selectedColor={selectedColor} setSelectedColor={setSelectedColor} /> {/* state 전달 */}
             <form onSubmit={form.handleSubmit(planSubmitHandler)}>
               <fieldset disabled={isPending}>
