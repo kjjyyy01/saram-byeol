@@ -2,10 +2,19 @@
 
 import ContactList from '@/components/contacts/ContactList';
 import PeopleDetailPanel from '@/components/contacts/PeopleDetailPanel';
-import { useState } from 'react';
+import { AuthStateChangeHandler } from '@/store/zustand/store';
+import { useEffect, useState } from 'react';
 
 const People = () => {
   const [peopleSelectedId, setPeopleSelectedId] = useState<string | null>(null);
+
+  //onAuthStateChange호출 로직
+  useEffect(() => {
+    const { subscription } = AuthStateChangeHandler();
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, []);
 
   return (
     <div className='flex h-screen'>
