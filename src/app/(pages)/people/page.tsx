@@ -1,14 +1,10 @@
 'use client';
 
 import ContactList from '@/components/contacts/ContactList';
-<<<<<<< HEAD
 import PeopleDetailPanel from '@/components/contactDetail/PeopleDetailPanel';
-import { useState } from 'react';
-=======
-import PeopleDetailPanel from '@/components/contacts/PeopleDetailPanel';
 import { AuthStateChangeHandler } from '@/store/zustand/store';
 import { useEffect, useState } from 'react';
->>>>>>> f3e1bad546e5d85348736775d5ffe0335563fcce
+
 
 const People = () => {
   const [peopleSelectedId, setPeopleSelectedId] = useState<string | null>(null);
