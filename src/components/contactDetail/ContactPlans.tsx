@@ -29,10 +29,7 @@ const ContactPlans: React.FC<Props> = ({ plans }) => {
         <ul className='grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3'>
           {plans.map((plan) => (
             <li key={plan.plan_id}>
-              <ContactPlansCard title={plan.title} startDate={plan.start_date} />
-              <button onClick={() => editPlanHandler(plan)} className='mt-2 text-sm text-blue-500 underline'>
-                수정
-              </button>
+              <ContactPlansCard title={plan.title} startDate={plan.start_date} onEdit={() => editPlanHandler(plan)} />
             </li>
           ))}
         </ul>
