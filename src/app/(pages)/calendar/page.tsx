@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   description: '약속을 모아볼 수 있는 캘린더 페이지입니다.',
 };
 
-export default function Home() {
+export default function Calendar() {
   return (
     <div>
       <MainCalendar />
