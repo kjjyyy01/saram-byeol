@@ -29,6 +29,7 @@ const PlanForm = () => {
 
   const planSubmitHandler = (data: PlanFormType) => {
     const formData = mappingFormData(data);
+    // console.log('formData',formData)
     insertNewPlan(
       { user_id: TEST_USER_ID, ...formData },
       {
