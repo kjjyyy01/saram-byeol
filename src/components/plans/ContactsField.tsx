@@ -27,7 +27,7 @@ const ContactsField = ({ userId }: Props) => {
       render={({ field }) => {
         return (
           <FormItem>
-            <FormLabel>내 사람</FormLabel>
+            <FormLabel>이름</FormLabel>
             <Popover open={open} onOpenChange={setOpen}>
               <PopoverTrigger asChild>
                 <FormControl>
@@ -37,7 +37,7 @@ const ContactsField = ({ userId }: Props) => {
                     aria-expanded={open}
                     className={cn('w-full justify-between', !field.value && 'text-muted-foreground')}
                   >
-                    {field.value ? contacts.find((person) => person.contacts_id === field.value)?.name : '내 사람 선택'}
+                    {field.value ? contacts.find((person) => person.contacts_id === field.value)?.name : '이름을 검색해주세요.'}
                     <ChevronsUpDown className='opacity-50' />
                   </Button>
                 </FormControl>
@@ -46,7 +46,7 @@ const ContactsField = ({ userId }: Props) => {
                 <Command>
                   <CommandInput placeholder='검색' className='h-9' />
                   <CommandList>
-                    <CommandEmpty>일치하는 친구가 없습니다.</CommandEmpty>
+                    <CommandEmpty>일치하는 이름이 없습니다.</CommandEmpty>
                     <CommandGroup>
                       {contacts.map((person, i) => (
                         <CommandItem
