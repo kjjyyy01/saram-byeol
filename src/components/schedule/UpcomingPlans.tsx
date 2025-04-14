@@ -22,33 +22,10 @@ const UpcomingPlans = ({ userId }: UpcomingPlansProps) => {
     refetchOnWindowFocus: false, // 창 포커스시 자동 리패치 비활성화
   });
 
-  React.useEffect(() => {
-    if (plans.length > 0) {
-      console.log('getUserPlans로 가져온 데이터:', plans);
-      // 각 계획의 날짜 형식도 확인
-      plans.forEach((plan, index) => {
-        console.log(`Plan ${index + 1} - ID: ${plan.plan_id}, 날짜: ${plan.start_date}, 제목: ${plan.title}`);
-      });
-    }
-  }, [plans]);
-
   // 간단한 날짜 포맷팅 함수 (n월 m일)
   const formatDateShort = (dateString: string): string => {
     const date = new Date(dateString);
     return `${date.getMonth() + 1}월 ${date.getDate()}일`;
-  };
-
-  // 날짜 포맷팅 함수
-  const formatDateFull = (dateString: string): string => {
-    const date = new Date(dateString);
-    return new Intl.DateTimeFormat('ko-KR', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-      hour12: true,
-    }).format(date);
   };
 
   // 오늘 날짜인지 확인하는 함수
@@ -108,11 +85,11 @@ const calculateDday = (dateString: string): string => {
 
             {/* D-day와 제목 표시 */}
             <div className='mb-2 flex items-center'>
-              <span className='text-md mr-2 rounded px-2 py-1 font-bold'>
-                {calculateDday(plan.start_date)}
-              </span>
-              <h3 className='text-lg font-semibold'>{plan.title}</h3>
-            </div>
+                <span className='text-md mr-2 rounded px-2 py-1 font-bold flex-shrink-0'>
+                  {calculateDday(plan.start_date)}
+                </span>
+                <h3 className='text-lg font-semibold'>{plan.title}</h3>
+              </div>
           </div>
         );
       })}

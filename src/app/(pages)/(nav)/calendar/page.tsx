@@ -1,5 +1,5 @@
 import MainCalendar from '@/components/calendar/MainCalendar';
-import UpcomingPlans from '@/components/calendar/UpcomingPlans';
+import UpcomingPlans from '@/components/schedule/UpcomingPlans';
 import { Metadata } from 'next';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 
