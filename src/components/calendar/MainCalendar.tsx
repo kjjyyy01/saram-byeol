@@ -51,6 +51,7 @@ const MainCalendar = () => {
       start: holiday.date,
       end: holiday.date, // 단일 일정
       isHoliday: true, // 스타일 구분용
+      colors: '#2F80ED', // 기본 색상
     })),
   ];
 

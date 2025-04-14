@@ -17,6 +17,7 @@ export const useGetCalendarPlans = (year: number, monthDate: Date) => {
         title: plan.title,
         start: new Date(plan.start_date),
         end: new Date(plan.end_date),
+        colors: plan.colors,
       }));
       return events;
     },
