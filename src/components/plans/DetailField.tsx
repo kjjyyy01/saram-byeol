@@ -16,7 +16,7 @@ const DetailField = () => {
               <FormItem>
                 <FormLabel>내용</FormLabel>
                 <FormControl>
-                  <Textarea id='detail' placeholder='약속내용을 작성하세요' className='resize-none' {...field} maxLength={100} />
+                  <Textarea id='detail' placeholder='내용을 입력해주세요.(최대 100자)' className='resize-none' {...field} maxLength={100} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
