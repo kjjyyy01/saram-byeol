@@ -2,10 +2,9 @@ import { useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { Select, SelectContent, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Select, SelectContent, SelectTrigger, SelectValue, SelectItem } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
 import { searchPlaces } from '@/app/api/planForm/search/service';
-import { SelectItem } from '@radix-ui/react-select';
 import { KakaoPlaceType } from '@/types/plans';
 import { inputToPlace } from '@/lib/planFormUtils';
 
