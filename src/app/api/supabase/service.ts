@@ -18,9 +18,7 @@ export const getContacts = async (userId: string): Promise<ContactItemType[]> =>
     }
 
     // 한국어 로케일을 사용한 정렬
-    const sortedData = [...(data || [])].sort((a, b) => 
-      a.name.localeCompare(b.name, 'ko-KR')
-    );
+    const sortedData = [...(data || [])].sort((a, b) => a.name.localeCompare(b.name, 'ko-KR'));
 
     return sortedData;
   } catch (error) {
@@ -52,7 +50,7 @@ export const getContactsWithPlans = async (userId: string, contactsId: string): 
 };
 
 // 회원가입
-export const mutateSignUp = async (value: SignUpFormType) => {
+export const signUpUser = async (value: SignUpFormType) => {
   const { email, password, nickname } = value;
 
   const { data, error } = await supabase.auth.signUp({
@@ -65,7 +63,7 @@ export const mutateSignUp = async (value: SignUpFormType) => {
 };
 
 // 로그인
-export const mutateSignIn = async (value: SignInFormType) => {
+export const signInUser = async (value: SignInFormType) => {
   const { email, password } = value;
 
   const { data, error } = await supabase.auth.signInWithPassword({
@@ -191,15 +189,44 @@ export const mutateUpdateContactPin = async (contactId: string, isPinned: boolea
       .from('contacts')
       .update({ is_pinned: isPinned })
       .eq('contacts_id', contactId)
-      .select();  
-    
+      .select();
+
     if (error) {
       throw error;
     }
-    
+
     return data;
   } catch (error) {
     console.error('연락처 핀 업데이트 실패:', error);
     throw error;
   }
+};
+
+export const signInWithGoogle = async () => {
+  const { error } = await supabase.auth.signInWithOAuth({
+    provider: 'google',
+    options: {
+      redirectTo: 'http://localhost:3000/people',
+      queryParams: {
+        access_type: 'offline',
+        prompt: 'consent',
+      },
+    },
+  });
+
+  return error;
+};
+export const signInWithKakao = async () => {
+  const { error } = await supabase.auth.signInWithOAuth({
+    provider: 'kakao',
+    options: {
+      redirectTo: 'http://localhost:3000/people',
+      queryParams: {
+        access_type: 'offline',
+        prompt: 'consent',
+      },
+    },
+  });
+
+  return error;
 };
