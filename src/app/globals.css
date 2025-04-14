@@ -81,6 +81,10 @@
 .rbc-event {
   @apply relative overflow-hidden rounded-[4px] p-[2px] text-[13px];
 }
+/* 약속 가로줄 */
+.rbc-row-segment {
+  cursor: pointer;
+}
 
 /* 오버레이 레이어 */
 .rbc-event::after {
