@@ -251,3 +251,9 @@ export const mutateUpdatePlan = async (planId: string, updatedData: InsertNewPla
 
   return data;
 };
+
+// contacts 데이터 삭제
+// export const mutateDeleteContacts = async () => {}
+
+// plans 데이터 삭제
+// export const mutateDeletePlan = async () => {}
