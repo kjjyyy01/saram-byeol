@@ -1,8 +1,8 @@
 import { ContactDetailType, ContactItemType, ContactWithPlansDetailType } from '@/types/contacts';
 import { supabase } from '@/app/api/supabase/client';
 import { InsertNewPlansType, PlansType } from '@/types/plans';
-import { SignUpFormType } from '@/app/(pages)/signup/page';
-import { SignInFormType } from '@/app/(pages)/signin/page';
+import { SignUpFormType } from '@/app/(pages)/signUp/page';
+import { SignInFormType } from '@/app/(pages)/signIn/page';
 import { CONTACTS, PLANS, USERS } from '@/constants/supabaseTable';
 
 export const getContacts = async (userId: string): Promise<ContactItemType[]> => {
@@ -229,4 +229,13 @@ export const signInWithKakao = async () => {
 };
 
 // plans 데이터 수정
-export const mutateUpdatePlan = async () => {};
+export const mutateUpdatePlan = async (planId: string, updatedData: InsertNewPlansType) => {
+  const { data, error } = await supabase.from(PLANS).update(updatedData).eq('plan_id', planId).select();
+
+  if (error) {
+    console.error('약속 수정 중 오류가 발생했습니다:', error);
+    throw error;
+  }
+
+  return data;
+};
