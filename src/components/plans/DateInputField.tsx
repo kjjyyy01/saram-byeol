@@ -22,7 +22,7 @@ const DateInputField = () => {
       render={({ field }) => {
         return (
           <FormItem>
-            <FormLabel>날짜</FormLabel>
+            <FormLabel>약속</FormLabel>
             <Popover>
               <PopoverTrigger asChild>
                 <FormControl>
@@ -38,7 +38,7 @@ const DateInputField = () => {
                         format(field.value.from, 'y.LL.dd (ccc)')
                       )
                     ) : (
-                      <span> 날짜 선택</span>
+                      <span> 약속일을 선택하세요</span>
                     )}
                     <CalendarIcon className='ml-auto h-4 w-4 opacity-50' />
                   </Button>
