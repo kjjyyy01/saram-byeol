@@ -34,12 +34,12 @@ const PlaceField = ({ inputValue, setInputValue }: PlaceFieldProps) => {
       render={({ field }) => {
         return (
           <FormItem>
-            <FormLabel>장소검색</FormLabel>
+            <FormLabel>장소</FormLabel>
             {!open ? (
               <>
                 <Input
                   type='text'
-                  placeholder='장소검색'
+                  placeholder='장소를 검색해주세요.'
                   value={inputValue}
                   onChange={(e) => {
                     setInputValue(e.target.value);
