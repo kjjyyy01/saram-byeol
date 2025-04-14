@@ -28,7 +28,9 @@ const ContactPlansCard: React.FC<ContactPlansCardProps> = ({ title, startDate })
 
       {/* D-day & 제목 */}
       <div className='flex flex-col'>
-        <p className='text-lg font-bold text-black'>D-{dDay}</p>
+        <p className='text-lg font-bold text-black'>
+          {dDay === 0 ? 'D-Day' : dDay > 0 ? `D-${dDay}` : `D+${Math.abs(dDay)}`}
+        </p>
         <p className='text-base text-gray-800'>{title}</p>
       </div>
 
