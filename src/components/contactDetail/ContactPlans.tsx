@@ -1,7 +1,11 @@
+'use client';
+
 import { PlanDetailType } from '@/types/contacts';
 import ContactPlansCard from '@/components/contactDetail/ContactPlansCard';
 import { useState } from 'react';
 import SideSheet from '@/components/contacts/SideSheet';
+import EditPlanForm from './editPlanForm/EditPlanForm';
+import { EditPlanType } from '@/types/plans';
 
 interface Props {
   plans: PlanDetailType[];
@@ -9,11 +13,16 @@ interface Props {
 
 const ContactPlans: React.FC<Props> = ({ plans }) => {
   const [isEditPlanOpen, setIsEditPlanOpen] = useState(false);
+  const [selectedPlan, setSelectedPlan] = useState<PlanDetailType | null>(null);
+
+  const editPlanHandler = (plan: PlanDetailType) => {
+    setSelectedPlan(plan);
+    setIsEditPlanOpen(true);
+  };
 
   return (
     <div>
       <h2 className='mb-2 text-xl font-semibold'>약속 전체보기</h2>
-      <button onClick={() => setIsEditPlanOpen(true)} className='rounded px-3 py-1 text-sm'>약속 수정</button>
       {plans.length === 0 ? (
         <p>등록된 약속이 없습니다.</p>
       ) : (
@@ -21,6 +30,9 @@ const ContactPlans: React.FC<Props> = ({ plans }) => {
           {plans.map((plan) => (
             <li key={plan.plan_id}>
               <ContactPlansCard title={plan.title} startDate={plan.start_date} />
+              <button onClick={() => editPlanHandler(plan)} className='mt-2 text-sm text-blue-500 underline'>
+                수정
+              </button>
             </li>
           ))}
         </ul>
@@ -28,7 +40,11 @@ const ContactPlans: React.FC<Props> = ({ plans }) => {
 
       {/* 사이드 시트 - 약속 수정 */}
       <SideSheet isOpen={isEditPlanOpen} onClose={() => setIsEditPlanOpen(false)} title='약속 수정'>
-        <p className='text-gray-600'>여기에 약속 수정 폼이 들어갈 예정입니다.</p>
+        {selectedPlan ? (
+          <EditPlanForm plan={selectedPlan as EditPlanType} onClose={() => setIsEditPlanOpen(false)} />
+        ) : (
+          <p>수정할 약속을 선택해주세요.</p>
+        )}
       </SideSheet>
     </div>
   );
