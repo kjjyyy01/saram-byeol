@@ -6,15 +6,15 @@ export const addTimeHour = (date: Date) => {
   return add(date, { hours: 1 });
 };
 
-//종료일에 30분 추가용
+//종료일에 1분 추가용
 export const addTimeMore = (date: Date) => {
-  return add(date, { minutes: 30 });
+  return add(date, { minutes: 1 });
 };
 
 //시작일과 종료일 시간 추가 처리
 export const getStartAndEndDate = (from: Date, to?: Date) => {
-  const start_date = addTimeHour(from);
-  const end_date = to ? addTimeMore(addTimeHour(to)) : addTimeMore(start_date);
+  const start_date = from;
+  const end_date = to ? addTimeMore(to) : addTimeMore(start_date);
   return { start_date, end_date };
 };
 
