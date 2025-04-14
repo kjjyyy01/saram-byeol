@@ -105,12 +105,12 @@ const ContactList: React.FC<ContactListProps> = ({ onSelectedContact }) => {
               <ul className="flex flex-col">
                 {regularContacts.map((contact) => (
                   <li key={contact.contacts_id}>
-                    <button onClick={() => onSelectedContact(contact.contacts_id)} className='w-full'>
+                    <div onClick={() => onSelectedContact(contact.contacts_id)} className='w-full'>
                       <ContactItem 
                         contact={contact} 
                         onTogglePin={handleTogglePin} 
                       />
-                    </button>
+                    </div>
                   </li>
                 ))}
               </ul>

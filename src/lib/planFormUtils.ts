@@ -1,5 +1,6 @@
 import { PlanFormType } from './schemas/plansSchema';
 
+
 export const getTimeToString = (date: Date)=>{
   const yyyy = date.getFullYear().toString();
   const mm = date.getMonth() + 1;
@@ -12,9 +13,7 @@ export const getStartAndEndDate = (from: Date, to?: Date) => {
   const {yyyy:toY, mm:toM, dd:toD } = to? getTimeToString(to) : getTimeToString(from)
   const start_date = `${fromY}-${fromM}-${fromD} 00:00:00`;
   const end_date = `${toY}-${toM}-${toD} 23:59:59`
-  console.log(start_date);
-  console.log(end_date);
-  
+
   return { start_date, end_date };
 };
 
