@@ -179,9 +179,6 @@ export const mutateUpdateContacts = async (
   }
 };
 
-// plans 데이터 수정
-// export const mutateUpdatePlan = async () => {};
-
 // 핀 업데이트 함수
 export const mutateUpdateContactPin = async (contactId: string, isPinned: boolean) => {
   try {
@@ -230,3 +227,6 @@ export const signInWithKakao = async () => {
 
   return error;
 };
+
+// plans 데이터 수정
+export const mutateUpdatePlan = async () => {};
