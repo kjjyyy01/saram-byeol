@@ -51,7 +51,8 @@ const PlanForm = () => {
 
   return (
     <FormProvider {...form}>
-      <form onSubmit={form.handleSubmit(planSubmitHandler)}>
+      <div className="mx-12 my-10">
+      <form onSubmit={form.handleSubmit(planSubmitHandler)} className='flex flex-col gap-9 justify-start'>
         <ColorOptions selectedColor={selectedColor} setSelectedColor={setSelectedColor} />
         <TitleField />
         <DateInputField />
@@ -63,6 +64,7 @@ const PlanForm = () => {
           약속 저장
         </Button>
       </form>
+      </div>
     </FormProvider>
   );
 };
