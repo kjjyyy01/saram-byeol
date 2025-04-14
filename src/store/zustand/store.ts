@@ -1,6 +1,7 @@
 import { supabase } from '@/app/api/supabase/client';
 import { mutateSignOut } from '@/app/api/supabase/service';
 import { User } from '@supabase/supabase-js';
+import { toast } from 'react-toastify';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
@@ -22,7 +23,7 @@ export const useAuthStore = create<AuthStateType>()(
       signOut: async () => {
         await mutateSignOut();
         set(initialState);
-        alert(`로그아웃되었습니다.`);
+        toast.success(`로그아웃되었습니다.`);
       },
     }),
     {
@@ -31,7 +32,7 @@ export const useAuthStore = create<AuthStateType>()(
   )
 );
 
-// 로그인 시 alert가 탭 전환 시 반복해서 뜨지 않도록 localStorage로 제어
+// 로그인 시 탭 전환 등으로 인해 중복 알림이 발생하지 않도록 localStorage를 사용해 제어
 export const AuthStateChangeHandler = () => {
   const { setUser, signOut } = useAuthStore.getState();
 
@@ -43,7 +44,7 @@ export const AuthStateChangeHandler = () => {
 
       if (!alreadySignIn) {
         localStorage.setItem('alreadySignIn', 'true');
-        alert(`로그인되었습니다.'내 사람' 페이지로 이동합니다.`);
+        toast.success(`로그인되었습니다.'내 사람' 페이지로 이동합니다.`);
       }
     } else if (event === 'SIGNED_OUT') {
       localStorage.removeItem('alreadySignIn');

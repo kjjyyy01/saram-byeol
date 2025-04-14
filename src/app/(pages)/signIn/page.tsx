@@ -11,6 +11,7 @@ import { signInSchema } from '@/lib/schemas/signinSchema';
 import { z } from 'zod';
 import Link from 'next/link';
 import Image from 'next/image';
+import { toast } from 'react-toastify';
 
 export type SignInFormType = z.infer<typeof signInSchema>;
 
@@ -27,11 +28,11 @@ const SignIn = () => {
     const { data, error } = await signInUser(value);
     if (data.session) {
       localStorage.setItem('alreadySignIn', 'true');
-      alert(`로그인되었습니다.'내 사람' 페이지로 이동합니다.`);
+      toast.success(`로그인되었습니다.'내 사람' 페이지로 이동합니다.`);
       setUser(data.session.user);
       router.push(PEOPLE);
     } else if (error) {
-      alert('아이디 또는 비밀번호를 확인해주세요.');
+      toast.warning('아이디 또는 비밀번호를 확인해주세요.');
     }
   };
 
@@ -39,18 +40,18 @@ const SignIn = () => {
   const googleSignin = async () => {
     const error = await signInWithGoogle();
 
-    if (error) alert('구글 로그인에 실패했습니다. 새로고침 후 다시 시도해주세요.');
+    if (error) toast.warning('구글 로그인에 실패했습니다. 새로고침 후 다시 시도해주세요.');
   };
 
   //카카오 로그인 기능 핸들러
   const kakaoSignin = async () => {
     const error = await signInWithKakao();
 
-    if (error) alert('로그인 중 오류가 발생했습니다. 새로고침 후 다시 로그인해주세요.');
+    if (error) toast.warning('로그인 중 오류가 발생했습니다. 새로고침 후 다시 로그인해주세요.');
   };
 
   const alreadyService = () => {
-    alert('아직 준비중인 기능입니다.');
+    toast.info('아직 준비중인 기능입니다.');
   };
 
   return (

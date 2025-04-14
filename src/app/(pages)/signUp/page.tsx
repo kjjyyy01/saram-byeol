@@ -22,6 +22,7 @@ import { useState } from 'react';
 import { signUpSchema } from '@/lib/schemas/signupSchema';
 import { z } from 'zod';
 import Image from 'next/image';
+import { toast } from 'react-toastify';
 
 export type SignUpFormType = z.infer<typeof signUpSchema>;
 
@@ -39,18 +40,18 @@ const SignUp = () => {
   //회원가입 기능 핸들러
   const onSignUpHandler = async (value: SignUpFormType) => {
     if (!isEmailChecked || !isNicknameChecked) {
-      alert('이메일과 닉네임 중복 검사를 완료해주세요.');
+      toast.warning('이메일과 닉네임 중복 검사를 완료해주세요.');
       return;
     }
 
     const { data, error } = await signUpUser(value);
     if (data.session) {
       localStorage.setItem('alreadySignIn', 'true');
-      alert(`회원가입이 완료되었습니다. 자동으로 로그인되어 '내 사람' 페이지로 이동합니다.`);
+      toast.success(`회원가입이 완료되었습니다. 자동으로 로그인되어 '내 사람' 페이지로 이동합니다.`);
       setUser(data.session.user);
       router.push(PEOPLE);
     } else if (error) {
-      alert('입력한 정보를 다시 한 번 확인해주세요.');
+      toast.warning('입력한 정보를 다시 한 번 확인해주세요.');
     }
   };
 
@@ -60,21 +61,21 @@ const SignUp = () => {
     const data = await NicknameDuplicateTest(nickname);
 
     if (!nickname) {
-      alert('닉네임을 입력해주세요.');
+      toast.warning('닉네임을 입력해주세요.');
       setFocus('nickname');
       return;
     }
 
     if (data) {
-      alert('중복된 닉네임이 존재합니다.');
+      toast.warning('중복된 닉네임이 존재합니다.');
       setFocus('nickname');
       setIsNicknameChecked(false);
     } else if (formState.errors.nickname) {
-      alert('닉네임 형식을 확인해주세요.');
+      toast.warning('닉네임 형식을 확인해주세요.');
       setFocus('nickname');
       setIsNicknameChecked(false);
     } else {
-      alert('사용가능한 닉네임입니다.');
+      toast.success('사용가능한 닉네임입니다.');
       setIsNicknameChecked(true);
     }
   };
@@ -85,21 +86,21 @@ const SignUp = () => {
     const data = await emailDuplicateTest(email);
 
     if (!email) {
-      alert('이메일을 입력해주세요.');
+      toast.warning('이메일을 입력해주세요.');
       setFocus('email');
       return;
     }
 
     if (data) {
-      alert('중복된 이메일이 존재합니다.');
+      toast.warning('중복된 이메일이 존재합니다.');
       setFocus('email');
       setIsEmailChecked(false);
     } else if (formState.errors.email) {
-      alert('이메일 형식을 확인해주세요.');
+      toast.warning('이메일 형식을 확인해주세요.');
       setFocus('email');
       setIsEmailChecked(false);
     } else {
-      alert('사용가능한 이메일입니다.');
+      toast.success('사용가능한 이메일입니다.');
       setIsEmailChecked(true);
     }
   };
@@ -108,14 +109,14 @@ const SignUp = () => {
   const googleSignin = async () => {
     const error = await signInWithGoogle();
 
-    if (error) alert('구글 로그인에 실패했습니다. 새로고침 후 다시 시도해주세요.');
+    if (error) toast.warning('구글 로그인에 실패했습니다. 새로고침 후 다시 시도해주세요.');
   };
 
   //카카오 로그인 기능 핸들러
   const kakaoSignin = async () => {
     const error = await signInWithKakao();
 
-    if (error) alert('로그인 중 오류가 발생했습니다. 새로고침 후 다시 로그인해주세요.');
+    if (error) toast.warning('로그인 중 오류가 발생했습니다. 새로고침 후 다시 로그인해주세요.');
   };
 
   return (
