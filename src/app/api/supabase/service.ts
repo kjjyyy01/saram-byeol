@@ -161,6 +161,27 @@ export const mutateInsertContacts = async (
   }
 };
 
+// contacts 데이터 수정
+export const mutateUpdateContacts = async (
+  contactsId: string,
+  contactData: Omit<ContactDetailType, 'contacts_id'>
+): Promise<void> => {
+  try {
+    const { error } = await supabase.from(CONTACTS).update(contactData).eq('contacts_id', contactsId);
+
+    if (error) {
+      console.error('연락처 수정 중 오류가 발생했습니다:', error);
+      throw error;
+    }
+  } catch (error) {
+    console.error('연락처 수정 중 오류가 발생했습니다:', error);
+    throw error;
+  }
+};
+
+// plans 데이터 수정
+// export const mutateUpdatePlan = async () => {};
+
 // 핀 업데이트 함수
 export const mutateUpdateContactPin = async (contactId: string, isPinned: boolean) => {
   try {

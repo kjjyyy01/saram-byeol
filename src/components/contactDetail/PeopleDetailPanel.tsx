@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { getContactsWithPlans } from '@/app/api/supabase/service';
-import ContactProfile from '@/components/contacts/ContactProfile';
-import ContactPlans from '@/components/contacts/ContactPlans';
+import ContactProfile from '@/components/contactDetail/ContactProfile';
+import ContactPlans from '@/components/contactDetail/ContactPlans';
 import Tabs from '@/components/ui/Tabs';
 
 const TEST_USER_ID = 'a27fc897-4216-4863-9e7b-f8868a8369ff';
