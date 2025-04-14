@@ -2,8 +2,10 @@ import { PlanFormType } from './schemas/plansSchema';
 
 export const getTimeToString = (date: Date) => {
   const yyyy = date.getFullYear().toString();
-  const mm = date.getMonth() + 1;
-  const dd = date.getDate();
+  const mm = ("0" + (date.getMonth() + 1)).slice(-2)
+  const dd = ("0" + date.getDate()).slice(-2); 
+  console.log('mm',mm)
+  console.log('dd',dd)
   return { yyyy, mm, dd };
 };
 //시작일과 종료일 시간 추가 처리
