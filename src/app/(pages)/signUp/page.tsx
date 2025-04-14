@@ -20,11 +20,15 @@ import {
 import { PEOPLE } from '@/constants/paths';
 import { useState } from 'react';
 import { signUpSchema } from '@/lib/schemas/signupSchema';
-import { z } from 'zod';
 import Image from 'next/image';
 import { toast } from 'react-toastify';
 
-export type SignUpFormType = z.infer<typeof signUpSchema>;
+export interface SignUpFormType {
+  email: string;
+  password: string;
+  nickname: string;
+  passwordCheck: string;
+}
 
 const SignUp = () => {
   const [isNicknameChecked, setIsNicknameChecked] = useState<boolean>(false);
