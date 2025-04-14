@@ -7,6 +7,7 @@ export interface PlansType {
   priority: string;
   start_date: string;
   end_date: string;
+  location?: Partial<KakaoPlaceType> | null;
   colors?: string;
 }
 
@@ -78,4 +79,17 @@ export interface KaKaoMetaType {
   pageable_count: number;
   total_count: number;
   same_name?: KaKaoSameNameType;
+}
+
+export interface EditPlanType {
+  plan_id: string;
+  user_id: string;
+  contacts_id: string;
+  title: string;
+  detail: string;
+  priority: string;
+  start_date: string;
+  end_date: string;
+  location?: Partial<KakaoPlaceType> | null;
+  colors?: string;
 }

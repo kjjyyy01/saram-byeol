@@ -179,9 +179,6 @@ export const mutateUpdateContacts = async (
   }
 };
 
-// plans 데이터 수정
-// export const mutateUpdatePlan = async () => {};
-
 // 핀 업데이트 함수
 export const mutateUpdateContactPin = async (contactId: string, isPinned: boolean) => {
   try {
@@ -229,6 +226,30 @@ export const signInWithKakao = async () => {
   });
 
   return error;
+};
+
+// plans 데이터 불러오기
+export const getPlans = async (planId: string): Promise<PlansType> => {
+  const {data, error} = await supabase.from(PLANS).select('*').eq('plan_id', planId).single();
+
+  if (error) {
+    console.error('약속을 불러오는 중 오류가 발생했습니다:', error);
+    throw error
+  }
+
+  return data;
+}
+
+// plans 데이터 수정
+export const mutateUpdatePlan = async (planId: string, updatedData: InsertNewPlansType) => {
+  const { data, error } = await supabase.from(PLANS).update(updatedData).eq('plan_id', planId).select();
+
+  if (error) {
+    console.error('약속 수정 중 오류가 발생했습니다:', error);
+    throw error;
+  }
+
+  return data;
 };
 
 

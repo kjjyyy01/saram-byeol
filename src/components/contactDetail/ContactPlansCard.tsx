@@ -4,9 +4,10 @@ import { ko } from 'date-fns/locale';
 interface ContactPlansCardProps {
   title: string;
   startDate: string;
+  onEdit?: () => void;
 }
 
-const ContactPlansCard: React.FC<ContactPlansCardProps> = ({ title, startDate }) => {
+const ContactPlansCard: React.FC<ContactPlansCardProps> = ({ title, startDate, onEdit }) => {
   const today = new Date();
   const start = new Date(startDate);
   const dDay = differenceInCalendarDays(new Date(startDate), today);
@@ -23,8 +24,15 @@ const ContactPlansCard: React.FC<ContactPlansCardProps> = ({ title, startDate })
       {/* 왼쪽 라인 */}
       <div className='absolute left-0 top-0 h-full w-1 rounded-l-md bg-pink-500' />
 
-      {/* 날짜 */}
-      <p className='text-sm font-semibold text-gray-700'>{monthDay}</p>
+      {/* 날짜 & 수정 버튼 라인 */}
+      <div className='flex items-center justify-between'>
+        <p className='text-sm font-semibold text-gray-700'>{monthDay}</p>
+        {onEdit && (
+          <button onClick={onEdit} className='text-xs text-blue-500 underline'>
+            수정
+          </button>
+        )}
+      </div>
 
       {/* D-day & 제목 */}
       <div className='flex flex-col'>
