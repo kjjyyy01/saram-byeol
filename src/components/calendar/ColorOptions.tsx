@@ -18,7 +18,7 @@ const ColorOptions = ({ selectedColor, setSelectedColor }: Props) => {
           <div
             key={color}
             onClick={() => setSelectedColor(color)}
-            className={`h-6 w-6 rounded-full  transition duration-200 ${selectedColor === color ? 'ring-2 ring-black ring-offset-2' : 'border-gray-300'} hover:scale-110 hover:ring-2 hover:ring-gray-400 hover:ring-offset-1`}
+            className={`h-6 w-6 rounded-full transition duration-200 ${selectedColor === color ? 'ring-2 ring-black ring-offset-2' : 'border-gray-300'} hover:scale-110 hover:ring-2 hover:ring-gray-400 hover:ring-offset-1`}
             style={{ backgroundColor: color }}
           />
         ))}

@@ -10,6 +10,7 @@ import { Check, ChevronsUpDown } from 'lucide-react';
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command';
 import { useState } from 'react';
 import { UserType } from '@/types/contacts';
+import { User } from '@phosphor-icons/react';
 
 interface Props {
   userId: UserType['user_id'];
@@ -26,8 +27,11 @@ const ContactsField = ({ userId }: Props) => {
       name='contacts'
       render={({ field }) => {
         return (
-          <FormItem>
-            <FormLabel>이름</FormLabel>
+          <FormItem className='flex items-center justify-start gap-8'>
+            <FormLabel className='relative flex w-14 flex-shrink-0 flex-grow-0 flex-col items-center justify-center gap-1'>
+              <User size={24} className='h-6 w-6 flex-shrink-0 flex-grow-0' />{' '}
+              <p className='text-center text-sm'>이름</p>
+            </FormLabel>
             <Popover open={open} onOpenChange={setOpen}>
               <PopoverTrigger asChild>
                 <FormControl>
@@ -37,7 +41,9 @@ const ContactsField = ({ userId }: Props) => {
                     aria-expanded={open}
                     className={cn('w-full justify-between', !field.value && 'text-muted-foreground')}
                   >
-                    {field.value ? contacts.find((person) => person.contacts_id === field.value)?.name : '이름을 검색해주세요.'}
+                    {field.value
+                      ? contacts.find((person) => person.contacts_id === field.value)?.name
+                      : '이름을 검색해주세요.'}
                     <ChevronsUpDown className='opacity-50' />
                   </Button>
                 </FormControl>
@@ -58,7 +64,9 @@ const ContactsField = ({ userId }: Props) => {
                           }}
                         >
                           {person.name}
-                          <Check className={cn('ml-auto', person.contacts_id === field.value ? 'opacity-100' : 'opacity-0')} />
+                          <Check
+                            className={cn('ml-auto', person.contacts_id === field.value ? 'opacity-100' : 'opacity-0')}
+                          />
                         </CommandItem>
                       ))}
                     </CommandGroup>
@@ -66,7 +74,7 @@ const ContactsField = ({ userId }: Props) => {
                 </Command>
               </PopoverContent>
             </Popover>
-            <FormMessage />
+            <FormMessage className='pl-1' />
           </FormItem>
         );
       }}

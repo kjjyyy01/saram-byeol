@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { searchPlaces } from '@/app/api/planForm/search/service';
 import { KakaoPlaceType } from '@/types/plans';
 import { inputToPlace } from '@/lib/planFormUtils';
+import { User } from '@phosphor-icons/react';
 
 interface PlaceFieldProps {
   inputValue: string;
@@ -33,10 +34,13 @@ const PlaceField = ({ inputValue, setInputValue }: PlaceFieldProps) => {
       name='location'
       render={({ field }) => {
         return (
-          <FormItem>
-            <FormLabel>장소</FormLabel>
+          <FormItem className='flex items-center justify-start gap-8'>
+            <FormLabel className='relative flex w-14 flex-shrink-0 flex-grow-0 flex-col items-center justify-center gap-1'>
+              <User size={24} className='h-6 w-6 flex-shrink-0 flex-grow-0' />
+              <p className='text-center text-sm'>장소</p>
+            </FormLabel>
             {!open ? (
-              <>
+              <div className="flex w-full gap-4">
                 <Input
                   type='text'
                   placeholder='장소를 검색해주세요.'
@@ -46,11 +50,12 @@ const PlaceField = ({ inputValue, setInputValue }: PlaceFieldProps) => {
                     const selected = inputToPlace(e.target.value);
                     setValue('location', selected);
                   }}
+                  className="self-stretch"
                 />
                 <Button onClick={(e) => searchHandler(e, inputValue)} type='button'>
                   검색
                 </Button>
-              </>
+              </div>
             ) : (
               <Select
                 open={true}

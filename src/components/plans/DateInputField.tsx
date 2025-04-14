@@ -9,6 +9,7 @@ import { format, setDefaultOptions } from 'date-fns';
 import { CalendarIcon } from 'lucide-react';
 import { Calendar } from '@/components/ui/calendar';
 import { ko } from 'date-fns/locale/ko';
+import { CalendarBlank } from '@phosphor-icons/react';
 
 setDefaultOptions({ locale: ko });
 
@@ -21,8 +22,11 @@ const DateInputField = () => {
       name='dateInput'
       render={({ field }) => {
         return (
-          <FormItem>
-            <FormLabel>약속</FormLabel>
+          <FormItem className='flex items-center justify-start gap-8'>
+            <FormLabel className='relative flex w-14 flex-shrink-0 flex-grow-0 flex-col items-center justify-center gap-1'>
+              <CalendarBlank className='h-6 w-6 flex-shrink-0 flex-grow-0' />
+              <p className='text-center text-sm'>약속</p>
+            </FormLabel>
             <Popover>
               <PopoverTrigger asChild>
                 <FormControl>
