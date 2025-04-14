@@ -8,7 +8,7 @@ interface Props {
 const ContactPlans: React.FC<Props> = ({ plans }) => {
   return (
     <div>
-      <h2 className='mb-2 text-xl font-semibold'>약속 목록</h2>
+      <h2 className='mb-2 text-xl font-semibold'>약속 전체보기</h2>
       {plans.length === 0 ? (
         <p>등록된 약속이 없습니다.</p>
       ) : (
