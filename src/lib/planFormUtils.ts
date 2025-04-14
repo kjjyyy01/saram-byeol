@@ -1,20 +1,20 @@
-import { add } from 'date-fns';
 import { PlanFormType } from './schemas/plansSchema';
 
-//날짜에 1시간 씩 추가
-export const addTimeHour = (date: Date) => {
-  return add(date, { hours: 1 });
-};
-
-//종료일에 30분 추가용
-export const addTimeMore = (date: Date) => {
-  return add(date, { minutes: 30 });
-};
-
+export const getTimeToString = (date: Date)=>{
+  const yyyy = date.getFullYear().toString();
+  const mm = date.getMonth() + 1;
+  const dd = date.getDate();
+  return {yyyy, mm, dd}
+}
 //시작일과 종료일 시간 추가 처리
 export const getStartAndEndDate = (from: Date, to?: Date) => {
-  const start_date = addTimeHour(from);
-  const end_date = to ? addTimeMore(addTimeHour(to)) : addTimeMore(start_date);
+  const {yyyy:fromY, mm:fromM, dd:fromD } = getTimeToString(from)
+  const {yyyy:toY, mm:toM, dd:toD } = to? getTimeToString(to) : getTimeToString(from)
+  const start_date = `${fromY}-${fromM}-${fromD} 00:00:00`;
+  const end_date = `${toY}-${toM}-${toD} 23:59:59`
+  console.log(start_date);
+  console.log(end_date);
+  
   return { start_date, end_date };
 };
 
@@ -22,10 +22,10 @@ export const getStartAndEndDate = (from: Date, to?: Date) => {
 export const mappingFormData = (data: PlanFormType) => {
   const { title, detail, contacts, dateInput, location } = data;
   const { start_date, end_date } = getStartAndEndDate(dateInput.from, dateInput.to);
-  return { title, detail, contacts_id: contacts, start_date, end_date, location };
+  return { title, detail, contacts_id: contacts, start_date,end_date, location };
 };
 
-//검색없이 인풋값만 있을 때 데이터 처리 
+//검색없이 인풋값만 있을 때 데이터 처리
 export const inputToPlace = (input: string) => {
   const place = {
     place_name: input,
