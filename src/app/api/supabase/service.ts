@@ -255,10 +255,14 @@ export const mutateUpdatePlan = async (planId: string, updatedData: InsertNewPla
 
 // 특정 사용자의 계획을 가져오는 함수 (30일 이내)
 export const getUserPlans = async (userId: string): Promise<PlansType[]> => {
-  // 현재 날짜와 30일 후 날짜 계산
+  // 현재 날짜의 시간을 00:00:00으로 설정
   const currentDate = new Date();
+  currentDate.setHours(0, 0, 0, 0); // 오늘의 시작점으로 설정
+
+  // 30일 후 날짜 계산
   const thirtyDayslater = new Date();
   thirtyDayslater.setDate(currentDate.getDate() + 30);
+  thirtyDayslater.setHours(23, 59, 59, 999); // 30일 후의 끝점으로 설정
 
   //ISO 형식으로 변환
   const currentDateISO = currentDate.toISOString();
