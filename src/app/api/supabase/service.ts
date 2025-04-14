@@ -1,8 +1,6 @@
 import { ContactDetailType, ContactItemType, ContactWithPlansDetailType } from '@/types/contacts';
 import { supabase } from '@/app/api/supabase/client';
 import { InsertNewPlansType, PlansType } from '@/types/plans';
-import { SignUpFormType } from '@/app/(pages)/signup/page';
-import { SignInFormType } from '@/app/(pages)/signin/page';
 import { CONTACTS, PLANS, USERS } from '@/constants/supabaseTable';
 
 export const getContacts = async (userId: string): Promise<ContactItemType[]> => {
@@ -50,7 +48,7 @@ export const getContactsWithPlans = async (userId: string, contactsId: string): 
 };
 
 // 회원가입
-export const signUpUser = async (value: SignUpFormType) => {
+export const signUpUser = async (value: { email: string; password: string; nickname: string }) => {
   const { email, password, nickname } = value;
 
   const { data, error } = await supabase.auth.signUp({
@@ -63,7 +61,7 @@ export const signUpUser = async (value: SignUpFormType) => {
 };
 
 // 로그인
-export const signInUser = async (value: SignInFormType) => {
+export const signInUser = async (value: { email: string; password: string }) => {
   const { email, password } = value;
 
   const { data, error } = await supabase.auth.signInWithPassword({
