@@ -21,6 +21,7 @@ export interface ContactType {
   phone: string;
   birth: string;
   contacts_profile_img?: string;
+  is_pinned?: boolean;
 }
 
 // 약속 타입
@@ -42,7 +43,7 @@ export interface ContactWithPlansType {
 }
 
 // 리스트용 연락처 타입
-export type ContactItemType = Pick<ContactType, 'contacts_id' | 'name' | 'relationship_level' | 'contacts_profile_img'>;
+export type ContactItemType = Pick<ContactType, 'contacts_id' | 'name' | 'relationship_level' | 'contacts_profile_img' | 'is_pinned'>;
 
 // 연락처 상세 정보 타입
 export type ContactDetailType = Pick<

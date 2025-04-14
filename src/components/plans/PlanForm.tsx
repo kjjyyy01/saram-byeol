@@ -7,25 +7,21 @@ import TitleField from '@/components/plans/TitleField';
 import DateInputField from '@/components/plans/DateInputField';
 import ContactsField from '@/components/plans/ContactsField';
 import DetailField from '@/components/plans/DetailField';
+import PlaceField from '@/components/plans/PlaceField';
 import useMutateInsertNewPlan from '@/hooks/mutations/useMutateInsertNewPlan';
-import { PlanFormType, PlansSchema } from '@/lib/schemas/plansSchema';
+import { planFormDefaultValues, PlanFormType, PlansSchema } from '@/lib/schemas/plansSchema';
 import { mappingFormData } from '@/lib/planFormUtils';
+import { useState } from 'react';
+import { toast } from 'react-toastify';
 
 const TEST_USER_ID = 'a27fc897-4216-4863-9e7b-f8868a8369ff';
 
 const PlanForm = () => {
+  const [inputValue, setInputValue] = useState('');
   const form = useForm<PlanFormType>({
     resolver: zodResolver(PlansSchema),
     mode: 'onChange',
-    defaultValues: {
-      title: '',
-      dateInput: {
-        from: new Date(),
-        to: undefined,
-      },
-      contacts: '',
-      detail: '',
-    },
+    defaultValues: planFormDefaultValues,
   });
 
   // mutate함수 호출
@@ -38,6 +34,11 @@ const PlanForm = () => {
       {
         onSuccess: () => {
           form.reset();
+          setInputValue('');
+          toast.success('약속이 추가되었습니다.');
+        },
+        onError: () => {
+          toast.error('약속 저장에 실패했습니다.');
         },
       }
     );
@@ -49,6 +50,7 @@ const PlanForm = () => {
         <TitleField />
         <DateInputField />
         <ContactsField userId={TEST_USER_ID} />
+        <PlaceField inputValue={inputValue} setInputValue={setInputValue} />
         <DetailField />
         <Button type='submit' disabled={form.formState.isSubmitting}>
           약속 저장

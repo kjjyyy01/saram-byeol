@@ -1,11 +1,21 @@
 'use client';
 
 import ContactList from '@/components/contacts/ContactList';
-import PeopleDetailPanel from '@/components/contacts/PeopleDetailPanel';
-import { useState } from 'react';
+import PeopleDetailPanel from '@/components/contactDetail/PeopleDetailPanel';
+import { AuthStateChangeHandler } from '@/store/zustand/store';
+import { useEffect, useState } from 'react';
+
 
 const People = () => {
   const [peopleSelectedId, setPeopleSelectedId] = useState<string | null>(null);
+
+  //onAuthStateChange호출 로직
+  useEffect(() => {
+    const { subscription } = AuthStateChangeHandler();
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, []);
 
   return (
     <div className='flex h-screen'>
@@ -14,9 +24,8 @@ const People = () => {
         <ContactList onSelectedContact={setPeopleSelectedId} />
       </div>
 
-      {/* 오른쪽 연락처 상세 정보 영역 (나중에 추가될 예정) */}
+      {/* 오른쪽 상세 정보 영역 */}
       <div className='flex-1 overflow-y-auto'>
-        {/* 여기에 ContactDetail 컴포넌트가 나중에 들어갈 예정 */}
         {peopleSelectedId ? (
           <PeopleDetailPanel contactsId={peopleSelectedId} />
         ) : (

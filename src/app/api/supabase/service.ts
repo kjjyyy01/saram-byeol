@@ -5,21 +5,22 @@ import { SignUpFormType } from '@/app/(pages)/signup/page';
 import { SignInFormType } from '@/app/(pages)/signin/page';
 import { CONTACTS, PLANS, USERS } from '@/constants/supabaseTable';
 
-// contacts 데이터 가져오기
 export const getContacts = async (userId: string): Promise<ContactItemType[]> => {
   try {
     const { data, error } = await supabase
       .from(CONTACTS)
-      .select('contacts_id, name, relationship_level, contacts_profile_img')
-      .eq('user_id', userId)
-      .order('name', { ascending: true });
+      .select('contacts_id, name, relationship_level, contacts_profile_img, is_pinned')
+      .eq('user_id', userId);
 
     if (error) {
       console.error('Supabase에서 Contact 테이블 데이터를 가져오는 중 오류가 발생했습니다:', error);
       throw error;
     }
 
-    return data || [];
+    // 한국어 로케일을 사용한 정렬
+    const sortedData = [...(data || [])].sort((a, b) => a.name.localeCompare(b.name, 'ko-KR'));
+
+    return sortedData;
   } catch (error) {
     console.error('연락처를 불러오는 중 오류가 발생했습니다:', error);
     throw error;
@@ -49,7 +50,7 @@ export const getContactsWithPlans = async (userId: string, contactsId: string): 
 };
 
 // 회원가입
-export const mutateSignUp = async (value: SignUpFormType) => {
+export const signUpUser = async (value: SignUpFormType) => {
   const { email, password, nickname } = value;
 
   const { data, error } = await supabase.auth.signUp({
@@ -62,7 +63,7 @@ export const mutateSignUp = async (value: SignUpFormType) => {
 };
 
 // 로그인
-export const mutateSignIn = async (value: SignInFormType) => {
+export const signInUser = async (value: SignInFormType) => {
   const { email, password } = value;
 
   const { data, error } = await supabase.auth.signInWithPassword({
@@ -158,4 +159,74 @@ export const mutateInsertContacts = async (
     console.error('연락처 저장 중 오류가 발생했습니다:', error);
     throw error;
   }
+};
+
+// contacts 데이터 수정
+export const mutateUpdateContacts = async (
+  contactsId: string,
+  contactData: Omit<ContactDetailType, 'contacts_id'>
+): Promise<void> => {
+  try {
+    const { error } = await supabase.from(CONTACTS).update(contactData).eq('contacts_id', contactsId);
+
+    if (error) {
+      console.error('연락처 수정 중 오류가 발생했습니다:', error);
+      throw error;
+    }
+  } catch (error) {
+    console.error('연락처 수정 중 오류가 발생했습니다:', error);
+    throw error;
+  }
+};
+
+// plans 데이터 수정
+// export const mutateUpdatePlan = async () => {};
+
+// 핀 업데이트 함수
+export const mutateUpdateContactPin = async (contactId: string, isPinned: boolean) => {
+  try {
+    const { data, error } = await supabase
+      .from('contacts')
+      .update({ is_pinned: isPinned })
+      .eq('contacts_id', contactId)
+      .select();
+
+    if (error) {
+      throw error;
+    }
+
+    return data;
+  } catch (error) {
+    console.error('연락처 핀 업데이트 실패:', error);
+    throw error;
+  }
+};
+
+export const signInWithGoogle = async () => {
+  const { error } = await supabase.auth.signInWithOAuth({
+    provider: 'google',
+    options: {
+      redirectTo: 'http://localhost:3000/people',
+      queryParams: {
+        access_type: 'offline',
+        prompt: 'consent',
+      },
+    },
+  });
+
+  return error;
+};
+export const signInWithKakao = async () => {
+  const { error } = await supabase.auth.signInWithOAuth({
+    provider: 'kakao',
+    options: {
+      redirectTo: 'http://localhost:3000/people',
+      queryParams: {
+        access_type: 'offline',
+        prompt: 'consent',
+      },
+    },
+  });
+
+  return error;
 };
