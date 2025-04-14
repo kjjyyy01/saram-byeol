@@ -13,11 +13,14 @@ import { planFormDefaultValues, PlanFormType, PlansSchema } from '@/lib/schemas/
 import { mappingFormData } from '@/lib/planFormUtils';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
+import ColorOptions from '../calendar/ColorOptions';
 
 const TEST_USER_ID = 'a27fc897-4216-4863-9e7b-f8868a8369ff';
 
 const PlanForm = () => {
   const [inputValue, setInputValue] = useState('');
+  const [selectedColor, setSelectedColor] = useState('#2F80ED'); // 선택 색상
+
   const form = useForm<PlanFormType>({
     resolver: zodResolver(PlansSchema),
     mode: 'onChange',
@@ -31,7 +34,7 @@ const PlanForm = () => {
     const formData = mappingFormData(data);
     // console.log('formData',formData)
     insertNewPlan(
-      { user_id: TEST_USER_ID, ...formData },
+      { user_id: TEST_USER_ID, ...formData, colors: selectedColor },
       {
         onSuccess: () => {
           form.reset();
@@ -48,6 +51,7 @@ const PlanForm = () => {
   return (
     <FormProvider {...form}>
       <form onSubmit={form.handleSubmit(planSubmitHandler)}>
+        <ColorOptions selectedColor={selectedColor} setSelectedColor={setSelectedColor} />
         <TitleField />
         <DateInputField />
         <ContactsField userId={TEST_USER_ID} />
