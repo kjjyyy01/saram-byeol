@@ -18,9 +18,7 @@ export const getContacts = async (userId: string): Promise<ContactItemType[]> =>
     }
 
     // 한국어 로케일을 사용한 정렬
-    const sortedData = [...(data || [])].sort((a, b) => 
-      a.name.localeCompare(b.name, 'ko-KR')
-    );
+    const sortedData = [...(data || [])].sort((a, b) => a.name.localeCompare(b.name, 'ko-KR'));
 
     return sortedData;
   } catch (error) {
@@ -170,15 +168,47 @@ export const mutateUpdateContactPin = async (contactId: string, isPinned: boolea
       .from('contacts')
       .update({ is_pinned: isPinned })
       .eq('contacts_id', contactId)
-      .select();  
-    
+      .select();
+
     if (error) {
       throw error;
     }
-    
+
     return data;
   } catch (error) {
     console.error('연락처 핀 업데이트 실패:', error);
     throw error;
+  }
+};
+
+// 특정 사용자의 계획을 가져오는 함수 (30일 이내)
+export const getUserPlans = async (userId: string): Promise<PlansType[]> => {
+  // 현재 날짜와 30일 후 날짜 계산
+  const currentDate = new Date();
+  const thirtyDayslater = new Date();
+  thirtyDayslater.setDate(currentDate.getDate() + 30);
+
+  //ISO 형식으로 변환
+  const currentDateISO = currentDate.toISOString();
+  const thirtyDaysLaterISO = thirtyDayslater.toISOString();
+
+  try {
+    const { data, error } = await supabase
+      .from('plans')
+      .select('*')
+      .eq('user_id', userId)
+      .gte('start_date', currentDateISO)
+      .lte('start_date', thirtyDaysLaterISO)
+      .order('start_date', { ascending: true });
+
+      if (error) {
+        console.log('계획 데이터를 가져오는 중 오류가 발생했습니다.', error);
+        return [];
+      }
+
+      return data || [];
+  } catch (error) {
+    console.error('Supabase 쿼리 중 예외가 발생했습니다:', error);
+    return [];
   }
 };
