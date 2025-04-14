@@ -17,7 +17,7 @@ export default function RootLayout({
     <html lang='ko'>
       <body>
         <Providers>
-          {children}{' '}
+          {children}
           <ToastContainer
             position='top-right'
             autoClose={3000}
