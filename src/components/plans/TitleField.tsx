@@ -15,7 +15,7 @@ const TitleField = () => {
           <FormItem>
             <FormLabel>제목</FormLabel>
             <FormControl>
-              <Input type='text' placeholder='제목' {...field} maxLength={20}/>
+              <Input type='text' placeholder='제목을 입력해주세요.' {...field} maxLength={50}/>
             </FormControl>
             <FormMessage />
           </FormItem>
