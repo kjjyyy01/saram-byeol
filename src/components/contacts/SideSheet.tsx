@@ -5,9 +5,11 @@ interface SideSheetProps {
   isOpen: boolean;
   onClose: () => void;
   children: ReactNode;
+  title?: string; // 이미 만들어두신 SideSheet 활용하기 위해 타이틀을 동적(내 사람 추가, 내 사람 수정)으로 수정했습니다
+                  // 추후 해당 사이드시트 다른 곳에서도 사용하게 될 시 용이할 것 같습니다
 }
 
-const SideSheet: React.FC<SideSheetProps> = ({ isOpen, onClose, children }) => {
+const SideSheet: React.FC<SideSheetProps> = ({ isOpen, onClose, children, title = "내 사람 추가" }) => {
   // 사이드시트가 열릴 때 body에 클래스 추가하여 스크롤 방지
   useEffect(() => {
     if (isOpen) {
@@ -32,7 +34,8 @@ const SideSheet: React.FC<SideSheetProps> = ({ isOpen, onClose, children }) => {
       >
         <div className='flex h-full flex-col p-4'>
           <div className='flex items-center justify-between mt-6 ml-6 pb-4'>
-            <h2 className='text-2xl font-bold'>내 사람 추가</h2>
+            {/* 사이드시트 타이틀 */}
+            <h2 className='text-2xl font-bold'>{title}</h2>
             <button onClick={onClose} className='rounded-full p-1 hover:bg-gray-100'>
               <X size={24} />
             </button>

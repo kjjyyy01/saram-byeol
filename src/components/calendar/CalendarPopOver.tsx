@@ -1,3 +1,4 @@
+'use client';
 import { Popover, PopoverContent } from '@/components/ui/popover';
 import DateInputField from '@/components/plans/DateInputField';
 import useMutateInsertNewPlan from '@/hooks/mutations/useMutateInsertNewPlan';
@@ -7,11 +8,12 @@ import { TEST_USER_ID } from '@/components/contacts/ContactList';
 import { FormProvider, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@/components/ui/button';
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { Form, FormControl, FormField, FormItem } from '@/components/ui/form';
 import ContactsField from '@/components//plans/ContactsField';
 import { toast } from 'react-toastify';
+import ColorOptions from './ColorOptions';
 
 interface Props {
   open: boolean;
@@ -20,6 +22,8 @@ interface Props {
 }
 
 const CalendarPopOver = ({ open, onOpenChange, date }: Props) => {
+  const [selectedColor, setSelectedColor] = useState('#2F80ED'); // 선택 색상
+
   const dateInput = {
     from: new Date(),
     to: undefined,
@@ -29,6 +33,7 @@ const CalendarPopOver = ({ open, onOpenChange, date }: Props) => {
     dateInput,
     contacts: '',
     detail: '',
+    colors: '#2F80ED',
   };
   const form = useForm<PlanFormType>({
     resolver: zodResolver(PlansSchema),
@@ -54,9 +59,9 @@ const CalendarPopOver = ({ open, onOpenChange, date }: Props) => {
 
   const planSubmitHandler = useCallback(
     (data: PlanFormType) => {
-      const formData = mappingFormData(data);
+      const inputData = mappingFormData(data);
       insertNewPlan(
-        { user_id: TEST_USER_ID, ...formData },
+        { user_id: TEST_USER_ID, ...inputData, colors: selectedColor }, //새로운 일정 추가 시 색상 포함
         {
           onSuccess: () => {
             form.reset();
@@ -68,39 +73,42 @@ const CalendarPopOver = ({ open, onOpenChange, date }: Props) => {
         }
       );
     },
-    [insertNewPlan, form]
+    [insertNewPlan, form, selectedColor]
   );
 
   return (
-    <FormProvider {...form}>
-      <Popover open={open} onOpenChange={onOpenChange}>
-        <PopoverContent side='right' align='start' style={{ position: 'absolute', top: 200, left: 600 }} asChild>
-          <form onSubmit={form.handleSubmit(planSubmitHandler)}>
-            <fieldset disabled={isPending}>
-              <Form {...form}>
-                <FormField
-                  control={form.control}
-                  name='title'
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormControl>
-                        <Input type='text' placeholder='제목' {...field} />
-                      </FormControl>
-                    </FormItem>
-                  )}
-                />
-                <DateInputField />
-                <ContactsField userId={TEST_USER_ID} />
-                <Button>옵션 더보기</Button>
-                <Button type='submit' disabled={isPending}>
-                  {isPending ? '저장 중...' : '저장'}
-                </Button>
-              </Form>
-            </fieldset>
-          </form>
-        </PopoverContent>
-      </Popover>
-    </FormProvider>
+    <>
+      <FormProvider {...form}>
+        <Popover open={open} onOpenChange={onOpenChange}>
+          <PopoverContent side='right' align='start' style={{ position: 'absolute', top: 200, left: 600 }}>
+            <ColorOptions selectedColor={selectedColor} setSelectedColor={setSelectedColor} /> {/* state 전달 */}
+            <form onSubmit={form.handleSubmit(planSubmitHandler)}>
+              <fieldset disabled={isPending}>
+                <Form {...form}>
+                  <FormField
+                    control={form.control}
+                    name='title'
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormControl>
+                          <Input type='text' placeholder='제목' {...field} />
+                        </FormControl>
+                      </FormItem>
+                    )}
+                  />
+                  <DateInputField />
+                  <ContactsField userId={TEST_USER_ID} />
+                  <Button>옵션 더보기</Button>
+                  <Button type='submit' disabled={isPending}>
+                    {isPending ? '저장 중...' : '저장'}
+                  </Button>
+                </Form>
+              </fieldset>
+            </form>
+          </PopoverContent>
+        </Popover>
+      </FormProvider>
+    </>
   );
 };
 export default CalendarPopOver;
