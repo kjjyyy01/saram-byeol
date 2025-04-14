@@ -11,5 +11,13 @@ export const holidayStyle = (event: Props) => {
     };
   }
 
-  return {}; // 기본 스타일
+  const color = event.colors;
+  if (!color) return {};
+
+  return {
+    style: {
+      backgroundColor: color,
+      color: ['#F2C94C', '#56CCF2'].includes(color) ? 'black' : 'white',
+    },
+  };
 };
