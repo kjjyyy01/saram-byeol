@@ -10,24 +10,26 @@ import { ArrowLeft, ArrowRight } from '@phosphor-icons/react';
 const CustomToolbar = ({ date, onNavigate }: ToolbarProps<CalendarEventType>) => {
   const customLabel = format(date, 'yyyy MMMM', { locale: ko });
   return (
-    <div>
-      <section className='flex h-[40px] w-[137px] place-content-center items-center rounded-xl border border-gray-300'>
-        <ArrowLeft
-          size={20}
+    <div className='flex'>
+      <section className='flex h-[40px] w-[137px] place-content-center items-center rounded-[8px] border border-gray-300'>
+        <button
           onClick={() => onNavigate('PREV')}
           className='flex h-full flex-1 items-center justify-center border-r border-gray-300'
-        ></ArrowLeft>
-        <ArrowRight
-          size={20}
+        >
+          <ArrowLeft size={20} />
+        </button>
+        <button
           onClick={() => onNavigate('NEXT')}
           className='flex h-full flex-1 items-center justify-center border-r border-gray-300'
-        ></ArrowRight>
+        >
+          <ArrowRight size={20} />
+        </button>
         <button onClick={() => onNavigate('TODAY')} className='flex flex-1 items-center justify-center'>
           오늘
         </button>
       </section>
-      <span>{customLabel}</span>
-      <section>
+      <span className='ml-[24px] text-[28px] font-bold'>{customLabel}</span>
+      <section className='flex'>
         <UpcomingPlans />
         <AddPlans />
       </section>
