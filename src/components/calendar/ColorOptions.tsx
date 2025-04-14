@@ -7,7 +7,7 @@ const ColorOptions = ({ selectedColor, setSelectedColor }: Props) => {
   const colorOptions = ['#EB5757', '#F2994A', '#F2C94C', '#27AE60', '#2F80ED', '#56CCF2', '#9B51E0', '#F955EB'];
 
   return (
-    <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+    <div className='flex flex-wrap gap-[8px]'>
       {colorOptions.map((color) => (
         <div
           key={color}
