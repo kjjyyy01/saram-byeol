@@ -1,5 +1,4 @@
 'use client';
-import { Popover, PopoverContent } from '@/components/ui/popover';
 import DateInputField from '@/components/plans/DateInputField';
 import useMutateInsertNewPlan from '@/hooks/mutations/useMutateInsertNewPlan';
 import { mappingFormData } from '@/lib/planFormUtils';
@@ -22,7 +21,7 @@ interface Props {
   date: Date | null;
 }
 
-const CalendarPopOver = ({ open, onOpenChange, date }: Props) => {
+const CalendarPopOver = ({ onOpenChange, date }: Props) => {
   const [selectedColor, setSelectedColor] = useState('#2F80ED'); // 선택 색상
 
   const dateInput = {
@@ -44,7 +43,7 @@ const CalendarPopOver = ({ open, onOpenChange, date }: Props) => {
 
   // 팝오버가 열릴 때마다 선택한 날짜로 form 업데이트
   useEffect(() => {
-    if (date && open) {
+    if (date) {
       form.reset({
         ...form.getValues(),
         dateInput: {
@@ -53,7 +52,7 @@ const CalendarPopOver = ({ open, onOpenChange, date }: Props) => {
         },
       });
     }
-  }, [date, open, form]);
+  }, [date, form]);
 
   // mutate함수 호출
   const { mutate: insertNewPlan, isPending } = useMutateInsertNewPlan();
@@ -78,11 +77,13 @@ const CalendarPopOver = ({ open, onOpenChange, date }: Props) => {
   );
 
   return (
-    <>
+    <div>
       <FormProvider {...form}>
-        <Popover open={open} onOpenChange={onOpenChange}>
-          <PopoverContent side='right' align='start' style={{ position: 'absolute', top: 200, left: 600 }}>
-            <X size={24} onClick={() => onOpenChange(false)} className='cursor-pointer' />
+        <div className='absolute left-1/2 top-1/2 z-50 -translate-x-1/2 -translate-y-1/2'>
+          <div className='relative w-[300px] rounded-lg bg-white p-6 shadow-lg'>
+            <div className='flex justify-end'>
+              <X size={24} onClick={() => onOpenChange(false)} className='cursor-pointer' />
+            </div>
             <ColorOptions selectedColor={selectedColor} setSelectedColor={setSelectedColor} /> {/* state 전달 */}
             <form onSubmit={form.handleSubmit(planSubmitHandler)}>
               <fieldset disabled={isPending}>
@@ -107,10 +108,10 @@ const CalendarPopOver = ({ open, onOpenChange, date }: Props) => {
                 </Form>
               </fieldset>
             </form>
-          </PopoverContent>
-        </Popover>
+          </div>
+        </div>
       </FormProvider>
-    </>
+    </div>
   );
 };
 export default CalendarPopOver;
