@@ -3,7 +3,7 @@ import { format } from 'date-fns';
 import { ko } from 'date-fns/locale';
 import { ToolbarProps } from 'react-big-calendar';
 import AddPlans from '@/components/calendar/AddPlans';
-import UpcomingPlans from '@/components/calendar/UpcomingPlans';
+import UpcomingPlanButton from '@/components/calendar/UpcomingPlanButton';
 
 //캘린더와 타입 맞춤(id 유실로 인한 오류)
 const CustomToolbar = ({ date, onNavigate }: ToolbarProps<CalendarEventType>) => {
@@ -18,7 +18,7 @@ const CustomToolbar = ({ date, onNavigate }: ToolbarProps<CalendarEventType>) =>
       <span>{customLabel}</span>
       <section>
         {/* 검색창 추가 */}
-        <UpcomingPlans />
+        <UpcomingPlanButton />
         <AddPlans />
       </section>
     </div>
