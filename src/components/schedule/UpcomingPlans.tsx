@@ -5,6 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 import { getUserPlans } from '@/app/api/supabase/service';
 import { PlansType } from '@/types/plans';
 import PlanCard from '@/components/schedule/UpcomingPlanCard';
+import { QUERY_KEY } from '@/constants/queryKey';
 
 interface UpcomingPlansProps {
   userId: string;
@@ -17,9 +18,9 @@ const UpcomingPlans: React.FC<UpcomingPlansProps> = ({ userId }) => {
     isPending,
     error,
   } = useQuery({
-    queryKey: ['plans', userId],
+    queryKey: [QUERY_KEY.PLANS, userId],
     queryFn: () => getUserPlans(userId),
-    staleTime: 1000 * 60 * 5, // 5분 동안 신선한 상태 유지
+    staleTime: 1000 * 60 * 60 * 24, // 하루 동안 신선한 상태 유지
     refetchOnWindowFocus: false, // 창 포커스시 자동 리패치 비활성화
   });
 
