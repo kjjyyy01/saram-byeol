@@ -47,8 +47,8 @@ export const AuthStateChangeHandler = () => {
         toast.success(`로그인되었습니다.'내 사람' 페이지로 이동합니다.`);
       }
     } else if (event === 'SIGNED_OUT') {
-      localStorage.removeItem('alreadySignIn');
       signOut(); // 사용자 정보 null로 초기화, isSignIn 을 false로 변경
+      localStorage.removeItem('alreadySignIn');
     }
   });
 

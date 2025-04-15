@@ -1,13 +1,11 @@
-import { getContacts, mutateUpdateContactPin } from '@/app/api/supabase/service';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import React, { useMemo, useState } from 'react';
 import ContactItem from '@/components/contacts/ContactItem';
-import { ContactItemType } from '@/types/contacts';
 import { UserPlus } from '@phosphor-icons/react';
 import AddContactForm from '@/components/contacts/addContactForm/Index';
 import SideSheet from '@/components/contacts/SideSheet';
-
-export const TEST_USER_ID = 'a27fc897-4216-4863-9e7b-f8868a8369ff';
+import { useAuthStore } from '@/store/zustand/store';
+import useGetContactsByUserID from '@/hooks/queries/useGetContactsByUserID';
+import { useTogglePinContact } from '@/hooks/mutations/useMutateTogglePinContact';
 
 interface ContactListProps {
   onSelectedContact: (id: string) => void;
@@ -15,26 +13,22 @@ interface ContactListProps {
 
 const ContactList: React.FC<ContactListProps> = ({ onSelectedContact }) => {
   const [isAddContactOpen, setIsAddContactOpen] = useState(false);
-  const queryClient = useQueryClient();
+
+  // useAuthStore에서 사용자 정보 가져오기
+  const { user } = useAuthStore();
+  const userId = user?.id; // 현재 로그인된 사용자의 ID
+
+  // 로그인 되지 않은 경우를 위한 처리
+  const isAuthenticated = !!userId;
 
   const {
     data: contacts = [],
     isPending,
-    error,
-  } = useQuery<ContactItemType[]>({
-    queryKey: ['contacts', TEST_USER_ID],
-    queryFn: () => getContacts(TEST_USER_ID),
-  });
+    error, 
+  } = useGetContactsByUserID(userId as string,isAuthenticated);
 
     // Pin 업데이트 뮤테이션
-    const pinMutation = useMutation({
-      mutationFn: ({ contactId, isPinned }: { contactId: string; isPinned: boolean }) => 
-        mutateUpdateContactPin(contactId, isPinned),
-      onSuccess: () => {
-        // 성공 시 연락처 목록 갱신
-        queryClient.invalidateQueries({ queryKey: ['contacts', TEST_USER_ID] });
-      }
-    });
+    const pinMutation = useTogglePinContact(userId)
   
     // 핀된 연락처와 일반 연락처 분리
     const { pinnedContacts, regularContacts } = useMemo(() => {
@@ -50,6 +44,14 @@ const ContactList: React.FC<ContactListProps> = ({ onSelectedContact }) => {
 
   if (error) {
     console.error('연락처 로딩 실패', error);
+  }
+
+  if (!isAuthenticated) {
+    return (
+      <div className="flex h-full flex-col items-center justify-center">
+        <p className="text-lg text-gray-600">로그인이 필요한 서비스입니다.</p>
+      </div>
+    );
   }
 
   return (
