@@ -1,18 +1,16 @@
 'use client';
 
-import { emailDuplicateTest, NicknameDuplicateTest, signUpUser } from '@/app/api/supabase/service';
-import { PEOPLE } from '@/constants/paths';
+import { emailDuplicateTest, NicknameDuplicateTest } from '@/app/api/supabase/service';
 import {
   PLACEHOLDER_EMAIL,
   PLACEHOLDER_NICKNAME,
   PLACEHOLDER_PASSWORD,
   PLACEHOLDER_PASSWORD_CHECK,
 } from '@/constants/placeholders';
+import { useSignup } from '@/hooks/useSignup';
 import { signUpSchema } from '@/lib/schemas/signupSchema';
-import { useAuthStore } from '@/store/zustand/store';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useRouter } from 'next/navigation';
-import React, { useState } from 'react';
+import React from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 
@@ -24,33 +22,13 @@ export interface SignUpFormType {
 }
 
 const SignupForm = () => {
-  const [isNicknameChecked, setIsNicknameChecked] = useState<boolean>(false);
-  const [isEmailChecked, setIsEmailChecked] = useState<boolean>(false);
+  //회원가입 커스텀 훅
+  const { SignUpHandler, setIsEmailChecked, setIsNicknameChecked } = useSignup();
 
   const { register, handleSubmit, getValues, formState, setFocus } = useForm<SignUpFormType>({
     mode: 'onChange',
     resolver: zodResolver(signUpSchema),
   });
-  const router = useRouter();
-  const setUser = useAuthStore((state) => state.setUser);
-
-  //회원가입 기능 핸들러
-  const onSignUpHandler = async (value: SignUpFormType) => {
-    if (!isEmailChecked || !isNicknameChecked) {
-      toast.warning('이메일과 닉네임 중복 검사를 완료해주세요.');
-      return;
-    }
-
-    const { data, error } = await signUpUser(value);
-    if (data.session) {
-      localStorage.setItem('alreadySignIn', 'true');
-      toast.success(`회원가입이 완료되었습니다. 자동으로 로그인되어 '내 사람' 페이지로 이동합니다.`);
-      setUser(data.session.user);
-      router.push(PEOPLE);
-    } else if (error) {
-      toast.warning('입력한 정보를 다시 한 번 확인해주세요.');
-    }
-  };
 
   //닉네임 중복 검사 핸들러
   const NicknameDuplicateTestHandler = async () => {
@@ -103,7 +81,7 @@ const SignupForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSignUpHandler)} className='flex flex-col gap-8'>
+    <form onSubmit={handleSubmit(SignUpHandler)} className='flex flex-col gap-8'>
       <div className='flex flex-col'>
         <div className='flex flex-col justify-start'>
           <label
