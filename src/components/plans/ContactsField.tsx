@@ -14,12 +14,13 @@ import { User } from '@phosphor-icons/react';
 
 interface Props {
   userId: UserType['user_id'];
+  enabled: boolean;
 }
 
-const ContactsField = ({ userId }: Props) => {
+const ContactsField = ({ userId, enabled }: Props) => {
   const [open, setOpen] = useState(false);
   const { control, setValue } = useFormContext();
-  const { data: contacts = [] } = useGetContactsByUserID(userId);
+  const { data: contacts = [] } = useGetContactsByUserID(userId, enabled);
 
   return (
     <FormField
@@ -32,53 +33,56 @@ const ContactsField = ({ userId }: Props) => {
               <User size={24} className='h-6 w-6 flex-shrink-0 flex-grow-0' />{' '}
               <p className='text-center text-sm'>이름</p>
             </FormLabel>
-                  <div className='flex w-full flex-col'>
-            <Popover open={open} onOpenChange={setOpen}>
-              <PopoverTrigger asChild>
-                <FormControl>
-                  <Button
-                    variant='outline'
-                    role='combobox'
-                    aria-expanded={open}
-                    className={cn(
-                      'w-full items-center justify-between self-stretch rounded-lg border-grey-200 px-4 py-2 text-sm leading-6',
-                      !field.value && 'text-muted-foreground'
-                    )}
-                  >
-                    {field.value
-                      ? contacts.find((person) => person.contacts_id === field.value)?.name
-                      : '이름을 검색해주세요.'}
-                    <ChevronsUpDown className='opacity-50' />
-                  </Button>
-                </FormControl>
-              </PopoverTrigger>
-              <PopoverContent className='w-auto p-0'>
-                <Command className='rounded-lg'>
-                  <CommandInput placeholder='검색' className='h-9' />
-                  <CommandList>
-                    <CommandEmpty>일치하는 이름이 없습니다.</CommandEmpty>
-                    <CommandGroup>
-                      {contacts.map((person, i) => (
-                        <CommandItem
-                          value={person.contacts_id}
-                          key={i}
-                          onSelect={() => {
-                            setValue('contacts', person.contacts_id);
-                            setOpen(false);
-                          }}
-                        >
-                          {person.name}
-                          <Check
-                            className={cn('ml-auto', person.contacts_id === field.value ? 'opacity-100' : 'opacity-0')}
-                          />
-                        </CommandItem>
-                      ))}
-                    </CommandGroup>
-                  </CommandList>
-                </Command>
-              </PopoverContent>
-            </Popover>
-            <FormMessage className='pl-1' />
+            <div className='flex w-full flex-col'>
+              <Popover open={open} onOpenChange={setOpen}>
+                <PopoverTrigger asChild>
+                  <FormControl>
+                    <Button
+                      variant='outline'
+                      role='combobox'
+                      aria-expanded={open}
+                      className={cn(
+                        'w-full items-center justify-between self-stretch rounded-lg border-grey-200 px-4 py-2 text-sm leading-6',
+                        !field.value && 'text-muted-foreground'
+                      )}
+                    >
+                      {field.value
+                        ? contacts.find((person) => person.contacts_id === field.value)?.name
+                        : '이름을 검색해주세요.'}
+                      <ChevronsUpDown className='opacity-50' />
+                    </Button>
+                  </FormControl>
+                </PopoverTrigger>
+                <PopoverContent className='w-auto p-0'>
+                  <Command className='rounded-lg'>
+                    <CommandInput placeholder='검색' className='h-9' />
+                    <CommandList>
+                      <CommandEmpty>일치하는 이름이 없습니다.</CommandEmpty>
+                      <CommandGroup>
+                        {contacts.map((person, i) => (
+                          <CommandItem
+                            value={person.contacts_id}
+                            key={i}
+                            onSelect={() => {
+                              setValue('contacts', person.contacts_id);
+                              setOpen(false);
+                            }}
+                          >
+                            {person.name}
+                            <Check
+                              className={cn(
+                                'ml-auto',
+                                person.contacts_id === field.value ? 'opacity-100' : 'opacity-0'
+                              )}
+                            />
+                          </CommandItem>
+                        ))}
+                      </CommandGroup>
+                    </CommandList>
+                  </Command>
+                </PopoverContent>
+              </Popover>
+              <FormMessage className='pl-1' />
             </div>
           </FormItem>
         );
