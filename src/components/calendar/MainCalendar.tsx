@@ -1,7 +1,6 @@
 'use client';
 import { Calendar, dateFnsLocalizer } from 'react-big-calendar';
 import { format, parse, startOfWeek, getDay } from 'date-fns';
-import { ko } from 'date-fns/locale/ko';
 import { useGetCalendarPlans } from '@/hooks/queries/useGetCalendarPlans';
 import CustomToolbar from '@/components/calendar/CustomToolbar';
 import { useState } from 'react';
@@ -20,17 +19,12 @@ interface Props {
   end: string | Date;
 }
 
-// 로케일(지역화) 설정
-const locales = {
-  'ko-KR': ko, //한국-한글 : 한국식 날짜
-};
-
 const localizer = dateFnsLocalizer({
   format,
   parse,
   startOfWeek,
   getDay,
-  locales,
+  locales: {},
 });
 
 const MainCalendar = () => {
