@@ -22,8 +22,8 @@ export const signUpSchema = z
       .string()
       .min(1, { message: '닉네임을 입력해주세요.' })
       .min(2, { message: '2자 이상으로 입력해주세요.' })
-      .regex(/^[A-Za-z0-9가-힣\s]+$/, {
-        message: '띄어쓰기를 제외한 특수문자를 사용할 수 없습니다.',
+      .regex(/^[A-Za-z0-9가-힣]+$/, {
+        message: '특수문자를 사용할 수 없습니다.',
       }),
   })
   .refine((data) => data.password === data.passwordCheck, {
