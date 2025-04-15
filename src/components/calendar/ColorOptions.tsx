@@ -23,6 +23,7 @@ const ColorOptions = ({ selectedColor, setSelectedColor }: Props) => {
           />
         ))}
       </div>
+
     </div>
   );
 };

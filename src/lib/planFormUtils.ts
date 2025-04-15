@@ -2,8 +2,9 @@ import { PlanFormType } from './schemas/plansSchema';
 
 export const getTimeToString = (date: Date) => {
   const yyyy = date.getFullYear().toString();
-  const mm = ("0" + (date.getMonth() + 1)).slice(-2)
-  const dd = ("0" + date.getDate()).slice(-2); 
+  const mm = ('0' + (date.getMonth() + 1)).slice(-2);
+  const dd = ('0' + date.getDate()).slice(-2);
+
   return { yyyy, mm, dd };
 };
 //시작일과 종료일 시간 추가 처리
@@ -21,6 +22,7 @@ export const mappingFormData = (data: PlanFormType) => {
   const { title, detail, contacts, dateInput, location, priority } = data;
   const { start_date, end_date } = getStartAndEndDate(dateInput.from, dateInput.to);
   return { title, detail, contacts_id: contacts, start_date, end_date, location, priority };
+
 };
 
 //검색없이 인풋값만 있을 때 데이터 처리

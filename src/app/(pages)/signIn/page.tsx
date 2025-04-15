@@ -8,12 +8,14 @@ import { PLACEHOLDER_EMAIL, PLACEHOLDER_PASSWORD } from '@/constants/placeholder
 import { PEOPLE, SIGNUP } from '@/constants/paths';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { signInSchema } from '@/lib/schemas/signinSchema';
-import { z } from 'zod';
 import Link from 'next/link';
 import Image from 'next/image';
 import { toast } from 'react-toastify';
 
-export type SignInFormType = z.infer<typeof signInSchema>;
+export interface SignInFormType {
+  email: string;
+  password: string;
+}
 
 const SignIn = () => {
   const { register, handleSubmit, formState } = useForm<SignInFormType>({
