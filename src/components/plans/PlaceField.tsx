@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { searchPlaces } from '@/app/api/planForm/search/service';
 import { KakaoPlaceType } from '@/types/plans';
 import { inputToPlace } from '@/lib/planFormUtils';
-import { User } from '@phosphor-icons/react';
+import { MapPin } from '@phosphor-icons/react';
 
 interface PlaceFieldProps {
   inputValue: string;
@@ -36,7 +36,7 @@ const PlaceField = ({ inputValue, setInputValue }: PlaceFieldProps) => {
         return (
           <FormItem className='flex items-center justify-start gap-8'>
             <FormLabel className='relative flex w-14 flex-shrink-0 flex-grow-0 flex-col items-center justify-center gap-1'>
-              <User size={24} className='h-6 w-6 flex-shrink-0 flex-grow-0' />
+              <MapPin size={24} className='h-6 w-6 flex-shrink-0 flex-grow-0' />
               <p className='text-center text-sm'>장소</p>
             </FormLabel>
             {!open ? (
