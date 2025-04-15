@@ -4,6 +4,7 @@ import ContactProfile from '@/components/contactDetail/ContactProfile';
 import ContactPlans from '@/components/contactDetail/ContactPlans';
 import Tabs from '@/components/ui/Tabs';
 import { useAuthStore } from '@/store/zustand/store';
+
 interface Props {
   contactsId: string;
 }
