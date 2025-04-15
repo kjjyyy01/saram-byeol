@@ -43,10 +43,15 @@ const ContactPlans: React.FC<Props> = ({ plans }) => {
 
   return (
     <div>
-      <h2 className='mb-2 text-xl font-semibold'>약속 전체보기</h2>
-      <Button variant='outline' size='sm' onClick={() => setIsAddPlanOpen(true)}>
-        약속 추가
-      </Button>
+      {/* 타이틀 & 추가 버튼 라인 */}
+      <div className='mb-4 flex items-center gap-12'>
+        <h2 className='text-xl font-semibold'>약속 전체보기</h2>
+        <Button variant='outline' size='sm' onClick={() => setIsAddPlanOpen(true)}>
+          약속 추가
+        </Button>
+      </div>
+
+      {/* 약속 카드 목록 */}
       {plans.length === 0 ? (
         <p>등록된 약속이 없습니다.</p>
       ) : (
