@@ -124,15 +124,15 @@ const SignUp = () => {
   };
 
   return (
-    <div className='flex h-[100vh] w-[100vw] items-center justify-center overflow-hidden'>
+    <div className='flex h-[100vh] w-[100vw] items-center justify-center'>
       <section className='flex w-1/2 flex-col items-center justify-center'>
-        <h1 className="mb-10 text-center font-['Pretendard'] text-[28px] font-bold text-[#06F]">사람, 별 회원가입</h1>
+        <h1 className='my-10 text-center text-[28px] font-bold text-[#06F]'>사람, 별 회원가입</h1>
         <section className='mb-8'>
           <form onSubmit={handleSubmit(onSignUpHandler)} className='flex flex-col gap-8'>
             <div className='flex flex-col'>
               <div className='flex flex-col justify-start'>
                 <label
-                  className={`self-stretch font-['Pretendard'] text-sm font-bold leading-[150%] ${formState.errors.nickname ? `text-[#FF4242]` : `text-[#2B2B2B]`}`}
+                  className={`self-stretch text-sm font-bold leading-[150%] ${formState.errors.nickname ? `text-[#FF4242]` : `text-[#2B2B2B]`}`}
                 >
                   이름(닉네임)
                 </label>
@@ -155,11 +155,11 @@ const SignUp = () => {
                 </div>
               </div>
               {formState.errors.nickname ? (
-                <span className='self-stretch font-[Pretendard] text-sm font-normal not-italic leading-[150%] text-[#FF4242]'>
+                <span className='self-stretch text-sm font-normal not-italic leading-[150%] text-[#FF4242]'>
                   {formState.errors.nickname.message}
                 </span>
               ) : (
-                <span className='self-stretch font-[Pretendard] font-normal not-italic leading-[150%] text-[#D0D0D0]'>
+                <span className='self-stretch font-normal not-italic leading-[150%] text-[#D0D0D0]'>
                   2자 이상 8자 이하로 입력해주세요.
                 </span>
               )}
@@ -168,7 +168,7 @@ const SignUp = () => {
             <div className='flex flex-col'>
               <div className='flex flex-col justify-start'>
                 <label
-                  className={`self-stretch font-['Pretendard'] text-sm font-bold leading-[150%] ${formState.errors.email ? `text-[#FF4242]` : `text-[#2B2B2B]`}`}
+                  className={`self-stretch text-sm font-bold leading-[150%] ${formState.errors.email ? `text-[#FF4242]` : `text-[#2B2B2B]`}`}
                 >
                   아이디(이메일)
                 </label>
@@ -190,11 +190,11 @@ const SignUp = () => {
                 </div>
               </div>
               {formState.errors.email ? (
-                <span className='self-stretch font-[Pretendard] text-sm font-normal not-italic leading-[150%] text-[#FF4242]'>
+                <span className='self-stretch text-sm font-normal not-italic leading-[150%] text-[#FF4242]'>
                   {formState.errors.email.message}
                 </span>
               ) : (
-                <span className='self-stretch font-[Pretendard] font-normal not-italic leading-[150%] text-[#D0D0D0]'>
+                <span className='self-stretch font-normal not-italic leading-[150%] text-[#D0D0D0]'>
                   이메일 형식에 맞게 입력해주세요.
                 </span>
               )}
@@ -203,7 +203,7 @@ const SignUp = () => {
             <div className='flex flex-col'>
               <div className='flex flex-col justify-start'>
                 <label
-                  className={`self-stretch font-['Pretendard'] text-sm font-bold leading-[150%] ${formState.errors.password ? `text-[#FF4242]` : `text-[#2B2B2B]`}`}
+                  className={`self-stretch text-sm font-bold leading-[150%] ${formState.errors.password ? `text-[#FF4242]` : `text-[#2B2B2B]`}`}
                 >
                   비밀번호
                 </label>
@@ -216,11 +216,11 @@ const SignUp = () => {
                 />
               </div>
               {formState.errors.password ? (
-                <span className='self-stretch font-[Pretendard] text-sm font-normal not-italic leading-[150%] text-[#FF4242]'>
+                <span className='self-stretch text-sm font-normal not-italic leading-[150%] text-[#FF4242]'>
                   {formState.errors.password.message}
                 </span>
               ) : (
-                <span className='self-stretch font-[Pretendard] font-normal not-italic leading-[150%] text-[#D0D0D0]'>
+                <span className='self-stretch font-normal not-italic leading-[150%] text-[#D0D0D0]'>
                   특수문자(!@#$%^&*)를 1개 이상 포함하여 입력해주세요.
                 </span>
               )}
@@ -229,7 +229,7 @@ const SignUp = () => {
             <div className='flex flex-col'>
               <div className='flex flex-col justify-start'>
                 <label
-                  className={`self-stretch font-['Pretendard'] text-sm font-bold leading-[150%] ${formState.errors.passwordCheck ? `text-[#FF4242]` : `text-[#2B2B2B]`}`}
+                  className={`self-stretch text-sm font-bold leading-[150%] ${formState.errors.passwordCheck ? `text-[#FF4242]` : `text-[#2B2B2B]`}`}
                 >
                   비밀번호 확인
                 </label>
@@ -242,24 +242,24 @@ const SignUp = () => {
                 />
               </div>
               {formState.errors.passwordCheck ? (
-                <span className='self-stretch font-[Pretendard] text-sm font-normal not-italic leading-[150%] text-[#FF4242]'>
+                <span className='self-stretch text-sm font-normal not-italic leading-[150%] text-[#FF4242]'>
                   {formState.errors.passwordCheck.message}
                 </span>
               ) : (
-                <span className='self-stretch font-[Pretendard] font-normal not-italic leading-[150%] text-[#D0D0D0]'>
+                <span className='self-stretch font-normal not-italic leading-[150%] text-[#D0D0D0]'>
                   비밀번호를 한번 더 입력해주세요.
                 </span>
               )}
             </div>
             <button
               type='submit'
-              className="duration-600 w-[456px] justify-start rounded-lg bg-[#06F] px-6 py-4 font-['Pretendard'] text-base font-bold not-italic leading-[135%] text-white transition hover:bg-[#EEE] hover:text-[#06F]"
+              className='duration-600 w-[456px] justify-start rounded-lg bg-[#06F] px-6 py-4 text-base font-bold not-italic leading-[135%] text-white transition hover:bg-[#EEE] hover:text-[#06F]'
             >
               회원가입
             </button>
           </form>
         </section>
-        <section className='flex flex-col items-center justify-center'>
+        <section className='mb-10 flex flex-col items-center justify-center'>
           <div className='mb-[42px] flex items-center gap-1'>
             <div className='w-[150px] outline outline-1 outline-stone-300' />
             <p className='text-base font-bold leading-normal text-zinc-800'>SNS계정으로 간편로그인</p>
@@ -269,7 +269,7 @@ const SignUp = () => {
             <button
               type='button'
               onClick={googleSignin}
-              className='flex h-[45px] w-[300px] items-center justify-center gap-[10px] rounded-[6px] border-2 border-[#F5F5F5] font-[Pretendard] text-sm font-semibold text-[#595959]'
+              className='flex h-[45px] w-[300px] items-center justify-center gap-[10px] rounded-[6px] border-2 border-[#F5F5F5] text-sm font-semibold text-[#595959]'
             >
               <Image src='/google_login_img.png' alt='google login' width={22} height={22} />
               구글계정으로 로그인

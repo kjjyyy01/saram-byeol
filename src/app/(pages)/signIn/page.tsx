@@ -59,13 +59,13 @@ const SignIn = () => {
   return (
     <div className='flex h-[100vh] w-[100vw] items-center justify-center overflow-hidden'>
       <section className='flex w-1/2 flex-col items-center justify-center'>
-        <h1 className="mb-10 text-center font-['Pretendard'] text-[28px] font-bold text-[#06F]">사람, 별 로그인</h1>
+        <h1 className='mb-10 text-center text-[28px] font-bold text-[#06F]'>사람, 별 로그인</h1>
         <section className='mb-8'>
           <form onSubmit={handleSubmit(onSignInHandler)} className='flex flex-col gap-8'>
             <div className='flex flex-col'>
               <div className='flex flex-col justify-start'>
                 <label
-                  className={`self-stretch font-['Pretendard'] text-sm font-bold leading-[150%] ${formState.errors.email ? `text-[#FF4242]` : `text-[#2B2B2B]`}`}
+                  className={`self-stretch text-sm font-bold leading-[150%] ${formState.errors.email ? `text-[#FF4242]` : `text-[#2B2B2B]`}`}
                   htmlFor='email'
                 >
                   아이디(이메일)
@@ -79,7 +79,7 @@ const SignIn = () => {
                 />
               </div>
               {formState.errors.email && (
-                <span className='self-stretch font-[Pretendard] text-sm font-normal not-italic leading-[150%] text-[#FF4242]'>
+                <span className='self-stretch text-sm font-normal not-italic leading-[150%] text-[#FF4242]'>
                   {formState.errors.email.message}
                 </span>
               )}
@@ -87,7 +87,7 @@ const SignIn = () => {
             <div className='flex flex-col'>
               <div className='flex flex-col justify-start'>
                 <label
-                  className={`self-stretch font-['Pretendard'] text-sm font-bold leading-[150%] ${formState.errors.password ? `text-[#FF4242]` : `text-[#2B2B2B]`}`}
+                  className={`self-stretch text-sm font-bold leading-[150%] ${formState.errors.password ? `text-[#FF4242]` : `text-[#2B2B2B]`}`}
                   htmlFor='password'
                 >
                   비밀번호
@@ -101,7 +101,7 @@ const SignIn = () => {
                 />
               </div>
               {formState.errors.password && (
-                <span className='self-stretch font-[Pretendard] text-sm font-normal not-italic leading-[150%] text-[#FF4242]'>
+                <span className='self-stretch text-sm font-normal not-italic leading-[150%] text-[#FF4242]'>
                   {formState.errors.password.message}
                 </span>
               )}
@@ -117,7 +117,7 @@ const SignIn = () => {
             </div>
             <button
               type='submit'
-              className="duration-600 w-[456px] justify-start rounded-lg bg-[#06F] px-6 py-4 font-['Pretendard'] text-base font-bold not-italic leading-[135%] text-white transition hover:bg-[#EEE] hover:text-[#06F]"
+              className='duration-600 w-[456px] justify-start rounded-lg bg-[#06F] px-6 py-4 text-base font-bold not-italic leading-[135%] text-white transition hover:bg-[#EEE] hover:text-[#06F]'
             >
               로그인
             </button>
@@ -140,7 +140,7 @@ const SignIn = () => {
             <button
               type='button'
               onClick={googleSignin}
-              className='flex h-[45px] w-[300px] items-center justify-center gap-[10px] rounded-[6px] border-2 border-[#F5F5F5] font-[Pretendard] text-sm font-semibold text-[#595959]'
+              className='flex h-[45px] w-[300px] items-center justify-center gap-[10px] rounded-[6px] border-2 border-[#F5F5F5] text-sm font-semibold text-[#595959]'
             >
               <Image src='/google_login_img.png' alt='google login img' width={22} height={22} />
               구글계정으로 로그인
