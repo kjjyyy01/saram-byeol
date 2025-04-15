@@ -2,6 +2,7 @@ import { ContactDetailType, ContactItemType, ContactWithPlansDetailType } from '
 import { supabase } from '@/app/api/supabase/client';
 import { InsertNewPlansType, PlansType } from '@/types/plans';
 import { CONTACTS, PLANS, USERS } from '@/constants/supabaseTable';
+import { useAuthStore } from '@/store/zustand/store';
 
 export const getContacts = async (userId: string): Promise<ContactItemType[]> => {
   try {
@@ -95,6 +96,12 @@ export const emailDuplicateTest = async (email: string) => {
 
 // 매 달의 plans 데이터 가져오기
 export const getMonthlyPlans = async (year: number, month: number): Promise<PlansType[]> => {
+  const user = useAuthStore.getState().user;
+
+  if (!user) {
+    throw new Error('로그인된 사용자가 없습니다.');
+  }
+
   const startOfMonth = new Date(year, month - 1, 1); //첫 날
   const endOfMonth = new Date(year, month, 0); //마지막 날 (4/30 00:00:00)
   // 현재 start_date가 4/30 01:00 이기 때문에 연속 일정의 첫 날도 함께 포함시키기 위함
@@ -103,9 +110,11 @@ export const getMonthlyPlans = async (year: number, month: number): Promise<Plan
   const { data: plans, error } = await supabase
     .from(PLANS)
     .select('plan_id, user_id, contacts_id, title, detail, priority, start_date, end_date, colors')
+    .eq('user_id', user.id)
     //해당 달의 데이터만 가져오기(넘어가는 연속 일정 포함)
     .lte('start_date', endOfMonth.toISOString()) // 일정이 달의 마지막 날과 같거나 이전에 시작
     .gte('end_date', startOfMonth.toISOString()); // 일정이 달의 첫 날보다 같거나 이후에 끝
+
   if (error) {
     throw new Error(error.message);
   }
