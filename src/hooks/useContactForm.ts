@@ -1,6 +1,6 @@
 import { mutateInsertContacts } from '@/app/api/supabase/service';
-import { TEST_USER_ID } from '@/components/contacts/ContactList';
 import { contactFormSchema, ContactFormValues, defaultContactFormValues } from '@/lib/schemas/contactFormSchema';
+import { useAuthStore } from '@/store/zustand/store';
 import { ContactDetailType } from '@/types/contacts';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useQueryClient } from '@tanstack/react-query';
@@ -13,6 +13,9 @@ export const useContactForm = () => {
   const [relationshipType, setRelationshipType] = useState('친구');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const queryClient = useQueryClient();
+
+  const { user } = useAuthStore();
+  const userId = user?.id;
 
   // 폼 초기화
   const form = useForm<ContactFormValues>({
@@ -28,7 +31,7 @@ export const useContactForm = () => {
         
         // 연락처 데이터 준비
         const contactData: Omit<ContactDetailType, 'contacts_id'> = {
-          user_id: TEST_USER_ID,
+          user_id: userId as string,
           name: data.name,
           relationship_level: data.relationshipType || '친구',
           notes: data.bio || '',
@@ -42,7 +45,7 @@ export const useContactForm = () => {
         await mutateInsertContacts(contactData);
   
         // 연락처 목록 쿼리 무효화
-        queryClient.invalidateQueries({ queryKey: ['contacts', TEST_USER_ID] });
+        queryClient.invalidateQueries({ queryKey: ['contacts', userId] });
         
         // 성공 토스트 메시지
         toast.success(`${data.name} 연락처가 성공적으로 추가되었습니다.`);
