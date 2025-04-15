@@ -7,13 +7,14 @@ import { Button } from '@/components/ui/button';
 import { useMutateUpdatePlan } from '@/hooks/mutations/useMutateUpdatePlan';
 import { mappingFormData } from '@/lib/planFormUtils';
 import { PlanFormType, PlansSchema } from '@/lib/schemas/plansSchema';
+import { useAuthStore } from '@/store/zustand/store';
 import { EditPlanType, PlansType } from '@/types/plans';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 
-const TEST_USER_ID = 'a27fc897-4216-4863-9e7b-f8868a8369ff';
+// const TEST_USER_ID = 'a27fc897-4216-4863-9e7b-f8868a8369ff';
 
 interface Props {
   plan: EditPlanType;
@@ -41,8 +42,8 @@ const convertToFormValues = (plan: PlansType): PlanFormType => ({
 
 const EditPlanForm: React.FC<Props> = ({ plan, onClose }) => {
   const [inputValue, setInputValue] = useState(plan.location?.place_name || '');
+  const user = useAuthStore((state) => state.user);
 
-  
   const form = useForm<PlanFormType>({
     resolver: zodResolver(PlansSchema),
     mode: 'onChange',
@@ -70,7 +71,7 @@ const EditPlanForm: React.FC<Props> = ({ plan, onClose }) => {
       <form onSubmit={form.handleSubmit(editPlanHandler)}>
         <TitleField />
         <DateInputField />
-        <ContactsField userId={TEST_USER_ID} />
+        <ContactsField userId={user?.id || ''} />
         <PlaceField inputValue={inputValue} setInputValue={setInputValue} />
         <DetailField />
         <div className='flex justify-end pt-6'>

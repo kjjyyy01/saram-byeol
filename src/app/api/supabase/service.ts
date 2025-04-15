@@ -228,15 +228,15 @@ export const signInWithKakao = async () => {
 
 // plans 데이터 불러오기
 export const getPlans = async (planId: string): Promise<PlansType> => {
-  const {data, error} = await supabase.from(PLANS).select('*').eq('plan_id', planId).single();
+  const { data, error } = await supabase.from(PLANS).select('*').eq('plan_id', planId).single();
 
   if (error) {
     console.error('약속을 불러오는 중 오류가 발생했습니다:', error);
-    throw error
+    throw error;
   }
 
   return data;
-}
+};
 
 // plans 데이터 수정
 export const mutateUpdatePlan = async (planId: string, updatedData: InsertNewPlansType) => {
@@ -284,5 +284,35 @@ export const getUserPlans = async (userId: string): Promise<PlansType[]> => {
   } catch (error) {
     console.error('Supabase 쿼리 중 예외가 발생했습니다:', error);
     return [];
+  }
+};
+
+// contacts 데이터 삭제
+export const mutateDeleteContacts = async (contactsId: string): Promise<void> => {
+  try {
+    const { error } = await supabase.from(CONTACTS).delete().eq('contacts_id', contactsId);
+
+    if (error) {
+      console.error('연락처 삭제 중 오류가 발생했습니다:', error);
+      throw error;
+    }
+  } catch (error) {
+    console.error('연락처 삭제 요청 실패:', error);
+    throw error;
+  }
+};
+
+// plans 데이터 삭제
+export const mutateDeletePlan = async (planId: string): Promise<void> => {
+  try {
+    const { error } = await supabase.from(PLANS).delete().eq('plan_id', planId);
+
+    if (error) {
+      console.error('약속 삭제 중 오류가 발생했습니다:', error);
+      throw error;
+    }
+  } catch (error) {
+    console.error('약속 삭제 요청 실패:', error);
+    throw error;
   }
 };
