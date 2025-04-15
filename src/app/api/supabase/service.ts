@@ -249,3 +249,40 @@ export const mutateUpdatePlan = async (planId: string, updatedData: InsertNewPla
 
   return data;
 };
+
+
+// 특정 사용자의 계획을 가져오는 함수 (30일 이내)
+export const getUserPlans = async (userId: string): Promise<PlansType[]> => {
+  // 현재 날짜의 시간을 00:00:00으로 설정
+  const currentDate = new Date();
+  currentDate.setHours(0, 0, 0, 0); // 오늘의 시작점으로 설정
+
+  // 30일 후 날짜 계산
+  const thirtyDayslater = new Date();
+  thirtyDayslater.setDate(currentDate.getDate() + 30);
+  thirtyDayslater.setHours(23, 59, 59, 999); // 30일 후의 끝점으로 설정
+
+  //ISO 형식으로 변환
+  const currentDateISO = currentDate.toISOString();
+  const thirtyDaysLaterISO = thirtyDayslater.toISOString();
+
+  try {
+    const { data, error } = await supabase
+      .from(PLANS)
+      .select('*')
+      .eq('user_id', userId)
+      .gte('start_date', currentDateISO)
+      .lte('start_date', thirtyDaysLaterISO)
+      .order('start_date', { ascending: true });
+
+      if (error) {
+        console.log('계획 데이터를 가져오는 중 오류가 발생했습니다.', error);
+        return [];
+      }
+
+      return data || [];
+  } catch (error) {
+    console.error('Supabase 쿼리 중 예외가 발생했습니다:', error);
+    return [];
+  }
+};
