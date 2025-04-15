@@ -3,7 +3,6 @@
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { getUserPlans } from '@/app/api/supabase/service';
-import { PlansType } from '@/types/plans';
 import PlanCard from '@/components/schedule/UpcomingPlanCard';
 import { QUERY_KEY } from '@/constants/queryKey';
 
