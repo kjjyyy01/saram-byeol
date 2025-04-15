@@ -6,7 +6,7 @@ import { PLACEHOLDER_EMAIL, PLACEHOLDER_PASSWORD } from '@/constants/placeholder
 import { signInSchema } from '@/lib/schemas/signinSchema';
 import { useAuthStore } from '@/store/zustand/store';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
