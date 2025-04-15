@@ -1,4 +1,4 @@
-import { ContactDetailType } from '@/types/contacts';
+import { ContactDetailType, PlanDetailType } from '@/types/contacts';
 import Image from 'next/image';
 import { Plus } from 'lucide-react';
 import { useState } from 'react';
@@ -7,12 +7,14 @@ import EditContactForm from '@/components/contactDetail/editContactForm/EditCont
 import { Button } from '@/components/ui/button';
 import { useMutateDeleteContact } from '@/hooks/mutations/useMutateDeleteContact';
 import { toast } from 'react-toastify';
+import ContactPlansCard from '@/components/contactDetail/ContactPlansCard';
 
 interface Props {
   contact: ContactDetailType;
+  plans: PlanDetailType[];
 }
 
-const ContactProfile: React.FC<Props> = ({ contact }) => {
+const ContactProfile: React.FC<Props> = ({ contact, plans }) => {
   const [isEditContactOpen, setIsEditContactOpen] = useState(false); // 사이드시트 상태
 
   const { mutate: deleteContact } = useMutateDeleteContact();
@@ -29,9 +31,9 @@ const ContactProfile: React.FC<Props> = ({ contact }) => {
       onError: (error) => {
         console.error(error);
         toast.error('삭제에 실패했습니다.');
-      }
-    })
-  }
+      },
+    });
+  };
 
   return (
     <div className='space-y-8'>
@@ -77,18 +79,16 @@ const ContactProfile: React.FC<Props> = ({ contact }) => {
       </div>
 
       {/* 임시 D-day 카드 2개 */}
-      <div className='flex space-x-4'>
-        <div className='w-40 rounded-lg border p-4 text-center'>
-          <p className='text-lg font-bold'>D-14</p>
-          <p className='mt-1 text-sm'>트닛노트 출시파티</p>
-          <p className='text-xs text-gray-500'>@강남 트닛파티룸</p>
+      {plans.length > 0 && (
+        <div
+          className='relative flex flex-col gap-2 rounded-lg border border-gray-100 bg-white p-4 shadow-md'
+          style={{ boxShadow: '0 4px 10px rgba(0, 0, 0, 0.5)' }}
+        >
+          {plans.map((plan) => (
+            <ContactPlansCard key={plan.plan_id} title={plan.title} startDate={plan.start_date} />
+          ))}
         </div>
-        <div className='w-40 rounded-lg border p-4 text-center'>
-          <p className='text-lg font-bold'>D-50</p>
-          <p className='mt-1 text-sm'>김로탄 결혼식</p>
-          <p className='text-xs text-gray-500'>@역삼 트닛예식장</p>
-        </div>
-      </div>
+      )}
 
       {/* 연락처 정보 */}
       <div className='space-y-1'>

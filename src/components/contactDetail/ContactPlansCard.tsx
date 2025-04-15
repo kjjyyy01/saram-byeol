@@ -16,9 +16,6 @@ const ContactPlansCard: React.FC<ContactPlansCardProps> = ({ title, startDate, o
 
   return (
     <div
-      onClick={() => {
-        console.log('clicked');
-      }}
       className='relative flex flex-col gap-2 rounded-lg border border-gray-100 bg-white p-4 shadow-md'
       style={{ boxShadow: '0 4px 10px rgba(0, 0, 0, 0.5)' }}
     >
