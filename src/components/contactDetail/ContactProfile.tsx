@@ -5,6 +5,8 @@ import { useState } from 'react';
 import SideSheet from '@/components/contacts/SideSheet';
 import EditContactForm from '@/components/contactDetail/editContactForm/EditContactForm';
 import { Button } from '../ui/button';
+import { useMutateDeleteContact } from '@/hooks/mutations/useMutateDeleteContact';
+import { toast } from 'react-toastify';
 
 interface Props {
   contact: ContactDetailType;
@@ -12,6 +14,24 @@ interface Props {
 
 const ContactProfile: React.FC<Props> = ({ contact }) => {
   const [isEditContactOpen, setIsEditContactOpen] = useState(false); // 사이드시트 상태
+
+  const { mutate: deleteContact } = useMutateDeleteContact();
+
+  const deleteContactHandler = () => {
+    const isConfirmed = window.confirm('정말로 해당 사람을 삭제하시겠습니까?');
+
+    if (!isConfirmed) return;
+
+    deleteContact(contact.contacts_id, {
+      onSuccess: () => {
+        toast.success('성공적으로 삭제되었습니다.');
+      },
+      onError: (error) => {
+        console.error(error);
+        toast.error('삭제에 실패했습니다.');
+      }
+    })
+  }
 
   return (
     <div className='space-y-8'>
@@ -39,16 +59,20 @@ const ContactProfile: React.FC<Props> = ({ contact }) => {
         {/* 중앙 - 이름 및 이메일 */}
         <div className='flex flex-1 flex-col'>
           <h1 className='text-xl font-bold'>{contact.name}</h1>
-          <div className="w-[53px] h-[24px] rounded-[20px] bg-gray-100 flex items-center justify-center mt-[2px]">
-            <span className="text-[12px] font-bold text-gray-800">{contact.relationship_level}</span>
+          <div className='mt-[2px] flex h-[24px] w-[53px] items-center justify-center rounded-[20px] bg-gray-100'>
+            <span className='text-[12px] font-bold text-gray-800'>{contact.relationship_level}</span>
           </div>
           <p className='text-sm text-gray-600'>{contact.email}</p>
         </div>
 
         {/* 우측 버튼 */}
         <div className='space-x-2'>
-          <Button onClick={() => setIsEditContactOpen(true)} variant='outline' size='sm'>수정</Button>
-          <Button variant='destructive' size='sm'>삭제</Button>
+          <Button variant='outline' size='sm' onClick={() => setIsEditContactOpen(true)}>
+            수정
+          </Button>
+          <Button variant='destructive' size='sm' onClick={deleteContactHandler}>
+            삭제
+          </Button>
         </div>
       </div>
 
@@ -84,7 +108,7 @@ const ContactProfile: React.FC<Props> = ({ contact }) => {
       </div>
 
       {/* 사이드 시트 - 연락처 수정 */}
-      <SideSheet isOpen={isEditContactOpen} onClose={() => setIsEditContactOpen(false)} title="내 사람 수정">
+      <SideSheet isOpen={isEditContactOpen} onClose={() => setIsEditContactOpen(false)} title='내 사람 수정'>
         <EditContactForm contactData={contact} onClose={() => setIsEditContactOpen(false)} />
       </SideSheet>
     </div>
