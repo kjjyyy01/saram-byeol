@@ -54,7 +54,7 @@ const PopOverForm = ({ selectedColor }: { selectedColor: string }) => {
               />
             </section>
             <DateInputField />
-            <ContactsField userId={user.id} />
+            {user && <ContactsField userId={user.id} enabled={!!user.id} />}
             <div className='flex justify-between'>
               <button className='items-center justify-center rounded-[6px] border-[1px] border-primary-500 bg-primary-50 px-5 py-3 font-bold text-primary-500'>
                 옵션 더보기
