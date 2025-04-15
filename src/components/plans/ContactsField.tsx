@@ -10,6 +10,7 @@ import { Check, ChevronsUpDown } from 'lucide-react';
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command';
 import { useState } from 'react';
 import { UserType } from '@/types/contacts';
+import { User } from '@phosphor-icons/react';
 
 interface Props {
   userId: UserType['user_id'];
@@ -26,8 +27,12 @@ const ContactsField = ({ userId }: Props) => {
       name='contacts'
       render={({ field }) => {
         return (
-          <FormItem>
-            <FormLabel>내 사람</FormLabel>
+          <FormItem className='flex items-center justify-start gap-8'>
+            <FormLabel className='relative flex w-14 flex-shrink-0 flex-grow-0 flex-col items-center justify-center gap-1'>
+              <User size={24} className='h-6 w-6 flex-shrink-0 flex-grow-0' />{' '}
+              <p className='text-center text-sm'>이름</p>
+            </FormLabel>
+                  <div className='flex w-full flex-col'>
             <Popover open={open} onOpenChange={setOpen}>
               <PopoverTrigger asChild>
                 <FormControl>
@@ -35,18 +40,23 @@ const ContactsField = ({ userId }: Props) => {
                     variant='outline'
                     role='combobox'
                     aria-expanded={open}
-                    className={cn('w-full justify-between', !field.value && 'text-muted-foreground')}
+                    className={cn(
+                      'w-full items-center justify-between self-stretch rounded-lg border-grey-200 px-4 py-2 text-sm leading-6',
+                      !field.value && 'text-muted-foreground'
+                    )}
                   >
-                    {field.value ? contacts.find((person) => person.contacts_id === field.value)?.name : '내 사람 선택'}
+                    {field.value
+                      ? contacts.find((person) => person.contacts_id === field.value)?.name
+                      : '이름을 검색해주세요.'}
                     <ChevronsUpDown className='opacity-50' />
                   </Button>
                 </FormControl>
               </PopoverTrigger>
               <PopoverContent className='w-auto p-0'>
-                <Command>
+                <Command className='rounded-lg'>
                   <CommandInput placeholder='검색' className='h-9' />
                   <CommandList>
-                    <CommandEmpty>일치하는 친구가 없습니다.</CommandEmpty>
+                    <CommandEmpty>일치하는 이름이 없습니다.</CommandEmpty>
                     <CommandGroup>
                       {contacts.map((person, i) => (
                         <CommandItem
@@ -58,7 +68,9 @@ const ContactsField = ({ userId }: Props) => {
                           }}
                         >
                           {person.name}
-                          <Check className={cn('ml-auto', person.contacts_id === field.value ? 'opacity-100' : 'opacity-0')} />
+                          <Check
+                            className={cn('ml-auto', person.contacts_id === field.value ? 'opacity-100' : 'opacity-0')}
+                          />
                         </CommandItem>
                       ))}
                     </CommandGroup>
@@ -66,7 +78,8 @@ const ContactsField = ({ userId }: Props) => {
                 </Command>
               </PopoverContent>
             </Popover>
-            <FormMessage />
+            <FormMessage className='pl-1' />
+            </div>
           </FormItem>
         );
       }}
