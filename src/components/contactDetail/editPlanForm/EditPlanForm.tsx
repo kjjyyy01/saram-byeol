@@ -13,9 +13,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
-
-// const TEST_USER_ID = 'a27fc897-4216-4863-9e7b-f8868a8369ff';
-
 interface Props {
   plan: EditPlanType;
   onClose: () => void;

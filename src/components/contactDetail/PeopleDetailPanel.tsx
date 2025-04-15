@@ -4,9 +4,6 @@ import ContactProfile from '@/components/contactDetail/ContactProfile';
 import ContactPlans from '@/components/contactDetail/ContactPlans';
 import Tabs from '@/components/ui/Tabs';
 import { useAuthStore } from '@/store/zustand/store';
-
-// const TEST_USER_ID = 'a27fc897-4216-4863-9e7b-f8868a8369ff';
-
 interface Props {
   contactsId: string;
 }
