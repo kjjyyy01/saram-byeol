@@ -6,24 +6,22 @@ import { Users, CalendarBlank, SignOut, Bell } from '@phosphor-icons/react';
 import { useAuthStore } from '@/store/zustand/store';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
+import { toast } from 'react-toastify';
 
 const LeftNavBar = () => {
   const { user, isSignIn, signOut } = useAuthStore();
- 
+
   const pathName = usePathname();
   const page = pathName.slice(1);
 
   const logoutHandler = () => {
     if (!isSignIn) {
-      alert('이미 로그아웃 상태입니다.');
-      return;
-    } else {
-      const ok = confirm('정말 로그아웃 하시겠습니까?');
-      if (ok) {
-        signOut();
-      }
+      toast.info('이미 로그아웃 상태입니다.');
       return;
     }
+    const ok = confirm('정말 로그아웃 하시겠습니까?');
+    if (!ok) return;
+    signOut();
   };
 
   return (
