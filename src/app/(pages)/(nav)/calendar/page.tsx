@@ -4,20 +4,28 @@ import UpcomingPlans from '@/components/schedule/UpcomingPlans';
 import { SIGNIN } from '@/constants/paths';
 import { useAuthStore } from '@/store/zustand/store';
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 
 export default function Calendar() {
   const router = useRouter();
   const user = useAuthStore((state) => state.user);
   const isSignIn = useAuthStore((state) => state.isSignIn);
+  const [hasMounted, setHasMounted] = useState(false);
 
+  // 마운트 이후에만 렌더링
   useEffect(() => {
-    if (!isSignIn) {
+    setHasMounted(true);
+  }, []);
+
+  // 마운트 전, 로그아웃 상태 감지 막기
+  useEffect(() => {
+    if (hasMounted && !isSignIn) {
       router.replace(SIGNIN);
     }
-  }, [isSignIn, router]);
+  }, [hasMounted, isSignIn, router]);
 
+  if (!hasMounted) return null;
   if (!isSignIn) return null;
 
   return (
