@@ -78,7 +78,7 @@ const ContactProfile: React.FC<Props> = ({ contact, plans }) => {
         </div>
       </div>
 
-      {/* 임시 D-day 카드 2개 */}
+      {/* 약속 카드 */}
       {plans.length > 0 && (
         <div>
           {plans.map((plan) => (
