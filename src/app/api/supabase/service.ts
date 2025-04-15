@@ -266,4 +266,16 @@ export const mutateDeleteContacts = async (contactsId: string): Promise<void> =>
 };
 
 // plans 데이터 삭제
-// export const mutateDeletePlan = async () => {}
+export const mutateDeletePlan = async (planId: string): Promise<void> => {
+  try {
+    const { error } = await supabase.from(PLANS).delete().eq('plan_id', planId);
+
+    if (error) {
+      console.error('약속 삭제 중 오류가 발생했습니다:', error);
+      throw error;
+    }
+  } catch (error) {
+    console.error('약속 삭제 요청 실패:', error);
+    throw error;
+  }
+};
