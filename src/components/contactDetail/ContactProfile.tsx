@@ -4,6 +4,7 @@ import { Plus } from 'lucide-react';
 import { useState } from 'react';
 import SideSheet from '@/components/contacts/SideSheet';
 import EditContactForm from '@/components/contactDetail/editContactForm/EditContactForm';
+import { Button } from '../ui/button';
 
 interface Props {
   contact: ContactDetailType;
@@ -46,8 +47,8 @@ const ContactProfile: React.FC<Props> = ({ contact }) => {
 
         {/* 우측 버튼 */}
         <div className='space-x-2'>
-          <button className='rounded-full border border-gray-300 px-4 py-1 text-sm'>약속추가</button>
-          <button onClick={() => setIsEditContactOpen(true)} className='rounded-full border border-gray-300 px-4 py-1 text-sm'>정보수정</button>
+          <Button onClick={() => setIsEditContactOpen(true)} variant='outline' size='sm'>수정</Button>
+          <Button variant='destructive' size='sm'>삭제</Button>
         </div>
       </div>
 
@@ -69,10 +70,10 @@ const ContactProfile: React.FC<Props> = ({ contact }) => {
       <div className='space-y-1'>
         <h2 className='text-lg font-bold'>연락처</h2>
         <p>
-          <strong>휴대폰</strong> {contact.phone}
+          <strong>전화번호</strong> {contact.phone}
         </p>
         <p>
-          <strong>이메일 주소</strong> {contact.email}
+          <strong>이메일</strong> {contact.email}
         </p>
         <p>
           <strong>생년월일</strong> {contact.birth}
