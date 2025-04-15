@@ -5,6 +5,7 @@ import { ToolbarProps } from 'react-big-calendar';
 import UpcomingPlanButton from './UpcomingPlanButton';
 import AddPlanButton from '@/components/calendar/AddPlanButton';
 import MoveMonthButton from './MoveMonthButton';
+import UpcomingPlans from '../schedule/UpcomingPlans';
 
 //캘린더와 타입 맞춤(id 유실로 인한 오류)
 const CustomToolbar = ({ date, onNavigate }: ToolbarProps<CalendarEventType>) => {
