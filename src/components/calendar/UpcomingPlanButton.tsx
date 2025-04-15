@@ -3,7 +3,10 @@ import React from 'react';
 const UpcomingPlanButton = () => {
   return (
     <div>
-      <button className='rounded-md border-2'>다가오는 약속</button>
+      <button className='mr-[24px] rounded-md border-[1px] px-[20px] py-[12px] text-[14px] font-bold'>
+        다가오는 약속
+        {/* 다가오는 약속 갯수 추가 */}
+      </button>
     </div>
   );
 };

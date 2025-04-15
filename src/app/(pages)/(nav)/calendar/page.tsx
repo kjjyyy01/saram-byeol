@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   description: '약속을 모아볼 수 있는 캘린더 페이지입니다.',
 };
 
-export default function Home() {
+export default function Calendar() {
   const TEST_USER_ID = 'a27fc897-4216-4863-9e7b-f8868a8369ff';
   return (
     <div className="flex flex-col md:flex-row gap-4 p-4">
