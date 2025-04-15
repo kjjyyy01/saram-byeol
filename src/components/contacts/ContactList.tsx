@@ -7,6 +7,7 @@ import { UserPlus } from '@phosphor-icons/react';
 import AddContactForm from '@/components/contacts/addContactForm/Index';
 import SideSheet from '@/components/contacts/SideSheet';
 import { useAuthStore } from '@/store/zustand/store';
+import { QUERY_KEY } from '@/constants/queryKey';
 
 interface ContactListProps {
   onSelectedContact: (id: string) => void;
@@ -28,7 +29,7 @@ const ContactList: React.FC<ContactListProps> = ({ onSelectedContact }) => {
     isPending,
     error,
   } = useQuery<ContactItemType[]>({
-    queryKey: ['contacts', userId],
+    queryKey: [QUERY_KEY.CONTACTS, userId],
     queryFn: () => getContacts(userId as string),
     enabled: isAuthenticated, // 사용자 ID가 없으면 쿼리를 실행하지 않게 함
   });
@@ -39,7 +40,7 @@ const ContactList: React.FC<ContactListProps> = ({ onSelectedContact }) => {
         mutateUpdateContactPin(contactId, isPinned),
       onSuccess: () => {
         // 성공 시 연락처 목록 갱신
-        queryClient.invalidateQueries({ queryKey: ['contacts', userId] });
+        queryClient.invalidateQueries({ queryKey: [QUERY_KEY.CONTACTS, userId] });
       }
     });
   

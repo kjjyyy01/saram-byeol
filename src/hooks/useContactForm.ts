@@ -1,4 +1,5 @@
 import { mutateInsertContacts } from '@/app/api/supabase/service';
+import { QUERY_KEY } from '@/constants/queryKey';
 import { contactFormSchema, ContactFormValues, defaultContactFormValues } from '@/lib/schemas/contactFormSchema';
 import { useAuthStore } from '@/store/zustand/store';
 import { ContactDetailType } from '@/types/contacts';
@@ -45,7 +46,7 @@ export const useContactForm = () => {
         await mutateInsertContacts(contactData);
   
         // 연락처 목록 쿼리 무효화
-        queryClient.invalidateQueries({ queryKey: ['contacts', userId] });
+        queryClient.invalidateQueries({ queryKey: [QUERY_KEY.CONTACTS, userId] });
         
         // 성공 토스트 메시지
         toast.success(`${data.name} 연락처가 성공적으로 추가되었습니다.`);
