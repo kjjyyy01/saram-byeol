@@ -34,7 +34,7 @@ export const useAuthStore = create<AuthStateType>()(
 
 // 로그인 시 탭 전환 등으로 인해 중복 알림이 발생하지 않도록 localStorage를 사용해 제어
 export const AuthStateChangeHandler = () => {
-  const { setUser, signOut } = useAuthStore.getState();
+  const { setUser } = useAuthStore.getState();
 
   const { data: unsubscribe } = supabase.auth.onAuthStateChange((event, session) => {
     const alreadySignIn = localStorage.getItem('alreadySignIn');
@@ -47,7 +47,6 @@ export const AuthStateChangeHandler = () => {
         toast.success(`로그인되었습니다.'내 사람' 페이지로 이동합니다.`);
       }
     } else if (event === 'SIGNED_OUT') {
-      signOut(); // 사용자 정보 null로 초기화, isSignIn 을 false로 변경
       localStorage.removeItem('alreadySignIn');
     }
   });

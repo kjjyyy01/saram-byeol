@@ -37,7 +37,7 @@ export interface Holidays {
 
 //약속 추가용 데이터 타입 //
 export interface InsertNewPlansType {
-  user_id: string;
+  user_id: string | null;
   contacts_id?: string | null;
   location?: Partial<KakaoPlaceType> | null;
   title?: string | null;
