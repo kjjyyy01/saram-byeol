@@ -1,13 +1,12 @@
-import { getContacts, mutateUpdateContactPin } from '@/app/api/supabase/service';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQueryClient } from '@tanstack/react-query';
 import React, { useMemo, useState } from 'react';
 import ContactItem from '@/components/contacts/ContactItem';
-import { ContactItemType } from '@/types/contacts';
 import { UserPlus } from '@phosphor-icons/react';
 import AddContactForm from '@/components/contacts/addContactForm/Index';
 import SideSheet from '@/components/contacts/SideSheet';
 import { useAuthStore } from '@/store/zustand/store';
-import { QUERY_KEY } from '@/constants/queryKey';
+import useGetContactsByUserID from '@/hooks/queries/useGetContactsByUserID';
+import { useTogglePinContact } from '@/hooks/mutations/useMutateTogglePinContact';
 
 interface ContactListProps {
   onSelectedContact: (id: string) => void;
@@ -27,22 +26,11 @@ const ContactList: React.FC<ContactListProps> = ({ onSelectedContact }) => {
   const {
     data: contacts = [],
     isPending,
-    error,
-  } = useQuery<ContactItemType[]>({
-    queryKey: [QUERY_KEY.CONTACTS, userId],
-    queryFn: () => getContacts(userId as string),
-    enabled: isAuthenticated, // 사용자 ID가 없으면 쿼리를 실행하지 않게 함
-  });
+    error, 
+  } = useGetContactsByUserID(userId as string,isAuthenticated);
 
     // Pin 업데이트 뮤테이션
-    const pinMutation = useMutation({
-      mutationFn: ({ contactId, isPinned }: { contactId: string; isPinned: boolean }) => 
-        mutateUpdateContactPin(contactId, isPinned),
-      onSuccess: () => {
-        // 성공 시 연락처 목록 갱신
-        queryClient.invalidateQueries({ queryKey: [QUERY_KEY.CONTACTS, userId] });
-      }
-    });
+    const pinMutation = useTogglePinContact(userId)
   
     // 핀된 연락처와 일반 연락처 분리
     const { pinnedContacts, regularContacts } = useMemo(() => {
