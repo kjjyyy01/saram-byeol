@@ -4,7 +4,7 @@ import { Plus } from 'lucide-react';
 import { useState } from 'react';
 import SideSheet from '@/components/contacts/SideSheet';
 import EditContactForm from '@/components/contactDetail/editContactForm/EditContactForm';
-import { Button } from '../ui/button';
+import { Button } from '@/components/ui/button';
 import { useMutateDeleteContact } from '@/hooks/mutations/useMutateDeleteContact';
 import { toast } from 'react-toastify';
 

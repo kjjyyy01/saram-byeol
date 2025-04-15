@@ -4,12 +4,12 @@ import { PlanDetailType } from '@/types/contacts';
 import ContactPlansCard from '@/components/contactDetail/ContactPlansCard';
 import { useState } from 'react';
 import SideSheet from '@/components/contacts/SideSheet';
-import EditPlanForm from './editPlanForm/EditPlanForm';
+import EditPlanForm from '@/components/contactDetail/editPlanForm/EditPlanForm';
 import { EditPlanType } from '@/types/plans';
 import { useMutateDeletePlan } from '@/hooks/mutations/useMutateDeletePlan';
 import { toast } from 'react-toastify';
-import { Button } from '../ui/button';
-import PlanForm from '../plans/PlanForm';
+import { Button } from '@/components/ui/button';
+import PlanForm from '@/components/plans/PlanForm';
 
 interface Props {
   plans: PlanDetailType[];
