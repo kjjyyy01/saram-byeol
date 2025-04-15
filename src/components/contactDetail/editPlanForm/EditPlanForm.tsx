@@ -71,7 +71,7 @@ const EditPlanForm: React.FC<Props> = ({ plan, onClose }) => {
       <form onSubmit={form.handleSubmit(editPlanHandler)}>
         <TitleField />
         <DateInputField />
-        <ContactsField userId={user?.id || ''} />
+        <ContactsField userId={user?.id || ''} enabled={true} />
         <PlaceField inputValue={inputValue} setInputValue={setInputValue} />
         <DetailField />
         <div className='flex justify-end pt-6'>
