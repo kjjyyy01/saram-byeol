@@ -1,5 +1,5 @@
 export const HOME = '/';
-export const SIGNIN = '/signin';
-export const SIGNUP = '/signup';
+export const SIGNIN = '/signIn';
+export const SIGNUP = '/signUp';
 export const PEOPLE = '/people';
 export const CALENDER = '/calendar';
