@@ -1,12 +1,7 @@
-import PlanForm from '@/components/plans/PlanForm'
-import React from 'react'
+import React from 'react';
 
 const Home = () => {
-  return (
-    <div>Home
-      <div><PlanForm/></div>
-    </div>
-  )
-}
+  return <div>Home</div>;
+};
 
-export default Home
+export default Home;
