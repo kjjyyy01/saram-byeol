@@ -270,7 +270,7 @@ export const getUserPlans = async (userId: string): Promise<PlansType[]> => {
 
   try {
     const { data, error } = await supabase
-      .from('plans')
+      .from(PLANS)
       .select('*')
       .eq('user_id', userId)
       .gte('start_date', currentDateISO)
