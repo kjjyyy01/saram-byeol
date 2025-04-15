@@ -9,8 +9,8 @@ const ColorOptions = ({ selectedColor, setSelectedColor }: Props) => {
   const colorOptions = ['#EB5757', '#F2994A', '#F2C94C', '#27AE60', '#2F80ED', '#56CCF2', '#9B51E0', '#F955EB'];
 
   return (
-    <div className='flex flex-wrap items-center gap-8'>
-      <section className='grid justify-items-center'>
+    <div className='flex items-center gap-8'>
+      <section className='relative flex w-14 flex-shrink-0 flex-grow-0 flex-col items-center justify-center gap-1'>
         <Palette size={32} />
         <p className='min-w-max text-[14px]'>색상</p>
       </section>
