@@ -6,8 +6,8 @@ import { ContactItemType } from '@/types/contacts';
 import { UserPlus } from '@phosphor-icons/react';
 import AddContactForm from '@/components/contacts/addContactForm/Index';
 import SideSheet from '@/components/contacts/SideSheet';
-
-export const TEST_USER_ID = 'a27fc897-4216-4863-9e7b-f8868a8369ff';
+import { useAuthStore } from '@/store/zustand/store';
+import { QUERY_KEY } from '@/constants/queryKey';
 
 interface ContactListProps {
   onSelectedContact: (id: string) => void;
@@ -17,13 +17,21 @@ const ContactList: React.FC<ContactListProps> = ({ onSelectedContact }) => {
   const [isAddContactOpen, setIsAddContactOpen] = useState(false);
   const queryClient = useQueryClient();
 
+  // useAuthStore에서 사용자 정보 가져오기
+  const { user } = useAuthStore();
+  const userId = user?.id; // 현재 로그인된 사용자의 ID
+
+  // 로그인 되지 않은 경우를 위한 처리
+  const isAuthenticated = !!userId;
+
   const {
     data: contacts = [],
     isPending,
     error,
   } = useQuery<ContactItemType[]>({
-    queryKey: ['contacts', TEST_USER_ID],
-    queryFn: () => getContacts(TEST_USER_ID),
+    queryKey: [QUERY_KEY.CONTACTS, userId],
+    queryFn: () => getContacts(userId as string),
+    enabled: isAuthenticated, // 사용자 ID가 없으면 쿼리를 실행하지 않게 함
   });
 
     // Pin 업데이트 뮤테이션
@@ -32,7 +40,7 @@ const ContactList: React.FC<ContactListProps> = ({ onSelectedContact }) => {
         mutateUpdateContactPin(contactId, isPinned),
       onSuccess: () => {
         // 성공 시 연락처 목록 갱신
-        queryClient.invalidateQueries({ queryKey: ['contacts', TEST_USER_ID] });
+        queryClient.invalidateQueries({ queryKey: [QUERY_KEY.CONTACTS, userId] });
       }
     });
   
@@ -50,6 +58,14 @@ const ContactList: React.FC<ContactListProps> = ({ onSelectedContact }) => {
 
   if (error) {
     console.error('연락처 로딩 실패', error);
+  }
+
+  if (!isAuthenticated) {
+    return (
+      <div className="flex h-full flex-col items-center justify-center">
+        <p className="text-lg text-gray-600">로그인이 필요한 서비스입니다.</p>
+      </div>
+    );
   }
 
   return (
