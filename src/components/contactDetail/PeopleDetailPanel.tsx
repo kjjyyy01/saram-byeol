@@ -3,18 +3,22 @@ import { getContactsWithPlans } from '@/app/api/supabase/service';
 import ContactProfile from '@/components/contactDetail/ContactProfile';
 import ContactPlans from '@/components/contactDetail/ContactPlans';
 import Tabs from '@/components/ui/Tabs';
+import { useAuthStore } from '@/store/zustand/store';
 
-const TEST_USER_ID = 'a27fc897-4216-4863-9e7b-f8868a8369ff';
+// const TEST_USER_ID = 'a27fc897-4216-4863-9e7b-f8868a8369ff';
 
 interface Props {
   contactsId: string;
 }
 
 const PeopleDetailPanel = ({ contactsId }: Props) => {
+  const user = useAuthStore((state) => state.user);
+  const userId = user?.id;
+
   const { data, isPending, error } = useQuery({
     queryKey: ['contactWithPlans', contactsId],
-    queryFn: () => getContactsWithPlans(TEST_USER_ID, contactsId),
-    enabled: !!contactsId,
+    queryFn: () => getContactsWithPlans(userId!, contactsId),
+    enabled: !!userId && !!contactsId,
   });
 
   if (isPending) return <div className='p-8 text-center'>로딩 중...</div>;
