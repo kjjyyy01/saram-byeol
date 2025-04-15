@@ -22,6 +22,8 @@ const PlanForm = () => {
   const [selectedColor, setSelectedColor] = useState('#2F80ED'); // 선택 색상
   const user = useAuthStore((state) => state.user);
   const userId = user ? user?.id : 'a27fc897-4216-4863-9e7b-f8868a8369ff'; //ContactsField Props 데이터 타입 호환용 테스트유저 아이디 (추후 데모용 아이디로 변경)
+  // 로그인 되지 않은 경우를 위한 처리
+  const isAuthenticated = !!userId;
 
   const form = useForm<PlanFormType>({
     resolver: zodResolver(PlansSchema),
@@ -61,7 +63,7 @@ const PlanForm = () => {
           <ColorOptions selectedColor={selectedColor} setSelectedColor={setSelectedColor} />
           <TitleField />
           <DateInputField />
-          <ContactsField userId={userId} />
+          <ContactsField userId={userId} enabled={isAuthenticated} />
           <PlaceField inputValue={inputValue} setInputValue={setInputValue} />
           <PriorityField />
           <DetailField />

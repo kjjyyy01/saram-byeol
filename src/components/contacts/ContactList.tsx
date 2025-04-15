@@ -1,4 +1,3 @@
-import { useQueryClient } from '@tanstack/react-query';
 import React, { useMemo, useState } from 'react';
 import ContactItem from '@/components/contacts/ContactItem';
 import { UserPlus } from '@phosphor-icons/react';
@@ -14,7 +13,6 @@ interface ContactListProps {
 
 const ContactList: React.FC<ContactListProps> = ({ onSelectedContact }) => {
   const [isAddContactOpen, setIsAddContactOpen] = useState(false);
-  const queryClient = useQueryClient();
 
   // useAuthStore에서 사용자 정보 가져오기
   const { user } = useAuthStore();
