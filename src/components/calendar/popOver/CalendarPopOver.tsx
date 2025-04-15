@@ -5,7 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useEffect, useState } from 'react';
 import ColorOptions from './ColorOptions';
 import { X } from '@phosphor-icons/react';
-import PopOverForm from './PopOverForm';
+import PopOverForm from '@/components/calendar/popOver/PopOverForm';
 
 interface Props {
   open: boolean;
