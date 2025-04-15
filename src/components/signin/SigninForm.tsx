@@ -1,12 +1,9 @@
 'use client';
 
-import { signInUser } from '@/app/api/supabase/service';
-import { PEOPLE } from '@/constants/paths';
 import { PLACEHOLDER_EMAIL, PLACEHOLDER_PASSWORD } from '@/constants/placeholders';
+import { useSignin } from '@/hooks/useSignin';
 import { signInSchema } from '@/lib/schemas/signinSchema';
-import { useAuthStore } from '@/store/zustand/store';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useRouter } from 'next/navigation';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
@@ -21,28 +18,17 @@ const SigninForm = () => {
     mode: 'onChange',
     resolver: zodResolver(signInSchema),
   });
-  const router = useRouter();
-  const setUser = useAuthStore((state) => state.setUser);
 
-  //로그인 기능 핸들러
-  const onSignInHandler = async (value: SignInFormType) => {
-    const { data, error } = await signInUser(value);
-    if (data.session) {
-      localStorage.setItem('alreadySignIn', 'true');
-      toast.success(`로그인되었습니다.'내 사람' 페이지로 이동합니다.`);
-      setUser(data.session.user);
-      router.push(PEOPLE);
-    } else if (error) {
-      toast.warning('아이디 또는 비밀번호를 확인해주세요.');
-    }
-  };
+  //로그인 커스텀 훅
+  const { SignInHandler } = useSignin();
 
-  const alreadyService = () => {
+  //준비중인 기능을 알리기 위한 핸들러함수
+  const alreadyServiceHandler = () => {
     toast.info('아직 준비중인 기능입니다.');
   };
 
   return (
-    <form onSubmit={handleSubmit(onSignInHandler)} className='flex flex-col gap-8'>
+    <form onSubmit={handleSubmit(SignInHandler)} className='flex flex-col gap-8'>
       <div className='flex flex-col'>
         <div className='flex flex-col justify-start'>
           <label
@@ -89,10 +75,10 @@ const SigninForm = () => {
       </div>
       <div className='flex justify-between'>
         <label htmlFor='saveId'>
-          <input type='checkbox' id='saveId' onClick={alreadyService} className='mr-1' />
+          <input type='checkbox' id='saveId' onClick={alreadyServiceHandler} className='mr-1' />
           로그인 정보 저장
         </label>
-        <button type='button' onClick={alreadyService}>
+        <button type='button' onClick={alreadyServiceHandler}>
           비밀번호를 잊어버리셨습니까?
         </button>
       </div>
