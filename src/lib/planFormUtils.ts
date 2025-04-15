@@ -1,18 +1,17 @@
 import { PlanFormType } from './schemas/plansSchema';
 
-
-export const getTimeToString = (date: Date)=>{
+export const getTimeToString = (date: Date) => {
   const yyyy = date.getFullYear().toString();
-  const mm = date.getMonth() + 1;
-  const dd = date.getDate();
-  return {yyyy, mm, dd}
-}
+  const mm = ('0' + (date.getMonth() + 1)).slice(-2);
+  const dd = ('0' + date.getDate()).slice(-2);
+  return { yyyy, mm, dd };
+};
 //시작일과 종료일 시간 추가 처리
 export const getStartAndEndDate = (from: Date, to?: Date) => {
-  const {yyyy:fromY, mm:fromM, dd:fromD } = getTimeToString(from)
-  const {yyyy:toY, mm:toM, dd:toD } = to? getTimeToString(to) : getTimeToString(from)
+  const { yyyy: fromY, mm: fromM, dd: fromD } = getTimeToString(from);
+  const { yyyy: toY, mm: toM, dd: toD } = to ? getTimeToString(to) : getTimeToString(from);
   const start_date = `${fromY}-${fromM}-${fromD} 00:00:00`;
-  const end_date = `${toY}-${toM}-${toD} 23:59:59`
+  const end_date = `${toY}-${toM}-${toD} 23:59:59`;
 
   return { start_date, end_date };
 };
@@ -21,7 +20,7 @@ export const getStartAndEndDate = (from: Date, to?: Date) => {
 export const mappingFormData = (data: PlanFormType) => {
   const { title, detail, contacts, dateInput, location } = data;
   const { start_date, end_date } = getStartAndEndDate(dateInput.from, dateInput.to);
-  return { title, detail, contacts_id: contacts, start_date,end_date, location };
+  return { title, detail, contacts_id: contacts, start_date, end_date, location };
 };
 
 //검색없이 인풋값만 있을 때 데이터 처리
