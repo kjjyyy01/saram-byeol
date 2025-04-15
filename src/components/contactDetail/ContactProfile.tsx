@@ -80,10 +80,7 @@ const ContactProfile: React.FC<Props> = ({ contact, plans }) => {
 
       {/* 임시 D-day 카드 2개 */}
       {plans.length > 0 && (
-        <div
-          className='relative flex flex-col gap-2 rounded-lg border border-gray-100 bg-white p-4 shadow-md'
-          style={{ boxShadow: '0 4px 10px rgba(0, 0, 0, 0.5)' }}
-        >
+        <div>
           {plans.map((plan) => (
             <ContactPlansCard key={plan.plan_id} title={plan.title} startDate={plan.start_date} />
           ))}
