@@ -25,7 +25,7 @@ const TitleField = () => {
                   placeholder='제목을 입력해주세요.'
                   {...field}
                   maxLength={50}
-                  className={`border-grey-200 flex flex-1 items-center self-stretch rounded-lg border p-4 text-base leading-6`}
+                  className={`border-grey-200 flex items-center self-stretch rounded-lg border px-4 py-2 text-sm leading-6`}
                 />
               </FormControl>
               <FormMessage className='pl-1' />

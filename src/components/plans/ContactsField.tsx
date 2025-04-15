@@ -32,6 +32,7 @@ const ContactsField = ({ userId }: Props) => {
               <User size={24} className='h-6 w-6 flex-shrink-0 flex-grow-0' />{' '}
               <p className='text-center text-sm'>이름</p>
             </FormLabel>
+                  <div className='flex w-full flex-col'>
             <Popover open={open} onOpenChange={setOpen}>
               <PopoverTrigger asChild>
                 <FormControl>
@@ -39,7 +40,10 @@ const ContactsField = ({ userId }: Props) => {
                     variant='outline'
                     role='combobox'
                     aria-expanded={open}
-                    className={cn('w-full justify-between', !field.value && 'text-muted-foreground')}
+                    className={cn(
+                      'w-full items-center justify-between self-stretch rounded-lg border-grey-200 px-4 py-2 text-sm leading-6',
+                      !field.value && 'text-muted-foreground'
+                    )}
                   >
                     {field.value
                       ? contacts.find((person) => person.contacts_id === field.value)?.name
@@ -49,7 +53,7 @@ const ContactsField = ({ userId }: Props) => {
                 </FormControl>
               </PopoverTrigger>
               <PopoverContent className='w-auto p-0'>
-                <Command>
+                <Command className='rounded-lg'>
                   <CommandInput placeholder='검색' className='h-9' />
                   <CommandList>
                     <CommandEmpty>일치하는 이름이 없습니다.</CommandEmpty>
@@ -75,6 +79,7 @@ const ContactsField = ({ userId }: Props) => {
               </PopoverContent>
             </Popover>
             <FormMessage className='pl-1' />
+            </div>
           </FormItem>
         );
       }}

@@ -19,15 +19,14 @@ const PriorityField = () => {
               <p className='text-center text-sm'>중요도</p>
             </FormLabel>
             <Select onValueChange={field.onChange} defaultValue={field.value}>
-              <FormControl>
+              <FormControl
+                className={`flex flex-1 items-center self-stretch rounded-lg border border-grey-200 px-4 py-2 text-sm leading-6`}
+              >
                 <SelectTrigger>
-                  <SelectValue
-                    placeholder='중요도를 선택해주세요'
-                    className={`border-grey-200 flex flex-1 items-center self-stretch rounded-lg border p-4 text-base leading-6`}
-                  />
+                  <SelectValue placeholder='중요도를 선택해주세요' />
                 </SelectTrigger>
               </FormControl>
-              <SelectContent>
+              <SelectContent className='rounded-lg'>
                 <SelectItem value='low'>낮음</SelectItem>
                 <SelectItem value='medium'>중간</SelectItem>
                 <SelectItem value='high'>높음</SelectItem>
