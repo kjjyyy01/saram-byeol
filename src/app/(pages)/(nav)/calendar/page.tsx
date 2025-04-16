@@ -5,7 +5,7 @@ import PlanForm from '@/components/plans/PlanForm';
 import UpcomingPlans from '@/components/schedule/UpcomingPlans';
 import { SIGNIN } from '@/constants/paths';
 import { useAuthStore } from '@/store/zustand/store';
-import { SelectPlanstType } from '@/types/plans';
+import { SelectPlanType } from '@/types/plans';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
@@ -15,7 +15,7 @@ export default function Calendar() {
   const user = useAuthStore((state) => state.user);
   const isSignIn = useAuthStore((state) => state.isSignIn);
   const [hasMounted, setHasMounted] = useState(false);
-  const [selectPlan, setSelectPlan] = useState<SelectPlanstType[] | null>(null);
+  const [selectPlan, setSelectPlan] = useState<SelectPlanType[] | null>(null);
   const [showUpcoming, setShowUpcoming] = useState(true);
   const [showPlanForm, setShowPlanForm] = useState(false);
 
@@ -67,14 +67,14 @@ export default function Calendar() {
           </>
         )}
         {selectPlan ? (
-          <>
+          <div>
             <h2 className='mb-4 text-xl font-bold'>약속 디테일</h2>
             <div className='m-12'>
               <SelectPlan plans={selectPlan} />
             </div>
-          </>
+          </div>
         ) : (
-          showUpcoming && user?.id && <UpcomingPlans userId={user.id} />
+          showUpcoming && user?.id && <UpcomingPlans userId={user.id} onSelectPlan={(plan) => setSelectPlan([plan])} />
         )}
       </div>
     </div>

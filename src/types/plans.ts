@@ -94,7 +94,7 @@ export interface EditPlanType {
   colors?: string;
 }
 
-export interface SelectPlanstType extends PlansType {
+export interface SelectPlanType extends PlansType {
   contacts?: {
     name: string;
   };
