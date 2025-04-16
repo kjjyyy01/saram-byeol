@@ -1,4 +1,3 @@
-'use client';
 import { Calendar, dateFnsLocalizer } from 'react-big-calendar';
 import { format, parse, startOfWeek, getDay } from 'date-fns';
 import { useGetCalendarPlans } from '@/hooks/queries/useGetCalendarPlans';

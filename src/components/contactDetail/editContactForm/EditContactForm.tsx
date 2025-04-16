@@ -1,7 +1,7 @@
 import { useMutateEditContact } from '@/hooks/mutations/useMutateEditContact';
 import { ContactDetailType } from '@/types/contacts';
-import ContactForm from './ContactForm';
-import EditContactFormSubmitButton from './EditContactFormSubmitButton';
+import ContactForm from '@/components/contactDetail/editContactForm/ContactForm';
+import EditContactFormSubmitButton from '@/components/contactDetail/editContactForm/EditContactFormSubmitButton';
 
 interface EditContactFormProps {
   contactData: ContactDetailType;

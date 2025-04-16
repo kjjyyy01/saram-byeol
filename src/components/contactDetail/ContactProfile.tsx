@@ -1,16 +1,41 @@
-import { ContactDetailType } from '@/types/contacts';
+import { ContactDetailType, PlanDetailType } from '@/types/contacts';
 import Image from 'next/image';
 import { Plus } from 'lucide-react';
 import { useState } from 'react';
 import SideSheet from '@/components/contacts/SideSheet';
 import EditContactForm from '@/components/contactDetail/editContactForm/EditContactForm';
+import { Button } from '@/components/ui/button';
+import { useMutateDeleteContact } from '@/hooks/mutations/useMutateDeleteContact';
+import { toast } from 'react-toastify';
+import ContactPlansCard from '@/components/contactDetail/ContactPlansCard';
+import { ConfirmToast } from '@/components/toast/ConfirmToast';
 
 interface Props {
   contact: ContactDetailType;
+  plans: PlanDetailType[];
 }
 
-const ContactProfile: React.FC<Props> = ({ contact }) => {
+const ContactProfile: React.FC<Props> = ({ contact, plans }) => {
   const [isEditContactOpen, setIsEditContactOpen] = useState(false); // 사이드시트 상태
+
+  const { mutate: deleteContact } = useMutateDeleteContact();
+
+  const deleteContactHandler = () => {
+    ConfirmToast({
+      message: '정말로 해당 사람을 삭제하시겠습니까?',
+      onConfirm: () => {
+        deleteContact(contact.contacts_id, {
+          onSuccess: () => {
+            toast.success('성공적으로 삭제되었습니다.');
+          },
+          onError: (error) => {
+            console.error(error);
+            toast.error('삭제에 실패했습니다.');
+          },
+        });
+      },
+    });
+  };
 
   return (
     <div className='space-y-8'>
@@ -38,41 +63,40 @@ const ContactProfile: React.FC<Props> = ({ contact }) => {
         {/* 중앙 - 이름 및 이메일 */}
         <div className='flex flex-1 flex-col'>
           <h1 className='text-xl font-bold'>{contact.name}</h1>
-          <div className="w-[53px] h-[24px] rounded-[20px] bg-gray-100 flex items-center justify-center mt-[2px]">
-            <span className="text-[12px] font-bold text-gray-800">{contact.relationship_level}</span>
+          <div className='mt-[2px] flex h-[24px] w-[53px] items-center justify-center rounded-[20px] bg-gray-100'>
+            <span className='text-[12px] font-bold text-gray-800'>{contact.relationship_level}</span>
           </div>
           <p className='text-sm text-gray-600'>{contact.email}</p>
         </div>
 
         {/* 우측 버튼 */}
         <div className='space-x-2'>
-          <button className='rounded-full border border-gray-300 px-4 py-1 text-sm'>약속추가</button>
-          <button onClick={() => setIsEditContactOpen(true)} className='rounded-full border border-gray-300 px-4 py-1 text-sm'>정보수정</button>
+          <Button variant='outline' size='sm' onClick={() => setIsEditContactOpen(true)}>
+            수정
+          </Button>
+          <Button variant='destructive' size='sm' onClick={deleteContactHandler}>
+            삭제
+          </Button>
         </div>
       </div>
 
-      {/* 임시 D-day 카드 2개 */}
-      <div className='flex space-x-4'>
-        <div className='w-40 rounded-lg border p-4 text-center'>
-          <p className='text-lg font-bold'>D-14</p>
-          <p className='mt-1 text-sm'>트닛노트 출시파티</p>
-          <p className='text-xs text-gray-500'>@강남 트닛파티룸</p>
+      {/* 약속 카드 */}
+      {plans.length > 0 && (
+        <div>
+          {plans.map((plan) => (
+            <ContactPlansCard key={plan.plan_id} title={plan.title} startDate={plan.start_date} />
+          ))}
         </div>
-        <div className='w-40 rounded-lg border p-4 text-center'>
-          <p className='text-lg font-bold'>D-50</p>
-          <p className='mt-1 text-sm'>김로탄 결혼식</p>
-          <p className='text-xs text-gray-500'>@역삼 트닛예식장</p>
-        </div>
-      </div>
+      )}
 
       {/* 연락처 정보 */}
       <div className='space-y-1'>
         <h2 className='text-lg font-bold'>연락처</h2>
         <p>
-          <strong>휴대폰</strong> {contact.phone}
+          <strong>전화번호</strong> {contact.phone}
         </p>
         <p>
-          <strong>이메일 주소</strong> {contact.email}
+          <strong>이메일</strong> {contact.email}
         </p>
         <p>
           <strong>생년월일</strong> {contact.birth}
@@ -83,7 +107,7 @@ const ContactProfile: React.FC<Props> = ({ contact }) => {
       </div>
 
       {/* 사이드 시트 - 연락처 수정 */}
-      <SideSheet isOpen={isEditContactOpen} onClose={() => setIsEditContactOpen(false)} title="내 사람 수정">
+      <SideSheet isOpen={isEditContactOpen} onClose={() => setIsEditContactOpen(false)} title='내 사람 수정'>
         <EditContactForm contactData={contact} onClose={() => setIsEditContactOpen(false)} />
       </SideSheet>
     </div>

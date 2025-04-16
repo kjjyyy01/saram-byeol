@@ -6,20 +6,23 @@ import ContactsField from '@/components//plans/ContactsField';
 import useMutateInsertNewPlan from '@/hooks/mutations/useMutateInsertNewPlan';
 import { PlanFormType } from '@/lib/schemas/plansSchema';
 import { mappingFormData } from '@/lib/planFormUtils';
-import { TEST_USER_ID } from '@/components/contacts/ContactList';
 import { toast } from 'react-toastify';
 import { TextAa } from '@phosphor-icons/react';
 import { useFormContext } from 'react-hook-form';
+import { useAuthStore } from '@/store/zustand/store';
 
 const PopOverForm = ({ selectedColor }: { selectedColor: string }) => {
+  const user = useAuthStore((state) => state.user);
   const form = useFormContext<PlanFormType>();
   const { mutate: insertNewPlan, isPending } = useMutateInsertNewPlan();
 
   const planSubmitHandler = useCallback(
     (data: PlanFormType) => {
+      if (!user) return null;
+
       const inputData = mappingFormData(data);
       insertNewPlan(
-        { user_id: TEST_USER_ID, ...inputData, colors: selectedColor }, //새로운 일정 추가 시 색상 포함
+        { user_id: user.id, ...inputData, colors: selectedColor }, //새로운 일정 추가 시 색상 포함
         {
           onSuccess: () => {
             form.reset();
@@ -51,7 +54,7 @@ const PopOverForm = ({ selectedColor }: { selectedColor: string }) => {
               />
             </section>
             <DateInputField />
-            <ContactsField userId={TEST_USER_ID} />
+            {user && <ContactsField userId={user.id} enabled={!!user.id} />}
             <div className='flex justify-between'>
               <button className='items-center justify-center rounded-[6px] border-[1px] border-primary-500 bg-primary-50 px-5 py-3 font-bold text-primary-500'>
                 옵션 더보기

@@ -3,18 +3,20 @@ import { getContactsWithPlans } from '@/app/api/supabase/service';
 import ContactProfile from '@/components/contactDetail/ContactProfile';
 import ContactPlans from '@/components/contactDetail/ContactPlans';
 import Tabs from '@/components/ui/Tabs';
-
-const TEST_USER_ID = 'a27fc897-4216-4863-9e7b-f8868a8369ff';
+import { useAuthStore } from '@/store/zustand/store';
 
 interface Props {
   contactsId: string;
 }
 
 const PeopleDetailPanel = ({ contactsId }: Props) => {
+  const user = useAuthStore((state) => state.user);
+  const userId = user?.id;
+
   const { data, isPending, error } = useQuery({
     queryKey: ['contactWithPlans', contactsId],
-    queryFn: () => getContactsWithPlans(TEST_USER_ID, contactsId),
-    enabled: !!contactsId,
+    queryFn: () => getContactsWithPlans(userId!, contactsId),
+    enabled: !!userId && !!contactsId,
   });
 
   if (isPending) return <div className='p-8 text-center'>로딩 중...</div>;
@@ -25,7 +27,7 @@ const PeopleDetailPanel = ({ contactsId }: Props) => {
   return (
     <div className='container mx-auto px-4 pt-8'>
       <Tabs tabs={['내사람정보', '약속']}>
-        {[<ContactProfile key='profile' contact={contact} />, <ContactPlans key='plans' plans={plans} />]}
+        {[<ContactProfile key='profile' contact={contact} plans={plans} />, <ContactPlans key='plans' plans={plans} />]}
       </Tabs>
     </div>
   );
