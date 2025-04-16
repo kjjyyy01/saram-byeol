@@ -58,7 +58,6 @@ const PlanForm = () => {
 
   return (
     <FormProvider {...form}>
-      {/* <div className='mx-12 my-10'> */}
       <form onSubmit={form.handleSubmit(planSubmitHandler)} className='flex flex-col justify-start gap-9'>
         <ColorOptions selectedColor={selectedColor} setSelectedColor={setSelectedColor} />
         <TitleField />
@@ -86,7 +85,6 @@ const PlanForm = () => {
           </Button>
         </div>
       </form>
-      {/* </div> */}
     </FormProvider>
   );
 };
