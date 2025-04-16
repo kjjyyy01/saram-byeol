@@ -1,7 +1,7 @@
 import { Calendar, dateFnsLocalizer } from 'react-big-calendar';
 import { format, parse, startOfWeek, getDay } from 'date-fns';
 import { useGetCalendarPlans } from '@/hooks/queries/useGetCalendarPlans';
-import CustomToolbar, { CustomToolbarProps } from '@/components/calendar/CustomToolbar';
+import CustomToolbar from '@/components/calendar/CustomToolbar';
 import { useState } from 'react';
 import type { CalendarEventType, Holidays, PlansType } from '@/types/plans';
 import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop';
@@ -21,7 +21,10 @@ interface Props {
 
 interface MainCalendarProps {
   setSelectPlan: React.Dispatch<React.SetStateAction<PlansType[] | null>>;
-  CustomToolbarProps: Pick<CustomToolbarProps, 'onShowUpcomingPlans'>;
+  CustomToolbarProps: {
+    onShowUpcomingPlans: () => void;
+    onAddPlan: () => void;
+  };
 }
 
 const localizer = dateFnsLocalizer({
