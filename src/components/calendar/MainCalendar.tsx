@@ -21,6 +21,10 @@ interface Props {
 
 interface MainCalendarProps {
   setSelectPlan: React.Dispatch<React.SetStateAction<PlansType[] | null>>;
+  CustomToolbarProps: {
+    onShowUpcomingPlans: () => void;
+    onAddPlan: () => void;
+  };
 }
 
 const localizer = dateFnsLocalizer({
@@ -31,7 +35,7 @@ const localizer = dateFnsLocalizer({
   locales: {},
 });
 
-const MainCalendar = ({ setSelectPlan }: MainCalendarProps) => {
+const MainCalendar = ({ setSelectPlan, CustomToolbarProps }: MainCalendarProps) => {
   const [moment, setMoment] = useState(new Date()); //해당 달
   const [selectedDate, setSelectedDate] = useState<Date | null>(null); //선택한 셀 날짜
   const [isPopOverOpen, setIsPopOverOpen] = useState(false); //팝오버 오픈 여부
@@ -92,7 +96,7 @@ const MainCalendar = ({ setSelectPlan }: MainCalendarProps) => {
         defaultView='month'
         views={['month']}
         components={{
-          toolbar: CustomToolbar, // 상단 툴바(달 이동)
+          toolbar: (props) => <CustomToolbar {...props} {...CustomToolbarProps} />, // 상단 툴바(달 이동)
           month: {
             dateHeader: CustomDateHeader, // 날짜 셀의 숫자
           },
