@@ -43,7 +43,7 @@ const PopOverForm = ({ selectedColor }: { selectedColor: string }) => {
         <fieldset disabled={isPending} className='grid gap-8'>
           <Form {...form}>
             <section className='flex items-center gap-8'>
-              <div className='grid justify-items-center'>
+              <div className='relative flex w-14 flex-shrink-0 flex-grow-0 flex-col items-center justify-center gap-1'>
                 <TextAa size={24} />
                 <p className='min-w-max text-[14px]'>제목</p>
               </div>
