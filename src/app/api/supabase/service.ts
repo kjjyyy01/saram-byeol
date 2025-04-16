@@ -3,6 +3,7 @@ import { supabase } from '@/app/api/supabase/client';
 import { InsertNewPlansType, PlansType } from '@/types/plans';
 import { CONTACTS, PLANS, USERS } from '@/constants/supabaseTable';
 import { useAuthStore } from '@/store/zustand/store';
+import { OAUTH_REDIRECT_URL } from '@/constants/redirecturl';
 
 export const getContacts = async (userId: string): Promise<ContactItemType[]> => {
   try {
@@ -210,7 +211,7 @@ export const signInWithGoogle = async () => {
   const { error } = await supabase.auth.signInWithOAuth({
     provider: 'google',
     options: {
-      redirectTo: 'http://localhost:3000/people',
+      redirectTo: `${OAUTH_REDIRECT_URL}/people`,
       queryParams: {
         access_type: 'offline',
         prompt: 'consent',
@@ -224,7 +225,7 @@ export const signInWithKakao = async () => {
   const { error } = await supabase.auth.signInWithOAuth({
     provider: 'kakao',
     options: {
-      redirectTo: 'http://localhost:3000/people',
+      redirectTo: `${OAUTH_REDIRECT_URL}/people`,
       queryParams: {
         access_type: 'offline',
         prompt: 'consent',

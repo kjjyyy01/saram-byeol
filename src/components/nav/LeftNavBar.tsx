@@ -10,7 +10,7 @@ import { toast } from 'react-toastify';
 
 const LeftNavBar = () => {
   const { user, isSignIn, signOut } = useAuthStore();
-
+  const provider = user?.app_metadata.provider;
   const pathName = usePathname();
   const page = pathName.slice(1);
 
@@ -63,7 +63,7 @@ const LeftNavBar = () => {
               alt='유저 프로필 이미지'
               className='h-12 w-12 rounded-full object-cover'
             />
-            <div>{user?.user_metadata.nickname}</div>
+            {provider !== 'email' ? <div>{user?.user_metadata.name}</div> : <div>{user?.user_metadata.nickname}</div>}
             {/* <div>닉네임위치글자수제한</div> */}
           </div>
         </div>
