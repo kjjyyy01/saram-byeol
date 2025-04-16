@@ -1,16 +1,40 @@
+import { useMutateDeletePlan } from '@/hooks/mutations/useMutateDeletePlan';
 import { SelectPlanType } from '@/types/plans';
 import { CalendarBlank, MapPin, Star, TextAa, TextAlignLeft, User } from '@phosphor-icons/react';
 import React from 'react';
+import { ConfirmToast } from '../toast/ConfirmToast';
+import { toast } from 'react-toastify';
 
 interface SelectPlanProps {
   plans: SelectPlanType[];
+  onEdit: () => void;
 }
 
-const SelectPlan = ({ plans }: SelectPlanProps) => {
+const SelectPlan = ({ plans, onEdit }: SelectPlanProps) => {
+  // 'YYYY-MM-DD' 형식으로 반환
   const formatDate = (isoString: string) => {
     const date = new Date(isoString);
-    return date.toISOString().split('T')[0]; // 'YYYY-MM-DD' 형식으로 반환
+    return date.toLocaleDateString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit' });
   };
+
+  const { mutate: deletePlan } = useMutateDeletePlan();
+
+  const deletePlanHandler = (planId: string) => {
+    ConfirmToast({
+      message: '정말로 해당 약속을 삭제하시겠습니까?',
+      onConfirm: () => {
+        deletePlan(planId, {
+          onSuccess: () => {
+            toast.success('성공적으로 삭제되었습니다.');
+          },
+          onError: () => {
+            toast.error('삭제에 실패했습니다.');
+          },
+        });
+      },
+    });
+  };
+
   return (
     <div>
       <div className='max-h-[calc(100vh-2rem)] space-y-4 overflow-auto'>
@@ -60,6 +84,20 @@ const SelectPlan = ({ plans }: SelectPlanProps) => {
                   <p className='text-center text-sm'>내용</p>
                 </div>
                 <p className='w-[200px]'>{plan.detail}</p>
+              </section>
+              <section className='mt-12 flex justify-between'>
+                <button
+                  onClick={() => deletePlanHandler(plan.plan_id)}
+                  className='w-[132px] rounded-[8px] border-[1px] border-grey-500 px-6 py-4 font-normal'
+                >
+                  삭제
+                </button>
+                <button
+                  onClick={onEdit}
+                  className='w-[132px] rounded-[8px] border-[1px] bg-primary-500 px-6 py-4 font-normal text-grey-0'
+                >
+                  수정
+                </button>
               </section>
             </div>
           ))}
