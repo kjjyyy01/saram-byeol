@@ -2,10 +2,11 @@
 import MainCalendar from '@/components/calendar/MainCalendar';
 import SelectPlan from '@/components/calendar/SelectPlan';
 import PlanForm from '@/components/plans/PlanForm';
+import EditPlanForm from '@/components/contactDetail/editPlanForm/EditPlanForm';
 import UpcomingPlans from '@/components/schedule/UpcomingPlans';
 import { SIGNIN } from '@/constants/paths';
 import { useAuthStore } from '@/store/zustand/store';
-import { SelectPlanstType } from '@/types/plans';
+import { SelectPlanType } from '@/types/plans';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
@@ -14,10 +15,15 @@ export default function Calendar() {
   const router = useRouter();
   const user = useAuthStore((state) => state.user);
   const isSignIn = useAuthStore((state) => state.isSignIn);
+
   const [hasMounted, setHasMounted] = useState(false);
-  const [selectPlan, setSelectPlan] = useState<SelectPlanstType[] | null>(null);
+  const [selectPlan, setSelectPlan] = useState<SelectPlanType[] | null>(null);
+
   const [showUpcoming, setShowUpcoming] = useState(true);
   const [showPlanForm, setShowPlanForm] = useState(false);
+
+  const [editPlan, setEditPlan] = useState<SelectPlanType | null>(null);
+  const [isEditMode, setIsEditMode] = useState(false);
 
   // 마운트 이후에만 렌더링
   useEffect(() => {
@@ -31,8 +37,7 @@ export default function Calendar() {
     }
   }, [hasMounted, isSignIn, router]);
 
-  if (!hasMounted) return null;
-  if (!isSignIn) return null;
+  if (!hasMounted || !isSignIn) return null;
 
   return (
     <div className='flex flex-col gap-4 p-4 md:flex-row'>
@@ -42,17 +47,23 @@ export default function Calendar() {
             setSelectPlan(plan);
             setShowUpcoming(false); // 약속 선택 시 upcoming 닫기
             setShowPlanForm(false); // 다른 거 열릴 땐 폼 닫기
+            setIsEditMode(false);
+            setEditPlan(null);
           }}
           CustomToolbarProps={{
             onShowUpcomingPlans: () => {
               setSelectPlan(null); // 기존 선택 약속 제거
               setShowUpcoming(true); // upcoming 보여주기
               setShowPlanForm(false); // 다른 거 열릴 땐 폼 닫기
+              setIsEditMode(false);
+              setEditPlan(null);
             },
             onAddPlan: () => {
               setSelectPlan(null);
               setShowUpcoming(false);
               setShowPlanForm(true); // PlanForm 열기
+              setIsEditMode(false);
+              setEditPlan(null);
             },
           }}
         />
@@ -66,11 +77,32 @@ export default function Calendar() {
             </div>
           </>
         )}
-        {selectPlan ? (
+
+        {isEditMode && editPlan ? (
+          <>
+            <h2 className='mb-4 text-xl font-bold'>약속 수정</h2>
+            <div className='m-5'>
+              <EditPlanForm
+                plan={editPlan}
+                onClose={() => {
+                  setIsEditMode(false);
+                  setEditPlan(null);
+                  setSelectPlan(null);
+                }}
+              />
+            </div>
+          </>
+        ) : selectPlan ? (
           <>
             <h2 className='mb-4 text-xl font-bold'>약속 디테일</h2>
-            <div className='m-12'>
-              <SelectPlan plans={selectPlan} />
+            <div className='p-12'>
+              <SelectPlan
+                plans={selectPlan}
+                onEdit={() => {
+                  setIsEditMode(true);
+                  setEditPlan(selectPlan[0]); // 첫 번째 plan 기준
+                }}
+              />
             </div>
           </>
         ) : (
