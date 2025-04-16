@@ -52,7 +52,7 @@ export default function Calendar() {
             onAddPlan: () => {
               setSelectPlan(null);
               setShowUpcoming(false);
-              setShowPlanForm(true); // 👉 PlanForm 열기
+              setShowPlanForm(true); // PlanForm 열기
             },
           }}
         />
