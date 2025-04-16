@@ -9,11 +9,12 @@ const ColorOptions = ({ selectedColor, setSelectedColor }: Props) => {
   const colorOptions = ['#EB5757', '#F2994A', '#F2C94C', '#27AE60', '#2F80ED', '#56CCF2', '#9B51E0', '#F955EB'];
 
   return (
-    <div className='flex items-center justify-start gap-8'>
-      <label className='relative flex w-14 flex-shrink-0 flex-grow-0 flex-col items-center justify-center gap-1'>
-        <Palette size={24} className='h-6 w-6 flex-shrink-0 flex-grow-0' /> <p className='text-center text-sm'>색상</p>
-      </label>
-      <div className='flex w-full flex-wrap gap-4'>
+    <div className='flex items-center gap-8'>
+      <section className='relative flex w-14 flex-shrink-0 flex-grow-0 flex-col items-center justify-center gap-1'>
+        <Palette size={32} />
+        <p className='min-w-max text-[14px]'>색상</p>
+      </section>
+      <section className='flex gap-2'>
         {colorOptions.map((color) => (
           <div
             key={color}
@@ -22,8 +23,7 @@ const ColorOptions = ({ selectedColor, setSelectedColor }: Props) => {
             style={{ backgroundColor: color }}
           />
         ))}
-      </div>
-
+      </section>
     </div>
   );
 };
