@@ -43,13 +43,13 @@ const ContactProfile: React.FC<Props> = ({ contact, plans }) => {
       <div className='flex items-start justify-between'>
         {/* 좌측 - 프로필 이미지 */}
         <div className='relative flex items-center space-x-[-10px]'>
-          <div className='relative h-12 w-12 flex-shrink-0 overflow-hidden rounded-full bg-gray-200'>
+          <div className='relative h-24 w-24 flex-shrink-0 overflow-hidden rounded-full bg-gray-200'>
             {contact.contacts_profile_img ? (
               <Image
                 src={contact.contacts_profile_img}
                 alt={contact.name}
-                width={48}
-                height={48}
+                width={96}
+                height={96}
                 className='h-full w-full object-cover'
               />
             ) : (
@@ -80,30 +80,35 @@ const ContactProfile: React.FC<Props> = ({ contact, plans }) => {
         </div>
       </div>
 
-      {/* 약속 카드 */}
-      {plans.length > 0 && (
-        <div>
-          {plans.map((plan) => (
-            <ContactPlansCard key={plan.plan_id} title={plan.title} startDate={plan.start_date} />
-          ))}
+      <div className='flex flex-wrap gap-8'>
+        {/* 연락처 정보 */}
+        <div className='min-w-[280px] space-y-2'>
+          <h2 className='mb-2 text-lg font-bold'>연락처</h2>
+          <p>
+            <strong className='inline-block w-20 text-gray-600'>전화번호</strong> {contact.phone}
+          </p>
+          <p>
+            <strong className='inline-block w-20 text-gray-600'>이메일</strong> {contact.email}
+          </p>
+          <p>
+            <strong className='inline-block w-20 text-gray-600'>생년월일</strong> {contact.birth}
+          </p>
+          <p>
+            <strong className='inline-block w-20 text-gray-600'>메모</strong> {contact.notes}
+          </p>
         </div>
-      )}
 
-      {/* 연락처 정보 */}
-      <div className='space-y-1'>
-        <h2 className='text-lg font-bold'>연락처</h2>
-        <p>
-          <strong>전화번호</strong> {contact.phone}
-        </p>
-        <p>
-          <strong>이메일</strong> {contact.email}
-        </p>
-        <p>
-          <strong>생년월일</strong> {contact.birth}
-        </p>
-        <p>
-          <strong>메모</strong> {contact.notes}
-        </p>
+        {/* 다가오는 약속 */}
+        {plans.length > 0 && (
+          <div className='flex-1'>
+            <h2 className='mb-2 text-lg font-bold'>다가오는 약속</h2>
+            <div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
+              {plans.map((plan) => (
+                <ContactPlansCard key={plan.plan_id} title={plan.title} startDate={plan.start_date} />
+              ))}
+            </div>
+          </div>
+        )}
       </div>
 
       {/* 사이드 시트 - 연락처 수정 */}
