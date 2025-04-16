@@ -7,6 +7,9 @@ import localFont from 'next/font/local';
 export const metadata: Metadata = {
   title: '사람 별',
   description: '연락처 관리는 사람 별',
+  icons: {
+    icon: '/favicon.png',
+  },
   openGraph: {
     title: '사람 별',
     description: '연락처 관리 서비스 사람 별',
