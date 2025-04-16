@@ -19,15 +19,14 @@ export const PlansSchema = z.object({
     from: z.date({
       required_error: '지난 날짜는 약속에 추가할 수 없습니다.',
       invalid_type_error: '지난 날짜는 약속에 추가할 수 없습니다.',
-      message: '지난 날짜는 약속에 추가할 수 없습니다.'
-      
+      message: '지난 날짜는 약속에 추가할 수 없습니다.',
     }),
     to: z.date().optional(),
   }),
   contacts: z.string().min(1, {
     message: '약속을 함께할 사람을 추가해주세요',
   }),
-  priority: z.string(),
+  priority: z.string().optional(),
   detail: z.string().optional(),
   colors: z.string().optional(),
 });

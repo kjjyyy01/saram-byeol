@@ -19,7 +19,6 @@ const PopOverForm = ({ selectedColor }: { selectedColor: string }) => {
   const planSubmitHandler = useCallback(
     (data: PlanFormType) => {
       if (!user) return null;
-
       const inputData = mappingFormData(data);
       insertNewPlan(
         { user_id: user.id, ...inputData, colors: selectedColor }, //새로운 일정 추가 시 색상 포함
@@ -34,7 +33,7 @@ const PopOverForm = ({ selectedColor }: { selectedColor: string }) => {
         }
       );
     },
-    [insertNewPlan, form, selectedColor]
+    [insertNewPlan, form, selectedColor, user]
   );
 
   return (
