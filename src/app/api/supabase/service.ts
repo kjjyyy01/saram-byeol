@@ -210,7 +210,7 @@ export const signInWithGoogle = async () => {
   const { error } = await supabase.auth.signInWithOAuth({
     provider: 'google',
     options: {
-      redirectTo: 'http://localhost:3000/people',
+      redirectTo: 'https://saram-byeol.vercel.app/people',
       queryParams: {
         access_type: 'offline',
         prompt: 'consent',
@@ -224,7 +224,7 @@ export const signInWithKakao = async () => {
   const { error } = await supabase.auth.signInWithOAuth({
     provider: 'kakao',
     options: {
-      redirectTo: 'http://localhost:3000/people',
+      redirectTo: 'https://saram-byeol.vercel.app/people',
       queryParams: {
         access_type: 'offline',
         prompt: 'consent',
