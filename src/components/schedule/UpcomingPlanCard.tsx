@@ -8,7 +8,7 @@ interface UpcomingPlanCardProps {
   plan: PlansType;
 }
 
-const UpcomingPlanCard: React.FC<UpcomingPlanCardProps> = ({ plan }) => {
+const UpcomingPlanCard = ({ plan }: UpcomingPlanCardProps) => {
   const todayPlan = isToday(plan.start_date);
 
   return (

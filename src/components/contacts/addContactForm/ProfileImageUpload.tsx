@@ -10,7 +10,7 @@ interface ProfileImageUPloadProps {
   setValue: UseFormSetValue<ContactFormValues>;
 }
 
-const ProfileImageUpload: React.FC<ProfileImageUPloadProps> = ({ imageSource, setImageSource, setValue }) => {
+const ProfileImageUpload = ({ imageSource, setImageSource, setValue }: ProfileImageUPloadProps) => {
   // 파일 선택 처리 함수
   const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];

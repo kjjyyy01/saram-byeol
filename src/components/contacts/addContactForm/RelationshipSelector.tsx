@@ -19,11 +19,11 @@ interface RelationshipSelectorProps {
   setValue: UseFormSetValue<ContactFormValues>;
 }
 
-const RelationshipSelector: React.FC<RelationshipSelectorProps> = ({
+const RelationshipSelector = ({
   relationshipType,
   setRelationshipType,
   setValue,
-}) => {
+}: RelationshipSelectorProps) => {
   // 관계 유형 변경 처리
   const handleRelationshipChange = (value: string) => {
     setRelationshipType(value);

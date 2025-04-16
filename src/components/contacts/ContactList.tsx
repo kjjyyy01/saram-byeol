@@ -11,7 +11,7 @@ interface ContactListProps {
   onSelectedContact: (id: string) => void;
 }
 
-const ContactList: React.FC<ContactListProps> = ({ onSelectedContact }) => {
+const ContactList = ({ onSelectedContact }: ContactListProps) => {
   const [isAddContactOpen, setIsAddContactOpen] = useState(false);
 
   // useAuthStore에서 사용자 정보 가져오기
@@ -21,26 +21,22 @@ const ContactList: React.FC<ContactListProps> = ({ onSelectedContact }) => {
   // 로그인 되지 않은 경우를 위한 처리
   const isAuthenticated = !!userId;
 
-  const {
-    data: contacts = [],
-    isPending,
-    error, 
-  } = useGetContactsByUserID(userId as string,isAuthenticated);
+  const { data: contacts = [], isPending, error } = useGetContactsByUserID(userId as string, isAuthenticated);
 
-    // Pin 업데이트 뮤테이션
-    const pinMutation = useTogglePinContact(userId)
-  
-    // 핀된 연락처와 일반 연락처 분리
-    const { pinnedContacts, regularContacts } = useMemo(() => {
-      const pinned = contacts.filter(contact => contact.is_pinned);
-      const regular = contacts.filter(contact => !contact.is_pinned);
-      return { pinnedContacts: pinned, regularContacts: regular };
-    }, [contacts]);
-  
-    // 핀 토글 핸들러
-    const handleTogglePin = (contactId: string, isPinned: boolean) => {
-      pinMutation.mutate({ contactId, isPinned });
-    };
+  // Pin 업데이트 뮤테이션
+  const pinMutation = useTogglePinContact(userId);
+
+  // 핀된 연락처와 일반 연락처 분리
+  const { pinnedContacts, regularContacts } = useMemo(() => {
+    const pinned = contacts.filter((contact) => contact.is_pinned);
+    const regular = contacts.filter((contact) => !contact.is_pinned);
+    return { pinnedContacts: pinned, regularContacts: regular };
+  }, [contacts]);
+
+  // 핀 토글 핸들러
+  const handleTogglePin = (contactId: string, isPinned: boolean) => {
+    pinMutation.mutate({ contactId, isPinned });
+  };
 
   if (error) {
     console.error('연락처 로딩 실패', error);
@@ -48,8 +44,8 @@ const ContactList: React.FC<ContactListProps> = ({ onSelectedContact }) => {
 
   if (!isAuthenticated) {
     return (
-      <div className="flex h-full flex-col items-center justify-center">
-        <p className="text-lg text-gray-600">로그인이 필요한 서비스입니다.</p>
+      <div className='flex h-full flex-col items-center justify-center'>
+        <p className='text-lg text-gray-600'>로그인이 필요한 서비스입니다.</p>
       </div>
     );
   }
@@ -80,38 +76,37 @@ const ContactList: React.FC<ContactListProps> = ({ onSelectedContact }) => {
           <div>
             {/* 핀 고정 영역 */}
             {pinnedContacts.length > 0 && (
-              <div className="mb-6">
-                <div className="flex items-center px-6 py-3 bg-gray-50">
-                  <h2 className="text-sm font-semibold text-gray-700">고정됨</h2>
+              <div className='mb-6'>
+                <div className='flex items-center bg-gray-50 px-6 py-3'>
+                  <h2 className='text-sm font-semibold text-gray-700'>고정됨</h2>
                 </div>
-                <ul className="flex flex-col">
+                <ul className='flex flex-col'>
                   {pinnedContacts.map((contact) => (
                     <li key={`pinned-${contact.contacts_id}`}>
-                        <ContactItem 
-                          contact={contact} 
-                          onTogglePin={handleTogglePin} 
+                      <div onClick={() => onSelectedContact(contact.contacts_id)}>
+                        <ContactItem
+                          contact={contact}
+                          onTogglePin={handleTogglePin}
                         />
+                      </div>
                     </li>
                   ))}
                 </ul>
               </div>
             )}
-            
+
             {/* 일반 연락처 영역 */}
             <div>
               {pinnedContacts.length > 0 && (
-                <div className="flex items-center px-6 py-3 bg-gray-50">
-                  <h2 className="text-sm font-semibold text-gray-700">리스트</h2>
+                <div className='flex items-center bg-gray-50 px-6 py-3'>
+                  <h2 className='text-sm font-semibold text-gray-700'>리스트</h2>
                 </div>
               )}
-              <ul className="flex flex-col">
+              <ul className='flex flex-col'>
                 {regularContacts.map((contact) => (
                   <li key={contact.contacts_id}>
                     <div onClick={() => onSelectedContact(contact.contacts_id)} className='w-full'>
-                      <ContactItem 
-                        contact={contact} 
-                        onTogglePin={handleTogglePin} 
-                      />
+                      <ContactItem contact={contact} onTogglePin={handleTogglePin} />
                     </div>
                   </li>
                 ))}
