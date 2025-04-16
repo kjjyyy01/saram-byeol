@@ -7,23 +7,23 @@ import { Button } from '@/components/ui/button';
 import { useMutateUpdatePlan } from '@/hooks/mutations/useMutateUpdatePlan';
 import { mappingFormData } from '@/lib/planFormUtils';
 import { PlanFormType, PlansSchema } from '@/lib/schemas/plansSchema';
-import { EditPlanType, PlansType } from '@/types/plans';
+import { useAuthStore } from '@/store/zustand/store';
+import { EditPlanType } from '@/types/plans';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
-
-const TEST_USER_ID = 'a27fc897-4216-4863-9e7b-f8868a8369ff';
 
 interface Props {
   plan: EditPlanType;
   onClose: () => void;
 }
 
-const convertToFormValues = (plan: PlansType): PlanFormType => ({
+const convertToFormValues = (plan: EditPlanType): PlanFormType => ({
   title: plan.title || '',
   detail: plan.detail || '',
   contacts: plan.contacts_id || '',
+  priority: plan.priority || '',
   dateInput: {
     from: new Date(plan.start_date),
     to: new Date(plan.end_date),
@@ -37,12 +37,13 @@ const convertToFormValues = (plan: PlansType): PlanFormType => ({
     x: plan.location?.x || '',
     y: plan.location?.y || '',
   },
+  colors: plan.colors ?? '',
 });
 
 const EditPlanForm: React.FC<Props> = ({ plan, onClose }) => {
   const [inputValue, setInputValue] = useState(plan.location?.place_name || '');
+  const user = useAuthStore((state) => state.user);
 
-  
   const form = useForm<PlanFormType>({
     resolver: zodResolver(PlansSchema),
     mode: 'onChange',
@@ -70,7 +71,7 @@ const EditPlanForm: React.FC<Props> = ({ plan, onClose }) => {
       <form onSubmit={form.handleSubmit(editPlanHandler)}>
         <TitleField />
         <DateInputField />
-        <ContactsField userId={TEST_USER_ID} />
+        <ContactsField userId={user?.id || ''} enabled={true} />
         <PlaceField inputValue={inputValue} setInputValue={setInputValue} />
         <DetailField />
         <div className='flex justify-end pt-6'>
