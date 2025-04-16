@@ -93,3 +93,9 @@ export interface EditPlanType {
   location?: Partial<KakaoPlaceType> | null;
   colors?: string;
 }
+
+export interface SelectPlanstType extends PlansType {
+  contacts?: {
+    name: string;
+  };
+}
