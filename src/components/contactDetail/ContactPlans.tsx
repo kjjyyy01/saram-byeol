@@ -10,6 +10,7 @@ import { useMutateDeletePlan } from '@/hooks/mutations/useMutateDeletePlan';
 import { toast } from 'react-toastify';
 import { Button } from '@/components/ui/button';
 import PlanForm from '@/components/plans/PlanForm';
+import { ConfirmToast } from '../toast/ConfirmToast';
 
 interface Props {
   plans: PlanDetailType[];
@@ -28,15 +29,17 @@ const ContactPlans: React.FC<Props> = ({ plans }) => {
   };
 
   const deletePlanHandler = (planId: string) => {
-    const isConfirmed = window.confirm('정말로 해당 약속을 삭제하시겠습니까?');
-    if (!isConfirmed) return;
-
-    deletePlan(planId, {
-      onSuccess: () => {
-        toast.success('성공적으로 삭제되었습니다.');
-      },
-      onError: () => {
-        toast.error('삭제에 실패했습니다.');
+    ConfirmToast({
+      message: '정말로 해당 약속을 삭제하시겠습니까?',
+      onConfirm: () => {
+        deletePlan(planId, {
+          onSuccess: () => {
+            toast.success('성공적으로 삭제되었습니다.');
+          },
+          onError: () => {
+            toast.error('삭제에 실패했습니다.');
+          },
+        });
       },
     });
   };

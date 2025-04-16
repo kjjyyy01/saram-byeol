@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { useMutateDeleteContact } from '@/hooks/mutations/useMutateDeleteContact';
 import { toast } from 'react-toastify';
 import ContactPlansCard from '@/components/contactDetail/ContactPlansCard';
+import { ConfirmToast } from '@/components/toast/ConfirmToast';
 
 interface Props {
   contact: ContactDetailType;
@@ -20,17 +21,18 @@ const ContactProfile: React.FC<Props> = ({ contact, plans }) => {
   const { mutate: deleteContact } = useMutateDeleteContact();
 
   const deleteContactHandler = () => {
-    const isConfirmed = window.confirm('정말로 해당 사람을 삭제하시겠습니까?');
-
-    if (!isConfirmed) return;
-
-    deleteContact(contact.contacts_id, {
-      onSuccess: () => {
-        toast.success('성공적으로 삭제되었습니다.');
-      },
-      onError: (error) => {
-        console.error(error);
-        toast.error('삭제에 실패했습니다.');
+    ConfirmToast({
+      message: '정말로 해당 사람을 삭제하시겠습니까?',
+      onConfirm: () => {
+        deleteContact(contact.contacts_id, {
+          onSuccess: () => {
+            toast.success('성공적으로 삭제되었습니다.');
+          },
+          onError: (error) => {
+            console.error(error);
+            toast.error('삭제에 실패했습니다.');
+          },
+        });
       },
     });
   };
