@@ -5,12 +5,14 @@ import { useQuery } from '@tanstack/react-query';
 import { getUserPlans } from '@/app/api/supabase/service';
 import UpcomingPlanCard from '@/components/schedule/UpcomingPlanCard';
 import { QUERY_KEY } from '@/constants/queryKey';
+import { SelectPlanType } from '@/types/plans';
 
 interface UpcomingPlansProps {
   userId: string;
+  onSelectPlan: (plan: SelectPlanType) => void;
 }
 
-const UpcomingPlans: React.FC<UpcomingPlansProps> = ({ userId }) => {
+const UpcomingPlans: React.FC<UpcomingPlansProps> = ({ userId, onSelectPlan }) => {
   // Tanstack Query 사용해서 데이터 페칭
   const {
     data: plans = [],
@@ -33,7 +35,9 @@ const UpcomingPlans: React.FC<UpcomingPlansProps> = ({ userId }) => {
       <h2 className='mb-4 text-xl font-bold'>다가오는 일정</h2>
       <div className='space-y-3'>
         {plans.map((plan) => (
-          <UpcomingPlanCard key={plan.plan_id} plan={plan} />
+          <div key={plan.plan_id} onClick={() => onSelectPlan(plan)}className='cursor-pointer'>
+            <UpcomingPlanCard  plan={plan} />
+          </div>
         ))}
       </div>
     </div>
