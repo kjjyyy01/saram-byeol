@@ -1,7 +1,7 @@
-import { useMutateDeletePlan } from '@/hooks/mutations/useMutateDeletePlan';
+import { useMutateDeleteSelectPlan } from '@/hooks/mutations/useMutateDeleteSelectPlan';
 import { SelectPlanType } from '@/types/plans';
 import { CalendarBlank, MapPin, Star, TextAa, TextAlignLeft, User } from '@phosphor-icons/react';
-import React from 'react';
+import React, { useState } from 'react';
 import { ConfirmToast } from '../toast/ConfirmToast';
 import { toast } from 'react-toastify';
 
@@ -11,21 +11,19 @@ interface SelectPlanProps {
 }
 
 const SelectPlan = ({ plans, onEdit }: SelectPlanProps) => {
-  // 'YYYY-MM-DD' 형식으로 반환
-  const formatDate = (isoString: string) => {
-    const date = new Date(isoString);
-    return date.toLocaleDateString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit' });
-  };
-
-  const { mutate: deletePlan } = useMutateDeletePlan();
+  const [localPlans, setLocalPlans] = useState<SelectPlanType[]>(plans);
+  const deleteMutation = useMutateDeleteSelectPlan();
 
   const deletePlanHandler = (planId: string) => {
     ConfirmToast({
       message: '정말로 해당 약속을 삭제하시겠습니까?',
       onConfirm: () => {
-        deletePlan(planId, {
+        deleteMutation.mutate(planId, {
           onSuccess: () => {
             toast.success('성공적으로 삭제되었습니다.');
+
+            // 화면에서도 삭제
+            setLocalPlans((prev) => prev.filter((plan) => plan.plan_id !== planId));
           },
           onError: () => {
             toast.error('삭제에 실패했습니다.');
@@ -35,11 +33,17 @@ const SelectPlan = ({ plans, onEdit }: SelectPlanProps) => {
     });
   };
 
+  // 'YYYY-MM-DD' 형식으로 반환
+  const formatDate = (isoString: string) => {
+    const date = new Date(isoString);
+    return date.toLocaleDateString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit' });
+  };
+
   return (
     <div>
       <div className='max-h-[calc(100vh-2rem)] space-y-4 overflow-auto'>
         <div className='space-y-3'>
-          {plans.map((plan) => (
+          {localPlans.map((plan) => (
             <div key={plan.plan_id} className='space-y-9'>
               <section className='flex items-center gap-8'>
                 <div className='relative flex w-14 flex-shrink-0 flex-grow-0 flex-col items-center justify-center gap-1'>
