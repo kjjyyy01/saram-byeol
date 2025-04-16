@@ -15,6 +15,8 @@ export default function Calendar() {
   const isSignIn = useAuthStore((state) => state.isSignIn);
   const [hasMounted, setHasMounted] = useState(false);
   const [selectPlan, setSelectPlan] = useState<SelectPlanstType[] | null>(null);
+  const [showUpcoming, setShowUpcoming] = useState(true);
+
   // 마운트 이후에만 렌더링
   useEffect(() => {
     setHasMounted(true);
@@ -33,7 +35,18 @@ export default function Calendar() {
   return (
     <div className='flex flex-col gap-4 p-4 md:flex-row'>
       <div className='md:flex-grow'>
-        <MainCalendar setSelectPlan={setSelectPlan} />
+        <MainCalendar
+          setSelectPlan={(plan) => {
+            setSelectPlan(plan);
+            setShowUpcoming(false); // 약속 선택 시 upcoming 닫기
+          }}
+          CustomToolbarProps={{
+            onShowUpcomingPlans: () => {
+              setSelectPlan(null); // 기존 선택 약속 제거
+              setShowUpcoming(true); // upcoming 보여주기
+            },
+          }}
+        />
       </div>
       <div className='flex-shrink-0 md:w-auto'>
         {selectPlan ? (
@@ -44,7 +57,7 @@ export default function Calendar() {
             </div>
           </p>
         ) : (
-          user?.id && <UpcomingPlans userId={user.id} />
+          showUpcoming && user?.id && <UpcomingPlans userId={user.id} />
         )}
       </div>
     </div>
