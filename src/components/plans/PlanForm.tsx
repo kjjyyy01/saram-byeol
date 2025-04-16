@@ -12,14 +12,15 @@ import PriorityField from '@/components/plans/PriorityField';
 import useMutateInsertNewPlan from '@/hooks/mutations/useMutateInsertNewPlan';
 import { planFormDefaultValues, PlanFormType, PlansSchema } from '@/lib/schemas/plansSchema';
 import { mappingFormData } from '@/lib/planFormUtils';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import ColorOptions from '@/components/calendar/popOver/ColorOptions';
 import { useAuthStore } from '@/store/zustand/store';
+import { usePlanColorStore } from '@/store/zustand/usePlanFormStore';
 
-const PlanForm = () => {
+const PlanForm = ({ initialValues }: { initialValues?: PlanFormType }) => {
   const [inputValue, setInputValue] = useState('');
-  const [selectedColor, setSelectedColor] = useState('#2F80ED'); // 선택 색상
+  const { selectedColor, setSelectedColor } = usePlanColorStore(); // 선택 색상
   const user = useAuthStore((state) => state.user);
   const userId = user ? user?.id : 'a27fc897-4216-4863-9e7b-f8868a8369ff'; //ContactsField Props 데이터 타입 호환용 테스트유저 아이디 (추후 데모용 아이디로 변경)
   // 로그인 되지 않은 경우를 위한 처리
@@ -28,8 +29,13 @@ const PlanForm = () => {
   const form = useForm<PlanFormType>({
     resolver: zodResolver(PlansSchema),
     mode: 'onChange',
-    defaultValues: planFormDefaultValues,
+    defaultValues: initialValues ?? planFormDefaultValues, // 초기값을 props로 전달
   });
+
+  // 색상 변경 시 폼의 colors 필드 업데이트
+  useEffect(() => {
+    form.setValue('colors', selectedColor); // 색상 값 업데이트
+  }, [selectedColor, form]);
 
   // mutate함수 호출
   const { mutate: insertNewPlan } = useMutateInsertNewPlan();

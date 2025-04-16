@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import DateInputField from '@/components/plans/DateInputField';
 import { Input } from '@/components/ui/input';
 import { Form, FormField } from '@/components/ui/form';
@@ -10,11 +10,27 @@ import { toast } from 'react-toastify';
 import { TextAa } from '@phosphor-icons/react';
 import { useFormContext } from 'react-hook-form';
 import { useAuthStore } from '@/store/zustand/store';
+import { usePlanFormStore } from '@/store/zustand/usePlanFormStore';
 
-const PopOverForm = ({ selectedColor }: { selectedColor: string }) => {
+interface Props {
+  selectedColor: string;
+  onOpenFullForm: () => void;
+}
+
+const PopOverForm = ({ selectedColor, onOpenFullForm }: Props) => {
   const user = useAuthStore((state) => state.user);
   const form = useFormContext<PlanFormType>();
   const { mutate: insertNewPlan, isPending } = useMutateInsertNewPlan();
+
+  // 팝오버에 작성된 내용
+  const { setInitialFormData, clearFormData } = usePlanFormStore();
+
+  const handleShowFullForm = () => {
+    const currentData = form.getValues();
+    setInitialFormData(currentData);
+    // 이제 Calendar 컴포넌트에 PlanForm 보여주게 트리거
+    onOpenFullForm(); // props로 받아서 상태 변경하거나, zustand에서 같이 관리
+  };
 
   const planSubmitHandler = useCallback(
     (data: PlanFormType) => {
@@ -26,6 +42,7 @@ const PopOverForm = ({ selectedColor }: { selectedColor: string }) => {
           onSuccess: () => {
             form.reset();
             toast.success('약속이 추가되었습니다.');
+            clearFormData();
           },
           onError: () => {
             toast.error('약속 저장에 실패했습니다.');
@@ -33,8 +50,12 @@ const PopOverForm = ({ selectedColor }: { selectedColor: string }) => {
         }
       );
     },
-    [insertNewPlan, form, selectedColor, user]
+    [insertNewPlan, form, selectedColor, user, clearFormData]
   );
+
+  useEffect(() => {
+    form.setValue('colors', selectedColor); // 색상 업데이트
+  }, [selectedColor, form]);
 
   return (
     <div>
@@ -55,7 +76,11 @@ const PopOverForm = ({ selectedColor }: { selectedColor: string }) => {
             <DateInputField />
             {user && <ContactsField userId={user.id} enabled={!!user.id} />}
             <div className='flex justify-between'>
-              <button className='items-center justify-center rounded-[6px] border-[1px] border-primary-500 bg-primary-50 px-5 py-3 font-bold text-primary-500'>
+              <button
+                type='button'
+                onClick={handleShowFullForm}
+                className='items-center justify-center rounded-[6px] border-[1px] border-primary-500 bg-primary-50 px-5 py-3 font-bold text-primary-500'
+              >
                 옵션 더보기
               </button>
               <button
