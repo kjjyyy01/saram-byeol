@@ -14,7 +14,7 @@ import { planFormDefaultValues, PlanFormType, PlansSchema } from '@/lib/schemas/
 import { mappingFormData } from '@/lib/planFormUtils';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
-import ColorOptions from '@/components/calendar/ColorOptions';
+import ColorOptions from '@/components/calendar/popOver/ColorOptions';
 import { useAuthStore } from '@/store/zustand/store';
 
 const PlanForm = () => {

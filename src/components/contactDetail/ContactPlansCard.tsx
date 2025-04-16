@@ -1,3 +1,4 @@
+import { PencilSimple, Trash } from '@phosphor-icons/react';
 import { differenceInCalendarDays, format } from 'date-fns';
 import { ko } from 'date-fns/locale';
 
@@ -17,7 +18,7 @@ const ContactPlansCard: React.FC<ContactPlansCardProps> = ({ title, startDate, o
   return (
     <div
       className='relative flex flex-col gap-2 rounded-lg border border-gray-100 bg-white p-4 shadow-md'
-      style={{ boxShadow: '0 4px 10px rgba(0, 0, 0, 0.5)' }}
+      style={{ boxShadow: '0 4px 10px rgba(0, 0, 0, 0.1)' }}
     >
       {/* 왼쪽 라인 */}
       <div className='absolute left-0 top-0 h-full w-1 rounded-l-md bg-pink-500' />
@@ -25,16 +26,18 @@ const ContactPlansCard: React.FC<ContactPlansCardProps> = ({ title, startDate, o
       {/* 날짜 & 수정 버튼 라인 */}
       <div className='flex items-center justify-between'>
         <p className='text-sm font-semibold text-gray-700'>{monthDay}</p>
-        {onEdit && (
-          <button onClick={onEdit} className='text-xs text-blue-500 underline'>
-            수정
-          </button>
-        )}
-        {onDelete && (
-          <button onClick={onDelete} className='text-xs text-red-500 underline'>
-            삭제
-          </button>
-        )}
+        <div className='flex gap-1'>
+          {onEdit && (
+            <button onClick={onEdit} className='text-gray-700 hover:text-blue-500'>
+              <PencilSimple size={16} />
+            </button>
+          )}
+          {onDelete && (
+            <button onClick={onDelete} className='text-red-400 hover:text-red-500'>
+              <Trash size={16} />
+            </button>
+          )}
+        </div>
       </div>
 
       {/* D-day & 제목 */}
