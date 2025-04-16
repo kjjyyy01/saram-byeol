@@ -294,3 +294,20 @@ export const getUserPlans = async (userId: string): Promise<PlansType[]> => {
     return [];
   }
 };
+
+// 캘린더에서 클릭한 약속 데이터 가져오기
+export const getSelectPlan = async (plan_id: string) => {
+  const { data, error } = await supabase
+    .from(PLANS)
+    .select(
+      'plan_id, user_id, contacts_id, title, detail, priority, start_date, end_date, location, colors, contacts(name)'
+    )
+    .eq('plan_id', plan_id);
+
+  if (error) {
+    console.error('약속 정보 가져오기 실패:', error.message);
+    return { data: null, error };
+  } else {
+    return { data, error: null };
+  }
+};
