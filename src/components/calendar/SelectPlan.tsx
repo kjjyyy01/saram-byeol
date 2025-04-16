@@ -1,9 +1,9 @@
-import { SelectPlanstType } from '@/types/plans';
+import { SelectPlanType } from '@/types/plans';
 import { CalendarBlank, MapPin, Star, TextAa, TextAlignLeft, User } from '@phosphor-icons/react';
 import React from 'react';
 
 interface SelectPlanProps {
-  plans: SelectPlanstType[];
+  plans: SelectPlanType[];
 }
 
 const SelectPlan = ({ plans }: SelectPlanProps) => {
