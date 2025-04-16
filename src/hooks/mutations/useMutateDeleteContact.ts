@@ -1,5 +1,6 @@
 import { mutateDeleteContacts } from '@/app/api/supabase/service';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { QUERY_KEY } from '@/constants/queryKey';
 
 export const useMutateDeleteContact = () => {
   const queryClient = useQueryClient();
@@ -7,7 +8,7 @@ export const useMutateDeleteContact = () => {
   const mutation = useMutation({
     mutationFn: (contactsId: string) => mutateDeleteContacts(contactsId),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['contacts'] });
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEY.CONTACTS] });
     },
   });
 
