@@ -3,6 +3,7 @@ import './globals.css';
 import { Providers } from '@/app/providers';
 import { ToastContainer } from 'react-toastify';
 import localFont from 'next/font/local';
+import OnAuthStateChange from '@/components/onauthstatechange/OnAuthStateChange';
 
 export const metadata: Metadata = {
   title: '사람 별',
@@ -40,6 +41,7 @@ export default function RootLayout({
     <html lang='ko' className={`${pretendard.variable}`}>
       <body className={pretendard.className}>
         <Providers>
+          <OnAuthStateChange />
           {children}
           <ToastContainer
             position='top-right'

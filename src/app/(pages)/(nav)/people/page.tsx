@@ -2,7 +2,7 @@
 
 import ContactList from '@/components/contacts/ContactList';
 import PeopleDetailPanel from '@/components/contactDetail/PeopleDetailPanel';
-import { AuthStateChangeHandler, useAuthStore } from '@/store/zustand/store';
+import { useAuthStore } from '@/store/zustand/store';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { SIGNIN } from '@/constants/paths';
@@ -12,14 +12,6 @@ const People = () => {
   const [hasMounted, setHasMounted] = useState(false);
   const isSignIn = useAuthStore((state) => state.isSignIn);
   const router = useRouter();
-
-  //onAuthStateChange호출 로직
-  useEffect(() => {
-    const { subscription } = AuthStateChangeHandler();
-    return () => {
-      subscription.unsubscribe();
-    };
-  }, []);
 
   // 마운트 이후에만 렌더링
   useEffect(() => {
