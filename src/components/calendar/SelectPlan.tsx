@@ -14,7 +14,8 @@ const SelectPlan = ({ plans, onEdit }: SelectPlanProps) => {
   // 'YYYY-MM-DD' 형식으로 반환
   const formatDate = (isoString: string) => {
     const date = new Date(isoString);
-    return date.toISOString().split('T')[0];
+    console.log('date', date);
+    return date.toLocaleDateString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit' });
   };
 
   const { mutate: deletePlan } = useMutateDeletePlan();
