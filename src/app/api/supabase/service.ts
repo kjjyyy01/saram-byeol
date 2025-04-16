@@ -294,3 +294,33 @@ export const getUserPlans = async (userId: string): Promise<PlansType[]> => {
     return [];
   }
 };
+
+// contacts 데이터 삭제
+export const mutateDeleteContacts = async (contactsId: string): Promise<void> => {
+  try {
+    const { error } = await supabase.from(CONTACTS).delete().eq('contacts_id', contactsId);
+
+    if (error) {
+      console.error('연락처 삭제 중 오류가 발생했습니다:', error);
+      throw error;
+    }
+  } catch (error) {
+    console.error('연락처 삭제 요청 실패:', error);
+    throw error;
+  }
+};
+
+// plans 데이터 삭제
+export const mutateDeletePlan = async (planId: string): Promise<void> => {
+  try {
+    const { error } = await supabase.from(PLANS).delete().eq('plan_id', planId);
+
+    if (error) {
+      console.error('약속 삭제 중 오류가 발생했습니다:', error);
+      throw error;
+    }
+  } catch (error) {
+    console.error('약속 삭제 요청 실패:', error);
+    throw error;
+  }
+};

@@ -5,9 +5,10 @@ interface ContactPlansCardProps {
   title: string;
   startDate: string;
   onEdit?: () => void;
+  onDelete?: () => void;
 }
 
-const ContactPlansCard: React.FC<ContactPlansCardProps> = ({ title, startDate, onEdit }) => {
+const ContactPlansCard: React.FC<ContactPlansCardProps> = ({ title, startDate, onEdit, onDelete }) => {
   const today = new Date();
   const start = new Date(startDate);
   const dDay = differenceInCalendarDays(new Date(startDate), today);
@@ -15,9 +16,6 @@ const ContactPlansCard: React.FC<ContactPlansCardProps> = ({ title, startDate, o
 
   return (
     <div
-      onClick={() => {
-        console.log('clicked');
-      }}
       className='relative flex flex-col gap-2 rounded-lg border border-gray-100 bg-white p-4 shadow-md'
       style={{ boxShadow: '0 4px 10px rgba(0, 0, 0, 0.5)' }}
     >
@@ -30,6 +28,11 @@ const ContactPlansCard: React.FC<ContactPlansCardProps> = ({ title, startDate, o
         {onEdit && (
           <button onClick={onEdit} className='text-xs text-blue-500 underline'>
             수정
+          </button>
+        )}
+        {onDelete && (
+          <button onClick={onDelete} className='text-xs text-red-500 underline'>
+            삭제
           </button>
         )}
       </div>
