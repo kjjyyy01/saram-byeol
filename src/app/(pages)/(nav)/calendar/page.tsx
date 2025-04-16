@@ -16,21 +16,18 @@ export default function Calendar() {
   const user = useAuthStore((state) => state.user);
   const isSignIn = useAuthStore((state) => state.isSignIn);
 
-  const [hasMounted, setHasMounted] = useState(false); //페이지 마운트 여부
-  const [selectPlan, setSelectPlan] = useState<SelectPlanType[] | null>(null); // 선택된 약속 바
+  const [hasMounted, setHasMounted] = useState(false);
+  const [selectPlan, setSelectPlan] = useState<SelectPlanType[] | null>(null);
+  const [showUpcoming, setShowUpcoming] = useState(true);
+  const [showPlanForm, setShowPlanForm] = useState(false);
 
-  const [showUpcoming, setShowUpcoming] = useState(true); // 다가오는 약속
-  const [showPlanForm, setShowPlanForm] = useState(false); // 약속 추가
+  const [editPlan, setEditPlan] = useState<SelectPlanType | null>(null);
+  const [isEditMode, setIsEditMode] = useState(false);
 
-  const [editPlan, setEditPlan] = useState<SelectPlanType | null>(null); // 약속 상세-수정
-  const [isEditMode, setIsEditMode] = useState(false); // 약속 수정 모드
-
-  // 마운트 이후에만 렌더링
   useEffect(() => {
     setHasMounted(true);
   }, []);
 
-  // 마운트 전, 로그아웃 상태 감지 막기
   useEffect(() => {
     if (hasMounted && !isSignIn) {
       router.replace(SIGNIN);
@@ -45,29 +42,30 @@ export default function Calendar() {
         <MainCalendar
           setSelectPlan={(plan) => {
             setSelectPlan(plan);
-            setShowUpcoming(false); // 약속 선택 시 upcoming 닫기
-            setShowPlanForm(false); // 다른 거 열릴 땐 폼 닫기
+            setShowUpcoming(false);
+            setShowPlanForm(false);
             setIsEditMode(false);
             setEditPlan(null);
           }}
           CustomToolbarProps={{
             onShowUpcomingPlans: () => {
-              setSelectPlan(null); // 기존 선택 약속 제거
-              setShowUpcoming(true); // upcoming 보여주기
-              setShowPlanForm(false); // 다른 거 열릴 땐 폼 닫기
+              setSelectPlan(null);
+              setShowUpcoming(true);
+              setShowPlanForm(false);
               setIsEditMode(false);
               setEditPlan(null);
             },
             onAddPlan: () => {
               setSelectPlan(null);
               setShowUpcoming(false);
-              setShowPlanForm(true); // PlanForm 열기
+              setShowPlanForm(true);
               setIsEditMode(false);
               setEditPlan(null);
             },
           }}
         />
       </div>
+
       <div className='flex-shrink-0 md:w-auto'>
         {showPlanForm && (
           <>
@@ -100,13 +98,13 @@ export default function Calendar() {
                 plans={selectPlan}
                 onEdit={() => {
                   setIsEditMode(true);
-                  setEditPlan(selectPlan[0]); // 첫 번째 plan 기준
+                  setEditPlan(selectPlan[0]);
                 }}
               />
             </div>
           </>
         ) : (
-          showUpcoming && user?.id && <UpcomingPlans userId={user.id} />
+          showUpcoming && user?.id && <UpcomingPlans userId={user.id} onSelectPlan={(plan) => setSelectPlan([plan])} />
         )}
       </div>
     </div>

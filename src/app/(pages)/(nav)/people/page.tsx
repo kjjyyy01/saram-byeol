@@ -2,12 +2,16 @@
 
 import ContactList from '@/components/contacts/ContactList';
 import PeopleDetailPanel from '@/components/contactDetail/PeopleDetailPanel';
-import { AuthStateChangeHandler } from '@/store/zustand/store';
+import { AuthStateChangeHandler, useAuthStore } from '@/store/zustand/store';
 import { useEffect, useState } from 'react';
-
+import { useRouter } from 'next/navigation';
+import { SIGNIN } from '@/constants/paths';
 
 const People = () => {
   const [peopleSelectedId, setPeopleSelectedId] = useState<string | null>(null);
+  const [hasMounted, setHasMounted] = useState(false);
+  const isSignIn = useAuthStore((state) => state.isSignIn);
+  const router = useRouter();
 
   //onAuthStateChange호출 로직
   useEffect(() => {
@@ -16,6 +20,21 @@ const People = () => {
       subscription.unsubscribe();
     };
   }, []);
+
+  // 마운트 이후에만 렌더링
+  useEffect(() => {
+    setHasMounted(true);
+  }, []);
+
+  // 마운트 전, 로그아웃 상태 감지 막기
+  useEffect(() => {
+    if (hasMounted && !isSignIn) {
+      router.replace(SIGNIN);
+    }
+  }, [hasMounted, isSignIn, router]);
+
+  if (!hasMounted) return null;
+  if (!isSignIn) return null;
 
   return (
     <div className='flex h-screen'>
