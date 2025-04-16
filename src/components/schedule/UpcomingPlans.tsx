@@ -3,7 +3,7 @@
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { getUserPlans } from '@/app/api/supabase/service';
-import PlanCard from '@/components/schedule/UpcomingPlanCard';
+import UpcomingPlanCard from '@/components/schedule/UpcomingPlanCard';
 import { QUERY_KEY } from '@/constants/queryKey';
 
 interface UpcomingPlansProps {
@@ -33,7 +33,7 @@ const UpcomingPlans: React.FC<UpcomingPlansProps> = ({ userId }) => {
       <h2 className='mb-4 text-xl font-bold'>다가오는 일정</h2>
       <div className='space-y-3'>
         {plans.map((plan) => (
-          <PlanCard key={plan.plan_id} plan={plan} />
+          <UpcomingPlanCard key={plan.plan_id} plan={plan} />
         ))}
       </div>
     </div>
