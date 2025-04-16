@@ -16,14 +16,14 @@ export default function Calendar() {
   const user = useAuthStore((state) => state.user);
   const isSignIn = useAuthStore((state) => state.isSignIn);
 
-  const [hasMounted, setHasMounted] = useState(false);
-  const [selectPlan, setSelectPlan] = useState<SelectPlanType[] | null>(null);
+  const [hasMounted, setHasMounted] = useState(false); //페이지 마운트 여부
+  const [selectPlan, setSelectPlan] = useState<SelectPlanType[] | null>(null); // 선택된 약속 바
 
-  const [showUpcoming, setShowUpcoming] = useState(true);
-  const [showPlanForm, setShowPlanForm] = useState(false);
+  const [showUpcoming, setShowUpcoming] = useState(true); // 다가오는 약속
+  const [showPlanForm, setShowPlanForm] = useState(false); // 약속 추가
 
-  const [editPlan, setEditPlan] = useState<SelectPlanType | null>(null);
-  const [isEditMode, setIsEditMode] = useState(false);
+  const [editPlan, setEditPlan] = useState<SelectPlanType | null>(null); // 약속 상세-수정
+  const [isEditMode, setIsEditMode] = useState(false); // 약속 수정 모드
 
   // 마운트 이후에만 렌더링
   useEffect(() => {
