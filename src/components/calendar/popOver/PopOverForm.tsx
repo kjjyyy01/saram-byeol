@@ -14,10 +14,11 @@ import { usePlanFormStore } from '@/store/zustand/usePlanFormStore';
 
 interface Props {
   selectedColor: string;
-  onOpenFullForm: () => void;
+  onOpenFullForm: () => void; // PlanForm을 여는 함수
+  onClosePopOver: () => void; // 팝오버를 닫는 함수
 }
 
-const PopOverForm = ({ selectedColor, onOpenFullForm }: Props) => {
+const PopOverForm = ({ selectedColor, onOpenFullForm, onClosePopOver }: Props) => {
   const user = useAuthStore((state) => state.user);
   const form = useFormContext<PlanFormType>();
   const { mutate: insertNewPlan, isPending } = useMutateInsertNewPlan();
@@ -25,11 +26,13 @@ const PopOverForm = ({ selectedColor, onOpenFullForm }: Props) => {
   // 팝오버에 작성된 내용
   const { setInitialFormData, clearFormData } = usePlanFormStore();
 
+  // "옵션 더보기" 클릭 시 실행되는 함수
   const handleShowFullForm = () => {
     const currentData = form.getValues();
     setInitialFormData(currentData);
-    // 이제 Calendar 컴포넌트에 PlanForm 보여주게 트리거
-    onOpenFullForm(); // props로 받아서 상태 변경하거나, zustand에서 같이 관리
+    // 팝오버 닫고 PlanForm 열기
+    onClosePopOver(); // 팝오버 닫기
+    onOpenFullForm(); // PlanForm 열기
   };
 
   const planSubmitHandler = useCallback(

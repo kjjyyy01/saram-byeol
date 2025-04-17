@@ -67,8 +67,9 @@ const CalendarPopOver = ({ onOpenChange, date }: Props) => {
               <ColorOptions selectedColor={selectedColor} setSelectedColor={setSelectedColor} /> {/* state 전달 */}
               <PopOverForm
                 onOpenFullForm={() => {
-                  setShowPlanForm(true); // Calendar.tsx 상태 변경 트리거
+                  setShowPlanForm(true); // PlanForm 열기
                 }}
+                onClosePopOver={() => onOpenChange(false)} // 팝오버 닫기
                 selectedColor={selectedColor}
               />
             </div>
