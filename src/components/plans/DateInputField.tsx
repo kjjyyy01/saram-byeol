@@ -14,7 +14,6 @@ setDefaultOptions({ locale: ko });
 
 const DateInputField = () => {
   const { control } = useFormContext();
-
   return (
     <FormField
       control={control}
@@ -38,10 +37,10 @@ const DateInputField = () => {
                           !field.value && 'text-muted-foreground'
                         )}
                       >
-                        {field.value?.from ? (
+                        {field.value.from ? (
                           <>{format(field.value.from, 'y.LL.dd (ccc)')}</>
                         ) : (
-                          <span> 약속일을 선택하세요</span>
+                          <span className='text-muted-foreground'> 시작일(필수)</span>
                         )}
                         <CalendarIcon className='ml-auto h-4 w-4 opacity-50' />
                       </div>
@@ -55,7 +54,7 @@ const DateInputField = () => {
                         {field.value.to ? (
                           <>{format(field.value.to, 'y.LL.dd (ccc)')}</>
                         ) : (
-                          <>{format(field.value.from, 'y.LL.dd (ccc)')}</>
+                          <span className='text-muted-foreground'> 종료일(선택사항)</span>
                         )}
                         <CalendarIcon className='ml-auto h-4 w-4 opacity-50' />
                       </div>
@@ -71,6 +70,10 @@ const DateInputField = () => {
                     numberOfMonths={2}
                     initialFocus
                   />
+                  <p className='flex flex-col gap-1 pl-1 pt-1 text-center text-xs text-primary-300'>
+                    같은 날짜를 두번 누르면 하루만 선택됩니다.
+                    <span className='text-grey-300'>(종료일을 선택하지 않은 경우에도 하루만 선택됩니다.)</span>
+                  </p>
                 </PopoverContent>
               </Popover>
               <FormMessage className='pl-1' />
