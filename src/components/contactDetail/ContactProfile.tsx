@@ -61,12 +61,12 @@ const ContactProfile: React.FC<Props> = ({ contact, plans }) => {
         </div>
 
         {/* 중앙 - 이름 및 이메일 */}
-        <div className='flex flex-1 flex-col'>
-          <h1 className='text-xl font-bold'>{contact.name}</h1>
-          <div className='mt-[2px] flex h-[24px] w-[53px] items-center justify-center rounded-[20px] bg-gray-100'>
-            <span className='text-[12px] font-bold text-gray-800'>{contact.relationship_level}</span>
+        <div className='flex flex-1 flex-col ml-2'>
+          <h1 className='text-xl font-bold leading-tight'>{contact.name}</h1>
+          <div className='mt-1 flex h-6 w-16 items-center justify-center rounded-2xl bg-yellow-300'>
+            <span className='text-xs font-bold text-gray-800'>{contact.relationship_level}</span>
           </div>
-          <p className='text-sm text-gray-600'>{contact.email}</p>
+          <p className='text-sm text-gray-600 mt-1'>{contact.email}</p>
         </div>
 
         {/* 우측 버튼 */}
