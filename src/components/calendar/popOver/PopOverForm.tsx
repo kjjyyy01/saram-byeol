@@ -86,7 +86,7 @@ const PopOverForm = ({ selectedColor, onOpenFullForm }: Props) => {
               <button
                 type='submit'
                 disabled={isPending}
-                className='w-[121px] items-center justify-center rounded-[6px] border-[1px] bg-primary-100 px-5 py-3 text-[14px] font-bold text-grey-0'
+                className='w-[121px] items-center justify-center rounded-[6px] border-[1px] bg-primary-500 px-5 py-3 text-[14px] font-bold text-grey-0'
               >
                 {isPending ? '저장 중...' : '저장'}
               </button>
