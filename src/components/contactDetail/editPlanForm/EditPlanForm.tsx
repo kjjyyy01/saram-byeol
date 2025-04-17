@@ -57,8 +57,10 @@ const EditPlanForm: React.FC<Props> = ({ plan, onClose }) => {
 
   const editPlanHandler = (data: PlanFormType) => {
     const formData = mappingFormData(data);
+    const updatedForm = { ...formData, colors: selectedColor };
+
     updatePlan(
-      { planId: plan.plan_id, updatedData: { ...formData, user_id: plan.user_id } },
+      { planId: plan.plan_id, updatedData: { ...updatedForm, user_id: plan.user_id } },
       {
         onSuccess: () => {
           toast.success('약속이 수정되었습니다.');
