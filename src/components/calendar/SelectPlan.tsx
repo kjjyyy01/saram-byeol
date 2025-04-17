@@ -32,6 +32,20 @@ const SelectPlan = ({ plans, onEdit }: SelectPlanProps) => {
     return date.toLocaleDateString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit' });
   };
 
+  // 중요도 변환
+  const getPriorityLabel = (priority: string) => {
+    switch (priority) {
+      case 'high':
+        return '높음';
+      case 'medium':
+        return '중간';
+      case 'low':
+        return '낮음';
+      default:
+        return '없음';
+    }
+  };
+
   return (
     <div>
       <div className='max-h-[calc(100vh-2rem)] space-y-4 overflow-auto'>
@@ -73,7 +87,7 @@ const SelectPlan = ({ plans, onEdit }: SelectPlanProps) => {
                   <Star size={24} className='h-6 w-6 flex-shrink-0 flex-grow-0' />
                   <p className='text-center text-sm'>중요도</p>
                 </div>
-                <p>{plan.priority}</p>
+                <p>{getPriorityLabel(plan.priority)}</p>
               </section>
               <section className='flex gap-8'>
                 <div className='relative flex w-14 flex-shrink-0 flex-grow-0 flex-col items-center gap-1'>
