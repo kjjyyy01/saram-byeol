@@ -1,7 +1,9 @@
+import ColorOptions from '@/components/calendar/popOver/ColorOptions';
 import ContactsField from '@/components/plans/ContactsField';
 import DateInputField from '@/components/plans/DateInputField';
 import DetailField from '@/components/plans/DetailField';
 import PlaceField from '@/components/plans/PlaceField';
+import PriorityField from '@/components/plans/PriorityField';
 import TitleField from '@/components/plans/TitleField';
 import { Button } from '@/components/ui/button';
 import { useMutateUpdatePlan } from '@/hooks/mutations/useMutateUpdatePlan';
@@ -41,8 +43,9 @@ const convertToFormValues = (plan: EditPlanType): PlanFormType => ({
 });
 
 const EditPlanForm: React.FC<Props> = ({ plan, onClose }) => {
-  const [inputValue, setInputValue] = useState(plan.location?.place_name || '');
   const user = useAuthStore((state) => state.user);
+  const [inputValue, setInputValue] = useState(plan.location?.place_name || '');
+  const [selectedColor, setSelectedColor] = useState(plan.colors || '#2F80ED');
 
   const form = useForm<PlanFormType>({
     resolver: zodResolver(PlansSchema),
@@ -54,8 +57,10 @@ const EditPlanForm: React.FC<Props> = ({ plan, onClose }) => {
 
   const editPlanHandler = (data: PlanFormType) => {
     const formData = mappingFormData(data);
+    const updatedForm = { ...formData, colors: selectedColor };
+
     updatePlan(
-      { planId: plan.plan_id, updatedData: { ...formData, user_id: plan.user_id } },
+      { planId: plan.plan_id, updatedData: { ...updatedForm, user_id: plan.user_id } },
       {
         onSuccess: () => {
           toast.success('약속이 수정되었습니다.');
@@ -68,15 +73,20 @@ const EditPlanForm: React.FC<Props> = ({ plan, onClose }) => {
 
   return (
     <FormProvider {...form}>
-      <form onSubmit={form.handleSubmit(editPlanHandler)}>
+      <form onSubmit={form.handleSubmit(editPlanHandler)} className='flex flex-col justify-start gap-9'>
+        <ColorOptions selectedColor={selectedColor} setSelectedColor={setSelectedColor} />
         <TitleField />
         <DateInputField />
         <ContactsField userId={user?.id || ''} enabled={true} />
         <PlaceField inputValue={inputValue} setInputValue={setInputValue} />
+        <PriorityField />
         <DetailField />
-        <div className='flex justify-end pt-6'>
-          <Button type='submit' disabled={form.formState.isSubmitting}>
-            {form.formState.isSubmitting ? '수정 중...' : '수정'}
+        <div className='flex w-full flex-row items-center justify-center gap-4'>
+          <Button type='button' variant='outline' onClick={onClose} className='flex-1'>
+            취소
+          </Button>
+          <Button type='submit' disabled={form.formState.isSubmitting} className='flex-1'>
+            수정
           </Button>
         </div>
       </form>

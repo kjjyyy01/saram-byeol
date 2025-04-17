@@ -34,7 +34,7 @@ export const getContactsWithPlans = async (userId: string, contactsId: string): 
     .select(
       `
       contacts_id, user_id, name, email, relationship_level, notes, phone, birth, contacts_profile_img,
-      plans:plans(plan_id, title, start_date, end_date, priority, detail)
+      plans:plans(plan_id, title, start_date, end_date, priority, detail, colors)
     `
     )
     .eq('contacts_id', contactsId)
