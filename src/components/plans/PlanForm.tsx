@@ -63,7 +63,7 @@ const PlanForm = ({ initialValues }: { initialValues?: PlanFormType }) => {
 
   return (
     <FormProvider {...form}>
-      <form className='flex flex-col justify-between'>
+      <form className='flex flex-col justify-between gap-10 h-full'>
         <div className='flex flex-col justify-start gap-9'>
           <ColorOptions selectedColor={selectedColor} setSelectedColor={setSelectedColor} />
           <TitleField />
