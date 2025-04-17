@@ -84,10 +84,7 @@ const ContactList = ({ onSelectedContact }: ContactListProps) => {
                   {pinnedContacts.map((contact) => (
                     <li key={`pinned-${contact.contacts_id}`}>
                       <div onClick={() => onSelectedContact(contact.contacts_id)}>
-                        <ContactItem
-                          contact={contact}
-                          onTogglePin={handleTogglePin}
-                        />
+                        <ContactItem contact={contact} onTogglePin={handleTogglePin} />
                       </div>
                     </li>
                   ))}
