@@ -10,6 +10,8 @@ import { SelectPlanType } from '@/types/plans';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
+import { usePlanFormStore } from '@/store/zustand/usePlanFormStore';
+import { planFormDefaultValues } from '@/lib/schemas/plansSchema';
 
 export default function Calendar() {
   const router = useRouter();
@@ -19,10 +21,14 @@ export default function Calendar() {
   const [hasMounted, setHasMounted] = useState(false);
   const [selectPlan, setSelectPlan] = useState<SelectPlanType[] | null>(null);
   const [showUpcoming, setShowUpcoming] = useState(true);
-  const [showPlanForm, setShowPlanForm] = useState(false);
 
   const [editPlan, setEditPlan] = useState<SelectPlanType | null>(null);
   const [isEditMode, setIsEditMode] = useState(false);
+
+  //옵션 더보기
+  const { initialFormData, setInitialFormData } = usePlanFormStore();
+  // showPlanForm 상태와 setShowPlanForm 함수 가져오기
+  const { showPlanForm, setShowPlanForm } = usePlanFormStore();
 
   useEffect(() => {
     setHasMounted(true);
@@ -61,22 +67,21 @@ export default function Calendar() {
               setShowPlanForm(true);
               setIsEditMode(false);
               setEditPlan(null);
+              setInitialFormData(planFormDefaultValues);
             },
           }}
         />
       </div>
 
       <div className='flex-shrink-0 md:w-auto'>
-        {showPlanForm && (
+        {showPlanForm ? (
           <>
             <h2 className='mb-4 text-xl font-bold'>약속 추가</h2>
             <div className='m-5'>
-              <PlanForm />
+              <PlanForm initialValues={initialFormData ?? undefined} />
             </div>
           </>
-        )}
-
-        {isEditMode && editPlan ? (
+        ) : isEditMode && editPlan ? (
           <>
             <h2 className='mb-4 text-xl font-bold'>약속 수정</h2>
             <div className='m-5'>

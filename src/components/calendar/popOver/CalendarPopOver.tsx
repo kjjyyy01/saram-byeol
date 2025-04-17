@@ -3,10 +3,11 @@ import { PlanFormType, PlansSchema } from '@/lib/schemas/plansSchema';
 
 import { FormProvider, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import ColorOptions from './ColorOptions';
 import { X } from '@phosphor-icons/react';
 import PopOverForm from '@/components/calendar/popOver/PopOverForm';
+import { usePlanColorStore, usePlanFormStore } from '@/store/zustand/usePlanFormStore';
 
 interface Props {
   open: boolean;
@@ -15,7 +16,8 @@ interface Props {
 }
 
 const CalendarPopOver = ({ onOpenChange, date }: Props) => {
-  const [selectedColor, setSelectedColor] = useState('#2F80ED'); // 선택 색상
+  const { selectedColor, setSelectedColor } = usePlanColorStore(); // 선택 색상
+  const { setShowPlanForm } = usePlanFormStore(); // setShowPlanForm을 가져옴
 
   const dateInput = {
     from: new Date(),
@@ -47,6 +49,11 @@ const CalendarPopOver = ({ onOpenChange, date }: Props) => {
     }
   }, [date, form]);
 
+  // 색상 업데이트 (selectedColor가 바뀔 때마다 colors 필드를 업데이트)
+  useEffect(() => {
+    form.setValue('colors', selectedColor); // 색상 업데이트
+  }, [selectedColor, form]);
+
   return (
     <div>
       <FormProvider {...form}>
@@ -58,7 +65,13 @@ const CalendarPopOver = ({ onOpenChange, date }: Props) => {
                 <X size={24} onClick={() => onOpenChange(false)} className='cursor-pointer' />
               </section>
               <ColorOptions selectedColor={selectedColor} setSelectedColor={setSelectedColor} /> {/* state 전달 */}
-              <PopOverForm selectedColor={selectedColor} />
+              <PopOverForm
+                onOpenFullForm={() => {
+                  setShowPlanForm(true); // PlanForm 열기
+                }}
+                onClosePopOver={() => onOpenChange(false)} // 팝오버 닫기
+                selectedColor={selectedColor}
+              />
             </div>
           </div>
         </div>
