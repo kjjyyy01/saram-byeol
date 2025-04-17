@@ -1,7 +1,7 @@
 import { useMutateDeleteSelectPlan } from '@/hooks/mutations/useMutateDeleteSelectPlan';
 import { SelectPlanType } from '@/types/plans';
 import { CalendarBlank, MapPin, Star, TextAa, TextAlignLeft, User } from '@phosphor-icons/react';
-import React, { useState } from 'react';
+import React from 'react';
 import { ConfirmToast } from '../toast/ConfirmToast';
 import { toast } from 'react-toastify';
 
@@ -11,7 +11,6 @@ interface SelectPlanProps {
 }
 
 const SelectPlan = ({ plans, onEdit }: SelectPlanProps) => {
-  const [localPlans, setLocalPlans] = useState<SelectPlanType[]>(plans);
   const deleteMutation = useMutateDeleteSelectPlan();
 
   const deletePlanHandler = (planId: string) => {
@@ -21,12 +20,6 @@ const SelectPlan = ({ plans, onEdit }: SelectPlanProps) => {
         deleteMutation.mutate(planId, {
           onSuccess: () => {
             toast.success('성공적으로 삭제되었습니다.');
-
-            // 화면에서도 삭제
-            setLocalPlans((prev) => prev.filter((plan) => plan.plan_id !== planId));
-          },
-          onError: () => {
-            toast.error('삭제에 실패했습니다.');
           },
         });
       },
@@ -39,11 +32,25 @@ const SelectPlan = ({ plans, onEdit }: SelectPlanProps) => {
     return date.toLocaleDateString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit' });
   };
 
+  // 중요도 변환
+  const getPriorityLabel = (priority: string) => {
+    switch (priority) {
+      case 'high':
+        return '높음';
+      case 'medium':
+        return '중간';
+      case 'low':
+        return '낮음';
+      default:
+        return '없음';
+    }
+  };
+
   return (
     <div>
       <div className='max-h-[calc(100vh-2rem)] space-y-4 overflow-auto'>
         <div className='space-y-3'>
-          {localPlans.map((plan) => (
+          {plans.map((plan) => (
             <div key={plan.plan_id} className='space-y-9'>
               <section className='flex items-center gap-8'>
                 <div className='relative flex w-14 flex-shrink-0 flex-grow-0 flex-col items-center justify-center gap-1'>
@@ -80,7 +87,7 @@ const SelectPlan = ({ plans, onEdit }: SelectPlanProps) => {
                   <Star size={24} className='h-6 w-6 flex-shrink-0 flex-grow-0' />
                   <p className='text-center text-sm'>중요도</p>
                 </div>
-                <p>{plan.priority}</p>
+                <p>{getPriorityLabel(plan.priority)}</p>
               </section>
               <section className='flex gap-8'>
                 <div className='relative flex w-14 flex-shrink-0 flex-grow-0 flex-col items-center gap-1'>
