@@ -63,15 +63,17 @@ const PlanForm = ({ initialValues }: { initialValues?: PlanFormType }) => {
 
   return (
     <FormProvider {...form}>
-      <form className='flex flex-col justify-start gap-9'>
-        <ColorOptions selectedColor={selectedColor} setSelectedColor={setSelectedColor} />
-        <TitleField />
-        <ContactsField userId={userId} enabled={isAuthenticated} />
-        <DateInputField />
-        <PlaceField inputValue={inputValue} setInputValue={setInputValue} />
-        <PriorityField />
-        <DetailField />
-        {/* 이 아래 div가 버튼 영역입니다. submit 함수가 현재 이 form 태그 안에 있기 때문에 서브밋 함수랑 주의해서 적용해주세요. 취소버튼은 현재 아무 이벤트가 없으니 연결해주셔야합니다. */}
+      <form className='flex flex-col justify-between'>
+        <div className='flex flex-col justify-start gap-9'>
+          <ColorOptions selectedColor={selectedColor} setSelectedColor={setSelectedColor} />
+          <TitleField />
+          <ContactsField userId={userId} enabled={isAuthenticated} />
+          <DateInputField />
+          <PriorityField />
+          <PlaceField inputValue={inputValue} setInputValue={setInputValue} />
+          <DetailField />
+        </div>
+
         <div className='flex w-full flex-row items-center justify-center gap-4'>
           <Button
             type='button'
