@@ -7,12 +7,13 @@ interface ContactPlansCardProps {
   startDate: string;
   onEdit?: () => void;
   onDelete?: () => void;
+  color?: string;
 }
 
-const ContactPlansCard: React.FC<ContactPlansCardProps> = ({ title, startDate, onEdit, onDelete }) => {
+const ContactPlansCard: React.FC<ContactPlansCardProps> = ({ title, startDate, onEdit, onDelete, color = '#ec4899' }) => {
   const today = new Date();
   const start = new Date(startDate);
-  const dDay = differenceInCalendarDays(new Date(startDate), today);
+  const dDay = differenceInCalendarDays(start, today);
   const monthDay = format(start, 'M월 d일', { locale: ko });
 
   return (
@@ -21,7 +22,7 @@ const ContactPlansCard: React.FC<ContactPlansCardProps> = ({ title, startDate, o
       style={{ boxShadow: '0 4px 10px rgba(0, 0, 0, 0.1)' }}
     >
       {/* 왼쪽 라인 */}
-      <div className='absolute left-0 top-0 h-full w-1 rounded-l-md bg-pink-500' />
+      <div className='absolute left-0 top-0 h-full w-1 rounded-l-md' style={{ backgroundColor: color }} />
 
       {/* 날짜 & 수정 버튼 라인 */}
       <div className='flex items-center justify-between'>
@@ -47,8 +48,6 @@ const ContactPlansCard: React.FC<ContactPlansCardProps> = ({ title, startDate, o
         </p>
         <p className='text-base text-gray-800'>{title}</p>
       </div>
-
-      {/* 해시태그 추가 예정 */}
     </div>
   );
 };

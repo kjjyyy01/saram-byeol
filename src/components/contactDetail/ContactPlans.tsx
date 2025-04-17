@@ -64,6 +64,7 @@ const ContactPlans: React.FC<Props> = ({ plans }) => {
               <ContactPlansCard
                 title={plan.title}
                 startDate={plan.start_date}
+                color={plan.colors}
                 onEdit={() => editPlanHandler(plan)}
                 onDelete={() => deletePlanHandler(plan.plan_id)}
               />

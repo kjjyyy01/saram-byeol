@@ -104,7 +104,7 @@ const ContactProfile: React.FC<Props> = ({ contact, plans }) => {
             <h2 className='mb-2 text-lg font-bold'>다가오는 약속</h2>
             <div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
               {plans.map((plan) => (
-                <ContactPlansCard key={plan.plan_id} title={plan.title} startDate={plan.start_date} />
+                <ContactPlansCard key={plan.plan_id} title={plan.title} startDate={plan.start_date} color={plan.colors} />
               ))}
             </div>
           </div>
