@@ -11,6 +11,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { usePlanFormStore } from '@/store/zustand/usePlanFormStore';
+import { planFormDefaultValues } from '@/lib/schemas/plansSchema';
 
 export default function Calendar() {
   const router = useRouter();
@@ -25,7 +26,7 @@ export default function Calendar() {
   const [isEditMode, setIsEditMode] = useState(false);
 
   //옵션 더보기
-  const { initialFormData } = usePlanFormStore();
+  const { initialFormData, setInitialFormData } = usePlanFormStore();
   // showPlanForm 상태와 setShowPlanForm 함수 가져오기
   const { showPlanForm, setShowPlanForm } = usePlanFormStore();
 
@@ -66,6 +67,7 @@ export default function Calendar() {
               setShowPlanForm(true);
               setIsEditMode(false);
               setEditPlan(null);
+              setInitialFormData(planFormDefaultValues);
             },
           }}
         />

@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { PlanFormType } from '@/lib/schemas/plansSchema';
+import { planFormDefaultValues, PlanFormType } from '@/lib/schemas/plansSchema';
 
 interface PlanFormState {
   initialFormData: PlanFormType | null;
@@ -17,10 +17,10 @@ interface PlanColorState {
 
 // 약속 추가 폼(팝오버와 PlanForm 함께 관리)
 export const usePlanFormStore = create<PlanFormState>((set) => ({
-  initialFormData: null,
+  initialFormData: planFormDefaultValues,
   showPlanForm: false, // 초기값은 false로 설정
   setInitialFormData: (data) => set({ initialFormData: data }),
-  clearFormData: () => set({ initialFormData: null }),
+  clearFormData: () => set({ initialFormData: planFormDefaultValues }),
   setShowPlanForm: (show) => set({ showPlanForm: show }), // 상태 변경 함수 구현
 }));
 
