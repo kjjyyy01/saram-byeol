@@ -13,13 +13,13 @@ interface ContactTextFieldProps {
   type?: string;
 }
 
-const ContactTextField: React.FC<ContactTextFieldProps> = ({
+const ContactTextField = ({
   control,
   name,
   label,
   placeholder,
   type = 'text',
-}) => {
+}: ContactTextFieldProps) => {
   return (
     <FormField
       control={control}

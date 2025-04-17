@@ -9,7 +9,7 @@ interface SideSheetProps {
                   // 추후 해당 사이드시트 다른 곳에서도 사용하게 될 시 용이할 것 같습니다
 }
 
-const SideSheet: React.FC<SideSheetProps> = ({ isOpen, onClose, children, title = "내 사람 추가" }) => {
+const SideSheet = ({ isOpen, onClose, children, title = "내 사람 추가" }: SideSheetProps) => {
   // 사이드시트가 열릴 때 body에 클래스 추가하여 스크롤 방지
   useEffect(() => {
     if (isOpen) {
