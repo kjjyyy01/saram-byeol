@@ -22,8 +22,7 @@ const PlanForm = ({ initialValues }: { initialValues?: PlanFormType }) => {
   const [inputValue, setInputValue] = useState('');
   const { selectedColor, setSelectedColor } = usePlanColorStore(); // 선택 색상
   const user = useAuthStore((state) => state.user);
-  const userId = user ? user?.id : 'a27fc897-4216-4863-9e7b-f8868a8369ff'; //ContactsField Props 데이터 타입 호환용 테스트유저 아이디 (추후 데모용 아이디로 변경)
-  // 로그인 되지 않은 경우를 위한 처리
+  const userId = user ? user?.id : 'a27fc897-4216-4863-9e7b-f8868a8369ff';
   const isAuthenticated = !!userId;
 
   const form = useForm<PlanFormType>({
@@ -41,7 +40,7 @@ const PlanForm = ({ initialValues }: { initialValues?: PlanFormType }) => {
   const { mutate: insertNewPlan } = useMutateInsertNewPlan();
 
   const planSubmitHandler = (data: PlanFormType) => {
-    if (!userId) {
+    if (!isAuthenticated) {
       toast.warning('약속추가는 로그인 후 가능합니다.');
       return;
     } else {
@@ -64,11 +63,11 @@ const PlanForm = ({ initialValues }: { initialValues?: PlanFormType }) => {
 
   return (
     <FormProvider {...form}>
-      <form onSubmit={form.handleSubmit(planSubmitHandler)} className='flex flex-col justify-start gap-9'>
+      <form className='flex flex-col justify-start gap-9'>
         <ColorOptions selectedColor={selectedColor} setSelectedColor={setSelectedColor} />
         <TitleField />
-        <DateInputField />
         <ContactsField userId={userId} enabled={isAuthenticated} />
+        <DateInputField />
         <PlaceField inputValue={inputValue} setInputValue={setInputValue} />
         <PriorityField />
         <DetailField />
@@ -82,10 +81,11 @@ const PlanForm = ({ initialValues }: { initialValues?: PlanFormType }) => {
             취소
           </Button>
           <Button
-            type='submit'
+            type='button'
             disabled={form.formState.isSubmitting}
             variant={'default'}
             className='min-h-12 flex-1 bg-primary-500 px-6 py-4 hover:bg-primary-600 active:bg-primary-700'
+            onClick={form.handleSubmit(planSubmitHandler)}
           >
             저장
           </Button>
