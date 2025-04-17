@@ -3,19 +3,28 @@ import { format, parse, startOfWeek, getDay } from 'date-fns';
 import { useGetCalendarPlans } from '@/hooks/queries/useGetCalendarPlans';
 import CustomToolbar from '@/components/calendar/CustomToolbar';
 import { useState } from 'react';
-import type { CalendarEventType, Holidays } from '@/types/plans';
+import type { CalendarEventType, Holidays, PlansType } from '@/types/plans';
 import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop';
 import { useUpadateEventMutate } from '@/hooks/mutations/useUpadateEventMutate';
 import { CustomDateHeader } from '@/components/calendar/CustomDateHeader';
 import { useGetHolidays } from '@/hooks/queries/useGetHolidays';
 import { holidayStyle } from '@/lib/utils/calendarStyle';
 import CalendarPopOver from '@/components/calendar/popOver/CalendarPopOver';
+import { getSelectPlan } from '@/app/api/supabase/service';
 
 // 드래그 이벤트 타입
 interface Props {
   event: CalendarEventType;
   start: string | Date;
   end: string | Date;
+}
+
+interface MainCalendarProps {
+  setSelectPlan: React.Dispatch<React.SetStateAction<PlansType[] | null>>;
+  CustomToolbarProps: {
+    onShowUpcomingPlans: () => void;
+    onAddPlan: () => void;
+  };
 }
 
 const localizer = dateFnsLocalizer({
@@ -26,7 +35,7 @@ const localizer = dateFnsLocalizer({
   locales: {},
 });
 
-const MainCalendar = () => {
+const MainCalendar = ({ setSelectPlan, CustomToolbarProps }: MainCalendarProps) => {
   const [moment, setMoment] = useState(new Date()); //해당 달
   const [selectedDate, setSelectedDate] = useState<Date | null>(null); //선택한 셀 날짜
   const [isPopOverOpen, setIsPopOverOpen] = useState(false); //팝오버 오픈 여부
@@ -56,6 +65,13 @@ const MainCalendar = () => {
     updateEvent({ id: event.id, start: new Date(start), end: new Date(end) });
   };
 
+  const selectPlanHandler = async (event: CalendarEventType) => {
+    const { data, error } = await getSelectPlan(event.id);
+    if (!error && data) {
+      setSelectPlan(data); // 약속 데이터 상태에 저장
+    }
+  };
+
   if (isPending) {
     return <div>로딩 중입니다...</div>;
   }
@@ -80,7 +96,7 @@ const MainCalendar = () => {
         defaultView='month'
         views={['month']}
         components={{
-          toolbar: CustomToolbar, // 상단 툴바(달 이동)
+          toolbar: (props) => <CustomToolbar {...props} {...CustomToolbarProps} />, // 상단 툴바(달 이동)
           month: {
             dateHeader: CustomDateHeader, // 날짜 셀의 숫자
           },
@@ -90,6 +106,7 @@ const MainCalendar = () => {
           setSelectedDate(slotInfo.start); // 클릭한 날짜(시작일)
           setIsPopOverOpen(true); // 모달 열기
         }}
+        onSelectEvent={selectPlanHandler}
         style={{ height: '100vh' }}
       />
       {/* 팝오버 */}

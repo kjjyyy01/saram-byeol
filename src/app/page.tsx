@@ -1,7 +1,12 @@
+import MainDoor from '@/components/home/MainDoor';
 import React from 'react';
 
 const Home = () => {
-  return <div>Home</div>;
+  return (
+    <div>
+      <MainDoor />
+    </div>
+  );
 };
 
 export default Home;

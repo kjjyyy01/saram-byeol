@@ -3,6 +3,7 @@ import { supabase } from '@/app/api/supabase/client';
 import { InsertNewPlansType, PlansType } from '@/types/plans';
 import { CONTACTS, PLANS, USERS } from '@/constants/supabaseTable';
 import { useAuthStore } from '@/store/zustand/store';
+import { OAUTH_REDIRECT_URL } from '@/constants/redirecturl';
 
 export const getContacts = async (userId: string): Promise<ContactItemType[]> => {
   try {
@@ -210,7 +211,7 @@ export const signInWithGoogle = async () => {
   const { error } = await supabase.auth.signInWithOAuth({
     provider: 'google',
     options: {
-      redirectTo: 'http://localhost:3000/people',
+      redirectTo: `${OAUTH_REDIRECT_URL}/people`,
       queryParams: {
         access_type: 'offline',
         prompt: 'consent',
@@ -224,7 +225,7 @@ export const signInWithKakao = async () => {
   const { error } = await supabase.auth.signInWithOAuth({
     provider: 'kakao',
     options: {
-      redirectTo: 'http://localhost:3000/people',
+      redirectTo: `${OAUTH_REDIRECT_URL}/people`,
       queryParams: {
         access_type: 'offline',
         prompt: 'consent',
@@ -277,7 +278,7 @@ export const getUserPlans = async (userId: string): Promise<PlansType[]> => {
   try {
     const { data, error } = await supabase
       .from(PLANS)
-      .select('*')
+      .select('*, contacts(name)')
       .eq('user_id', userId)
       .gte('start_date', currentDateISO)
       .lte('start_date', thirtyDaysLaterISO)
@@ -292,6 +293,23 @@ export const getUserPlans = async (userId: string): Promise<PlansType[]> => {
   } catch (error) {
     console.error('Supabase 쿼리 중 예외가 발생했습니다:', error);
     return [];
+  }
+};
+
+// 캘린더에서 클릭한 약속 데이터 가져오기
+export const getSelectPlan = async (plan_id: string) => {
+  const { data, error } = await supabase
+    .from(PLANS)
+    .select(
+      'plan_id, user_id, contacts_id, title, detail, priority, start_date, end_date, location, colors, contacts(name)'
+    )
+    .eq('plan_id', plan_id);
+
+  if (error) {
+    console.error('약속 정보 가져오기 실패:', error.message);
+    return { data: null, error };
+  } else {
+    return { data, error: null };
   }
 };
 
