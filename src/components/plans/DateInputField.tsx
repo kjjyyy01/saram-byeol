@@ -67,8 +67,13 @@ const DateInputField = () => {
                     defaultMonth={field.value?.from}
                     selected={field.value}
                     onSelect={field.onChange}
-                    numberOfMonths={2}
+                    numberOfMonths={1}
                     initialFocus
+                    locale={ko}
+                    classNames={{
+                      day_selected:
+                        'bg-primary-500 hover:bg-primary-600 active:bg-primary-700 text-grey-0 hover:text-grey-0 active:text-grey-0',
+                    }}
                   />
                   <p className='flex flex-col gap-1 pl-1 pt-1 text-center text-xs text-primary-300'>
                     같은 날짜를 두번 누르면 하루만 선택됩니다.
