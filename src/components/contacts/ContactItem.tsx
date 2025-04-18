@@ -8,7 +8,7 @@ interface ContactItemProps {
   onTogglePin: (contactId: string, isPinned: boolean) => void;
 }
 
-const ContactItem: React.FC<ContactItemProps> = ({ contact, onTogglePin }) => {
+const ContactItem = ({ contact, onTogglePin }: ContactItemProps) => {
   const [isPinHovering, setIsPinHovering] = useState(false);
 
   const handlePinClick = (e: React.MouseEvent) => {

@@ -12,7 +12,7 @@ interface UpcomingPlansProps {
   onSelectPlan: (plan: SelectPlanType) => void;
 }
 
-const UpcomingPlans: React.FC<UpcomingPlansProps> = ({ userId, onSelectPlan }) => {
+const UpcomingPlans = ({ userId, onSelectPlan }: UpcomingPlansProps) => {
   // Tanstack Query 사용해서 데이터 페칭
   const {
     data: plans = [],

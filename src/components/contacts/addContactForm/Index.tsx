@@ -6,7 +6,7 @@ import ContactTextField from './ContactTextField';
 import RelationshipSelector from './RelationshipSelector';
 import ProfileImageUpload from './ProfileImageUpload';
 
-const AddContactForm: React.FC = () => {
+const AddContactForm = () => {
   const { form, onSubmit, imageSource, setImageSource, relationshipType, setRelationshipType, isSubmitting } =
     useContactForm();
 
