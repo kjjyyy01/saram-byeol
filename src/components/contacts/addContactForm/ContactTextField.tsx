@@ -18,6 +18,15 @@ const ContactTextField = ({ control, name, label, placeholder, type = 'text', ma
   const [isTyping, setIsTyping] = useState(false);
   const debounceTimerRef = useRef<NodeJS.Timeout | null>(null);
 
+  // 컴포넌트 언마운트 시 타이머 클리어
+      useEffect(() => {
+        return () => {
+          if (debounceTimerRef.current) {
+            clearTimeout(debounceTimerRef.current);
+          }
+        };
+      }, []);
+
   return (
     <FormField
     control={control}
@@ -49,16 +58,7 @@ const ContactTextField = ({ control, name, label, placeholder, type = 'text', ma
           field.onBlur();
         }, debounceTime);
       };
-      
-      // 컴포넌트 언마운트 시 타이머 클리어
-      useEffect(() => {
-        return () => {
-          if (debounceTimerRef.current) {
-            clearTimeout(debounceTimerRef.current);
-          }
-        };
-      }, []);
-      
+            
       return (
         <div className='flex flex-col'>
           <div className='flex items-center'>
