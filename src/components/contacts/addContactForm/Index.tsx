@@ -34,6 +34,7 @@ const AddContactForm = () => {
             name='name'
             label='이름'
             placeholder='이름을 입력해주세요.'
+            debounceTime={500}
           />
 
           {/* 한줄소개 필드 */}
@@ -41,7 +42,8 @@ const AddContactForm = () => {
             control={form.control}
             name='bio'
             label='한줄소개'
-            placeholder='이 사람을 한 마디로 표현한다면? (최소 5자)'
+            placeholder='이 사람을 한 마디로 표현한다면?'
+            debounceTime={500}
           />
 
           {/* 전화번호 필드 */}
@@ -51,6 +53,8 @@ const AddContactForm = () => {
             label='전화번호'
             placeholder='전화번호를 입력해주세요.'
             type='tel'
+            maxLength={11} // 최대 11자리로 제한
+            debounceTime={500}
           />
 
           {/* 이메일 필드 */}
@@ -60,6 +64,7 @@ const AddContactForm = () => {
             label='이메일'
             placeholder='이메일을 입력해주세요.'
             type='email'
+            debounceTime={500}
           />
 
           {/* 생일 필드 */}
