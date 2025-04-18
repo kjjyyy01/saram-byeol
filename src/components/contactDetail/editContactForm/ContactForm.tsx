@@ -16,7 +16,7 @@ interface ContactFormProps {
   SubmitButtonComponent: React.FC<{ isSubmitting: boolean }>;
 }
 
-const ContactForm: React.FC<ContactFormProps> = ({
+const ContactForm = ({
   form,
   onSubmit,
   isSubmitting,
@@ -24,7 +24,7 @@ const ContactForm: React.FC<ContactFormProps> = ({
   relationshipType,
   setRelationshipType,
   SubmitButtonComponent,
-}) => {
+}: ContactFormProps) => {
   return (
     <div className='space-y-8 pl-12 pr-12'>
       <EditProfileImageUpload initialImage={imageSource} setValue={form.setValue} />
