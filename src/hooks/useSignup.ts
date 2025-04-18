@@ -23,7 +23,7 @@ export const useSignup = () => {
     const { data, error } = await signUpUser(value);
     if (data.session) {
       localStorage.setItem('alreadySignIn', 'true');
-      toast.success(`회원가입이 완료되었습니다. 자동으로 로그인되어 '내 사람' 페이지로 이동합니다.`);
+      toast.success(`회원가입이 완료되었습니다.`);
       setUser(data.session.user);
       router.push(PEOPLE);
     } else if (error) {
