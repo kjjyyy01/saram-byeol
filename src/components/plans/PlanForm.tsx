@@ -18,7 +18,13 @@ import ColorOptions from '@/components/calendar/popOver/ColorOptions';
 import { useAuthStore } from '@/store/zustand/store';
 import { usePlanColorStore } from '@/store/zustand/usePlanFormStore';
 
-const PlanForm = ({ initialValues }: { initialValues?: PlanFormType }) => {
+const PlanForm = ({
+  initialValues,
+  handleCancel,
+}: {
+  initialValues?: PlanFormType;
+  handleCancel: (show: boolean) => void;
+}) => {
   const [inputValue, setInputValue] = useState('');
   const { selectedColor, setSelectedColor } = usePlanColorStore(); // 선택 색상
   const user = useAuthStore((state) => state.user);
@@ -61,6 +67,10 @@ const PlanForm = ({ initialValues }: { initialValues?: PlanFormType }) => {
     }
   };
 
+  const cancelBtnHandler = () => {
+    handleCancel(false);
+  };
+
   return (
     <FormProvider {...form}>
       <form className='flex h-full flex-col justify-between gap-10'>
@@ -79,6 +89,7 @@ const PlanForm = ({ initialValues }: { initialValues?: PlanFormType }) => {
             type='button'
             variant={'outline'}
             className='min-h-12 flex-1 border border-grey-500 px-6 py-4 hover:bg-grey-50 active:bg-grey-100'
+            onClick={cancelBtnHandler}
           >
             취소
           </Button>
