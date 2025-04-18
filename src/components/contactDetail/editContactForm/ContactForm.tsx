@@ -13,7 +13,7 @@ interface ContactFormProps {
   setImageSource: (val: string | null) => void;
   relationshipType: string;
   setRelationshipType: (val: string) => void;
-  SubmitButtonComponent: React.FC<{ isSubmitting: boolean }>;
+  SubmitButtonComponent: (props: { isSubmitting: boolean }) => React.ReactNode;
 }
 
 const ContactForm = ({
