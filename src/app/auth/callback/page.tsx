@@ -3,14 +3,12 @@
 import { useEffect } from 'react';
 import { supabase } from '@/app/api/supabase/client';
 import { useRouter } from 'next/navigation';
-import { useAuthStore } from '@/store/zustand/store';
 
 // 컴포넌트 마운트 시 현재 로그인 세션 확인
 // 세션이 있으면 '/people'로
 // 세션이 없으면 '/signin'으로
 const AuthCallbackPage = () => {
   const router = useRouter();
-  const setUser = useAuthStore((state) => state.setUser);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -20,7 +18,7 @@ const AuthCallbackPage = () => {
         router.replace('/signin');
       }
     });
-  }, [router, setUser]);
+  }, [router]);
 
   return (
     <div className='flex h-screen w-screen items-center justify-center'>
