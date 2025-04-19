@@ -2,15 +2,15 @@
 
 import ContactList from '@/components/contacts/ContactList';
 import PeopleDetailPanel from '@/components/contactDetail/PeopleDetailPanel';
-import { useAuthStore } from '@/store/zustand/store';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { SIGNIN } from '@/constants/paths';
+import { useDemoStore } from '@/store/zustand/useDemoStore';
 
 const People = () => {
   const [peopleSelectedId, setPeopleSelectedId] = useState<string | null>(null);
   const [hasMounted, setHasMounted] = useState(false);
-  const isSignIn = useAuthStore((state) => state.isSignIn);
+  const isSignIn = useDemoStore((state) => state.isDemoUser);
   const router = useRouter();
 
   // 마운트 이후에만 렌더링
