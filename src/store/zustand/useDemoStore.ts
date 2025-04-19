@@ -43,11 +43,13 @@ import type { PlansType } from '@/types/plans';
 //   }
 
 interface DemoState {
+  isDemoUser: boolean;
   contacts: ContactType[];
   plans: PlansType[];
 
-  addContact: (contact: ContactType) => void;
-  updateContact: (contact: ContactType) => void;
+  setDemoUser: () => void;
+  addContact: (person: ContactType) => void;
+  updateContact: (person: ContactType) => void;
   deleteContact: (id: string) => void;
 
   addPlan: (plan: PlansType) => void;
@@ -57,6 +59,7 @@ interface DemoState {
 }
 
 const initialState = {
+  isDemoUser: false,
   contacts: [],
   plans: [],
 };
@@ -67,6 +70,8 @@ export const useDemoStore = create<DemoState>()(
   persist(
     (set) => ({
       ...initialState,
+
+      setDemoUser: () => set({ isDemoUser: true }),
 
       addContact: (person) => set((state) => ({ contacts: [...state.contacts, person] })),
 
