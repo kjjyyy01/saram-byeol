@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import ContactItem from '@/components/contacts/ContactItem';
 import { UserPlus } from '@phosphor-icons/react';
-import AddContactForm from '@/components/contacts/addContactForm/Index';
+import AddContactForm from '@/components/contacts/addContactForm/AddContactForm';
 import SideSheet from '@/components/contacts/SideSheet';
 import { useAuthStore } from '@/store/zustand/store';
 import useGetContactsByUserID from '@/hooks/queries/useGetContactsByUserID';
