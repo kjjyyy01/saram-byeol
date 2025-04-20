@@ -15,7 +15,7 @@ const SignUp = () => {
         <section className='mt-10 flex flex-col items-center justify-center'>
           <div className='mb-[42px] flex items-center gap-1'>
             <div className='w-[150px] outline outline-1 outline-stone-300' />
-            <p className='text-base font-bold leading-normal text-zinc-800'>SNS계정으로 간편로그인</p>
+            <p className='text-nowrap text-base font-bold leading-normal text-zinc-800'>SNS계정으로 간편로그인</p>
             <div className='h-0 w-[150px] outline outline-1 outline-stone-300' />
           </div>
           <SigninSocial />
