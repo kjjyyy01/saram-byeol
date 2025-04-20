@@ -25,7 +25,7 @@ export const useSignup = () => {
       localStorage.setItem('alreadySignIn', 'true');
       toast.success(`회원가입이 완료되었습니다.`);
       setUser(data.session.user);
-      router.push(PEOPLE);
+      router.replace(PEOPLE);
     } else if (error) {
       toast.warning('입력한 정보를 다시 한 번 확인해주세요.');
     }
