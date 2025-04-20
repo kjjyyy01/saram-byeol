@@ -7,7 +7,7 @@ import SigninSocial from '@/components/signin/SigninSocial';
 const SignUp = () => {
   return (
     <div className='flex h-[100vh] w-[100vw] items-center justify-center overflow-y-auto'>
-      <section className='flex w-1/2 flex-col items-center justify-center'>
+      <section className='flex w-full flex-col items-center justify-center'>
         <h1 className='mb-10 text-center text-[28px] font-bold text-primary-500'>사람, 별 회원가입</h1>
         <section className='mb-8'>
           <SignupForm />
@@ -22,7 +22,7 @@ const SignUp = () => {
         </section>
       </section>
 
-      <section className='relative h-full w-1/2'>
+      <section className='relative h-full w-full'>
         <Image src={'/saram-byeol_img.avif'} alt='metaphor image' fill className='object-contain' />
       </section>
     </div>
