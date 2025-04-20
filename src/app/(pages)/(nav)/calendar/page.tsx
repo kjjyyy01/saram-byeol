@@ -14,6 +14,7 @@ import { usePlanFormStore } from '@/store/zustand/usePlanFormStore';
 import { planFormDefaultValues } from '@/lib/schemas/plansSchema';
 import { useGetHolidays } from '@/hooks/queries/useGetHolidays';
 import { useGetCalendarPlans } from '@/hooks/queries/useGetCalendarPlans';
+import { toast } from 'react-toastify';
 
 export default function Calendar() {
   const router = useRouter();
@@ -81,6 +82,24 @@ export default function Calendar() {
           : event
       )
     );
+    // 수정 끝났으니, 모드 끄고 selectPlan을 수정한 걸로 새로 세팅
+    setIsEditMode(false);
+    setEditPlan(null);
+
+    setSelectPlan([
+      {
+        plan_id: updatedPlan.plan_id,
+        user_id: updatedPlan.user_id,
+        contacts_id: updatedPlan.contacts_id,
+        title: updatedPlan.title,
+        detail: updatedPlan.detail,
+        start_date: updatedPlan.start_date,
+        end_date: updatedPlan.end_date,
+        colors: updatedPlan.colors,
+        priority: updatedPlan.priority,
+      },
+    ]);
+    toast.success('약속이 수정되었습니다.');
   };
 
   // 약속 + 공휴일
