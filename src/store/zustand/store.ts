@@ -41,10 +41,9 @@ export const AuthStateChangeHandler = () => {
     if ((event === 'INITIAL_SESSION' || event === 'SIGNED_IN') && session) {
       setUser(session.user);
 
-      // 토스트는 실제 로그인 액션 때만 띄우기
       if (event === 'SIGNED_IN' && !alreadySignIn) {
         localStorage.setItem('alreadySignIn', 'true');
-        toast.success(`로그인되었습니다. '내 사람'페이지로 이동합니다.`);
+        toast.success(`로그인되었습니다. '내 사람'으로 이동합니다.`);
       }
     } else if (event === 'SIGNED_OUT') {
       localStorage.removeItem('alreadySignIn');
