@@ -2,7 +2,6 @@ import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 import type { ContactType } from '@/types/contacts';
 import type { PlansType } from '@/types/plans';
-import { toast } from 'react-toastify';
 
 // 약속 타입
 // export interface PlansType {
@@ -51,7 +50,6 @@ interface DemoState {
   setDemoUser: () => void;
   addContact: (person: ContactType) => void;
   updateContact: (person: ContactType) => void;
-  togglePinContact: (id: string) => void;
   deleteContact: (id: string) => void;
 
   addPlan: (plan: PlansType) => void;
@@ -75,23 +73,13 @@ export const useDemoStore = create<DemoState>()(
 
       setDemoUser: () => set({ isDemoUser: true }),
 
-      addContact: (person) =>
-        set((state) => {
-          if (state.contacts.length >= 3) {
-            toast.warning('데모모드에서는 최대 3명까지 등록할 수 있습니다.');
-            return state;
-          }
-          return { contacts: [...state.contacts, person] };
-        }),
+      addContact: (person) => set((state) => ({ contacts: [...state.contacts, person] })),
 
       updateContact: (person) =>
         set((state) => ({
           contacts: state.contacts.map((p) => (p.id === person.id ? person : p)),
         })),
-      togglePinContact: (id) =>
-        set((state) => ({
-          contacts: state.contacts.map((p) => (p.id === id ? { ...p, is_pinned: !p.is_pinned } : p)),
-        })),
+
       deleteContact: (id) =>
         set((state) => ({
           contacts: state.contacts.filter((p) => p.id !== id),
@@ -99,13 +87,9 @@ export const useDemoStore = create<DemoState>()(
         })),
 
       addPlan: (plan) =>
-        set((state) => {
-          if (state.plans.length >= 5) {
-            toast.warning('데모 모드에서는 최대 5개의 약속만 등록할 수 있습니다.');
-            return state;
-          }
-          return { plans: [...state.plans, plan] };
-        }),
+        set((state) => ({
+          plans: [...state.plans, plan],
+        })),
 
       deletePlan: (id) =>
         set((state) => ({
