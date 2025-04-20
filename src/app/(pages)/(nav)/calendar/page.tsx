@@ -6,17 +6,25 @@ import EditPlanForm from '@/components/contactDetail/editPlanForm/EditPlanForm';
 import UpcomingPlans from '@/components/schedule/UpcomingPlans';
 import { SIGNIN } from '@/constants/paths';
 import { useAuthStore } from '@/store/zustand/store';
-import { SelectPlanType } from '@/types/plans';
+import { CalendarEventType, Holidays, SelectPlanType } from '@/types/plans';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { usePlanFormStore } from '@/store/zustand/usePlanFormStore';
 import { planFormDefaultValues } from '@/lib/schemas/plansSchema';
+import { useGetHolidays } from '@/hooks/queries/useGetHolidays';
+import { useGetCalendarPlans } from '@/hooks/queries/useGetCalendarPlans';
 
 export default function Calendar() {
   const router = useRouter();
   const user = useAuthStore((state) => state.user);
   const isSignIn = useAuthStore((state) => state.isSignIn);
+
+  const [moment, setMoment] = useState(new Date()); //해당 달
+  const calendarYear = moment.getFullYear(); // 해당 달의 년도
+
+  const { data: holidays } = useGetHolidays(String(calendarYear));
+  const { data: events, isPending, isError, error } = useGetCalendarPlans(user, calendarYear, moment);
 
   const [hasMounted, setHasMounted] = useState(false);
   const [selectPlan, setSelectPlan] = useState<SelectPlanType[] | null>(null);
@@ -42,11 +50,35 @@ export default function Calendar() {
 
   if (!hasMounted || !isSignIn) return null;
 
+  // 약속 + 공휴일
+  const combinedEvents: CalendarEventType[] = [
+    ...(events || []),
+    ...(holidays || []).map((holiday: Holidays, idx: number) => ({
+      id: `holiday-${idx}`,
+      title: holiday.title,
+      start: holiday.date,
+      end: holiday.date, // 단일 일정
+      isHoliday: true, // 스타일 구분용
+      colors: '#2F80ED', // 기본 색상
+    })),
+  ];
+
+  if (isPending) {
+    return <div>로딩 중입니다...</div>;
+  }
+
+  if (isError) {
+    return <div>캘린더 에러 발생 : {error.message}</div>;
+  }
+
   return (
     <div className='flex flex-col gap-4 md:flex-row'>
       <div className='md:flex-grow'>
         <MainCalendar
-          user={user}
+          // user={user}
+          moment={moment}
+          setMoment={setMoment}
+          events={combinedEvents}
           setSelectPlan={(plan) => {
             setSelectPlan(plan);
             setShowUpcoming(false);
