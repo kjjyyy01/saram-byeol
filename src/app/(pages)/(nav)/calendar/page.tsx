@@ -91,7 +91,7 @@ export default function Calendar() {
                 onClose={() => {
                   setIsEditMode(false);
                   setEditPlan(null);
-                  setSelectPlan(null);
+                  // setSelectPlan(null);
                 }}
               />
             </div>
