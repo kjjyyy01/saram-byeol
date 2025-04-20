@@ -7,14 +7,22 @@ import { useAuthStore } from '@/store/zustand/store';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { toast } from 'react-toastify';
+import { useDemoStore } from '@/store/zustand/useDemoStore';
 
 const LeftNavBar = () => {
   const { user, isSignIn, signOut } = useAuthStore();
+  const isDemoUser = useDemoStore((state) => state.isDemoUser);
+  const clearAll = useDemoStore((state) => state.clearAll);
   const provider = user?.app_metadata.provider;
   const pathName = usePathname();
   const page = pathName.slice(1);
 
   const logoutHandler = () => {
+    if (isDemoUser) {
+      toast.info('데모 체험을 종료합니다');
+      clearAll();
+      return;
+    }
     if (!isSignIn) {
       toast.info('이미 로그아웃 상태입니다.');
       return;
@@ -47,8 +55,9 @@ const LeftNavBar = () => {
         onClick={logoutHandler}
       >
         <SignOut size={24} />
-        로그아웃
+        {isDemoUser ? '데모 종료' : '로그아웃'}
       </div>
+
       {/* 로그인된 상태일 때만 보여줌 */}
       {isSignIn ? (
         <div className='flex h-[150px] w-40 flex-col items-center justify-center gap-6 px-5 text-grey-1000'>
@@ -64,7 +73,6 @@ const LeftNavBar = () => {
               className='h-12 w-12 rounded-full object-cover'
             />
             {provider !== 'email' ? <div>{user?.user_metadata.name}</div> : <div>{user?.user_metadata.nickname}</div>}
-            {/* <div>닉네임위치글자수제한</div> */}
           </div>
         </div>
       ) : (
@@ -77,3 +85,4 @@ const LeftNavBar = () => {
 };
 
 export default LeftNavBar;
+
