@@ -39,7 +39,7 @@ export const useContactForm = () => {
         notes: data.bio, // 필수값
         phone: data.phone || '',
         email: data.email || '',
-        birth: data.birthday || '', // 선택적 필드
+        birth: data.birthday ? data.birthday : null, // 선택적 필드
         contacts_profile_img: data.profileImage || ''
       };
 
