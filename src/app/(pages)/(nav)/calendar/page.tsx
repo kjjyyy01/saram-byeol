@@ -6,7 +6,7 @@ import EditPlanForm from '@/components/contactDetail/editPlanForm/EditPlanForm';
 import UpcomingPlans from '@/components/schedule/UpcomingPlans';
 import { SIGNIN } from '@/constants/paths';
 import { useAuthStore } from '@/store/zustand/store';
-import { CalendarEventType, Holidays, SelectPlanType } from '@/types/plans';
+import { CalendarEventType, EditPlanType, Holidays, SelectPlanType } from '@/types/plans';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
@@ -17,27 +17,29 @@ import { useGetCalendarPlans } from '@/hooks/queries/useGetCalendarPlans';
 
 export default function Calendar() {
   const router = useRouter();
-  const user = useAuthStore((state) => state.user);
-  const isSignIn = useAuthStore((state) => state.isSignIn);
+  const user = useAuthStore((state) => state.user); //현재 로그인 한 유저
+  const isSignIn = useAuthStore((state) => state.isSignIn); //로그인 상태
 
   const [moment, setMoment] = useState(new Date()); //해당 달
-  const calendarYear = moment.getFullYear(); // 해당 달의 년도
+  const calendarYear = moment.getFullYear(); //해당 달의 년도
 
-  const { data: holidays } = useGetHolidays(String(calendarYear));
-  const { data: events, isPending, isError, error } = useGetCalendarPlans(user, calendarYear, moment);
+  const { data: holidays } = useGetHolidays(String(calendarYear)); //공휴일
+  const { data: events, isPending, isError, error } = useGetCalendarPlans(user, calendarYear, moment); //약속(readonly)
+  const [localEvents, setLocalEvents] = useState<CalendarEventType[]>([]); //직접 조작하는 약속(edit)
 
-  const [hasMounted, setHasMounted] = useState(false);
-  const [selectPlan, setSelectPlan] = useState<SelectPlanType[] | null>(null);
-  const [showUpcoming, setShowUpcoming] = useState(true);
+  const [hasMounted, setHasMounted] = useState(false); //마운트 상태
+  const [selectPlan, setSelectPlan] = useState<SelectPlanType[] | null>(null); //약속 상세
+  const [showUpcoming, setShowUpcoming] = useState(true); //다가오는 약속
 
-  const [editPlan, setEditPlan] = useState<SelectPlanType | null>(null);
-  const [isEditMode, setIsEditMode] = useState(false);
+  const [editPlan, setEditPlan] = useState<SelectPlanType | null>(null); //수정하는 약속
+  const [isEditMode, setIsEditMode] = useState(false); //수정 모드 여부
 
   //옵션 더보기
   const { initialFormData, setInitialFormData } = usePlanFormStore();
   // showPlanForm 상태와 setShowPlanForm 함수 가져오기
   const { showPlanForm, setShowPlanForm } = usePlanFormStore();
 
+  //캘린더 페이지 마운트 후, 로그인 여부 판단
   useEffect(() => {
     setHasMounted(true);
   }, []);
@@ -48,11 +50,42 @@ export default function Calendar() {
     }
   }, [hasMounted, isSignIn, router]);
 
-  if (!hasMounted || !isSignIn) return null;
+  //처음 받아오는 readonly 약속을 조작 가능하도록 복사
+  useEffect(() => {
+    if (events) {
+      setLocalEvents((prevEvents) => {
+        // 이미 수정된 localEvents가 있으면 덮어쓰지 않는다.
+        if (prevEvents.length === 0) {
+          return events;
+        }
+        return prevEvents;
+      });
+    }
+  }, [events]);
+
+  const handleEditClose = (updatedPlan: EditPlanType) => {
+    if (!updatedPlan) return; // 수정 취소한 경우
+
+    setLocalEvents((prevEvents) =>
+      prevEvents.map((event) =>
+        event.id === updatedPlan.plan_id
+          ? {
+              //타입에 맞게 변환
+              ...event,
+              id: updatedPlan.plan_id,
+              title: updatedPlan.title,
+              start: new Date(updatedPlan.start_date),
+              end: new Date(updatedPlan.end_date),
+              colors: updatedPlan.colors,
+            }
+          : event
+      )
+    );
+  };
 
   // 약속 + 공휴일
   const combinedEvents: CalendarEventType[] = [
-    ...(events || []),
+    ...(localEvents || []),
     ...(holidays || []).map((holiday: Holidays, idx: number) => ({
       id: `holiday-${idx}`,
       title: holiday.title,
@@ -62,6 +95,8 @@ export default function Calendar() {
       colors: '#2F80ED', // 기본 색상
     })),
   ];
+
+  if (!hasMounted || !isSignIn) return null;
 
   if (isPending) {
     return <div>로딩 중입니다...</div>;
@@ -118,16 +153,7 @@ export default function Calendar() {
           <>
             <h2 className='mb-4 text-xl font-bold'>약속 수정</h2>
             <div className='m-5'>
-              <EditPlanForm
-                plan={editPlan}
-                onClose={(updatedPlan) => {
-                  setIsEditMode(false);
-                  setEditPlan(null);
-                  if (updatedPlan) {
-                    setSelectPlan([updatedPlan]);
-                  }
-                }}
-              />
+              <EditPlanForm plan={editPlan} onClose={handleEditClose} />
             </div>
           </>
         ) : selectPlan ? (
