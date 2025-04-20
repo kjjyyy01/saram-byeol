@@ -88,10 +88,12 @@ export default function Calendar() {
             <div className='m-5'>
               <EditPlanForm
                 plan={editPlan}
-                onClose={() => {
+                onClose={(updatedPlan) => {
                   setIsEditMode(false);
                   setEditPlan(null);
-                  // setSelectPlan(null);
+                  if (updatedPlan) {
+                    setSelectPlan([updatedPlan]);
+                  }
                 }}
               />
             </div>
