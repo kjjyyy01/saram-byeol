@@ -3,9 +3,7 @@ import ContactItem from '@/components/contacts/ContactItem';
 import { UserPlus } from '@phosphor-icons/react';
 import AddContactForm from '@/components/contacts/addContactForm/Index';
 import SideSheet from '@/components/contacts/SideSheet';
-import { useAuthStore } from '@/store/zustand/store';
-import useGetContactsByUserID from '@/hooks/queries/useGetContactsByUserID';
-import { useTogglePinContact } from '@/hooks/mutations/useMutateTogglePinContact';
+import { useDemoStore } from '@/store/zustand/useDemoStore';
 
 interface ContactListProps {
   onSelectedContact: (id: string) => void;
@@ -13,18 +11,10 @@ interface ContactListProps {
 
 const ContactList = ({ onSelectedContact }: ContactListProps) => {
   const [isAddContactOpen, setIsAddContactOpen] = useState(false);
-
-  // useAuthStore에서 사용자 정보 가져오기
-  const { user } = useAuthStore();
-  const userId = user?.id; // 현재 로그인된 사용자의 ID
-
-  // 로그인 되지 않은 경우를 위한 처리
-  const isAuthenticated = !!userId;
-
-  const { data: contacts = [], isPending, error } = useGetContactsByUserID(userId as string, isAuthenticated);
-
-  // Pin 업데이트 뮤테이션
-  const pinMutation = useTogglePinContact(userId);
+  //스토리지에서 연락처 불러오기
+  const contacts = useDemoStore((state) => state.contacts);
+  //스토어에서 pin유무 토글 불러오기
+  const handleTogglePin = useDemoStore((state) => state.togglePinContact);
 
   // 핀된 연락처와 일반 연락처 분리
   const { pinnedContacts, regularContacts } = useMemo(() => {
@@ -32,23 +22,6 @@ const ContactList = ({ onSelectedContact }: ContactListProps) => {
     const regular = contacts.filter((contact) => !contact.is_pinned);
     return { pinnedContacts: pinned, regularContacts: regular };
   }, [contacts]);
-
-  // 핀 토글 핸들러
-  const handleTogglePin = (contactId: string, isPinned: boolean) => {
-    pinMutation.mutate({ contactId, isPinned });
-  };
-
-  if (error) {
-    console.error('연락처 로딩 실패', error);
-  }
-
-  if (!isAuthenticated) {
-    return (
-      <div className='flex h-full flex-col items-center justify-center'>
-        <p className='text-lg text-gray-600'>로그인이 필요한 서비스입니다.</p>
-      </div>
-    );
-  }
 
   return (
     <div className='flex h-full flex-col'>
@@ -69,48 +42,47 @@ const ContactList = ({ onSelectedContact }: ContactListProps) => {
       </div>
 
       {/* 연락처 리스트 */}
-      <div className='mt-12 flex-1'>
-        {isPending ? (
-          <div className='py-8 text-center'>연락처를 불러오는 중...</div>
-        ) : (
-          <div>
-            {/* 핀 고정 영역 */}
-            {pinnedContacts.length > 0 && (
-              <div className='mb-6'>
-                <div className='flex items-center bg-gray-50 px-6 py-3'>
-                  <h2 className='text-sm font-semibold text-gray-700'>고정됨</h2>
-                </div>
-                <ul className='flex flex-col'>
-                  {pinnedContacts.map((contact) => (
-                    <li key={`pinned-${contact.contacts_id}`}>
-                      <div onClick={() => onSelectedContact(contact.contacts_id)}>
-                        <ContactItem contact={contact} onTogglePin={handleTogglePin} />
-                      </div>
-                    </li>
-                  ))}
-                </ul>
+      <div className='mt-12 flex-1 flex flex-row h-screen items-center justify-center'>
+        <div className='flex h-full flex-col items-center justify-center'>
+          {contacts.length === 0 && (
+              <div className='text-lg text-grey-600'>데모모드에서는 최대 3명까지 등록할 수 있습니다.</div>
+          )}
+          {/* 핀 고정 영역 */}
+          {pinnedContacts.length > 0 && (
+            <div className='mb-6'>
+              <div className='flex items-center bg-gray-50 px-6 py-3'>
+                <h2 className='text-sm font-semibold text-gray-700'>고정됨</h2>
               </div>
-            )}
-
-            {/* 일반 연락처 영역 */}
-            <div>
-              {pinnedContacts.length > 0 && (
-                <div className='flex items-center bg-gray-50 px-6 py-3'>
-                  <h2 className='text-sm font-semibold text-gray-700'>리스트</h2>
-                </div>
-              )}
               <ul className='flex flex-col'>
-                {regularContacts.map((contact) => (
-                  <li key={contact.contacts_id}>
-                    <div onClick={() => onSelectedContact(contact.contacts_id)} className='w-full'>
+                {pinnedContacts.map((contact) => (
+                  <li key={`pinned-${contact.contacts_id}`}>
+                    <div onClick={() => onSelectedContact(contact.contacts_id)}>
                       <ContactItem contact={contact} onTogglePin={handleTogglePin} />
                     </div>
                   </li>
                 ))}
               </ul>
             </div>
+          )}
+
+          {/* 일반 연락처 영역 */}
+          <div>
+            {pinnedContacts.length > 0 && (
+              <div className='flex items-center bg-gray-50 px-6 py-3'>
+                <h2 className='text-sm font-semibold text-gray-700'>리스트</h2>
+              </div>
+            )}
+            <ul className='flex flex-col'>
+              {regularContacts.map((contact) => (
+                <li key={contact.contacts_id}>
+                  <div onClick={() => onSelectedContact(contact.contacts_id)} className='w-full'>
+                    <ContactItem contact={contact} onTogglePin={handleTogglePin} />
+                  </div>
+                </li>
+              ))}
+            </ul>
           </div>
-        )}
+        </div>
       </div>
 
       {/* 사이드 시트 */}
