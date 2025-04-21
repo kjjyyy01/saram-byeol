@@ -4,45 +4,6 @@ import type { ContactType } from '@/types/contacts';
 import type { PlansType } from '@/types/plans';
 import { toast } from 'react-toastify';
 
-// 약속 타입
-// export interface PlansType {
-//   plan_id: string;
-//   user_id: string;
-//   contacts_id: string;
-//   title: string;
-//   detail: string;
-//   priority: string;
-//   start_date: string;
-//   end_date: string;
-//   location?: Partial<KakaoPlaceType> | null;
-//   colors: string;
-// }
-// 사용자 타입
-// export interface UserType {
-//     id: string;
-//     user_id: string;
-//     email: string;
-//     nickname: string;
-//     profile_img?: string;
-//     created_at: string;
-//     updated_at: string;
-//   }
-
-//   // 연락처 타입
-//   export interface ContactType {
-//     id: string;
-//     contacts_id: string;
-//     user_id: string;
-//     name: string;
-//     relationship_level: string;
-//     email: string;
-//     notes: string;
-//     phone: string;
-//     birth: string;
-//     contacts_profile_img?: string;
-//     is_pinned?: boolean;
-//   }
-
 interface DemoState {
   isDemoUser: boolean;
   contacts: ContactType[];
@@ -55,6 +16,7 @@ interface DemoState {
   deleteContact: (id: string) => void;
 
   addPlan: (plan: PlansType) => void;
+  updatePlan: (plan: PlansType) => void;
   deletePlan: (id: string) => void;
 
   clearAll: () => void;
@@ -65,6 +27,18 @@ const initialState = {
   contacts: [],
   plans: [],
 };
+const demoUser = {
+  user: {
+    app_metadata: { provider: 'email' },
+    id: '297e8f39-2421-4fff-866a-d3887dd6effe',
+    user_metadata: {
+      email: 'demo-user@mail.com',
+      nickname: '김데모',
+      profile_img:
+        'https://sogssbvoxwlfglnmwmge.supabase.co/storage/v1/object/sign/demo-storage/user-profile/sung-wang-g4DgCF90EM4-unsplash.jpg?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJkZW1vLXN0b3JhZ2UvdXNlci1wcm9maWxlL3N1bmctd2FuZy1nNERnQ0Y5MEVNNC11bnNwbGFzaC5qcGciLCJpYXQiOjE3NDUyMTQ2MjEsImV4cCI6MTc0NzgwNjYyMX0.zGaHcIc7PHPkjDoNs_NT8YFyBa2RFBMwA07iDbKqhH0',
+    },
+  },
+};
 //내사람 추가, 수정, 삭제
 //약속 추가, 삭제
 //제한된 기능 제공
@@ -73,8 +47,11 @@ export const useDemoStore = create<DemoState>()(
     (set) => ({
       ...initialState,
 
-      setDemoUser: () => set({ isDemoUser: true }),
-
+      setDemoUser: () =>
+        set(() => {
+          localStorage.setItem('user-storage', JSON.stringify(demoUser));
+          return { isDemoUser: true };
+        }),
       addContact: (person) =>
         set((state) => {
           if (state.contacts.length >= 3) {
@@ -106,13 +83,20 @@ export const useDemoStore = create<DemoState>()(
           }
           return { plans: [...state.plans, plan] };
         }),
-
+      updatePlan: (plan) =>
+        set((state) => ({
+          plans: state.plans.map((p) => (p.plan_id === plan.plan_id ? plan : p)),
+        })),
       deletePlan: (id) =>
         set((state) => ({
           plans: state.plans.filter((a) => a.plan_id !== id),
         })),
 
-      clearAll: () => set(initialState),
+      clearAll: () =>
+        set(() => {
+          localStorage.removeItem('user-storage');
+          return initialState;
+        }),
     }),
     {
       name: 'demo-storage',
@@ -120,4 +104,3 @@ export const useDemoStore = create<DemoState>()(
     }
   )
 );
-
