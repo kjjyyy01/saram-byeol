@@ -18,6 +18,7 @@ const SignIn = () => {
       router.replace(PEOPLE);
     }
   }, [isSignin, router]);
+
   return (
     <div className='flex h-[100vh] w-[100vw] items-center justify-center overflow-hidden overflow-y-auto'>
       <section className='flex w-1/2 flex-col items-center justify-center'>
