@@ -18,7 +18,7 @@ import { toast } from 'react-toastify';
 
 interface Props {
   plan: EditPlanType;
-  onClose: (updatedPlan: EditPlanType) => void;
+  onClose: (updatedPlan: EditPlanType | null) => void;
 }
 
 const convertToFormValues = (plan: EditPlanType): PlanFormType => ({
@@ -54,7 +54,7 @@ const EditPlanForm = ({ plan, onClose }: Props) => {
   });
 
   const handleCancel = () => {
-    onClose(plan);
+    onClose(null);
   };
 
   const { mutate: updatePlan } = useMutateUpdatePlan();
