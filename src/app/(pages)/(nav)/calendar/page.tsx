@@ -128,7 +128,15 @@ export default function Calendar() {
   };
 
   const moveEventsHandler = ({ event, start, end }: DragEventType) => {
-    updateEvent({ id: event.id, start: new Date(start), end: new Date(end) });
+    updateEvent(
+      { id: event.id, start: new Date(start), end: new Date(end) },
+      {
+        onError: () => {
+          toast.error('시간 변경에 실패했습니다.');
+          updateLocalEvent({ id: event.id, start: event.start, end: event.end }); // 롤백
+        },
+      }
+    );
 
     updateLocalEvent({
       id: event.id,
@@ -203,7 +211,7 @@ export default function Calendar() {
           <>
             <h2 className='mb-4 text-xl font-bold'>약속 추가</h2>
             <div className='m-5'>
-              <PlanForm initialValues={initialFormData ?? undefined} handleCancel={setShowPlanForm}/>
+              <PlanForm initialValues={initialFormData ?? undefined} handleCancel={setShowPlanForm} />
             </div>
           </>
         ) : isEditMode && editPlan ? (
