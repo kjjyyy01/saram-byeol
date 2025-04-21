@@ -2,8 +2,8 @@ import { ContactDetailType, ContactItemType, ContactWithPlansDetailType } from '
 import { supabase } from '@/app/api/supabase/client';
 import { InsertNewPlansType, PlansType } from '@/types/plans';
 import { CONTACTS, PLANS, USERS } from '@/constants/supabaseTable';
-import { useAuthStore } from '@/store/zustand/store';
-import { OAUTH_REDIRECT_URL } from '@/constants/redirecturl';
+import { User } from '@supabase/supabase-js';
+import { REDIRECT_TO } from '@/constants/redirecturl';
 
 export const getContacts = async (userId: string): Promise<ContactItemType[]> => {
   try {
@@ -96,9 +96,7 @@ export const emailDuplicateTest = async (email: string) => {
 };
 
 // 매 달의 plans 데이터 가져오기
-export const getMonthlyPlans = async (year: number, month: number): Promise<PlansType[]> => {
-  const user = useAuthStore.getState().user;
-
+export const getMonthlyPlans = async (user: User, year: number, month: number): Promise<PlansType[]> => {
   if (!user) {
     throw new Error('로그인된 사용자가 없습니다.');
   }
@@ -211,7 +209,8 @@ export const signInWithGoogle = async () => {
   const { error } = await supabase.auth.signInWithOAuth({
     provider: 'google',
     options: {
-      redirectTo: `${OAUTH_REDIRECT_URL}/people`,
+      redirectTo: REDIRECT_TO,
+      // 매번 로그인 시 계정 선택 및 인증 정보 재입력 유도
       queryParams: {
         access_type: 'offline',
         prompt: 'consent',
@@ -225,10 +224,10 @@ export const signInWithKakao = async () => {
   const { error } = await supabase.auth.signInWithOAuth({
     provider: 'kakao',
     options: {
-      redirectTo: `${OAUTH_REDIRECT_URL}/people`,
+      redirectTo: REDIRECT_TO,
+      // 매번 로그인 인증 정보 재입력 유도
       queryParams: {
-        access_type: 'offline',
-        prompt: 'consent',
+        auth_type: 'reauthenticate',
       },
     },
   });

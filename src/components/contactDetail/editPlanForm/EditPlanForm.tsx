@@ -18,7 +18,7 @@ import { toast } from 'react-toastify';
 
 interface Props {
   plan: EditPlanType;
-  onClose: () => void;
+  onClose: (updatedPlan: EditPlanType | null) => void;
 }
 
 const convertToFormValues = (plan: EditPlanType): PlanFormType => ({
@@ -42,7 +42,7 @@ const convertToFormValues = (plan: EditPlanType): PlanFormType => ({
   colors: plan.colors ?? '',
 });
 
-const EditPlanForm: React.FC<Props> = ({ plan, onClose }) => {
+const EditPlanForm = ({ plan, onClose }: Props) => {
   const user = useAuthStore((state) => state.user);
   const [inputValue, setInputValue] = useState(plan.location?.place_name || '');
   const [selectedColor, setSelectedColor] = useState(plan.colors || '#2F80ED');
@@ -53,18 +53,32 @@ const EditPlanForm: React.FC<Props> = ({ plan, onClose }) => {
     defaultValues: convertToFormValues(plan),
   });
 
+  const handleCancel = () => {
+    onClose(null);
+  };
+
   const { mutate: updatePlan } = useMutateUpdatePlan();
 
   const editPlanHandler = (data: PlanFormType) => {
     const formData = mappingFormData(data);
     const updatedForm = { ...formData, colors: selectedColor };
 
+    const { start_date, end_date, ...restFormData } = updatedForm;
+
     updatePlan(
-      { planId: plan.plan_id, updatedData: { ...updatedForm, user_id: plan.user_id } },
+      { planId: plan.plan_id, updatedData: { ...restFormData, user_id: plan.user_id } },
       {
         onSuccess: () => {
-          toast.success('약속이 수정되었습니다.');
-          onClose();
+          const updatedPlan = {
+            ...plan,
+            ...restFormData,
+            detail: restFormData.detail ?? '',
+            priority: restFormData.priority ?? '',
+            start_date,
+            end_date,
+          };
+
+          onClose(updatedPlan);
         },
         onError: () => toast.error('약속 수정에 실패했습니다.'),
       }
@@ -82,7 +96,7 @@ const EditPlanForm: React.FC<Props> = ({ plan, onClose }) => {
         <PriorityField />
         <DetailField />
         <div className='flex w-full flex-row items-center justify-center gap-4'>
-          <Button type='button' variant='outline' onClick={onClose} className='flex-1'>
+          <Button type='button' variant='outline' onClick={handleCancel} className='flex-1'>
             취소
           </Button>
           <Button type='submit' disabled={form.formState.isSubmitting} className='flex-1'>
