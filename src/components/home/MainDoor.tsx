@@ -1,7 +1,7 @@
 'use client';
 import Image from 'next/image';
 import Link from 'next/link';
-import { SIGNIN } from '@/constants/paths';
+import { SIGNIN, PEOPLE } from '@/constants/paths';
 import { useDemoStore } from '@/store/zustand/useDemoStore';
 
 const MainDoor = () => {
@@ -22,7 +22,7 @@ const MainDoor = () => {
       >
         사람 별로 지금 바로 로그인
       </Link>
-      <Link href={'/demo/people'} onClick={setDemoUser}>
+      <Link href={PEOPLE} onClick={setDemoUser}>
         데모체험
       </Link>
     </div>
