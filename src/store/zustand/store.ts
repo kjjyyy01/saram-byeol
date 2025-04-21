@@ -41,9 +41,8 @@ export const AuthStateChangeHandler = () => {
     if ((event === 'INITIAL_SESSION' || event === 'SIGNED_IN') && session) {
       setUser(session.user);
 
-      if (event === 'SIGNED_IN' && !alreadySignIn) {
+      if (!alreadySignIn) {
         localStorage.setItem('alreadySignIn', 'true');
-        toast.success(`로그인되었습니다. '내 사람'으로 이동합니다.`);
       }
     } else if (event === 'SIGNED_OUT') {
       localStorage.removeItem('alreadySignIn');
