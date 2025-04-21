@@ -16,6 +16,7 @@ import { useGetHolidays } from '@/hooks/queries/useGetHolidays';
 import { useGetCalendarPlans } from '@/hooks/queries/useGetCalendarPlans';
 import { toast } from 'react-toastify';
 import { useUpadateEventMutate } from '@/hooks/mutations/useUpadateEventMutate';
+import { useGetSelectPlan } from '@/hooks/queries/useGetSelectPlan';
 
 interface UpdatedEventType {
   id: string;
@@ -42,6 +43,10 @@ export default function Calendar() {
 
   const { data: holidays } = useGetHolidays(String(calendarYear)); //공휴일
   const { data: events, isPending, isError, error } = useGetCalendarPlans(user, calendarYear, moment); //약속(readonly)
+
+  const [selectedPlanId, setSelectedPlanId] = useState<string | null>(null);
+  const { data: selectedPlanData, refetch: refetchSelectedPlan } = useGetSelectPlan(selectedPlanId ?? '');
+
   const [localEvents, setLocalEvents] = useState<CalendarEventType[]>([]); //직접 조작하는 약속(edit)
 
   const [hasMounted, setHasMounted] = useState(false); //마운트 상태
@@ -68,16 +73,31 @@ export default function Calendar() {
     }
   }, [hasMounted, isSignIn, router]);
 
+  // planId가 바뀔 때마다 refetch
+  useEffect(() => {
+    if (selectedPlanId) {
+      refetchSelectedPlan();
+    }
+  }, [selectedPlanId, refetchSelectedPlan]);
+
+  // 가져온 데이터로 selectPlan 세팅
+  useEffect(() => {
+    if (selectedPlanData?.data?.length) {
+      // 클릭한 약속 바
+      const clickPlan = selectedPlanData.data[0];
+
+      setSelectPlan([{ ...clickPlan, contacts: clickPlan.contacts[0] }]);
+      setShowUpcoming(false);
+      setShowPlanForm(false);
+      setIsEditMode(false);
+      setEditPlan(null);
+    }
+  }, [selectedPlanData]);
+
   //처음 받아오는 readonly 약속을 조작 가능하도록 복사
   useEffect(() => {
     if (events) {
-      setLocalEvents((prevEvents) => {
-        // 이미 수정된 localEvents가 있으면 덮어쓰지 않는다.
-        if (prevEvents.length === 0) {
-          return events;
-        }
-        return prevEvents;
-      });
+      setLocalEvents((prev) => (prev.length === 0 || events.length !== prev.length ? events : prev));
     }
   }, [events]);
 
@@ -180,6 +200,7 @@ export default function Calendar() {
           setMoment={setMoment}
           events={combinedEvents}
           onEventDrop={moveEventsHandler}
+          onSelectPlan={(planId) => setSelectedPlanId(planId)}
           setSelectPlan={(plan) => {
             setSelectPlan(plan);
             setShowUpcoming(false);

@@ -1,19 +1,19 @@
 import { Calendar, dateFnsLocalizer } from 'react-big-calendar';
 import { format, parse, startOfWeek, getDay } from 'date-fns';
 import CustomToolbar from '@/components/calendar/CustomToolbar';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import type { CalendarEventType, PlansType } from '@/types/plans';
 import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop';
 import { CustomDateHeader } from '@/components/calendar/CustomDateHeader';
 import { holidayStyle } from '@/lib/utils/calendarStyle';
 import CalendarPopOver from '@/components/calendar/popOver/CalendarPopOver';
-import { useGetSelectPlan } from '@/hooks/queries/useGetSelectPlan';
 import { DragEventType } from '@/app/(pages)/(nav)/calendar/page';
 
 interface MainCalendarProps {
   events: CalendarEventType[];
   moment: Date;
   setMoment: (date: Date) => void;
+  onSelectPlan: (planId: string) => void;
   setSelectPlan: React.Dispatch<React.SetStateAction<PlansType[] | null>>;
   onEventDrop: (data: DragEventType) => void;
   CustomToolbarProps: {
@@ -31,7 +31,7 @@ const localizer = dateFnsLocalizer({
 });
 
 const MainCalendar = ({
-  setSelectPlan,
+  onSelectPlan,
   CustomToolbarProps,
   events,
   moment,
@@ -40,35 +40,8 @@ const MainCalendar = ({
 }: MainCalendarProps) => {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null); //선택한 셀 날짜
   const [isPopOverOpen, setIsPopOverOpen] = useState(false); //팝오버 오픈 여부
-  const [selectedPlanId, setSelectedPlanId] = useState<string | null>(null);
-
-  const { data: selectedPlanData, refetch } = useGetSelectPlan(selectedPlanId ?? '');
 
   const DnDCalendar = withDragAndDrop<CalendarEventType>(Calendar); //DnD 사용 캘린더
-
-  const selectPlanHandler = async (event: CalendarEventType) => {
-    // selectedPlanId가 바뀌는 순간 새로운 useQuery가 실행되도록
-    setSelectedPlanId((prevId) => {
-      if (prevId !== event.id) {
-        return event.id;
-      }
-      return prevId;
-    });
-  };
-
-  // data가 있을 경우에만 state로 설정
-  useEffect(() => {
-    if (selectedPlanData?.data) {
-      // Plan이 바뀌었는지 체크해서 매번 새 객체 할당
-      setSelectPlan([...selectedPlanData.data]);
-    }
-  }, [selectedPlanData, selectedPlanId]);
-
-  useEffect(() => {
-    if (selectedPlanId) {
-      refetch(); // planId 변경 시 강제로 refetch
-    }
-  }, [selectedPlanId, refetch]);
 
   return (
     <div>
@@ -96,10 +69,9 @@ const MainCalendar = ({
           setSelectedDate(slotInfo.start); // 클릭한 날짜(시작일)
           setIsPopOverOpen(true); // 모달 열기
         }}
-        onSelectEvent={(event) => selectPlanHandler(event)}
+        onSelectEvent={(event) => onSelectPlan(event.id)}
         style={{ height: '100vh' }}
       />
-      {/* 팝오버 */}
       {isPopOverOpen && selectedDate && (
         <CalendarPopOver open={isPopOverOpen} onOpenChange={setIsPopOverOpen} date={selectedDate} />
       )}
