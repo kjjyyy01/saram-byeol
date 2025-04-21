@@ -115,8 +115,8 @@ const ContactList = ({ onSelectedContact }: ContactListProps) => {
       </div>
 
       {/* 사이드 시트 */}
-      <SideSheet isOpen={isAddContactOpen} onClose={() => handleClose}>
-        <AddContactForm onClose={() => handleClose} />
+      <SideSheet isOpen={isAddContactOpen} onClose={handleClose}>
+        <AddContactForm onClose={handleClose} />
       </SideSheet>
     </div>
   );
