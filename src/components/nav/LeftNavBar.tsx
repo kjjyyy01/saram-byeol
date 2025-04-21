@@ -8,14 +8,16 @@ import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { toast } from 'react-toastify';
 import { useDemoStore } from '@/store/zustand/useDemoStore';
+import { PLACEHOLDER_PROFILE_IMG } from '@/constants/placeholders';
 
 const LeftNavBar = () => {
   const { user, isSignIn, signOut } = useAuthStore();
   const isDemoUser = useDemoStore((state) => state.isDemoUser);
   const clearAll = useDemoStore((state) => state.clearAll);
   const provider = user?.app_metadata.provider;
-  const pathName = usePathname();
-  const page = pathName.slice(1);
+  const page = usePathname().slice(1);
+  const profile = user?.user_metadata.profile_img || //이메일 로그인 시 이미지 (아직 여기 값은 없음)
+    PLACEHOLDER_PROFILE_IMG; //이미지 없을경우 디폴트 이미지
 
   const logoutHandler = () => {
     if (isDemoUser) {
@@ -64,9 +66,7 @@ const LeftNavBar = () => {
           <Bell size={24} />
           <div className='flex flex-row items-center justify-center gap-2'>
             <Image
-              src={
-                'http://img1.kakaocdn.net/thumb/R640x640.q70/?fname=http://t1.kakaocdn.net/account_images/default_profile.jpeg'
-              }
+              src={profile}
               width={48}
               height={48}
               alt='유저 프로필 이미지'
@@ -85,4 +85,3 @@ const LeftNavBar = () => {
 };
 
 export default LeftNavBar;
-
