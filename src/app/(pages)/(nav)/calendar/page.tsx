@@ -46,6 +46,7 @@ export default function Calendar() {
     <div className='flex flex-col gap-4 p-4 md:flex-row'>
       <div className='md:flex-grow'>
         <MainCalendar
+          user={user}
           setSelectPlan={(plan) => {
             setSelectPlan(plan);
             setShowUpcoming(false);
@@ -78,7 +79,7 @@ export default function Calendar() {
           <>
             <h2 className='mb-4 text-xl font-bold'>약속 추가</h2>
             <div className='m-5'>
-              <PlanForm initialValues={initialFormData ?? undefined} />
+              <PlanForm initialValues={initialFormData ?? undefined} handleCancel={setShowPlanForm}/>
             </div>
           </>
         ) : isEditMode && editPlan ? (
