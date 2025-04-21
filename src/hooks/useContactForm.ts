@@ -34,9 +34,9 @@ export const useContactForm = () => {
       // 연락처 데이터 준비
       const contactData: Omit<ContactDetailType, 'contacts_id'> = {
         user_id: userId as string,
-        name: data.name,
+        name: data.name.trim(), // 이름 앞뒤 공백 제거
         relationship_level: data.relationshipType || '친구',
-        notes: data.bio, // 필수값
+        notes: data.bio.trim() || '',
         phone: data.phone || '',
         email: data.email || '',
         birth: data.birthday ? data.birthday : null, // 선택적 필드
