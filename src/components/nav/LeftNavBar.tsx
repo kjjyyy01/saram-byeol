@@ -12,12 +12,12 @@ import { PLACEHOLDER_PROFILE_IMG } from '@/constants/placeholders';
 
 const LeftNavBar = () => {
   const { user, isSignIn, signOut } = useAuthStore();
-  const isDemoUser = useDemoStore((state) => state.isDemoUser);
-  const clearAll = useDemoStore((state) => state.clearAll);
-  const provider = user?.app_metadata.provider;
+  const { isDemoUser, demoUser, clearAll } = useDemoStore();
+  const accessUser = isDemoUser ? demoUser.user : user;
+  const isAccessGranted = isSignIn || isDemoUser; //로그인하거나, 데모유저일 때 접근가능하도록 함
+  const provider = accessUser?.app_metadata.provider;
   const page = usePathname().slice(1);
-  const profile = user?.user_metadata.profile_img || //이메일 로그인 시 이미지 (아직 여기 값은 없음)
-    PLACEHOLDER_PROFILE_IMG; //이미지 없을경우 디폴트 이미지
+  const profile = accessUser?.user_metadata.profile_img || PLACEHOLDER_PROFILE_IMG; //이메일 로그인 시 이미지 (아직 여기 값은 없음) //이미지 없을경우 디폴트 이미지
 
   const logoutHandler = () => {
     if (isDemoUser) {
@@ -61,7 +61,7 @@ const LeftNavBar = () => {
       </div>
 
       {/* 로그인된 상태일 때만 보여줌 */}
-      {isSignIn ? (
+      {isAccessGranted ? (
         <div className='flex h-[150px] w-40 flex-col items-center justify-center gap-6 px-5 text-grey-1000'>
           <Bell size={24} />
           <div className='flex flex-row items-center justify-center gap-2'>
@@ -72,7 +72,11 @@ const LeftNavBar = () => {
               alt='유저 프로필 이미지'
               className='h-12 w-12 rounded-full object-cover'
             />
-            {provider !== 'email' ? <div>{user?.user_metadata.name}</div> : <div>{user?.user_metadata.nickname}</div>}
+            {provider !== 'email' ? (
+              <div>{accessUser?.user_metadata.name}</div>
+            ) : (
+              <div>{accessUser?.user_metadata.nickname}</div>
+            )}
           </div>
         </div>
       ) : (
