@@ -97,8 +97,12 @@ export default function Calendar() {
     );
   };
 
-  const handleEditClose = (updatedPlan: EditPlanType) => {
-    if (!updatedPlan) return; // 수정 취소한 경우
+  const handleEditClose = (updatedPlan: EditPlanType | null) => {
+    if (!updatedPlan) {
+      setIsEditMode(false);
+      setEditPlan(null);
+      return;
+    } // 수정 취소한 경우
 
     updateLocalEvent({
       id: updatedPlan.plan_id,
@@ -107,9 +111,6 @@ export default function Calendar() {
       end: new Date(updatedPlan.end_date),
       colors: updatedPlan.colors,
     });
-    // 수정 끝났으니, 모드 끄고 selectPlan을 수정한 걸로 새로 세팅
-    setIsEditMode(false);
-    setEditPlan(null);
 
     setSelectPlan([
       {
