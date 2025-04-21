@@ -2,8 +2,8 @@ import { ContactDetailType, ContactItemType, ContactWithPlansDetailType } from '
 import { supabase } from '@/app/api/supabase/client';
 import { InsertNewPlansType, PlansType } from '@/types/plans';
 import { CONTACTS, PLANS, USERS } from '@/constants/supabaseTable';
-import { OAUTH_REDIRECT_URL } from '@/constants/redirecturl';
 import { User } from '@supabase/supabase-js';
+import { REDIRECT_TO } from '@/constants/redirecturl';
 
 export const getContacts = async (userId: string): Promise<ContactItemType[]> => {
   try {
@@ -209,7 +209,8 @@ export const signInWithGoogle = async () => {
   const { error } = await supabase.auth.signInWithOAuth({
     provider: 'google',
     options: {
-      redirectTo: `${OAUTH_REDIRECT_URL}/people`,
+      redirectTo: REDIRECT_TO,
+      // 매번 로그인 시 계정 선택 및 인증 정보 재입력 유도
       queryParams: {
         access_type: 'offline',
         prompt: 'consent',
@@ -223,10 +224,10 @@ export const signInWithKakao = async () => {
   const { error } = await supabase.auth.signInWithOAuth({
     provider: 'kakao',
     options: {
-      redirectTo: `${OAUTH_REDIRECT_URL}/people`,
+      redirectTo: REDIRECT_TO,
+      // 매번 로그인 인증 정보 재입력 유도
       queryParams: {
-        access_type: 'offline',
-        prompt: 'consent',
+        auth_type: 'reauthenticate',
       },
     },
   });
