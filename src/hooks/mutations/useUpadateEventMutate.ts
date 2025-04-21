@@ -4,8 +4,8 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 interface Props {
   id: string;
-  start: Date;
-  end: Date;
+  start: string;
+  end: string;
 }
 
 // 약속 업데이트 커스텀 훅

@@ -17,6 +17,7 @@ import { useGetCalendarPlans } from '@/hooks/queries/useGetCalendarPlans';
 import { toast } from 'react-toastify';
 import { useUpadateEventMutate } from '@/hooks/mutations/useUpadateEventMutate';
 import { useGetSelectPlan } from '@/hooks/queries/useGetSelectPlan';
+import { format } from 'date-fns';
 
 interface UpdatedEventType {
   id: string;
@@ -149,14 +150,19 @@ export default function Calendar() {
   };
 
   const moveEventsHandler = ({ event, start, end }: DragEventType) => {
+    // 캘린더에서는 Date 객체를 유지
     updateLocalEvent({
       id: event.id,
       start: new Date(start),
       end: new Date(end),
     });
 
+    // DB에는 string 포맷으로 변환해서 저장
+    const formattedStart = format(start, 'yyyy-MM-dd HH:mm:ss');
+    const formattedEnd = format(end, 'yyyy-MM-dd HH:mm:ss');
+
     updateEvent(
-      { id: event.id, start: new Date(start), end: new Date(end) },
+      { id: event.id, start: formattedStart, end: formattedEnd },
       {
         onError: () => {
           toast.error('시간 변경에 실패했습니다.');
