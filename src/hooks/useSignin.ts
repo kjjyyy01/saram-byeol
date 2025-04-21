@@ -11,6 +11,7 @@ export const useSignin = () => {
   const SignInHandler = async (value: SignInFormType) => {
     const { data, error } = await signInUser(value);
     if (data.session) {
+      toast.success(`로그인에 성공했습니다. '내사람'으로 이동합니다.`);
       router.replace(PEOPLE);
     } else if (error) {
       toast.warning('아이디 또는 비밀번호를 확인해주세요.');
