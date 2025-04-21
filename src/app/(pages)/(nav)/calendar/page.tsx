@@ -12,11 +12,14 @@ import { useEffect, useState } from 'react';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { usePlanFormStore } from '@/store/zustand/usePlanFormStore';
 import { planFormDefaultValues } from '@/lib/schemas/plansSchema';
+import { useDemoStore } from '@/store/zustand/useDemoStore';
 
 export default function Calendar() {
   const router = useRouter();
   const user = useAuthStore((state) => state.user);
   const isSignIn = useAuthStore((state) => state.isSignIn);
+  const isDemoUser = useDemoStore((state) => state.isDemoUser);
+  const isAccessGranted = isSignIn || isDemoUser; //로그인하거나, 데모유저일 때 접근가능하도록 함
 
   const [hasMounted, setHasMounted] = useState(false);
   const [selectPlan, setSelectPlan] = useState<SelectPlanType[] | null>(null);
@@ -35,12 +38,12 @@ export default function Calendar() {
   }, []);
 
   useEffect(() => {
-    if (hasMounted && !isSignIn) {
+    if (hasMounted && !isAccessGranted) {
       router.replace(SIGNIN);
     }
-  }, [hasMounted, isSignIn, router]);
+  }, [hasMounted, isAccessGranted, router]);
 
-  if (!hasMounted || !isSignIn) return null;
+  if (!hasMounted || !isAccessGranted) return null;
 
   return (
     <div className='flex flex-col gap-4 md:flex-row'>
@@ -79,7 +82,7 @@ export default function Calendar() {
           <>
             <h2 className='mb-4 text-xl font-bold'>약속 추가</h2>
             <div className='m-5'>
-              <PlanForm initialValues={initialFormData ?? undefined} handleCancel={setShowPlanForm}/>
+              <PlanForm initialValues={initialFormData ?? undefined} handleCancel={setShowPlanForm} />
             </div>
           </>
         ) : isEditMode && editPlan ? (
