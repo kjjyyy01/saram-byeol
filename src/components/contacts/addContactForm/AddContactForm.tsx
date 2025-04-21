@@ -6,6 +6,7 @@ import ContactTextField from './ContactTextField';
 import RelationshipSelector from './RelationshipSelector';
 import ProfileImageUpload from './ProfileImageUpload';
 import { ContactFormValues } from '@/lib/schemas/contactFormSchema';
+import { UsersThree, User, Phone, EnvelopeSimple, Cake, TextAlignLeft } from '@phosphor-icons/react';
 
 interface AddContactFormProps {
   onClose: () => void;
@@ -18,7 +19,7 @@ const AddContactForm = ({ onClose }: AddContactFormProps) => {
   const handleSubmit = async (data: ContactFormValues) => {
     await onSubmit(data);
     onClose(); // 제출 후 사이드 시트 닫기
-  }
+  };
 
   return (
     <div className='space-y-8 pl-12 pr-12'>
@@ -30,6 +31,7 @@ const AddContactForm = ({ onClose }: AddContactFormProps) => {
         relationshipType={relationshipType}
         setRelationshipType={setRelationshipType}
         setValue={form.setValue}
+        icon= {<UsersThree size={20} />}
       />
 
       <Form {...form}>
@@ -41,15 +43,8 @@ const AddContactForm = ({ onClose }: AddContactFormProps) => {
             label='이름'
             placeholder='이름을 입력해주세요.'
             debounceTime={500}
-          />
-
-          {/* 한줄소개 필드 */}
-          <ContactTextField
-            control={form.control}
-            name='bio'
-            label='한줄소개'
-            placeholder='이 사람을 한 마디로 표현한다면?'
-            debounceTime={500}
+            required
+            icon={<User size={20} />}
           />
 
           {/* 전화번호 필드 */}
@@ -61,6 +56,7 @@ const AddContactForm = ({ onClose }: AddContactFormProps) => {
             type='tel'
             maxLength={11} // 최대 11자리로 제한
             debounceTime={500}
+            icon={<Phone size={20} />}
           />
 
           {/* 이메일 필드 */}
@@ -71,10 +67,21 @@ const AddContactForm = ({ onClose }: AddContactFormProps) => {
             placeholder='이메일을 입력해주세요.'
             type='email'
             debounceTime={500}
+            icon={<EnvelopeSimple size={20} />}
           />
 
           {/* 생일 필드 */}
-          <ContactTextField control={form.control} name='birthday' label='생일' placeholder='' type='date' />
+          <ContactTextField control={form.control} name='birthday' label='생일' placeholder='' type='date' icon={<Cake size={20} />} />
+
+          {/* 소개 필드 */}
+          <ContactTextField
+            control={form.control}
+            name='bio'
+            label='메모'
+            placeholder='최대 5줄까지 표시됩니다. 5줄 초과시 말줄임표가 표시됩니다.'
+            debounceTime={500}
+            icon={<TextAlignLeft size={20} />}
+          />
 
           {/* 제출 버튼 */}
           <ContactFormSubmitButton isSubmitting={isSubmitting} />
