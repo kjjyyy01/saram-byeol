@@ -12,9 +12,10 @@ interface ContactTextFieldProps {
   type?: string;
   maxLength?: number;
   debounceTime?: number;
+  required?: boolean;
 }
 
-const ContactTextField = ({ control, name, label, placeholder, type = 'text', maxLength, debounceTime = 500 }: ContactTextFieldProps) => {
+const ContactTextField = ({ control, name, label, placeholder, type = 'text', maxLength, debounceTime = 500, required= false }: ContactTextFieldProps) => {
   const [isTyping, setIsTyping] = useState(false);
   const debounceTimerRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -62,7 +63,10 @@ const ContactTextField = ({ control, name, label, placeholder, type = 'text', ma
       return (
         <div className='flex flex-col'>
           <div className='flex items-center'>
-            <FormLabel className='w-24 text-lg font-bold'>{label}</FormLabel>
+            <FormLabel className='w-24 text-lg font-bold'>
+              {label}
+              {required && <span className='ml-1 text-red-500'>*</span>}
+            </FormLabel>
             <FormControl className='flex-1'>
               <Input 
                 type={type} 
