@@ -13,6 +13,7 @@ interface ContactListProps {
 
 const ContactList = ({ onSelectedContact }: ContactListProps) => {
   const [isAddContactOpen, setIsAddContactOpen] = useState(false);
+  const handleClose = () => setIsAddContactOpen(false);
 
   // useAuthStore에서 사용자 정보 가져오기
   const { user } = useAuthStore();
@@ -114,8 +115,8 @@ const ContactList = ({ onSelectedContact }: ContactListProps) => {
       </div>
 
       {/* 사이드 시트 */}
-      <SideSheet isOpen={isAddContactOpen} onClose={() => setIsAddContactOpen(false)}>
-        <AddContactForm />
+      <SideSheet isOpen={isAddContactOpen} onClose={() => handleClose}>
+        <AddContactForm onClose={() => handleClose} />
       </SideSheet>
     </div>
   );
