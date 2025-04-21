@@ -5,6 +5,7 @@ import ContactFormSubmitButton from './ContactFormSubmitButton';
 import ContactTextField from './ContactTextField';
 import RelationshipSelector from './RelationshipSelector';
 import ProfileImageUpload from './ProfileImageUpload';
+import { ContactFormValues } from '@/lib/schemas/contactFormSchema';
 
 interface AddContactFormProps {
   onClose: () => void;
@@ -13,6 +14,11 @@ interface AddContactFormProps {
 const AddContactForm = ({ onClose }: AddContactFormProps) => {
   const { form, onSubmit, imageSource, setImageSource, relationshipType, setRelationshipType, isSubmitting } =
     useContactForm();
+
+  const handleSubmit = async (data: ContactFormValues) => {
+    await onSubmit(data);
+    onClose(); // 제출 후 사이드 시트 닫기
+  }
 
   return (
     <div className='space-y-8 pl-12 pr-12'>
@@ -27,7 +33,7 @@ const AddContactForm = ({ onClose }: AddContactFormProps) => {
       />
 
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-10'>
+        <form onSubmit={form.handleSubmit(handleSubmit)} className='space-y-10'>
           {/* 이름 필드 */}
           <ContactTextField
             control={form.control}
