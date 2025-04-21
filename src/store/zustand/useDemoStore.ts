@@ -3,7 +3,7 @@ import { createJSONStorage, persist } from 'zustand/middleware';
 import type { ContactType } from '@/types/contacts';
 import type { PlansType } from '@/types/plans';
 import { toast } from 'react-toastify';
-import { demoUser } from '@/constants/demoData';
+import { demoContacts, demoPlans, demoUser } from '@/constants/demoData';
 // import { User } from '@supabase/supabase-js';
 interface DemoUser {
   user: {
@@ -20,14 +20,14 @@ interface DemoUser {
 
 interface DemoState {
   isDemoUser: boolean;
-  contacts: ContactType[];
-  plans: PlansType[];
+  demoContacts: ContactType[];
+  demoPlans: PlansType[];
   demoUser: DemoUser;
 
   setDemoUser: () => void;
   addContact: (person: ContactType) => void;
   updateContact: (person: ContactType) => void;
-  togglePinContact: (id: string) => void;
+  togglePinContact: (id: string, isPinned: boolean) => void;
   deleteContact: (id: string) => void;
 
   addPlan: (plan: PlansType) => void;
@@ -39,8 +39,8 @@ interface DemoState {
 
 const initialState = {
   isDemoUser: false,
-  contacts: [],
-  plans: [],
+  demoContacts,
+  demoPlans,
   demoUser,
 };
 
@@ -56,42 +56,42 @@ export const useDemoStore = create<DemoState>()(
         }),
       addContact: (person) =>
         set((state) => {
-          if (state.contacts.length >= 3) {
+          if (state.demoContacts.length >= 3) {
             toast.warning('데모모드에서는 최대 3명까지 등록할 수 있습니다.');
             return state;
           }
-          return { contacts: [...state.contacts, person] };
+          return { demoContacts: [...state.demoContacts, person] };
         }),
 
       updateContact: (person) =>
         set((state) => ({
-          contacts: state.contacts.map((p) => (p.id === person.id ? person : p)),
+          demoContacts: state.demoContacts.map((p) => (p.id === person.id ? person : p)),
         })),
-      togglePinContact: (id) =>
+      togglePinContact: (id, isPinned) =>
         set((state) => ({
-          contacts: state.contacts.map((p) => (p.id === id ? { ...p, is_pinned: !p.is_pinned } : p)),
+          demoContacts: state.demoContacts.map((p) => (p.id === id ? { ...p, is_pinned: isPinned } : p)),
         })),
       deleteContact: (id) =>
         set((state) => ({
-          contacts: state.contacts.filter((p) => p.id !== id),
-          plans: state.plans.filter((a) => a.plan_id !== id),
+          demoContacts: state.demoContacts.filter((p) => p.id !== id),
+          demoPlans: state.demoPlans.filter((a) => a.plan_id !== id),
         })),
 
       addPlan: (plan) =>
         set((state) => {
-          if (state.plans.length >= 5) {
+          if (state.demoPlans.length >= 5) {
             toast.warning('데모 모드에서는 최대 5개의 약속만 등록할 수 있습니다.');
             return state;
           }
-          return { plans: [...state.plans, plan] };
+          return { demoPlans: [...state.demoPlans, plan] };
         }),
       updatePlan: (plan) =>
         set((state) => ({
-          plans: state.plans.map((p) => (p.plan_id === plan.plan_id ? plan : p)),
+          demoPlans: state.demoPlans.map((p) => (p.plan_id === plan.plan_id ? plan : p)),
         })),
       deletePlan: (id) =>
         set((state) => ({
-          plans: state.plans.filter((a) => a.plan_id !== id),
+          demoPlans: state.demoPlans.filter((a) => a.plan_id !== id),
         })),
 
       clearAll: () =>
