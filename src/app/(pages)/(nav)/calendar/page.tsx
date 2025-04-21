@@ -149,6 +149,12 @@ export default function Calendar() {
   };
 
   const moveEventsHandler = ({ event, start, end }: DragEventType) => {
+    updateLocalEvent({
+      id: event.id,
+      start: new Date(start),
+      end: new Date(end),
+    });
+
     updateEvent(
       { id: event.id, start: new Date(start), end: new Date(end) },
       {
@@ -158,12 +164,6 @@ export default function Calendar() {
         },
       }
     );
-
-    updateLocalEvent({
-      id: event.id,
-      start: new Date(start),
-      end: new Date(end),
-    });
 
     toast.success('약속 시간이 변경되었습니다.');
   };
