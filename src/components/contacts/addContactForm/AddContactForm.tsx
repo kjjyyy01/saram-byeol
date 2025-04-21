@@ -6,24 +6,24 @@ import ContactTextField from './ContactTextField';
 import RelationshipSelector from './RelationshipSelector';
 import ProfileImageUpload from './ProfileImageUpload';
 
-const AddContactForm = () => {
+interface AddContactFormProps {
+  onClose: () => void;
+}
+
+const AddContactForm = ({ onClose }: AddContactFormProps) => {
   const { form, onSubmit, imageSource, setImageSource, relationshipType, setRelationshipType, isSubmitting } =
     useContactForm();
 
   return (
     <div className='space-y-8 pl-12 pr-12'>
       {/* 이미지 업로드 컴포넌트 */}
-      <ProfileImageUpload
-        imageSource={imageSource} 
-        setImageSource={setImageSource} 
-        setValue={form.setValue} 
-      />
+      <ProfileImageUpload imageSource={imageSource} setImageSource={setImageSource} setValue={form.setValue} />
 
       {/* 관계 선택 컴포넌트 */}
       <RelationshipSelector
-        relationshipType={relationshipType} 
-        setRelationshipType={setRelationshipType} 
-        setValue={form.setValue} 
+        relationshipType={relationshipType}
+        setRelationshipType={setRelationshipType}
+        setValue={form.setValue}
       />
 
       <Form {...form}>
@@ -68,14 +68,8 @@ const AddContactForm = () => {
           />
 
           {/* 생일 필드 */}
-          <ContactTextField
-            control={form.control}
-            name='birthday'
-            label='생일'
-            placeholder=''
-            type='date'
-          />
-          
+          <ContactTextField control={form.control} name='birthday' label='생일' placeholder='' type='date' />
+
           {/* 제출 버튼 */}
           <ContactFormSubmitButton isSubmitting={isSubmitting} />
         </form>
