@@ -13,10 +13,10 @@ export const contactFormSchema = z.object({
       message: '숫자만 입력해주세요.',
     })
     .refine((val) => !val || val.length === 0 || val.length <= 11, {
-      message: '전화번호는 최대 11자리까지 입력 가능합니다.',
+      message: '전화번호는 11자리까지 입력 가능합니다.',
     })
     .refine((val) => !val || val.length === 0 || val.length >= 10, {
-      message: '전화번호는 최소 10자리 이상이어야 합니다.',
+      message: '전화번호는 10자리 이상이어야 합니다.',
     }),
   email: z
     .string()
