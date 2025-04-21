@@ -15,6 +15,22 @@ import { planFormDefaultValues } from '@/lib/schemas/plansSchema';
 import { useGetHolidays } from '@/hooks/queries/useGetHolidays';
 import { useGetCalendarPlans } from '@/hooks/queries/useGetCalendarPlans';
 import { toast } from 'react-toastify';
+import { useUpadateEventMutate } from '@/hooks/mutations/useUpadateEventMutate';
+
+interface UpdatedEventType {
+  id: string;
+  title?: string;
+  start: Date;
+  end: Date;
+  colors?: string;
+}
+
+// 드래그 이벤트 타입
+export interface DragEventType {
+  event: CalendarEventType;
+  start: string | Date;
+  end: string | Date;
+}
 
 export default function Calendar() {
   const router = useRouter();
@@ -39,6 +55,7 @@ export default function Calendar() {
   const { initialFormData, setInitialFormData } = usePlanFormStore();
   // showPlanForm 상태와 setShowPlanForm 함수 가져오기
   const { showPlanForm, setShowPlanForm } = usePlanFormStore();
+  const { mutate: updateEvent } = useUpadateEventMutate();
 
   //캘린더 페이지 마운트 후, 로그인 여부 판단
   useEffect(() => {
@@ -64,24 +81,32 @@ export default function Calendar() {
     }
   }, [events]);
 
-  const handleEditClose = (updatedPlan: EditPlanType) => {
-    if (!updatedPlan) return; // 수정 취소한 경우
-
+  const updateLocalEvent = (updatedEvent: UpdatedEventType) => {
     setLocalEvents((prevEvents) =>
       prevEvents.map((event) =>
-        event.id === updatedPlan.plan_id
+        event.id === updatedEvent.id
           ? {
-              //타입에 맞게 변환
               ...event,
-              id: updatedPlan.plan_id,
-              title: updatedPlan.title,
-              start: new Date(updatedPlan.start_date),
-              end: new Date(updatedPlan.end_date),
-              colors: updatedPlan.colors,
+              title: updatedEvent.title ?? event.title, // 없으면 기존 title 유지
+              start: new Date(updatedEvent.start),
+              end: new Date(updatedEvent.end),
+              colors: updatedEvent.colors ?? event.colors,
             }
           : event
       )
     );
+  };
+
+  const handleEditClose = (updatedPlan: EditPlanType) => {
+    if (!updatedPlan) return; // 수정 취소한 경우
+
+    updateLocalEvent({
+      id: updatedPlan.plan_id,
+      title: updatedPlan.title,
+      start: new Date(updatedPlan.start_date),
+      end: new Date(updatedPlan.end_date),
+      colors: updatedPlan.colors,
+    });
     // 수정 끝났으니, 모드 끄고 selectPlan을 수정한 걸로 새로 세팅
     setIsEditMode(false);
     setEditPlan(null);
@@ -100,6 +125,18 @@ export default function Calendar() {
       },
     ]);
     toast.success('약속이 수정되었습니다.');
+  };
+
+  const moveEventsHandler = ({ event, start, end }: DragEventType) => {
+    updateEvent({ id: event.id, start: new Date(start), end: new Date(end) });
+
+    updateLocalEvent({
+      id: event.id,
+      start: new Date(start),
+      end: new Date(end),
+    });
+
+    toast.success('약속 시간이 변경되었습니다.');
   };
 
   // 약속 + 공휴일
@@ -133,6 +170,7 @@ export default function Calendar() {
           moment={moment}
           setMoment={setMoment}
           events={combinedEvents}
+          onEventDrop={moveEventsHandler}
           setSelectPlan={(plan) => {
             setSelectPlan(plan);
             setShowUpcoming(false);

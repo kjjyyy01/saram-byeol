@@ -4,24 +4,18 @@ import CustomToolbar from '@/components/calendar/CustomToolbar';
 import { useEffect, useState } from 'react';
 import type { CalendarEventType, PlansType } from '@/types/plans';
 import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop';
-import { useUpadateEventMutate } from '@/hooks/mutations/useUpadateEventMutate';
 import { CustomDateHeader } from '@/components/calendar/CustomDateHeader';
 import { holidayStyle } from '@/lib/utils/calendarStyle';
 import CalendarPopOver from '@/components/calendar/popOver/CalendarPopOver';
 import { useGetSelectPlan } from '@/hooks/queries/useGetSelectPlan';
-
-// 드래그 이벤트 타입
-interface Props {
-  event: CalendarEventType;
-  start: string | Date;
-  end: string | Date;
-}
+import { DragEventType } from '@/app/(pages)/(nav)/calendar/page';
 
 interface MainCalendarProps {
   events: CalendarEventType[];
   moment: Date;
   setMoment: (date: Date) => void;
   setSelectPlan: React.Dispatch<React.SetStateAction<PlansType[] | null>>;
+  onEventDrop: (data: DragEventType) => void;
   CustomToolbarProps: {
     onShowUpcomingPlans: () => void;
     onAddPlan: () => void;
@@ -36,21 +30,21 @@ const localizer = dateFnsLocalizer({
   locales: {},
 });
 
-const MainCalendar = ({ setSelectPlan, CustomToolbarProps, events, moment, setMoment }: MainCalendarProps) => {
+const MainCalendar = ({
+  setSelectPlan,
+  CustomToolbarProps,
+  events,
+  moment,
+  setMoment,
+  onEventDrop,
+}: MainCalendarProps) => {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null); //선택한 셀 날짜
   const [isPopOverOpen, setIsPopOverOpen] = useState(false); //팝오버 오픈 여부
   const [selectedPlanId, setSelectedPlanId] = useState<string | null>(null);
 
   const { data: selectedPlanData, refetch } = useGetSelectPlan(selectedPlanId ?? '');
-  const { mutate: updateEvent } = useUpadateEventMutate();
 
   const DnDCalendar = withDragAndDrop<CalendarEventType>(Calendar); //DnD 사용 캘린더
-
-  // 드래그 종료 함수(mutate 실행 핸들러)
-  const moveEventsHandler = ({ event, start, end }: Props) => {
-    // mutation의 Date 타입과 일치
-    updateEvent({ id: event.id, start: new Date(start), end: new Date(end) });
-  };
 
   const selectPlanHandler = async (event: CalendarEventType) => {
     // selectedPlanId가 바뀌는 순간 새로운 useQuery가 실행되도록
@@ -88,7 +82,7 @@ const MainCalendar = ({ setSelectPlan, CustomToolbarProps, events, moment, setMo
         }}
         startAccessor='start'
         endAccessor='end'
-        onEventDrop={moveEventsHandler} // 드래그 종료
+        onEventDrop={onEventDrop} // 드래그 종료
         defaultView='month'
         views={['month']}
         components={{
