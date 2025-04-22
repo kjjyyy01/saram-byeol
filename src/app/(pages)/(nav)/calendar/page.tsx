@@ -124,7 +124,7 @@ export default function Calendar() {
     );
   };
 
-  const handleEditClose = (updatedPlan: EditPlanType | null) => {
+  const handleEditClose = async (updatedPlan: EditPlanType | null) => {
     if (!updatedPlan) {
       setIsEditMode(false);
       setEditPlan(null);
@@ -152,6 +152,12 @@ export default function Calendar() {
         priority: updatedPlan.priority,
       },
     ]);
+    setIsEditMode(false); // 수정 모드 종료
+    setEditPlan(null);
+
+    // 최신 데이터를 다시 가져옴
+    await refetchSelectedPlan();
+
     toast.success('약속이 수정되었습니다.');
   };
 
