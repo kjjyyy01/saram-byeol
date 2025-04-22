@@ -43,7 +43,7 @@ const AddContactForm = ({ onClose }: AddContactFormProps) => {
             placeholder='이름을 입력해주세요.'
             debounceTime={500}
             required
-            icon={<User size={20} />}
+            icon={<User size={24} />}
           />
 
           {/* 전화번호 필드 */}
@@ -55,7 +55,7 @@ const AddContactForm = ({ onClose }: AddContactFormProps) => {
             type='tel'
             maxLength={11} // 최대 11자리로 제한
             debounceTime={500}
-            icon={<Phone size={20} />}
+            icon={<Phone size={24} />}
           />
 
           {/* 이메일 필드 */}
@@ -66,11 +66,11 @@ const AddContactForm = ({ onClose }: AddContactFormProps) => {
             placeholder='이메일을 입력해주세요.'
             type='email'
             debounceTime={500}
-            icon={<EnvelopeSimple size={20} />}
+            icon={<EnvelopeSimple size={24} />}
           />
 
           {/* 생일 필드 */}
-          <ContactTextField control={form.control} name='birthday' label='생일' placeholder='' type='date' icon={<Cake size={20} />} />
+          <ContactTextField control={form.control} name='birthday' label='생일' placeholder='' type='date' icon={<Cake size={24} />} />
 
           {/* 소개 필드 */}
           <ContactTextField
@@ -79,7 +79,7 @@ const AddContactForm = ({ onClose }: AddContactFormProps) => {
             label='메모'
             placeholder='최대 5줄까지 표시됩니다. 5줄 초과시 말줄임표가 표시됩니다.'
             debounceTime={500}
-            icon={<TextAlignLeft size={20} />}
+            icon={<TextAlignLeft size={24} />}
           />
 
           {/* 제출 버튼 */}
