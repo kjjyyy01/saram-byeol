@@ -52,7 +52,7 @@ const ContactList = ({ onSelectedContact }: ContactListProps) => {
   }
 
   return (
-    <div className='flex h-full flex-col'>
+    <div className='flex h-full flex-col overflow-x-hidden'>
       {/* 헤더 - 내 사람 목록 텍스트 */}
       <h1 className='pl-6 pt-6 text-2xl font-bold'>내 사람 목록</h1>
 
