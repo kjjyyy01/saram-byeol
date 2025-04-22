@@ -87,7 +87,13 @@ export default function Calendar() {
       // 클릭한 약속 바
       const clickPlan = selectedPlanData.data[0];
 
-      setSelectPlan([{ ...clickPlan, contacts: clickPlan.contacts[0] }]);
+      const formattedPlan = {
+        ...clickPlan,
+        contacts: Array.isArray(clickPlan.contacts)
+          ? (clickPlan.contacts[0] ?? { name: '' }) // 배열이면 첫 번째 꺼내고
+          : (clickPlan.contacts ?? { name: '' }), // 객체거나 null이면 그대로
+      };
+      setSelectPlan([formattedPlan]);
       setShowUpcoming(false);
       setShowPlanForm(false);
       setIsEditMode(false);
@@ -238,7 +244,7 @@ export default function Calendar() {
         {showPlanForm ? (
           <>
             <h2 className='mb-4 text-xl font-bold'>약속 추가</h2>
-            <div className='m-5'>
+            <div className='m-6'>
               <PlanForm initialValues={initialFormData ?? undefined} handleCancel={setShowPlanForm} />
             </div>
           </>
@@ -252,7 +258,7 @@ export default function Calendar() {
         ) : selectPlan ? (
           <>
             <h2 className='mb-4 text-xl font-bold'>약속 상세</h2>
-            <div className='p-12'>
+            <div className='p-11'>
               <SelectPlan
                 plans={selectPlan}
                 onEdit={() => {

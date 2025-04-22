@@ -71,9 +71,9 @@ const SelectPlan = ({ plans, onEdit }: SelectPlanProps) => {
               <section className='flex items-center gap-8'>
                 <div className='relative flex w-14 flex-shrink-0 flex-grow-0 flex-col items-center justify-center gap-1'>
                   <User size={24} className='h-6 w-6 flex-shrink-0 flex-grow-0' />{' '}
-                  <p className='text-center text-sm'>이름</p>
+                  <p className='text-center text-sm'>내 사람</p>
                 </div>
-                <p>{plan.contacts?.name}</p>
+                <p>{plan.contacts?.name ?? '없음'}</p>
               </section>
               <section className='flex items-center gap-8'>
                 <div className='relative flex w-14 flex-shrink-0 flex-grow-0 flex-col items-center justify-center gap-1'>
