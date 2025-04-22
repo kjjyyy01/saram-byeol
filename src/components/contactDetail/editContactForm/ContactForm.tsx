@@ -38,7 +38,7 @@ const ContactForm = ({
           <ContactTextField control={form.control} name='name' label='이름' placeholder='이름을 입력해주세요.' />
           <ContactTextField
             control={form.control}
-            name='bio'
+            name='memo'
             label='한줄소개'
             placeholder='이 사람을 한 마디로 표현한다면?'
           />
