@@ -20,7 +20,7 @@ export const useSignup = () => {
 
     const { data, error } = await signUpUser(value);
     if (data.session) {
-      toast.success(`회원가입을 성공했습니다.'내사람'으로 이동합니다.`);
+      toast.success(`회원가입을 성공했습니다. '내사람'으로 이동합니다.`);
       router.replace(PEOPLE);
     } else if (error) {
       toast.warning('입력한 정보를 다시 한 번 확인해주세요.');

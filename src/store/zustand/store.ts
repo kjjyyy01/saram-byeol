@@ -46,7 +46,7 @@ export const AuthStateChangeHandler = () => {
       }
     } else if (event === 'SIGNED_OUT') {
       localStorage.removeItem('alreadySignIn');
-      toast.success(`로그아웃되었습니다.`);
+      toast.success('로그아웃되었습니다.');
     }
   });
 
