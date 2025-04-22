@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Control } from 'react-hook-form';
-import { FormField, FormControl, FormLabel, FormMessage } from '@/components/ui/form';
+import { FormField, FormControl, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { ContactFormValues } from '@/lib/schemas/contactFormSchema';
 
