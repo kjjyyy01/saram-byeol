@@ -257,7 +257,6 @@ export default function Calendar() {
                   setShowPlanForm(show);
                   setShowUpcoming(true);
                 }}
-                mode='calendar'
               />
             </div>
           </>

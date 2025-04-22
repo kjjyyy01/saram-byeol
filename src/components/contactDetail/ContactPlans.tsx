@@ -75,7 +75,7 @@ const ContactPlans = ({ plans }: Props) => {
 
       {/* 사이드 시트 - 약속 추가 */}
       <SideSheet isOpen={isAddPlanOpen} onClose={() => setIsAddPlanOpen(false)} title='약속 추가'>
-        <PlanForm handleCancel={setIsAddPlanOpen} mode='contact' />
+        <PlanForm handleCancel={setIsAddPlanOpen} />
       </SideSheet>
 
       {/* 사이드 시트 - 약속 수정 */}

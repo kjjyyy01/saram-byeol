@@ -18,16 +18,12 @@ import ColorOptions from '@/components/calendar/popOver/ColorOptions';
 import { useAuthStore } from '@/store/zustand/store';
 import { usePlanColorStore } from '@/store/zustand/usePlanFormStore';
 
-type PlanFormMode = 'calendar' | 'contact'; //문자 자체를 타입으로 둠
-
 const PlanForm = ({
   initialValues,
   handleCancel,
-  mode,
 }: {
   initialValues?: PlanFormType;
   handleCancel: (show: boolean) => void;
-  mode?: PlanFormMode;
 }) => {
   const [inputValue, setInputValue] = useState('');
   const { selectedColor, setSelectedColor } = usePlanColorStore(); // 선택 색상
@@ -72,11 +68,7 @@ const PlanForm = ({
   };
 
   const cancelBtnHandler = () => {
-    if (mode === 'calendar') {
-      handleCancel(false); // 캘린더: UpcomingPlans 보여줌
-    } else {
-      handleCancel(false); // 약속 탭: 닫기
-    }
+    handleCancel(false);
   };
 
   return (
