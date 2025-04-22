@@ -1,17 +1,29 @@
 'use client';
 
-import { SIGNUP } from '@/constants/paths';
+import { PEOPLE, SIGNUP } from '@/constants/paths';
 import Link from 'next/link';
 import Image from 'next/image';
 import SigninForm from '@/components/signin/SigninForm';
 import SigninSocial from '@/components/signin/SigninSocial';
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
+import { useAuthStore } from '@/store/zustand/store';
 
 const SignIn = () => {
+  const router = useRouter();
+  const isSignin = useAuthStore((state) => state.isSignIn);
+
+  useEffect(() => {
+    if (isSignin) {
+      router.replace(PEOPLE);
+    }
+  }, [isSignin, router]);
+
   return (
     <div className='flex h-[100vh] w-[100vw] items-center justify-center overflow-hidden overflow-y-auto'>
-      <section className='flex w-1/2 flex-col items-center justify-center'>
+      <section className='flex w-full flex-col items-center justify-center'>
         <h1 className='mb-10 text-center text-[28px] font-bold text-primary-500'>사람, 별 로그인</h1>
-        <section className='mb-8'>
+        <section className='mb-[22px]'>
           <SigninForm />
         </section>
 
@@ -24,14 +36,14 @@ const SignIn = () => {
           </div>
           <div className='mb-[42px] flex items-center gap-1'>
             <div className='w-[150px] outline outline-1 outline-stone-300' />
-            <p className='text-base font-bold leading-normal text-zinc-800'>SNS계정으로 간편로그인</p>
+            <p className='text-nowrap font-bold leading-normal text-zinc-800'>SNS계정으로 간편로그인</p>
             <div className='h-0 w-[150px] outline outline-1 outline-stone-300' />
           </div>
           <SigninSocial />
         </section>
       </section>
 
-      <section className='relative h-full w-1/2'>
+      <section className='relative h-full w-full'>
         <Image src={'/saram-byeol_img.avif'} alt='metaphor image' fill className='object-contain' />
       </section>
     </div>
