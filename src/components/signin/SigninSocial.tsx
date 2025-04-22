@@ -22,10 +22,10 @@ const SigninSocial = () => {
 
   return (
     <div className='flex items-center justify-center gap-[78px]'>
-      <button type='button' onClick={googleSignin}>
+      <button type='button' onClick={googleSignin} className='h-[45px] w-[300px]'>
         <Image src='/google_login_img.png' alt='google login img' width={300} height={45} />
       </button>
-      <button type='button' onClick={kakaoSignin}>
+      <button type='button' onClick={kakaoSignin} className='h-[45px] w-[300px]'>
         <Image src='/kakao_login_img.png' alt='kakao login img' width={300} height={45} />
       </button>
     </div>
