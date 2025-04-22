@@ -6,7 +6,8 @@ import ContactTextField from './ContactTextField';
 import RelationshipSelector from './RelationshipSelector';
 import ProfileImageUpload from './ProfileImageUpload';
 import { ContactFormValues } from '@/lib/schemas/contactFormSchema';
-import { User, Phone, EnvelopeSimple, Cake, TextAlignLeft } from '@phosphor-icons/react';
+import { User, Phone, EnvelopeSimple, Cake } from '@phosphor-icons/react';
+import { ContactMemoField } from './ContactMemoField';
 
 interface AddContactFormProps {
   onClose: () => void;
@@ -72,14 +73,9 @@ const AddContactForm = ({ onClose }: AddContactFormProps) => {
           {/* 생일 필드 */}
           <ContactTextField control={form.control} name='birthday' label='생일' placeholder='' type='date' icon={<Cake size={24} />} />
 
-          {/* 소개 필드 */}
-          <ContactTextField
+          {/* 메모 필드 */}
+          <ContactMemoField
             control={form.control}
-            name='bio'
-            label='메모'
-            placeholder='최대 5줄까지 표시됩니다. 5줄 초과시 말줄임표가 표시됩니다.'
-            debounceTime={500}
-            icon={<TextAlignLeft size={24} />}
           />
 
           {/* 제출 버튼 */}
