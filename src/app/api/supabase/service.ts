@@ -75,7 +75,7 @@ export const signInUser = async (value: { email: string; password: string }) => 
 };
 
 // 로그아웃
-export const mutateSignOut = async () => {
+export const SignOutUser = async () => {
   const { error } = await supabase.auth.signOut();
   if (error) {
     console.error('로그아웃에 실패했습니다. 다시 시도해주세요.', error);
@@ -205,6 +205,7 @@ export const mutateUpdateContactPin = async (contactId: string, isPinned: boolea
   }
 };
 
+//구글 로그인
 export const signInWithGoogle = async () => {
   const { error } = await supabase.auth.signInWithOAuth({
     provider: 'google',
@@ -220,6 +221,8 @@ export const signInWithGoogle = async () => {
 
   return error;
 };
+
+//카카오 로그인
 export const signInWithKakao = async () => {
   const { error } = await supabase.auth.signInWithOAuth({
     provider: 'kakao',

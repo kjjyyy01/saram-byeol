@@ -74,8 +74,8 @@ const SigninForm = () => {
         )}
       </div>
       <div className='flex justify-between'>
-        <label htmlFor='saveId'>
-          <input type='checkbox' id='saveId' onClick={alreadyServiceHandler} className='mr-1' />
+        <label htmlFor='saveId' className='flex items-center justify-center'>
+          <input type='checkbox' id='saveId' onClick={alreadyServiceHandler} className='mr-2 h-5 w-5' />
           로그인 정보 저장
         </label>
         <button type='button' onClick={alreadyServiceHandler}>
