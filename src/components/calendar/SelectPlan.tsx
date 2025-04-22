@@ -8,18 +8,20 @@ import { toast } from 'react-toastify';
 interface SelectPlanProps {
   plans: SelectPlanType[];
   onEdit: () => void;
+  onDeleteSuccess: () => void;
 }
 
-const SelectPlan = ({ plans, onEdit }: SelectPlanProps) => {
-  const deleteMutation = useMutateDeleteSelectPlan();
+const SelectPlan = ({ plans, onEdit, onDeleteSuccess }: SelectPlanProps) => {
+  const { mutate } = useMutateDeleteSelectPlan();
 
   const deletePlanHandler = (planId: string) => {
     ConfirmToast({
       message: '정말로 해당 약속을 삭제하시겠습니까?',
       onConfirm: () => {
-        deleteMutation.mutate(planId, {
+        mutate(planId, {
           onSuccess: () => {
             toast.success('성공적으로 삭제되었습니다.');
+            onDeleteSuccess();
           },
         });
       },

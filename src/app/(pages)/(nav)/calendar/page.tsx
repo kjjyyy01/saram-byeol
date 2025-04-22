@@ -278,6 +278,10 @@ export default function Calendar() {
                   setIsEditMode(true);
                   setEditPlan(selectPlan[0]);
                 }}
+                onDeleteSuccess={() => {
+                  setSelectPlan(null); // selectPlan 비우고
+                  setShowUpcoming(true); // UpcomingPlans 보이게
+                }}
               />
             </div>
           </>
