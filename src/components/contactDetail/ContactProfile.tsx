@@ -83,9 +83,9 @@ const ContactProfile = ({ contact, plans }: Props) => {
       <div className='border-t border-gray-200' />
 
       {/* 연락처 + 다가오는 약속 */}
-      <div className='flex flex-wrap gap-8'>
+      <div className='flex flex-col gap-8 md:flex-row'>
         {/* 연락처 정보 */}
-        <div className='flex-1 space-y-4'>
+        <div className='w-full md:w-1/2'>
           <h2 className='text-xl font-bold text-gray-800 mb-4'>연락처</h2>
           <div className='space-y-12 text-sm text-gray-700'>
             <p>
@@ -109,9 +109,9 @@ const ContactProfile = ({ contact, plans }: Props) => {
 
         {/* 다가오는 약속 */}
         {plans.length > 0 && (
-          <div className='flex-1'>
+          <div className='w-full md:w-1/2'>
             <h2 className='text-xl font-bold text-gray-800 mb-4'>다가오는 약속</h2>
-            <div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
+            <div className='grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-2 lg:grid-cols-2'>
               {plans.map((plan) => (
                 <ContactPlansCard
                   key={plan.plan_id}
