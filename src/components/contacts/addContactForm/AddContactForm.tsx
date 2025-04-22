@@ -6,7 +6,7 @@ import ContactTextField from './ContactTextField';
 import RelationshipSelector from './RelationshipSelector';
 import ProfileImageUpload from './ProfileImageUpload';
 import { ContactFormValues } from '@/lib/schemas/contactFormSchema';
-import { UsersThree, User, Phone, EnvelopeSimple, Cake, TextAlignLeft } from '@phosphor-icons/react';
+import { User, Phone, EnvelopeSimple, Cake, TextAlignLeft } from '@phosphor-icons/react';
 
 interface AddContactFormProps {
   onClose: () => void;
@@ -31,7 +31,6 @@ const AddContactForm = ({ onClose }: AddContactFormProps) => {
         relationshipType={relationshipType}
         setRelationshipType={setRelationshipType}
         setValue={form.setValue}
-        icon= {<UsersThree size={20} />}
       />
 
       <Form {...form}>
