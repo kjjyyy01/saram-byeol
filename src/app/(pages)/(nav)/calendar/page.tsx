@@ -251,7 +251,14 @@ export default function Calendar() {
           <>
             <h2 className='mb-4 text-xl font-bold'>약속 추가</h2>
             <div className='m-6'>
-              <PlanForm initialValues={initialFormData ?? undefined} handleCancel={setShowPlanForm} />
+              <PlanForm
+                initialValues={initialFormData ?? undefined}
+                handleCancel={(show) => {
+                  setShowPlanForm(show);
+                  setShowUpcoming(true);
+                }}
+                mode='calendar'
+              />
             </div>
           </>
         ) : isEditMode && editPlan ? (
