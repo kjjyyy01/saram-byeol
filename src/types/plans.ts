@@ -97,5 +97,5 @@ export interface EditPlanType {
 export interface SelectPlanType extends PlansType {
   contacts?: {
     name: string;
-  };
+  } | null;
 }

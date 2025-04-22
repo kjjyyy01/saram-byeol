@@ -17,6 +17,7 @@ import { useGetCalendarPlans } from '@/hooks/queries/useGetCalendarPlans';
 import { toast } from 'react-toastify';
 import { useUpadateEventMutate } from '@/hooks/mutations/useUpadateEventMutate';
 import { useGetSelectPlan } from '@/hooks/queries/useGetSelectPlan';
+import { format } from 'date-fns';
 
 interface UpdatedEventType {
   id: string;
@@ -86,7 +87,13 @@ export default function Calendar() {
       // 클릭한 약속 바
       const clickPlan = selectedPlanData.data[0];
 
-      setSelectPlan([{ ...clickPlan, contacts: clickPlan.contacts[0] }]);
+      const formattedPlan = {
+        ...clickPlan,
+        contacts: Array.isArray(clickPlan.contacts)
+          ? (clickPlan.contacts[0] ?? { name: '' }) // 배열이면 첫 번째 꺼내고
+          : (clickPlan.contacts ?? { name: '' }), // 객체거나 null이면 그대로
+      };
+      setSelectPlan([formattedPlan]);
       setShowUpcoming(false);
       setShowPlanForm(false);
       setIsEditMode(false);
@@ -117,7 +124,7 @@ export default function Calendar() {
     );
   };
 
-  const handleEditClose = (updatedPlan: EditPlanType | null) => {
+  const handleEditClose = async (updatedPlan: EditPlanType | null) => {
     if (!updatedPlan) {
       setIsEditMode(false);
       setEditPlan(null);
@@ -145,18 +152,29 @@ export default function Calendar() {
         priority: updatedPlan.priority,
       },
     ]);
+    setIsEditMode(false); // 수정 모드 종료
+    setEditPlan(null);
+
+    // 최신 데이터를 다시 가져옴
+    await refetchSelectedPlan();
+
     toast.success('약속이 수정되었습니다.');
   };
 
   const moveEventsHandler = ({ event, start, end }: DragEventType) => {
+    // 캘린더에서는 Date 객체를 유지
     updateLocalEvent({
       id: event.id,
       start: new Date(start),
       end: new Date(end),
     });
 
+    // DB에는 string 포맷으로 변환해서 저장
+    const formattedStart = format(start, 'yyyy-MM-dd HH:mm:ss');
+    const formattedEnd = format(end, 'yyyy-MM-dd HH:mm:ss');
+
     updateEvent(
-      { id: event.id, start: new Date(start), end: new Date(end) },
+      { id: event.id, start: formattedStart, end: formattedEnd },
       {
         onError: () => {
           toast.error('시간 변경에 실패했습니다.');
@@ -232,26 +250,36 @@ export default function Calendar() {
         {showPlanForm ? (
           <>
             <h2 className='mb-4 text-xl font-bold'>약속 추가</h2>
-            <div className='m-5'>
-              <PlanForm initialValues={initialFormData ?? undefined} handleCancel={setShowPlanForm} />
+            <div className='m-6'>
+              <PlanForm
+                initialValues={initialFormData ?? undefined}
+                handleCancel={(show) => {
+                  setShowPlanForm(show);
+                  setShowUpcoming(true);
+                }}
+              />
             </div>
           </>
         ) : isEditMode && editPlan ? (
           <>
             <h2 className='mb-4 text-xl font-bold'>약속 수정</h2>
-            <div className='m-5'>
+            <div className='m-7'>
               <EditPlanForm plan={editPlan} onClose={handleEditClose} />
             </div>
           </>
         ) : selectPlan ? (
           <>
             <h2 className='mb-4 text-xl font-bold'>약속 상세</h2>
-            <div className='p-12'>
+            <div className='p-11'>
               <SelectPlan
                 plans={selectPlan}
                 onEdit={() => {
                   setIsEditMode(true);
                   setEditPlan(selectPlan[0]);
+                }}
+                onDeleteSuccess={() => {
+                  setSelectPlan(null); // selectPlan 비우고
+                  setShowUpcoming(true); // UpcomingPlans 보이게
                 }}
               />
             </div>
