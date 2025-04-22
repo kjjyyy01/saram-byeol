@@ -36,7 +36,7 @@ export const useContactForm = () => {
         user_id: userId as string,
         name: data.name.trim(), // 이름 앞뒤 공백 제거
         relationship_level: data.relationshipType || '친구',
-        notes: data.bio.trim() || '',
+        notes: (data.bio ?? '').trim(),
         phone: data.phone || '',
         email: data.email || '',
         birth: data.birthday ? data.birthday : null, // 선택적 필드

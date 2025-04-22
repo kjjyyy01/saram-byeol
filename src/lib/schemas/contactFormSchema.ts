@@ -4,8 +4,10 @@ import { z } from 'zod';
 export const contactFormSchema = z.object({
   profileImage: z.string().optional(),
   relationshipType: z.string().optional(),
-  name: z.string().min(1, { message: '이름을 입력해주세요.' }),
-  bio: z.string().min(5, { message: '최소 5자 이상 입력해주세요.' }),
+  name: z.string()
+    .min(1, { message: '이름을 입력해주세요.' })
+    .max(13, { message: '이름은 최대 13자까지 입력 가능합니다.' }),
+  bio: z.string().optional(),  // Optional로 변경
   phone: z
     .string()
     .optional()
@@ -33,7 +35,7 @@ export const defaultContactFormValues: ContactFormValues = {
   profileImage: '',
   relationshipType: '친구',
   name: '',
-  bio: '',
+  bio: '',         // Optional 필드여도 초기값은 ''로 설정합니다
   phone: '',
   email: '',
   birthday: '',

@@ -45,6 +45,7 @@ const AddContactForm = ({ onClose }: AddContactFormProps) => {
             debounceTime={500}
             required
             icon={<User size={24} />}
+            maxLength={13} // 이름 글자 수 13자리로 제한
           />
 
           {/* 전화번호 필드 */}
