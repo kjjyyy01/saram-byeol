@@ -1,12 +1,24 @@
 'use client';
 
-import { SIGNUP } from '@/constants/paths';
+import { PEOPLE, SIGNUP } from '@/constants/paths';
 import Link from 'next/link';
 import Image from 'next/image';
 import SigninForm from '@/components/signin/SigninForm';
 import SigninSocial from '@/components/signin/SigninSocial';
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
+import { useAuthStore } from '@/store/zustand/store';
 
 const SignIn = () => {
+  const router = useRouter();
+  const isSignin = useAuthStore((state) => state.isSignIn);
+
+  useEffect(() => {
+    if (isSignin) {
+      router.replace(PEOPLE);
+    }
+  }, [isSignin, router]);
+
   return (
     <div className='flex h-[100vh] w-[100vw] items-center justify-center overflow-hidden overflow-y-auto'>
       <section className='flex w-1/2 flex-col items-center justify-center'>
