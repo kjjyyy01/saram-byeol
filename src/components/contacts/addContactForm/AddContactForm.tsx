@@ -41,6 +41,7 @@ const AddContactForm = ({ onClose }: AddContactFormProps) => {
             label='이름'
             placeholder='이름을 입력해주세요.'
             debounceTime={500}
+            maxLength={13} // 이름 글자 수 13자리로 제한
           />
 
           {/* 한줄소개 필드 */}
