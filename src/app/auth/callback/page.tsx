@@ -3,6 +3,8 @@
 import { useEffect } from 'react';
 import { supabase } from '@/app/api/supabase/client';
 import { useRouter } from 'next/navigation';
+import { toast } from 'react-toastify';
+import { PEOPLE, SIGNIN } from '@/constants/paths';
 
 // 컴포넌트 마운트 시 현재 로그인 세션 확인
 // 세션이 있으면 '/people'로
@@ -11,11 +13,15 @@ const AuthCallbackPage = () => {
   const router = useRouter();
 
   useEffect(() => {
+    toast.success(`로그인에 성공했습니다. '내사람'으로 이동합니다.`);
+  }, []);
+
+  useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session) {
-        router.replace('/people');
+        router.replace(PEOPLE);
       } else {
-        router.replace('/signin');
+        router.replace(SIGNIN);
       }
     });
   }, [router]);

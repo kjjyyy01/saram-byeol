@@ -11,6 +11,7 @@ const useMutateInsertNewPlan = () => {
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEY.CONTACT_WITH_PLANS],
       });
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEY.PLANS] });
     },
   });
 };
