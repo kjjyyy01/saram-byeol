@@ -18,7 +18,7 @@ export const useMutateEditContact = (contactData: ContactDetailType, onClose: ()
     resolver: zodResolver(contactFormSchema),
     defaultValues: {
       name: contactData.name,
-      bio: contactData.notes,
+      memo: contactData.notes,
       phone: contactData.phone,
       email: contactData.email,
       birthday: contactData.birth || '',
@@ -38,7 +38,7 @@ export const useMutateEditContact = (contactData: ContactDetailType, onClose: ()
         user_id: contactData.user_id,
         name: data.name,
         relationship_level: data.relationshipType || '친구',
-        notes: data.bio || '',
+        notes: data.memo || '',
         phone: data.phone || '',
         email: data.email || '',
         birth: data.birthday || '',

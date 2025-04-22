@@ -10,6 +10,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { ContactFormValues } from '@/lib/schemas/contactFormSchema';
+import { UsersThree } from '@phosphor-icons/react';
 import React from 'react';
 import { UseFormSetValue } from 'react-hook-form';
 
@@ -19,11 +20,7 @@ interface RelationshipSelectorProps {
   setValue: UseFormSetValue<ContactFormValues>;
 }
 
-const RelationshipSelector = ({
-  relationshipType,
-  setRelationshipType,
-  setValue,
-}: RelationshipSelectorProps) => {
+const RelationshipSelector = ({ relationshipType, setRelationshipType, setValue }: RelationshipSelectorProps) => {
   // 관계 유형 변경 처리
   const handleRelationshipChange = (value: string) => {
     setRelationshipType(value);
@@ -40,8 +37,14 @@ const RelationshipSelector = ({
 
   return (
     <div className='mb-10 mt-10'>
-      <div className='flex items-center'>
-        <div className='w-24 text-lg font-bold'>관계</div>
+      <div className='flex items-start gap-4'>
+        {/* 왼쪽: 아이콘 + 라벨 */}
+        <div className='flex w-24 flex-col items-center'>
+          <UsersThree size={24} className='mb-1 text-gray-600' />
+          <div className='text-sm'>관계</div>
+        </div>
+
+        {/* 오른쪽: 드롭다운 */}
         <div className='flex-1'>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>

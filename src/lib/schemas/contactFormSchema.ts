@@ -7,7 +7,7 @@ export const contactFormSchema = z.object({
   name: z.string()
     .min(1, { message: '이름을 입력해주세요.' })
     .max(13, { message: '이름은 최대 13자까지 입력 가능합니다.' }),
-  bio: z.string().optional(),  // Optional로 변경
+  memo: z.string().optional(),  // Optional로 변경
   phone: z
     .string()
     .optional()
@@ -15,10 +15,10 @@ export const contactFormSchema = z.object({
       message: '숫자만 입력해주세요.',
     })
     .refine((val) => !val || val.length === 0 || val.length <= 11, {
-      message: '전화번호는 최대 11자리까지 입력 가능합니다.',
+      message: '전화번호는 11자리까지 입력 가능합니다.',
     })
     .refine((val) => !val || val.length === 0 || val.length >= 10, {
-      message: '전화번호는 최소 10자리 이상이어야 합니다.',
+      message: '전화번호는 10자리 이상이어야 합니다.',
     }),
   email: z
     .string()
@@ -35,7 +35,7 @@ export const defaultContactFormValues: ContactFormValues = {
   profileImage: '',
   relationshipType: '친구',
   name: '',
-  bio: '',         // Optional 필드여도 초기값은 ''로 설정합니다
+  memo: '',         // Optional 필드여도 초기값은 ''로 설정합니다
   phone: '',
   email: '',
   birthday: '',
