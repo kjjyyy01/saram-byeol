@@ -40,7 +40,7 @@ const RelationshipSelector = ({ relationshipType, setRelationshipType, setValue 
       <div className='flex items-start gap-4'>
         {/* 왼쪽: 아이콘 + 라벨 */}
         <div className='flex w-24 flex-col items-center'>
-          <UsersThree className='mb-1 text-gray-600' />
+          <UsersThree size={24} className='mb-1 text-gray-600' />
           <div className='text-sm'>관계</div>
         </div>
 
