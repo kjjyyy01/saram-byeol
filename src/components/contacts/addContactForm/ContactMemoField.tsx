@@ -10,10 +10,10 @@ type ContactMemoFieldProps = {
   control: Control<ContactFormValues>
 }
 
-export const ContactMemoField: React.FC<ContactMemoFieldProps> = ({ control }) => (
+export const ContactMemoField = ({ control }: ContactMemoFieldProps) => (
   <FormField
     control={control}
-    name="bio"
+    name="memo"
     render={({ field, fieldState }) => (
       <div className="flex w-full items-start">
         {/* 아이콘 + 라벨 */}
