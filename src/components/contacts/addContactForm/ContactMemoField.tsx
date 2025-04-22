@@ -28,7 +28,8 @@ export const ContactMemoField = ({ control }: ContactMemoFieldProps) => (
             <Textarea
               {...field}
               rows={5}
-              placeholder="최대 5줄까지 입력 가능합니다."
+              maxLength={80}
+              placeholder="최대 80글자 까지 입력 가능합니다."
               className="resize-none"
             />
           </FormControl>
