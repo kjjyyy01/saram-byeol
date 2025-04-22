@@ -1,6 +1,5 @@
 import { ContactDetailType, PlanDetailType } from '@/types/contacts';
 import Image from 'next/image';
-import { Plus } from 'lucide-react';
 import { useState } from 'react';
 import SideSheet from '@/components/contacts/SideSheet';
 import EditContactForm from '@/components/contactDetail/editContactForm/EditContactForm';
@@ -9,6 +8,7 @@ import { useMutateDeleteContact } from '@/hooks/mutations/useMutateDeleteContact
 import { toast } from 'react-toastify';
 import ContactPlansCard from '@/components/contactDetail/ContactPlansCard';
 import { ConfirmToast } from '@/components/toast/ConfirmToast';
+import { PencilSimple, Trash } from '@phosphor-icons/react';
 
 interface Props {
   contact: ContactDetailType;
@@ -40,7 +40,7 @@ const ContactProfile = ({ contact, plans }: Props) => {
   return (
     <div className='space-y-8'>
       {/* 상단 프로필 + 기본 정보 */}
-      <div className='flex items-start justify-between'>
+      <div className='flex items-start justify-between mt-6'>
         {/* 좌측 - 프로필 이미지 */}
         <div className='relative flex items-center space-x-[-10px]'>
           <div className='relative h-24 w-24 flex-shrink-0 overflow-hidden rounded-full bg-gray-200'>
@@ -48,63 +48,77 @@ const ContactProfile = ({ contact, plans }: Props) => {
               <Image
                 src={contact.contacts_profile_img}
                 alt={contact.name}
-                width={96}
-                height={96}
+                width={124}
+                height={124}
                 className='h-full w-full object-cover'
               />
             ) : (
-              <div className='flex h-full w-full items-center justify-center text-lg font-bold text-white'>
-                <Plus className='absolute left-1/2 top-1/2 h-6 w-6 -translate-x-1/2 -translate-y-1/2' />
+              <div className='flex h-full w-full items-center justify-center text-xl font-bold text-gray-500'>
+                {contact.name.charAt(0)}
               </div>
             )}
           </div>
         </div>
 
         {/* 중앙 - 이름 및 이메일 */}
-        <div className='flex flex-1 flex-col ml-2'>
-          <h1 className='text-xl font-bold leading-tight'>{contact.name}</h1>
-          <div className='mt-1 flex h-6 w-16 items-center justify-center rounded-2xl bg-yellow-300'>
+        <div className='ml-5 flex flex-1 flex-col p-4'>
+          <h1 className='mb-1 text-xl font-bold leading-tight'>{contact.name}</h1>
+          <div className='mt-0.5 flex h-6 w-16 items-center justify-center rounded-2xl bg-yellow-300'>
             <span className='text-xs font-bold text-gray-800'>{contact.relationship_level}</span>
           </div>
-          <p className='text-sm text-gray-600 mt-1'>{contact.email}</p>
+          <p className='mt-2 text-sm text-gray-600'>{contact.email}</p>
         </div>
 
         {/* 우측 버튼 */}
         <div className='space-x-2'>
           <Button variant='outline' size='sm' onClick={() => setIsEditContactOpen(true)}>
-            수정
+            <PencilSimple size={16} />내 사람 수정
           </Button>
           <Button variant='destructive' size='sm' onClick={deleteContactHandler}>
-            삭제
+            <Trash size={16} />내 사람 삭제
           </Button>
         </div>
       </div>
 
-      <div className='flex flex-wrap gap-8'>
+      <div className='border-t border-gray-200' />
+
+      {/* 연락처 + 다가오는 약속 */}
+      <div className='flex flex-col gap-8 md:flex-row'>
         {/* 연락처 정보 */}
-        <div className='min-w-[280px] space-y-2'>
-          <h2 className='mb-2 text-lg font-bold'>연락처</h2>
-          <p>
-            <strong className='inline-block w-20 text-gray-600'>전화번호</strong> {contact.phone}
-          </p>
-          <p>
-            <strong className='inline-block w-20 text-gray-600'>이메일</strong> {contact.email}
-          </p>
-          <p>
-            <strong className='inline-block w-20 text-gray-600'>생년월일</strong> {contact.birth}
-          </p>
-          <p>
-            <strong className='inline-block w-20 text-gray-600'>메모</strong> {contact.notes}
-          </p>
+        <div className='w-full md:w-1/2'>
+          <h2 className='text-xl font-bold text-gray-800 mb-4'>연락처</h2>
+          <div className='space-y-12 text-sm text-gray-700'>
+            <p>
+              <span className='inline-block w-20 font-medium text-base text-gray-500'>전화번호</span>
+              {contact.phone}
+            </p>
+            <p>
+              <span className='inline-block w-20 font-medium text-base text-gray-500'>이메일</span>
+              {contact.email}
+            </p>
+            <p>
+              <span className='inline-block w-20 font-medium text-base text-gray-500'>생년월일</span>
+              {contact.birth}
+            </p>
+            <p>
+              <span className='inline-block w-20 font-medium text-base text-gray-500'>메모</span>
+              {contact.notes}
+            </p>
+          </div>
         </div>
 
         {/* 다가오는 약속 */}
         {plans.length > 0 && (
-          <div className='flex-1'>
-            <h2 className='mb-2 text-lg font-bold'>다가오는 약속</h2>
-            <div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
+          <div className='w-full md:w-1/2'>
+            <h2 className='text-xl font-bold text-gray-800 mb-4'>다가오는 약속</h2>
+            <div className='grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-2 lg:grid-cols-2'>
               {plans.map((plan) => (
-                <ContactPlansCard key={plan.plan_id} title={plan.title} startDate={plan.start_date} color={plan.colors} />
+                <ContactPlansCard
+                  key={plan.plan_id}
+                  title={plan.title}
+                  startDate={plan.start_date}
+                  color={plan.colors}
+                />
               ))}
             </div>
           </div>

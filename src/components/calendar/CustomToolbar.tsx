@@ -17,8 +17,8 @@ const CustomToolbar = ({ date, onNavigate, onShowUpcomingPlans, onAddPlan }: Cus
   return (
     <div className='mt-[18px] flex'>
       <MoveMonthButton onNavigate={onNavigate} />
-      <span className='ml-[24px] text-[28px] font-bold'>{customLabel}</span>
-      <section className='mb-[12.5px] ml-auto mr-[9px] flex'>
+      <span className='ml-6 text-[28px] font-bold'>{customLabel}</span>
+      <section className='mb-[12.5px] ml-auto mr-2 flex'>
         <UpcomingPlanButton onClick={onShowUpcomingPlans} />
         <AddPlanButton onClick={onAddPlan} />
       </section>
