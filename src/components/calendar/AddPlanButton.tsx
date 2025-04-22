@@ -5,7 +5,7 @@ const AddPlanButton = ({ onClick }: { onClick: () => void }) => {
     <div>
       <button
         onClick={onClick}
-        className='items-center justify-center rounded-md border-[1px] border-primary-500 px-[20px] py-[12px] text-[14px] font-bold text-[#0066FF]'
+        className='items-center justify-center rounded-md border-[1px] border-primary-500 px-5 py-3 text-[14px] font-bold text-[#0066FF]'
       >
         약속 추가
       </button>

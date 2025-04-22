@@ -18,7 +18,7 @@ const UpcomingPlanButton = ({ onClick }: { onClick: () => void }) => {
 
   return (
     <div>
-      <button onClick={onClick} className='mr-[24px] rounded-md border-[1px] px-[20px] py-[12px] text-[14px] font-bold'>
+      <button onClick={onClick} className='mr-6 rounded-md border-[1px] px-5 py-3 text-[14px] font-bold'>
         다가오는 약속
         <span className='m-1 rounded-full bg-black px-1 text-white'>
           {upcomingCount !== null ? upcomingCount : '-'}
