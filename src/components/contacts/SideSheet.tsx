@@ -5,8 +5,7 @@ interface SideSheetProps {
   isOpen: boolean;
   onClose: () => void;
   children: ReactNode;
-  title?: string; // 이미 만들어두신 SideSheet 활용하기 위해 타이틀을 동적(내 사람 추가, 내 사람 수정)으로 수정했습니다
-                  // 추후 해당 사이드시트 다른 곳에서도 사용하게 될 시 용이할 것 같습니다
+  title?: string; 
 }
 
 const SideSheet = ({ isOpen, onClose, children, title = "내 사람 추가" }: SideSheetProps) => {
@@ -24,33 +23,47 @@ const SideSheet = ({ isOpen, onClose, children, title = "내 사람 추가" }: S
   }, [isOpen]);
 
   return (
-    <div>
-      {/* 사이드 시트 */}
-      <div
-        className={`fixed right-0 top-0 z-50 h-screen w-full transform bg-white shadow-lg transition-transform duration-300 ease-in-out border-l border-gray-200 md:w-[474px] ${
-          isOpen ? 'translate-x-0' : 'translate-x-full'
-        }`}
-        style={{ maxHeight: '1080px' }}
+    <div
+    className={`fixed right-0 top-0 z-50 h-screen w-full transform bg-white shadow-lg transition-all duration-300 ease-in-out border-l border-gray-200 md:w-[474px] ${
+      isOpen ? 'translate-x-0' : 'translate-x-full'
+    }`}
+    style={{
+      transitionProperty: 'transform, box-shadow',
+      boxShadow: isOpen ? '-4px 0 16px rgba(0, 0, 0, 0.1)' : 'none'
+    }}
+  >
+    <div className='flex h-full flex-col p-4'>
+      {/* 스크롤 영역 - 타이틀과 버튼 포함 */}
+      <div 
+        className='flex-1 overflow-y-auto py-4'
+        style={{ scrollbarGutter: 'stable' }}
       >
-        <div className='flex h-full flex-col p-4'>
-          <div className='flex items-center justify-between mt-6 ml-6 pb-4'>
-            {/* 사이드시트 타이틀 */}
-            <h2 className='text-2xl font-bold'>{title}</h2>
-            <button onClick={onClose} className='rounded-full p-1 hover:bg-gray-100'>
-              <X size={24} />
-            </button>
-          </div>
-
-          {/* 스크롤 영역 - 항상 스크롤바 공간 확보 */}
-          <div 
-            className='flex-1 py-4 overflow-y-auto'
-            style={{ scrollbarGutter: 'stable' }}
+        {/* 타이틀과 버튼도 스크롤 영역 안으로 - 서서히 나타나는 효과 추가 */}
+        <div 
+          className={`flex items-center justify-between mt-2 ml-2 mb-6 transition-opacity duration-500 ${
+            isOpen ? 'opacity-100' : 'opacity-0'
+          }`}
+        >
+          <h2 className='text-2xl font-bold'>{title}</h2>
+          <button 
+            onClick={onClose} 
+            className='rounded-full p-1 hover:bg-gray-100 transition-colors duration-200'
           >
-            {children}
-          </div>
+            <X size={24} />
+          </button>
+        </div>
+
+        {/* 내용이 약간 딜레이되며 페이드인 되도록 설정 */}
+        <div 
+          className={`transition-opacity duration-500 delay-100 ${
+            isOpen ? 'opacity-100' : 'opacity-0'
+          }`}
+        >
+          {children}
         </div>
       </div>
     </div>
+  </div>
   );
 };
 

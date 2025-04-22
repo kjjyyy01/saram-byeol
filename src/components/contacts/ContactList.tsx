@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import ContactItem from '@/components/contacts/ContactItem';
 import { UserPlus } from '@phosphor-icons/react';
-import AddContactForm from '@/components/contacts/addContactForm/Index';
+import AddContactForm from '@/components/contacts/addContactForm/AddContactForm';
 import SideSheet from '@/components/contacts/SideSheet';
 import { useAuthStore } from '@/store/zustand/store';
 import useGetContactsByUserID from '@/hooks/queries/useGetContactsByUserID';
@@ -13,6 +13,7 @@ interface ContactListProps {
 
 const ContactList = ({ onSelectedContact }: ContactListProps) => {
   const [isAddContactOpen, setIsAddContactOpen] = useState(false);
+  const handleClose = () => setIsAddContactOpen(false);
 
   // useAuthStore에서 사용자 정보 가져오기
   const { user } = useAuthStore();
@@ -114,8 +115,8 @@ const ContactList = ({ onSelectedContact }: ContactListProps) => {
       </div>
 
       {/* 사이드 시트 */}
-      <SideSheet isOpen={isAddContactOpen} onClose={() => setIsAddContactOpen(false)}>
-        <AddContactForm />
+      <SideSheet isOpen={isAddContactOpen} onClose={handleClose}>
+        <AddContactForm onClose={handleClose} />
       </SideSheet>
     </div>
   );

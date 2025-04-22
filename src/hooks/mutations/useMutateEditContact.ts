@@ -21,7 +21,7 @@ export const useMutateEditContact = (contactData: ContactDetailType, onClose: ()
       bio: contactData.notes,
       phone: contactData.phone,
       email: contactData.email,
-      birthday: contactData.birth,
+      birthday: contactData.birth || '',
       profileImage: contactData.contacts_profile_img ?? '',
       relationshipType: contactData.relationship_level,
     },
