@@ -91,7 +91,7 @@ export interface EditPlanType {
   start_date: string;
   end_date: string;
   location?: Partial<KakaoPlaceType> | null;
-  colors?: string;
+  colors: string;
 }
 
 export interface SelectPlanType extends PlansType {
