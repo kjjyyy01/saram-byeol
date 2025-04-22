@@ -69,10 +69,10 @@ const ContactTextField = ({
           {/* 왼쪽: 아이콘 + 라벨 */}
           <div className='w-24 flex flex-col items-center pt-1'>
             {icon && <div className='mb-1 text-gray-600'>{icon}</div>}
-            <FormLabel className='text-sm text-center'>
+            <div className='text-sm text-center peer-invalid:text-gray-600'>
               {label}
               {required && <span className='ml-1 text-red-500'>*</span>}
-            </FormLabel>
+            </div>
           </div>
 
           {/* 오른쪽: 인풋 + 에러 */}
