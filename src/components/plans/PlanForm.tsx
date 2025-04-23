@@ -16,15 +16,10 @@ import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import ColorOptions from '@/components/calendar/popOver/ColorOptions';
 import { useAuthStore } from '@/store/zustand/store';
-import { usePlanColorStore } from '@/store/zustand/usePlanFormStore';
+import { usePlanColorStore, usePlanFormStore } from '@/store/zustand/usePlanFormStore';
 
-const PlanForm = ({
-  initialValues,
-  handleCancel,
-}: {
-  initialValues?: PlanFormType;
-  handleCancel: (show: boolean) => void;
-}) => {
+const PlanForm = ({ handleCancel }: { handleCancel: (show: boolean) => void }) => {
+  const { initialFormData } = usePlanFormStore();
   const [inputValue, setInputValue] = useState('');
   const { selectedColor, setSelectedColor } = usePlanColorStore(); // 선택 색상
   const user = useAuthStore((state) => state.user);
@@ -34,13 +29,20 @@ const PlanForm = ({
   const form = useForm<PlanFormType>({
     resolver: zodResolver(PlansSchema),
     mode: 'onChange',
-    defaultValues: initialValues ?? planFormDefaultValues, // 초기값을 props로 전달
+    defaultValues: initialFormData ?? planFormDefaultValues, // 초기값을 props로 전달
   });
 
-  // 색상 변경 시 폼의 colors 필드 업데이트
+  // 색상 변경 시 업데이트
   useEffect(() => {
     form.setValue('colors', selectedColor); // 색상 값 업데이트
   }, [selectedColor, form]);
+
+  // 인풋 변경 시 업데이트
+  useEffect(() => {
+    if (initialFormData) {
+      form.reset(initialFormData); // initialFormData가 바뀌면 form을 reset
+    }
+  }, [initialFormData, form]);
 
   // mutate함수 호출
   const { mutate: insertNewPlan } = useMutateInsertNewPlan();
