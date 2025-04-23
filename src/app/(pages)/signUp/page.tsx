@@ -6,7 +6,7 @@ import SigninSocial from '@/components/signin/SigninSocial';
 
 const SignUp = () => {
   return (
-    <div className='h-[100vh] w-[100vw]'>
+    <div className='h-screen w-screen'>
       <div className='flex h-full justify-center pb-8 pt-4 first-line:items-center md:pb-0 md:pt-0'>
         <section className='flex w-full flex-col items-center justify-center'>
           <h1 className='mb-6 text-center text-[28px] font-bold text-primary-500 md:mb-10'>사람, 별 회원가입</h1>
