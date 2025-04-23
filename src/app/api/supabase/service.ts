@@ -344,3 +344,18 @@ export const mutateDeletePlan = async (planId: string): Promise<void> => {
     throw error;
   }
 };
+
+// pin으로 고정된 연락처만 조회
+export const fetchPinnedContacts = async (
+  userId: string
+): Promise<ContactItemType[]> => {
+  const { data, error } = await supabase
+    .from(CONTACTS)
+    .select('contacts_id, name, relationship_level, contacts_profile_img, is_pinned')
+    .eq('user_id', userId)
+    .eq('is_pinned', true)
+    .order('name', { ascending: true })
+
+  if (error) throw error
+  return data || []
+}
