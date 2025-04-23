@@ -7,9 +7,10 @@ import { useAuthStore } from '@/store/zustand/store';
 
 interface Props {
   contactsId: string;
+  onDeleteSuccess: () => void;
 }
 
-const PeopleDetailPanel = ({ contactsId }: Props) => {
+const PeopleDetailPanel = ({ contactsId, onDeleteSuccess }: Props) => {
   const user = useAuthStore((state) => state.user);
   const userId = user?.id;
 
@@ -27,7 +28,7 @@ const PeopleDetailPanel = ({ contactsId }: Props) => {
   return (
     <div className='container mx-auto px-4 pt-8'>
       <Tabs tabs={['내사람정보', '약속']}>
-        {[<ContactProfile key='profile' contact={contact} plans={plans} />, <ContactPlans key='plans' plans={plans} />]}
+        {[<ContactProfile key='profile' contact={contact} plans={plans} onDeleteSuccess={onDeleteSuccess} />, <ContactPlans key='plans' plans={plans} />]}
       </Tabs>
     </div>
   );

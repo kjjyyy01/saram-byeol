@@ -9,30 +9,44 @@ import { toast } from 'react-toastify';
 import ContactPlansCard from '@/components/contactDetail/ContactPlansCard';
 import { ConfirmToast } from '@/components/toast/ConfirmToast';
 import { PencilSimple, Trash } from '@phosphor-icons/react';
+import { mutateDeletePlan } from '@/app/api/supabase/service';
+// import { useQueryClient } from '@tanstack/react-query';
+// import { QUERY_KEY } from '@/constants/queryKey';
 
 interface Props {
   contact: ContactDetailType;
   plans: PlanDetailType[];
+  onDeleteSuccess: () => void;
 }
 
-const ContactProfile = ({ contact, plans }: Props) => {
+const ContactProfile = ({ contact, plans, onDeleteSuccess }: Props) => {
   const [isEditContactOpen, setIsEditContactOpen] = useState(false); // 사이드시트 상태
 
   const { mutate: deleteContact } = useMutateDeleteContact();
+  // const queryClient = useQueryClient();
 
   const deleteContactHandler = () => {
     ConfirmToast({
       message: '정말로 해당 사람을 삭제하시겠습니까?',
-      onConfirm: () => {
-        deleteContact(contact.contacts_id, {
-          onSuccess: () => {
-            toast.success('성공적으로 삭제되었습니다.');
-          },
-          onError: (error) => {
-            console.error(error);
-            toast.error('삭제에 실패했습니다.');
-          },
-        });
+      onConfirm: async () => {
+        try {
+          await Promise.all(plans.map((plan) => mutateDeletePlan(plan.plan_id)));
+
+          deleteContact(contact.contacts_id, {
+            onSuccess: () => {
+              toast.success('성공적으로 삭제되었습니다.');
+              // queryClient.invalidateQueries({ queryKey: [QUERY_KEY.CONTACTS] });
+              onDeleteSuccess();
+            },
+            onError: (error) => {
+              console.error(error);
+              toast.error('삭제에 실패했습니다.');
+            },
+          });
+        } catch (error) {
+          console.error('내 사람 또는 약속 삭제 중 오류가 발생했습니다:', error);
+          toast.error('내 사람 삭제 중 오류가 발생했습니다.');
+        }
       },
     });
   };
@@ -40,7 +54,7 @@ const ContactProfile = ({ contact, plans }: Props) => {
   return (
     <div className='space-y-8'>
       {/* 상단 프로필 + 기본 정보 */}
-      <div className='flex items-start justify-between mt-6'>
+      <div className='mt-6 flex items-start justify-between'>
         {/* 좌측 - 프로필 이미지 */}
         <div className='relative flex items-center space-x-[-10px]'>
           <div className='relative h-24 w-24 flex-shrink-0 overflow-hidden rounded-full bg-gray-200'>
@@ -86,22 +100,22 @@ const ContactProfile = ({ contact, plans }: Props) => {
       <div className='flex flex-col gap-8 md:flex-row'>
         {/* 연락처 정보 */}
         <div className='w-full md:w-1/2'>
-          <h2 className='text-xl font-bold text-gray-800 mb-4'>연락처</h2>
+          <h2 className='mb-4 text-xl font-bold text-gray-800'>연락처</h2>
           <div className='space-y-12 text-sm text-gray-700'>
             <p>
-              <span className='inline-block w-20 font-medium text-base text-gray-500'>전화번호</span>
+              <span className='inline-block w-20 text-base font-medium text-gray-500'>전화번호</span>
               {contact.phone}
             </p>
             <p>
-              <span className='inline-block w-20 font-medium text-base text-gray-500'>이메일</span>
+              <span className='inline-block w-20 text-base font-medium text-gray-500'>이메일</span>
               {contact.email}
             </p>
             <p>
-              <span className='inline-block w-20 font-medium text-base text-gray-500'>생년월일</span>
+              <span className='inline-block w-20 text-base font-medium text-gray-500'>생년월일</span>
               {contact.birth}
             </p>
             <p>
-              <span className='inline-block w-20 font-medium text-base text-gray-500'>메모</span>
+              <span className='inline-block w-20 text-base font-medium text-gray-500'>메모</span>
               {contact.notes}
             </p>
           </div>
@@ -110,8 +124,8 @@ const ContactProfile = ({ contact, plans }: Props) => {
         {/* 다가오는 약속 */}
         {plans.length > 0 && (
           <div className='w-full md:w-1/2'>
-            <h2 className='text-xl font-bold text-gray-800 mb-4'>다가오는 약속</h2>
-            <div className='grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-2 lg:grid-cols-2'>
+            <h2 className='mb-4 text-xl font-bold text-gray-800'>다가오는 약속</h2>
+            <div className='grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2'>
               {plans.map((plan) => (
                 <ContactPlansCard
                   key={plan.plan_id}
