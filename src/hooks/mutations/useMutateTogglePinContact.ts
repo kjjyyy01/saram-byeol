@@ -9,8 +9,22 @@ export const useTogglePinContact = (userId?: string) => {
     mutationFn: ({ contactId, isPinned }: { contactId: string; isPinned: boolean }) => 
       mutateUpdateContactPin(contactId, isPinned),
     onSuccess: () => {
-      // 성공 시 연락처 목록 갱신
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEY.CONTACTS, userId] });
+      if (userId) {
+        // 고정된 연락처 쿼리 무효화
+        queryClient.invalidateQueries({ 
+          queryKey: [QUERY_KEY.CONTACTS, 'pinned', userId] 
+        });
+        
+        // 일반 연락처 무한 스크롤 쿼리 무효화
+        queryClient.invalidateQueries({ 
+          queryKey: [QUERY_KEY.CONTACTS_INFINITE, 'regular', userId] 
+        });
+        
+        // 기존 쿼리 키도 무효화 (호환성 유지)
+        queryClient.invalidateQueries({ 
+          queryKey: [QUERY_KEY.CONTACTS, userId] 
+        });
+      }
     }
   });
 }
