@@ -20,32 +20,34 @@ const SignIn = () => {
   }, [isSignin, router]);
 
   return (
-    <div className='flex h-[100vh] w-[100vw] items-center justify-center overflow-hidden overflow-y-auto'>
-      <section className='flex w-full flex-col items-center justify-center'>
-        <h1 className='mb-10 text-center text-[28px] font-bold text-primary-500'>사람, 별 로그인</h1>
-        <section className='mb-8 md:mb-6'>
-          <SigninForm />
+    <div className='h-[100vh] w-[100vw]'>
+      <div className='flex h-full items-center justify-center overflow-hidden overflow-y-auto pb-8 pt-4 md:pb-0 md:pt-0'>
+        <section className='flex w-full flex-col items-center justify-center'>
+          <h1 className='mb-10 text-center text-[28px] font-bold text-primary-500'>사람, 별 로그인</h1>
+          <section className='mb-8 md:mb-6'>
+            <SigninForm />
+          </section>
+
+          <section className='flex flex-col items-center justify-center'>
+            <div className='mb-[45px] flex md:mb-[42px]'>
+              <p className='mr-2 text-sm md:text-base'>아이디가 없으신가요?</p>
+              <Link href={SIGNUP} className='text-sm text-primary-500 md:text-base'>
+                회원가입
+              </Link>
+            </div>
+            <div className='mb-[39.5px] flex items-center gap-1 md:mb-[42px]'>
+              <div className='w-[77.5px] outline outline-1 outline-stone-300 md:w-[150px]' />
+              <p className='text-nowrap text-base font-bold text-zinc-800'>SNS계정으로 간편로그인</p>
+              <div className='w-[77.5px] outline outline-1 outline-stone-300 md:w-[150px]' />
+            </div>
+            <SigninSocial />
+          </section>
         </section>
 
-        <section className='flex flex-col items-center justify-center'>
-          <div className='mb-[45px] flex md:mb-[42px]'>
-            <p className='mr-2 text-sm md:text-base'>아이디가 없으신가요?</p>
-            <Link href={SIGNUP} className='text-sm text-primary-500 md:text-base'>
-              회원가입
-            </Link>
-          </div>
-          <div className='mb-[39.5px] flex items-center gap-1 md:mb-[42px]'>
-            <div className='w-[77.5px] outline outline-1 outline-stone-300 md:w-[150px]' />
-            <p className='text-nowrap text-base font-bold text-zinc-800'>SNS계정으로 간편로그인</p>
-            <div className='w-[77.5px] outline outline-1 outline-stone-300 md:w-[150px]' />
-          </div>
-          <SigninSocial />
+        <section className='hidden md:relative md:h-full md:w-full lg:block'>
+          <Image src={'/saram-byeol_img.avif'} alt='metaphor image' fill className='object-contain' />
         </section>
-      </section>
-
-      <section className='hidden md:relative md:h-full md:w-full lg:block'>
-        <Image src={'/saram-byeol_img.avif'} alt='metaphor image' fill className='object-contain' />
-      </section>
+      </div>
     </div>
   );
 };
