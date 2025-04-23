@@ -1,11 +1,11 @@
-import React, { useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import ContactItem from '@/components/contacts/ContactItem';
 import { UserPlus } from '@phosphor-icons/react';
 import AddContactForm from '@/components/contacts/addContactForm/AddContactForm';
 import SideSheet from '@/components/contacts/SideSheet';
 import { useAuthStore } from '@/store/zustand/store';
-import useGetContactsByUserID from '@/hooks/queries/useGetContactsByUserID';
 import { useTogglePinContact } from '@/hooks/mutations/useMutateTogglePinContact';
+import { usePinnedContacts, useRegularContactsInfinite } from '@/hooks/queries/useGetContactsForInfinite';
 
 interface ContactListProps {
   onSelectedContact: (id: string) => void;
@@ -15,34 +15,81 @@ const ContactList = ({ onSelectedContact }: ContactListProps) => {
   const [isAddContactOpen, setIsAddContactOpen] = useState(false);
   const handleClose = () => setIsAddContactOpen(false);
 
-  // useAuthStore에서 사용자 정보 가져오기
-  const { user } = useAuthStore();
-  const userId = user?.id; // 현재 로그인된 사용자의 ID
+  // 무한 스크롤을 위한 observer 설정
+  const observerRef = useRef<IntersectionObserver | null>(null);
+  const loadMoreRef = useRef<HTMLDivElement>(null);
 
+  // useAuthStore에서 사용자 정보 가져오기
+  const userId = useAuthStore(state => state.user?.id);
+  
   // 로그인 되지 않은 경우를 위한 처리
   const isAuthenticated = !!userId;
 
-  const { data: contacts = [], isPending, error } = useGetContactsByUserID(userId as string, isAuthenticated);
+  // 고정된 연락처(pinned) 조회
+  const { 
+    data: pinnedContacts = [], 
+    isLoading: isPinnedLoading, 
+    error: pinnedError 
+  } = usePinnedContacts(userId as string);
+
+  // 일반 연락처(regular) 무한 스크롤 조회
+  const {
+    data: regularContactsData,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    isLoading: isRegularLoading,
+    error: regularError
+  } = useRegularContactsInfinite(userId as string);
+
+  // 모든 일반 연락처 페이지 데이터 병합
+  const regularContacts = regularContactsData?.pages.flatMap(page => page.contacts) || [];
 
   // Pin 업데이트 뮤테이션
   const pinMutation = useTogglePinContact(userId);
-
-  // 핀된 연락처와 일반 연락처 분리
-  const { pinnedContacts, regularContacts } = useMemo(() => {
-    const pinned = contacts.filter((contact) => contact.is_pinned);
-    const regular = contacts.filter((contact) => !contact.is_pinned);
-    return { pinnedContacts: pinned, regularContacts: regular };
-  }, [contacts]);
 
   // 핀 토글 핸들러
   const handleTogglePin = (contactId: string, isPinned: boolean) => {
     pinMutation.mutate({ contactId, isPinned });
   };
 
-  if (error) {
-    console.error('연락처 로딩 실패', error);
+  // 무한 스크롤 설정
+  const handleObserver = useCallback(
+    (entries: IntersectionObserverEntry[]) => {
+      const [entry] = entries;
+      if (entry.isIntersecting && hasNextPage && !isFetchingNextPage) {
+        fetchNextPage();
+      }
+    },
+    [fetchNextPage, hasNextPage, isFetchingNextPage]
+  );
+
+  // 옵저버 설정 및 해제
+  useEffect(() => {
+    const observer = new IntersectionObserver(handleObserver, {
+      rootMargin: '0px 0px 200px 0px',
+      threshold: 0.1,
+    });
+    
+    if (loadMoreRef.current) {
+      observer.observe(loadMoreRef.current);
+    }
+    
+    observerRef.current = observer;
+    
+    return () => {
+      if (observerRef.current) {
+        observerRef.current.disconnect();
+      }
+    };
+  }, [handleObserver]);
+
+  // 에러 처리
+  if (pinnedError || regularError) {
+    console.error('연락처 로딩 실패', { pinnedError, regularError });
   }
 
+  // 비로그인 상태 처리
   if (!isAuthenticated) {
     return (
       <div className='flex h-full flex-col items-center justify-center'>
@@ -50,6 +97,9 @@ const ContactList = ({ onSelectedContact }: ContactListProps) => {
       </div>
     );
   }
+
+  const isLoading = isPinnedLoading || isRegularLoading;
+
 
   return (
     <div className='flex h-full flex-col overflow-x-hidden'>
@@ -70,8 +120,8 @@ const ContactList = ({ onSelectedContact }: ContactListProps) => {
       </div>
 
       {/* 연락처 리스트 */}
-      <div className='mt-12 flex-1'>
-        {isPending ? (
+      <div className='mt-12 flex-1 overflow-y-auto'>
+        {isLoading ? (
           <div className='py-8 text-center'>연락처를 불러오는 중...</div>
         ) : (
           <div>
@@ -93,7 +143,7 @@ const ContactList = ({ onSelectedContact }: ContactListProps) => {
               </div>
             )}
 
-            {/* 일반 연락처 영역 */}
+            {/* 일반 연락처 영역 - 무한 스크롤 적용 */}
             <div>
               {pinnedContacts.length > 0 && (
                 <div className='flex items-center bg-gray-50 px-6 py-3'>
@@ -109,6 +159,16 @@ const ContactList = ({ onSelectedContact }: ContactListProps) => {
                   </li>
                 ))}
               </ul>
+              
+              {/* 무한 스크롤 감지 영역 */}
+              <div 
+                ref={loadMoreRef} 
+                className='py-4 flex justify-center'
+              >
+                {isFetchingNextPage && (
+                  <div className='text-sm text-gray-500'>연락처를 더 불러오는 중...</div>
+                )}
+              </div>
             </div>
           </div>
         )}
