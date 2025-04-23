@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import ContactItem from '@/components/contacts/ContactItem';
 import { UserPlus } from '@phosphor-icons/react';
-import AddContactForm from '@/components/contacts/addContactForm/Index';
+import AddContactForm from '@/components/contacts/addContactForm/AddContactForm';
 import SideSheet from '@/components/contacts/SideSheet';
 import { useAuthStore } from '@/store/zustand/store';
 import useGetContactsByUserID from '@/hooks/queries/useGetContactsByUserID';
@@ -13,6 +13,7 @@ interface ContactListProps {
 
 const ContactList = ({ onSelectedContact }: ContactListProps) => {
   const [isAddContactOpen, setIsAddContactOpen] = useState(false);
+  const handleClose = () => setIsAddContactOpen(false);
 
   // useAuthStore에서 사용자 정보 가져오기
   const { user } = useAuthStore();
@@ -51,7 +52,7 @@ const ContactList = ({ onSelectedContact }: ContactListProps) => {
   }
 
   return (
-    <div className='flex h-full flex-col'>
+    <div className='flex h-full flex-col overflow-x-hidden'>
       {/* 헤더 - 내 사람 목록 텍스트 */}
       <h1 className='pl-6 pt-6 text-2xl font-bold'>내 사람 목록</h1>
 
@@ -114,8 +115,8 @@ const ContactList = ({ onSelectedContact }: ContactListProps) => {
       </div>
 
       {/* 사이드 시트 */}
-      <SideSheet isOpen={isAddContactOpen} onClose={() => setIsAddContactOpen(false)}>
-        <AddContactForm />
+      <SideSheet isOpen={isAddContactOpen} onClose={handleClose}>
+        <AddContactForm onClose={handleClose} />
       </SideSheet>
     </div>
   );

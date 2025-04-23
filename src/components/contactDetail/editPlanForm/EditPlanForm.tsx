@@ -66,7 +66,7 @@ const EditPlanForm = ({ plan, onClose }: Props) => {
     const { start_date, end_date, ...restFormData } = updatedForm;
 
     updatePlan(
-      { planId: plan.plan_id, updatedData: { ...restFormData, user_id: plan.user_id } },
+      { planId: plan.plan_id, updatedData: { ...restFormData, user_id: plan.user_id, start_date, end_date } },
       {
         onSuccess: () => {
           const updatedPlan = {

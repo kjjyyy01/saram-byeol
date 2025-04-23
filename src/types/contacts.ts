@@ -19,7 +19,7 @@ export interface ContactType {
   email: string;
   notes: string;
   phone: string;
-  birth: string;
+  birth: string | null;
   contacts_profile_img?: string;
   is_pinned?: boolean;
 }
