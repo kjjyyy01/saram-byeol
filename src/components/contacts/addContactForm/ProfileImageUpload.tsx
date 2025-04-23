@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useRef } from 'react';
+import React, { useRef } from 'react';
 import { Camera, Pencil, Trash } from 'lucide-react';
 import Image from 'next/image';
 import { UseFormSetValue } from 'react-hook-form';
@@ -13,10 +13,9 @@ interface ProfileImageUploadProps {
 const ProfileImageUpload = ({ imageSource, setImageSource, setValue }: ProfileImageUploadProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const handleFileSelect = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-
     const reader = new FileReader();
     reader.onload = () => {
       const result = reader.result as string;
@@ -36,12 +35,11 @@ const ProfileImageUpload = ({ imageSource, setImageSource, setValue }: ProfileIm
     if (inputRef.current) inputRef.current.value = '';
   };
 
-  // 이미지가 없을 때 버튼 비활성화
   const disabled = !imageSource;
 
   return (
-    <div className="flex items-center space-x-4 mb-10 mt-10">
-      {/* 파일 인풋 숨기기 */}
+    <div className="flex items-center mb-10 mt-10">
+      {/* 숨긴 파일 인풋 */}
       <input
         type="file"
         accept="image/*"
@@ -53,7 +51,7 @@ const ProfileImageUpload = ({ imageSource, setImageSource, setValue }: ProfileIm
       {/* 이미지 프리뷰 */}
       <label
         onClick={openFileDialog}
-        className="relative h-32 w-32 cursor-pointer flex-shrink-0 rounded-full bg-gray-200 overflow-hidden"
+        className="relative h-40 w-40 cursor-pointer flex-shrink-0 rounded-full bg-gray-200 overflow-hidden"
       >
         {imageSource
           ? <Image src={imageSource} alt="프로필" fill className="object-cover" />
@@ -66,38 +64,47 @@ const ProfileImageUpload = ({ imageSource, setImageSource, setValue }: ProfileIm
         }
       </label>
 
-      {/* 항상 보이되, disabled 처리 */}
-      <div className="flex flex-col space-y-2">
+      <div className="flex flex-col space-y-8 ml-20">
+        {/* 수정 버튼 */}
         <button
           type="button"
           onClick={openFileDialog}
           disabled={disabled}
           title={disabled ? '이미지를 먼저 업로드해주세요' : '이미지 수정'}
           className={`
-            flex items-center rounded-md px-3 py-1 transition
-            ${disabled
-              ? 'opacity-50 cursor-default'
-              : 'hover:bg-gray-100'}
+            flex items-center justify-center
+            w-28 h-8
+            rounded-md
+            bg-primary-500 text-grey-0
+            text-xs
+            font-bold
+            transition
+            ${disabled ? 'opacity-50 cursor-default' : 'hover:bg-primary-600'}
           `}
         >
           <Pencil size={16} className="mr-1" />
-          수정
+          이미지 변경
         </button>
 
+        {/* 삭제 버튼 */}
         <button
           type="button"
           onClick={handleDelete}
           disabled={disabled}
           title={disabled ? '삭제할 이미지가 없습니다' : '이미지 삭제'}
           className={`
-            flex items-center rounded-md px-3 py-1 transition
-            ${disabled
-              ? 'opacity-50 cursor-default text-red-300'
-              : 'hover:bg-gray-100 text-red-500'}
+            flex items-center justify-center
+            w-28 h-8
+            rounded-md
+            bg-primary-50 border border-primary-500 text-primary-500
+            text-xs
+            font-bold
+            transition
+            ${disabled ? 'opacity-50 cursor-default' : 'hover:bg-primary-100'}
           `}
         >
           <Trash size={16} className="mr-1" />
-          삭제
+          이미지 삭제
         </button>
       </div>
     </div>
