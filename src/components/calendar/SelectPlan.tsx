@@ -9,28 +9,28 @@ interface SelectPlanProps {
   plans: SelectPlanType[];
   onEdit: () => void;
   onDeleteSuccess: () => void;
-  refetchSelectedPlan: () => void;
 }
 
-const SelectPlan = ({ plans, onEdit, onDeleteSuccess, refetchSelectedPlan }: SelectPlanProps) => {
-  const { mutateAsync } = useMutateDeleteSelectPlan();
+const SelectPlan = ({ plans, onEdit, onDeleteSuccess }: SelectPlanProps) => {
+  const { mutate } = useMutateDeleteSelectPlan();
 
   const deletePlanHandler = (planId: string) => {
     ConfirmToast({
       message: '정말로 해당 약속을 삭제하시겠습니까?',
-      onConfirm: async () => {
-        try {
-          await mutateAsync(planId);
-          toast.success('성공적으로 삭제되었습니다.');
-          onDeleteSuccess();
-          refetchSelectedPlan?.();
-        } catch (error) {
-          toast.error('삭제에 실패했습니다.');
-          console.error(error);
-        }
+      onConfirm: () => {
+        mutate(planId, {
+          onSuccess: () => {
+            toast.success('성공적으로 삭제되었습니다.');
+            onDeleteSuccess();
+          },
+          onError: () => {
+            toast.error('삭제에 실패했습니다.');
+          },
+        });
       },
     });
   };
+
   // 'YYYY-MM-DD' 형식으로 반환
   const formatDate = (isoString: string) => {
     const date = new Date(isoString);
