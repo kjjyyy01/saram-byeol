@@ -280,7 +280,6 @@ export default function Calendar() {
                   setSelectPlan(null); // selectPlan 비우고
                   setShowUpcoming(true); // UpcomingPlans 보이게
                 }}
-                refetchSelectedPlan={refetchSelectedPlan}
               />
             </div>
           </>
