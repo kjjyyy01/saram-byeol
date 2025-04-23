@@ -21,11 +21,11 @@ const SigninSocial = () => {
   };
 
   return (
-    <div className='flex items-center justify-center gap-[78px]'>
-      <button type='button' onClick={googleSignin} className='h-[45px] w-[300px]'>
+    <div className='flex flex-col gap-4 md:flex md:flex-row md:items-center md:justify-center md:gap-[78px]'>
+      <button type='button' onClick={googleSignin} className='h-[45px] w-full md:h-[45px] md:w-[300px]'>
         <Image src='/google_login_img.png' alt='google login img' width={300} height={45} />
       </button>
-      <button type='button' onClick={kakaoSignin} className='h-[45px] w-[300px]'>
+      <button type='button' onClick={kakaoSignin} className='h-[45px] w-full md:h-[45px] md:w-[300px]'>
         <Image src='/kakao_login_img.png' alt='kakao login img' width={300} height={45} />
       </button>
     </div>
