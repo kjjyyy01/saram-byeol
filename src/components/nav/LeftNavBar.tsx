@@ -37,8 +37,8 @@ const LeftNavBar = () => {
 
   return (
     <nav className='flex h-screen'>
-      <div className='flex flex-col items-center justify-between py-16'>
-        <div>
+      <div className='flex flex-col items-center justify-around'>
+        <div className='py-8'>
           <Link href={HOME}>
             <Image src={'/app-logo.png'} width={80} height={80} alt='app logo' />
           </Link>
