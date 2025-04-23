@@ -16,9 +16,9 @@ const LeftNavBar = () => {
   const accessUser = isDemoUser ? demoUser : user;
   const provider = accessUser?.app_metadata?.provider;
   const page = usePathname().slice(1);
-  const profile = accessUser?.user_metadata?.profile_img || PLACEHOLDER_PROFILE_IMG; //이메일 로그인 시 이미지 (아직 여기 값은 없음) //이미지 없을경우 디폴트 이미지
+  const profile = accessUser?.user_metadata?.profile_img || PLACEHOLDER_PROFILE_IMG; 
   const isAccessGranted = isSignIn || isDemoUser;
-  // const router = useRouter();
+  
   const logoutHandler = async () => {
     if (isDemoUser) {
       toast.info('데모 체험을 종료합니다');
