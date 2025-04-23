@@ -40,6 +40,7 @@ const MainCalendar = ({
 }: MainCalendarProps) => {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null); //선택한 셀 날짜
   const [isPopOverOpen, setIsPopOverOpen] = useState(false); //팝오버 오픈 여부
+
   const DnDCalendar = withDragAndDrop<CalendarEventType>(Calendar); //DnD 사용 캘린더
 
   return (

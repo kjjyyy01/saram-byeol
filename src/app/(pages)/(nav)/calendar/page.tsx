@@ -39,9 +39,6 @@ export default function Calendar() {
   const router = useRouter();
   const user = useAuthStore((state) => state.user); //현재 로그인 한 유저
   const isSignIn = useAuthStore((state) => state.isSignIn); //로그인 상태
-  const { isDemoUser, demoUser, getPlan } = useDemoStore();
-  const isAccessGranted = isSignIn || isDemoUser; //로그인하거나, 데모유저일 때 접근가능하도록 함
-  const userId = isDemoUser ? demoUser.id : user?.id;
 
   const [moment, setMoment] = useState(new Date()); //해당 달
   const calendarYear = moment.getFullYear(); //해당 달의 년도
@@ -51,7 +48,6 @@ export default function Calendar() {
 
   const [selectedPlanId, setSelectedPlanId] = useState<string | null>(null);
   const { data: selectedPlanData, refetch: refetchSelectedPlan } = useGetSelectPlan(selectedPlanId ?? '');
-  const damoData = getPlan(selectedPlanId ?? '');
 
   const [localEvents, setLocalEvents] = useState<CalendarEventType[]>([]); //직접 조작하는 약속(edit)
 
@@ -61,6 +57,10 @@ export default function Calendar() {
 
   const [editPlan, setEditPlan] = useState<SelectPlanType | null>(null); //수정하는 약속
   const [isEditMode, setIsEditMode] = useState(false); //수정 모드 여부
+
+  //demoState
+  const { isDemoUser } = useDemoStore();
+  const isAccessGranted = isSignIn || isDemoUser; //로그인하거나, 데모유저일 때 접근가능하도록 함
 
   //옵션 더보기
   const { setInitialFormData } = usePlanFormStore();
@@ -77,7 +77,7 @@ export default function Calendar() {
     if (hasMounted && !isAccessGranted) {
       router.replace(SIGNIN);
     }
-  }, [hasMounted, isSignIn, router]);
+  }, [hasMounted, isAccessGranted, router]);
 
   // planId가 바뀔 때마다 refetch
   useEffect(() => {
@@ -90,7 +90,7 @@ export default function Calendar() {
   useEffect(() => {
     if (selectedPlanData?.data?.length) {
       // 클릭한 약속 바
-      const clickPlan = isDemoUser ? damoData.data[0] : selectedPlanData.data[0];
+      const clickPlan = selectedPlanData.data[0];
 
       const formattedPlan = {
         ...clickPlan,
@@ -167,10 +167,6 @@ export default function Calendar() {
   };
 
   const moveEventsHandler = ({ event, start, end }: DragEventType) => {
-    if (isDemoUser) {
-      toast.info('데모체험중에는 제한된 기능입니다.');
-      return;
-    }
     // 캘린더에서는 Date 객체를 유지
     updateLocalEvent({
       id: event.id,
@@ -208,9 +204,9 @@ export default function Calendar() {
     })),
   ];
 
-  if (!hasMounted || !isSignIn) return null;
+  if (!hasMounted || !isAccessGranted) return null;
 
-  if (isPending) {
+  if (isPending && !isDemoUser) {
     return <div>로딩 중입니다...</div>;
   }
 
@@ -293,7 +289,7 @@ export default function Calendar() {
             </div>
           </>
         ) : (
-          showUpcoming && userId && <UpcomingPlans userId={userId} onSelectPlan={(plan) => setSelectPlan([plan])} />
+          showUpcoming && user?.id && <UpcomingPlans userId={user.id} onSelectPlan={(plan) => setSelectPlan([plan])} />
         )}
       </div>
     </div>
