@@ -52,6 +52,7 @@ const PlanForm = ({ onClose }: { onClose: () => void }) => {
   const planSubmitHandler = (data: PlanFormType) => {
     if (isDemoUser) {
       toast.info('데모체험중에는 제한된 기능입니다.');
+      onClose()
       return;
     }
     if (!isAuthenticated) {
