@@ -25,6 +25,10 @@ export const useAuthStore = create<AuthStateType>()(
         set({ user, isSignIn: true });
       },
       signOut: async () => {
+        const { isDemoUser } = useDemoStore.getState();
+        if (!isDemoUser) {
+          toast.success(`로그아웃되었습니다.`);
+        }
         set(initialState);
         await SignOutUser();
       },
@@ -50,10 +54,6 @@ export const AuthStateChangeHandler = () => {
       }
     } else if (event === 'SIGNED_OUT') {
       localStorage.removeItem('alreadySignIn');
-      const { isDemoUser } = useDemoStore.getState();
-      if (!isDemoUser) {
-        toast.success(`로그아웃되었습니다.`);
-      }
     }
   });
 
