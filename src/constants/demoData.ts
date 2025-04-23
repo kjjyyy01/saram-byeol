@@ -2,24 +2,24 @@ import { ContactType } from '@/types/contacts';
 import { PlansType } from '@/types/plans';
 
 export const demoUser = {
-  user: {
-    app_metadata: { provider: 'email' },
-    id: '297e8f39-2421-4fff-866a-d3887dd6effe',
-    user_metadata: {
-      email: 'demo-user@mail.com',
-      nickname: '김데모',
-      name: '김데모',
-      profile_img:
-        'https://sogssbvoxwlfglnmwmge.supabase.co/storage/v1/object/sign/demo-storage/user-profile/sung-wang-g4DgCF90EM4-unsplash.jpg?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJkZW1vLXN0b3JhZ2UvdXNlci1wcm9maWxlL3N1bmctd2FuZy1nNERnQ0Y5MEVNNC11bnNwbGFzaC5qcGciLCJpYXQiOjE3NDUyMTQ2MjEsImV4cCI6MTc0NzgwNjYyMX0.zGaHcIc7PHPkjDoNs_NT8YFyBa2RFBMwA07iDbKqhH0',
-    },
+  app_metadata: { provider: 'email' },
+  id: '297e8f39-2421-4fff-866a-d3887dd6effe',
+  user_metadata: {
+    email: 'demo-user@mail.com',
+    nickname: '김데모',
+    name: '김데모',
+    profile_img:
+      'https://sogssbvoxwlfglnmwmge.supabase.co/storage/v1/object/sign/demo-storage/user-profile/sung-wang-g4DgCF90EM4-unsplash.jpg?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJkZW1vLXN0b3JhZ2UvdXNlci1wcm9maWxlL3N1bmctd2FuZy1nNERnQ0Y5MEVNNC11bnNwbGFzaC5qcGciLCJpYXQiOjE3NDUyMTQ2MjEsImV4cCI6MTc0NzgwNjYyMX0.zGaHcIc7PHPkjDoNs_NT8YFyBa2RFBMwA07iDbKqhH0',
   },
+  aud: 'authenticated',
+  created_at: '',
 };
 
 export const demoContacts: ContactType[] = [
   {
     id: '93',
     contacts_id: '4f30d05c-23f9-4992-a397-f56f94edd80a',
-    user_id: demoUser.user.id,
+    user_id: demoUser.id,
     name: '데모이소라',
     relationship_level: '비즈니스',
     email: 'sora.model@example.com',
@@ -33,7 +33,7 @@ export const demoContacts: ContactType[] = [
   {
     id: '94',
     contacts_id: '1db30544-a039-4e0d-a390-0acb4f598c4e',
-    user_id: demoUser.user.id,
+    user_id: demoUser.id,
     name: '데모박준호',
     relationship_level: '지인',
     email: 'junho.photo@example.com',
@@ -47,7 +47,7 @@ export const demoContacts: ContactType[] = [
   {
     id: '95',
     contacts_id: '1b8791eb-25df-4d6e-987d-a84fc5bbf071',
-    user_id: demoUser.user.id,
+    user_id: demoUser.id,
     name: '데모최미정',
     relationship_level: '비즈니스',
     email: 'mj.choi@example.com',
@@ -62,14 +62,14 @@ export const demoContacts: ContactType[] = [
 
 export const demoPlans: PlansType[] = [
   {
-    user_id: demoUser.user.id,
+    user_id: demoUser.id,
     plan_id: '0afaeafb-43ea-4f97-9942-59646add3628',
     contacts_id: '1db30544-a039-4e0d-a390-0acb4f598c4e',
     title: '데모 제주 출사 여행(3박4일)',
     detail: '박준호 작가와 함께 출사 겸 포트폴리오용 작업 진행 예정. 숙소 및 렌터카 예약 확인 필요.',
     priority: 'high',
-    start_date: '2025-04-29 00:00:00',
-    end_date: '2025-05-03 23:59:59',
+    start_date: '2025-05-02 00:00:00',
+    end_date: '2025-05-05 23:59:59',
     location: {
       'place_name': '제주도',
       'road_address_name': '',
@@ -82,14 +82,14 @@ export const demoPlans: PlansType[] = [
     colors: '#27AE60',
   },
   {
-    user_id: demoUser.user.id,
+    user_id: demoUser.id,
     plan_id: 'e9e1a340-8389-4d5c-9c3f-7c44cbef7da7',
     contacts_id: '1db30544-a039-4e0d-a390-0acb4f598c4e',
     title: '데모 저녁 식사 약속',
     detail: '박준호와 최근 작업 정산 및 잡담. 출사 일정 관련 가벼운 회의도 함께.',
     priority: 'low',
-    start_date: '2025-04-27 00:00:00',
-    end_date: '2025-04-27 23:59:59',
+    start_date: '2025-04-26 00:00:00',
+    end_date: '2025-04-26 23:59:59',
     location: {
       'place_name': '합정역 인근 이자카야',
       'road_address_name': '',
@@ -102,14 +102,14 @@ export const demoPlans: PlansType[] = [
     colors: '#27AE60',
   },
   {
-    user_id: demoUser.user.id,
+    user_id: demoUser.id,
     plan_id: '9937eb0e-eef2-4cf1-929c-ad6d0eba509d',
     contacts_id: '4f30d05c-23f9-4992-a397-f56f94edd80a',
     title: '데모 개인 촬영 리허설',
     detail: '이소라 모델과의 컨셉 촬영 전 리허설. 조명 세팅과 의상 체크.',
     priority: 'medium',
-    start_date: '2025-04-25 00:00:00',
-    end_date: '2025-04-25 23:59:59',
+    start_date: '2025-04-26 00:00:00',
+    end_date: '2025-04-26 23:59:59',
     location: {
       'place_name': '스튜디오 루미에르',
       'road_address_name': '서울 서초구 남부순환로315길 88-3',
@@ -122,14 +122,14 @@ export const demoPlans: PlansType[] = [
     colors: '#56CCF2',
   },
   {
-    user_id: demoUser.user.id,
+    user_id: demoUser.id,
     plan_id: '041b4772-3f65-4d09-9318-35f781a78196',
     contacts_id: '4f30d05c-23f9-4992-a397-f56f94edd80a',
     title: '데모 프로필 촬영 제안 미팅',
     detail: '이소라와 프로필 리뉴얼 촬영 건 논의. 촬영 날짜 조율 및 스타일링 협의.',
     priority: 'medium',
-    start_date: '2025-05-02 00:00:00',
-    end_date: '2025-05-02 23:59:59',
+    start_date: '2025-04-12 00:00:00',
+    end_date: '2025-04-12 23:59:59',
     location: {
       'place_name': '강남 르메이에르 타워 1층 카페',
       'road_address_name': '',
@@ -142,14 +142,14 @@ export const demoPlans: PlansType[] = [
     colors: '#56CCF2',
   },
   {
-    user_id: demoUser.user.id,
+    user_id: demoUser.id,
     plan_id: '6bc95d75-94e7-48cb-aafe-f23f7bbc0fb3',
     contacts_id: '1b8791eb-25df-4d6e-987d-a84fc5bbf071',
     title: '데모 웨딩 앨범 최종 전달',
     detail: '최미정 클라이언트에게 웨딩 촬영본 앨범 전달. 후기 요청도 함께 전달하기.',
     priority: 'high',
-    start_date: '2025-04-21 00:00:00',
-    end_date: '2025-04-21 23:59:59',
+    start_date: '2025-04-20 00:00:00',
+    end_date: '2025-04-20 23:59:59',
     location: {
       'place_name': '스타벅스 삼성역점',
       'road_address_name': '서울 강남구 테헤란로 620',

@@ -10,7 +10,6 @@ interface ContactItemProps {
 
 const ContactItem = ({ contact, onTogglePin }: ContactItemProps) => {
   const [isPinHovering, setIsPinHovering] = useState(false);
-
   const handlePinClick = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();

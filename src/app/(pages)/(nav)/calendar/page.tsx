@@ -18,6 +18,7 @@ import { toast } from 'react-toastify';
 import { useUpadateEventMutate } from '@/hooks/mutations/useUpadateEventMutate';
 import { useGetSelectPlan } from '@/hooks/queries/useGetSelectPlan';
 import { format } from 'date-fns';
+import { useDemoStore } from '@/store/zustand/useDemoStore';
 
 interface UpdatedEventType {
   id: string;
@@ -38,6 +39,9 @@ export default function Calendar() {
   const router = useRouter();
   const user = useAuthStore((state) => state.user); //현재 로그인 한 유저
   const isSignIn = useAuthStore((state) => state.isSignIn); //로그인 상태
+  const { isDemoUser, demoUser, getPlan } = useDemoStore();
+  const isAccessGranted = isSignIn || isDemoUser; //로그인하거나, 데모유저일 때 접근가능하도록 함
+  const userId = isDemoUser ? demoUser.id : user?.id;
 
   const [moment, setMoment] = useState(new Date()); //해당 달
   const calendarYear = moment.getFullYear(); //해당 달의 년도
@@ -47,6 +51,7 @@ export default function Calendar() {
 
   const [selectedPlanId, setSelectedPlanId] = useState<string | null>(null);
   const { data: selectedPlanData, refetch: refetchSelectedPlan } = useGetSelectPlan(selectedPlanId ?? '');
+  const damoData = getPlan(selectedPlanId ?? '');
 
   const [localEvents, setLocalEvents] = useState<CalendarEventType[]>([]); //직접 조작하는 약속(edit)
 
@@ -85,7 +90,7 @@ export default function Calendar() {
   useEffect(() => {
     if (selectedPlanData?.data?.length) {
       // 클릭한 약속 바
-      const clickPlan = selectedPlanData.data[0];
+      const clickPlan = isDemoUser ? damoData.data[0] : selectedPlanData.data[0];
 
       const formattedPlan = {
         ...clickPlan,
@@ -162,6 +167,10 @@ export default function Calendar() {
   };
 
   const moveEventsHandler = ({ event, start, end }: DragEventType) => {
+    if (isDemoUser) {
+      toast.info('데모체험중에는 제한된 기능입니다.');
+      return;
+    }
     // 캘린더에서는 Date 객체를 유지
     updateLocalEvent({
       id: event.id,
@@ -252,8 +261,8 @@ export default function Calendar() {
             <h2 className='mb-4 text-xl font-bold'>약속 추가</h2>
             <div className='m-6'>
               <PlanForm
-                handleCancel={(show) => {
-                  setShowPlanForm(show);
+                onClose={() => {
+                  setShowPlanForm(false);
                   setShowUpcoming(true);
                 }}
               />
@@ -284,7 +293,7 @@ export default function Calendar() {
             </div>
           </>
         ) : (
-          showUpcoming && user?.id && <UpcomingPlans userId={user.id} onSelectPlan={(plan) => setSelectPlan([plan])} />
+          showUpcoming && userId && <UpcomingPlans userId={userId} onSelectPlan={(plan) => setSelectPlan([plan])} />
         )}
       </div>
     </div>

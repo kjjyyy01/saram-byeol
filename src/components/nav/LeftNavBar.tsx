@@ -13,15 +13,16 @@ import { PLACEHOLDER_PROFILE_IMG } from '@/constants/placeholders';
 const LeftNavBar = () => {
   const { user, isSignIn, signOut } = useAuthStore();
   const { isDemoUser, demoUser, clearAll } = useDemoStore();
-  const accessUser = isDemoUser ? demoUser.user : user;
-  const isAccessGranted = isSignIn || isDemoUser; //로그인하거나, 데모유저일 때 접근가능하도록 함
-  const provider = accessUser?.app_metadata.provider;
+  const accessUser = isDemoUser ? demoUser : user;
+  const provider = accessUser?.app_metadata?.provider;
   const page = usePathname().slice(1);
-  const profile = accessUser?.user_metadata.profile_img || PLACEHOLDER_PROFILE_IMG; //이메일 로그인 시 이미지 (아직 여기 값은 없음) //이미지 없을경우 디폴트 이미지
-
-  const logoutHandler = () => {
+  const profile = accessUser?.user_metadata?.profile_img || PLACEHOLDER_PROFILE_IMG; //이메일 로그인 시 이미지 (아직 여기 값은 없음) //이미지 없을경우 디폴트 이미지
+  const isAccessGranted = isSignIn || isDemoUser;
+  // const router = useRouter();
+  const logoutHandler = async () => {
     if (isDemoUser) {
       toast.info('데모 체험을 종료합니다');
+      signOut();
       clearAll();
       return;
     }
@@ -73,9 +74,9 @@ const LeftNavBar = () => {
               className='h-12 w-12 rounded-full object-cover'
             />
             {provider !== 'email' ? (
-              <div>{accessUser?.user_metadata.name}</div>
+              <div>{accessUser?.user_metadata?.name}</div>
             ) : (
-              <div>{accessUser?.user_metadata.nickname}</div>
+              <div>{accessUser?.user_metadata?.nickname}</div>
             )}
           </div>
         </div>
