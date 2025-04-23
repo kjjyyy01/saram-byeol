@@ -74,7 +74,7 @@ export default function Calendar() {
     }
   }, [hasMounted, isSignIn, router]);
 
-  // planId가 바뀔 때마다 refetch
+  // 약속바 클릭마다 약속 상세 refetch
   useEffect(() => {
     if (selectedPlanId) {
       refetchSelectedPlan();
@@ -99,7 +99,7 @@ export default function Calendar() {
       setIsEditMode(false);
       setEditPlan(null);
     }
-  }, [selectedPlanData]);
+  }, [selectedPlanData, setShowPlanForm]);
 
   //처음 받아오는 readonly 약속을 조작 가능하도록 복사
   useEffect(() => {
@@ -280,6 +280,7 @@ export default function Calendar() {
                   setSelectPlan(null); // selectPlan 비우고
                   setShowUpcoming(true); // UpcomingPlans 보이게
                 }}
+                refetchSelectedPlan={refetchSelectedPlan}
               />
             </div>
           </>
