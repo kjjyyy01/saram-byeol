@@ -58,7 +58,7 @@ export default function Calendar() {
   const [isEditMode, setIsEditMode] = useState(false); //수정 모드 여부
 
   //옵션 더보기
-  const { initialFormData, setInitialFormData } = usePlanFormStore();
+  const { setInitialFormData } = usePlanFormStore();
   // showPlanForm 상태와 setShowPlanForm 함수 가져오기
   const { showPlanForm, setShowPlanForm } = usePlanFormStore();
   const { mutate: updateEvent } = useUpadateEventMutate();
@@ -252,7 +252,6 @@ export default function Calendar() {
             <h2 className='mb-4 text-xl font-bold'>약속 추가</h2>
             <div className='m-6'>
               <PlanForm
-                initialValues={initialFormData ?? undefined}
                 handleCancel={(show) => {
                   setShowPlanForm(show);
                   setShowUpcoming(true);
