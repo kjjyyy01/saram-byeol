@@ -1,8 +1,9 @@
 import React, { useRef } from 'react';
-import { Camera, Pencil, Trash } from 'lucide-react';
+import { Pencil, Trash } from 'lucide-react';
 import Image from 'next/image';
 import { UseFormSetValue } from 'react-hook-form';
 import { ContactFormValues } from '@/lib/schemas/contactFormSchema';
+import { ImageSquare } from '@phosphor-icons/react';
 
 interface ProfileImageUploadProps {
   imageSource: string | null;
@@ -57,8 +58,7 @@ const ProfileImageUpload = ({ imageSource, setImageSource, setValue }: ProfileIm
           ? <Image src={imageSource} alt="프로필" fill className="object-cover" />
           : (
             <div className="flex h-full w-full flex-col items-center justify-center text-gray-500">
-              <Camera className="mb-1 h-6 w-6" />
-              <span className="text-xs font-bold">이미지 추가</span>
+              <ImageSquare className="mb-1 h-6 w-6" />
             </div>
           )
         }
