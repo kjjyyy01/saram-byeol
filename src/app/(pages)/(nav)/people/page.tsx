@@ -36,7 +36,7 @@ const People = () => {
       </div>
 
       {/* 오른쪽 상세 정보 영역 */}
-      <div className='flex-1 overflow-y-auto'>
+      <div className='flex-1 overflow-y-visible'>
         {peopleSelectedId ? (
           <PeopleDetailPanel contactsId={peopleSelectedId} onDeleteSuccess={() => setPeopleSelectedId(null)} />
         ) : (

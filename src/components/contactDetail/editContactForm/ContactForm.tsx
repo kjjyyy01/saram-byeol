@@ -4,6 +4,8 @@ import { UseFormReturn } from 'react-hook-form';
 import RelationshipSelector from '@/components/contacts/addContactForm/RelationshipSelector';
 import ContactTextField from '@/components/contacts/addContactForm/ContactTextField';
 import EditProfileImageUpload from '@/components/contactDetail/editContactForm/EditProfileImageUpload';
+import { Cake, EnvelopeSimple, Phone, User } from '@phosphor-icons/react';
+import { ContactMemoField } from '@/components/contacts/addContactForm/ContactMemoField';
 
 interface ContactFormProps {
   form: UseFormReturn<ContactFormValues>;
@@ -35,12 +37,15 @@ const ContactForm = ({
       />
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-10'>
-          <ContactTextField control={form.control} name='name' label='이름' placeholder='이름을 입력해주세요.' />
           <ContactTextField
             control={form.control}
-            name='memo'
-            label='한줄소개'
-            placeholder='이 사람을 한 마디로 표현한다면?'
+            name='name'
+            label='이름'
+            placeholder='이름을 입력해주세요.'
+            debounceTime={500}
+            required
+            icon={<User size={24} />}
+            maxLength={13}
           />
           <ContactTextField
             control={form.control}
@@ -48,9 +53,29 @@ const ContactForm = ({
             label='전화번호'
             placeholder='전화번호 입력'
             type='tel'
+            maxLength={11}
+            debounceTime={500}
+            icon={<Phone size={24} />}
           />
-          <ContactTextField control={form.control} name='email' label='이메일' placeholder='이메일 입력' type='email' />
-          <ContactTextField control={form.control} name='birthday' label='생일' placeholder='' type='date' />
+          <ContactTextField
+            control={form.control}
+            name='email'
+            label='이메일'
+            placeholder='이메일 입력'
+            type='email'
+            debounceTime={500}
+            icon={<EnvelopeSimple size={24} />}
+          />
+          <ContactTextField
+            control={form.control}
+            name='birthday'
+            label='생일'
+            placeholder=''
+            type='date'
+            icon={<Cake size={24} />}
+          />
+          <ContactMemoField control={form.control} />
+
           <SubmitButtonComponent isSubmitting={isSubmitting} />
         </form>
       </Form>
