@@ -3,7 +3,11 @@ import { ContactFormValues } from '@/lib/schemas/contactFormSchema';
 import { UseFormReturn } from 'react-hook-form';
 import RelationshipSelector from '@/components/contacts/addContactForm/RelationshipSelector';
 import ContactTextField from '@/components/contacts/addContactForm/ContactTextField';
-import EditProfileImageUpload from '@/components/contactDetail/editContactForm/EditProfileImageUpload';
+import ProfileImageUpload from '@/components/contacts/addContactForm/ProfileImageUpload';
+import { Cake, EnvelopeSimple, Phone, User } from '@phosphor-icons/react';
+import { ContactMemoField } from '@/components/contacts/addContactForm/ContactMemoField';
+import ContactFormCancelButton from '@/components/contacts/addContactForm/ContactFormCancelButton';
+import ContactFormSubmitButton from '@/components/contacts/addContactForm/ContactFormSubmitButton';
 
 interface ContactFormProps {
   form: UseFormReturn<ContactFormValues>;
@@ -13,7 +17,7 @@ interface ContactFormProps {
   setImageSource: (val: string | null) => void;
   relationshipType: string;
   setRelationshipType: (val: string) => void;
-  SubmitButtonComponent: (props: { isSubmitting: boolean }) => React.ReactNode;
+  onClose: () => void;
 }
 
 const ContactForm = ({
@@ -21,37 +25,83 @@ const ContactForm = ({
   onSubmit,
   isSubmitting,
   imageSource,
+  setImageSource,
   relationshipType,
   setRelationshipType,
-  SubmitButtonComponent,
+  onClose,
 }: ContactFormProps) => {
+  const handleSubmit = async (data: ContactFormValues) => {
+    await onSubmit(data);
+    onClose();
+  };
+
   return (
     <div className='space-y-8 pl-12 pr-12'>
-      <EditProfileImageUpload initialImage={imageSource} setValue={form.setValue} />
+      {/* 이미지 업로드 컴포넌트 */}
+      <ProfileImageUpload imageSource={imageSource} setImageSource={setImageSource} setValue={form.setValue} />
+
+      {/* 관계 선택 컴포넌트 */}
       <RelationshipSelector
         relationshipType={relationshipType}
         setRelationshipType={setRelationshipType}
         setValue={form.setValue}
       />
+
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-10'>
-          <ContactTextField control={form.control} name='name' label='이름' placeholder='이름을 입력해주세요.' />
+        <form onSubmit={form.handleSubmit(handleSubmit)} className='space-y-10'>
+          {/* 이름 필드 */}
           <ContactTextField
             control={form.control}
-            name='memo'
-            label='한줄소개'
-            placeholder='이 사람을 한 마디로 표현한다면?'
+            name='name'
+            label='이름'
+            placeholder='이름을 입력해주세요.'
+            debounceTime={500}
+            required
+            icon={<User size={24} />}
+            maxLength={13}
           />
+
+          {/* 전화번호 필드 */}
           <ContactTextField
             control={form.control}
             name='phone'
             label='전화번호'
             placeholder='전화번호 입력'
             type='tel'
+            maxLength={11}
+            debounceTime={500}
+            icon={<Phone size={24} />}
           />
-          <ContactTextField control={form.control} name='email' label='이메일' placeholder='이메일 입력' type='email' />
-          <ContactTextField control={form.control} name='birthday' label='생일' placeholder='' type='date' />
-          <SubmitButtonComponent isSubmitting={isSubmitting} />
+
+          {/* 이메일 필드 */}
+          <ContactTextField
+            control={form.control}
+            name='email'
+            label='이메일'
+            placeholder='이메일 입력'
+            type='email'
+            debounceTime={500}
+            icon={<EnvelopeSimple size={24} />}
+          />
+
+          {/* 생일 필드 */}
+          <ContactTextField
+            control={form.control}
+            name='birthday'
+            label='생일'
+            placeholder=''
+            type='date'
+            icon={<Cake size={24} />}
+          />
+
+          {/* 메모 필드 */}
+          <ContactMemoField control={form.control} />
+
+          {/* 버튼 그룹 */}
+          <div className='flex w-full space-x-8'>
+            <ContactFormCancelButton onClose={onClose} />
+            <ContactFormSubmitButton isSubmitting={isSubmitting} />
+          </div>
         </form>
       </Form>
     </div>
