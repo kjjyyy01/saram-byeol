@@ -65,7 +65,7 @@ export const useDemoStore = create<DemoState>()(
       },
       clearAll: () =>
         set(() => {
-          localStorage.removeItem('user-storage');
+          localStorage.clear();
           return initialState;
         }),
     }),
