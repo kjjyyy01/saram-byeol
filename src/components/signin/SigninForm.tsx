@@ -14,14 +14,17 @@ export interface SignInFormType {
 }
 
 const SigninForm = () => {
-  const [isChecked, setIsChecked] = useState<boolean>(() => {
-    return !!localStorage.getItem('saved-email');
-  });
+  const [isChecked, setIsChecked] = useState<boolean>(false);
 
   const { register, handleSubmit, formState, setValue, getValues } = useForm<SignInFormType>({
     mode: 'onChange',
     resolver: zodResolver(signInSchema),
   });
+
+  useEffect(() => {
+    const saved = localStorage.getItem('saved-email');
+    setIsChecked(!!saved);
+  }, []);
 
   // 컴포넌트가 마운트될 때 로컬스토리지에서 저장된 이메일을 불러와 이메일 필드에 초기값으로 설정
   useEffect(() => {
