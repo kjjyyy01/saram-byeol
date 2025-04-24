@@ -6,12 +6,15 @@ import { useAuthStore } from '@/store/zustand/store';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { SIGNIN } from '@/constants/paths';
+import { useDemoStore } from '@/store/zustand/useDemoStore';
 
 const People = () => {
   const [peopleSelectedId, setPeopleSelectedId] = useState<string | null>(null);
   const [hasMounted, setHasMounted] = useState(false);
   const isSignIn = useAuthStore((state) => state.isSignIn);
+  const isDemoUser = useDemoStore((state) => state.isDemoUser);
   const router = useRouter();
+  const isAccessGranted = isSignIn || isDemoUser; //로그인하거나, 데모유저일 때 접근가능하도록 함
 
   // 마운트 이후에만 렌더링
   useEffect(() => {
@@ -20,13 +23,12 @@ const People = () => {
 
   // 마운트 전, 로그아웃 상태 감지 막기
   useEffect(() => {
-    if (hasMounted && !isSignIn) {
+    if (hasMounted && !isAccessGranted) {
       router.replace(SIGNIN);
     }
-  }, [hasMounted, isSignIn, router]);
+  }, [hasMounted, router, isAccessGranted]);
 
-  if (!hasMounted) return null;
-  if (!isSignIn) return null;
+  if (!hasMounted || !isAccessGranted) return null;
 
   return (
     <div className='flex h-screen'>

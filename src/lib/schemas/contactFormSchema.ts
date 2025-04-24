@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 // Form Schema Definition
 export const contactFormSchema = z.object({
-  profileImage: z.string().optional(),
+  profileImage: z.string().nullable(),
   relationshipType: z.string().optional(),
   name: z.string()
     .min(1, { message: '이름을 입력해주세요.' })

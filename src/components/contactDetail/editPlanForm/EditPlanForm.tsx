@@ -10,6 +10,7 @@ import { useMutateUpdatePlan } from '@/hooks/mutations/useMutateUpdatePlan';
 import { mappingFormData } from '@/lib/planFormUtils';
 import { PlanFormType, PlansSchema } from '@/lib/schemas/plansSchema';
 import { useAuthStore } from '@/store/zustand/store';
+import { useDemoStore } from '@/store/zustand/useDemoStore';
 import { EditPlanType } from '@/types/plans';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
@@ -46,7 +47,8 @@ const EditPlanForm = ({ plan, onClose }: Props) => {
   const user = useAuthStore((state) => state.user);
   const [inputValue, setInputValue] = useState(plan.location?.place_name || '');
   const [selectedColor, setSelectedColor] = useState(plan.colors || '#2F80ED');
-
+  const { isDemoUser, demoUser } = useDemoStore();
+  const userId = user?.id || demoUser.id;
   const form = useForm<PlanFormType>({
     resolver: zodResolver(PlansSchema),
     mode: 'onChange',
@@ -60,6 +62,11 @@ const EditPlanForm = ({ plan, onClose }: Props) => {
   const { mutate: updatePlan } = useMutateUpdatePlan();
 
   const editPlanHandler = (data: PlanFormType) => {
+    if (!!isDemoUser) {
+      toast.info('데모체험중에는 제한된 기능입니다.');
+      handleCancel();
+      return;
+    }
     const formData = mappingFormData(data);
     const updatedForm = { ...formData, colors: selectedColor };
 
@@ -91,7 +98,7 @@ const EditPlanForm = ({ plan, onClose }: Props) => {
         <ColorOptions selectedColor={selectedColor} setSelectedColor={setSelectedColor} />
         <TitleField />
         <DateInputField />
-        <ContactsField userId={user?.id || ''} enabled={true} />
+        <ContactsField userId={userId} enabled={true} />
         <PlaceField inputValue={inputValue} setInputValue={setInputValue} />
         <PriorityField />
         <DetailField />

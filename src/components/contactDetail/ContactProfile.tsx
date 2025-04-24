@@ -9,23 +9,29 @@ import { toast } from 'react-toastify';
 import ContactPlansCard from '@/components/contactDetail/ContactPlansCard';
 import { ConfirmToast } from '@/components/toast/ConfirmToast';
 import { PencilSimple, Trash } from '@phosphor-icons/react';
+import { useDemoStore } from '@/store/zustand/useDemoStore';
+import { PlansType } from '@/types/plans';
 import { mutateDeletePlan } from '@/app/api/supabase/service';
 // import { useQueryClient } from '@tanstack/react-query';
 // import { QUERY_KEY } from '@/constants/queryKey';
 
 interface Props {
   contact: ContactDetailType;
-  plans: PlanDetailType[];
+  plans: PlanDetailType[] | PlansType[];
   onDeleteSuccess: () => void;
 }
 
 const ContactProfile = ({ contact, plans, onDeleteSuccess }: Props) => {
   const [isEditContactOpen, setIsEditContactOpen] = useState(false); // 사이드시트 상태
-
+  const { isDemoUser } = useDemoStore();
   const { mutate: deleteContact } = useMutateDeleteContact();
   // const queryClient = useQueryClient();
 
   const deleteContactHandler = () => {
+    if (isDemoUser) {
+      toast.info('데모체험중에는 제한된 기능입니다.')
+      return;
+    }
     ConfirmToast({
       message: '정말로 해당 사람을 삭제하시겠습니까?',
       onConfirm: async () => {

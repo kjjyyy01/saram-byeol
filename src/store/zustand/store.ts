@@ -4,7 +4,7 @@ import { User } from '@supabase/supabase-js';
 import { toast } from 'react-toastify';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-
+import { useDemoStore } from './useDemoStore';
 export interface AuthStateType {
   user: User | null;
   isSignIn: boolean;
@@ -19,10 +19,18 @@ export const useAuthStore = create<AuthStateType>()(
   persist(
     (set) => ({
       ...initialState,
-      setUser: (user) => set({ user, isSignIn: true }),
+      setUser: (user) => {
+        const { clearAll } = useDemoStore.getState();
+        clearAll();
+        set({ user, isSignIn: true });
+      },
       signOut: async () => {
-        await SignOutUser();
+        const { isDemoUser } = useDemoStore.getState();
+        if (!isDemoUser) {
+          toast.success(`로그아웃되었습니다.`);
+        }
         set(initialState);
+        await SignOutUser();
       },
     }),
     {
@@ -46,7 +54,6 @@ export const AuthStateChangeHandler = () => {
       }
     } else if (event === 'SIGNED_OUT') {
       localStorage.removeItem('alreadySignIn');
-      toast.success('로그아웃되었습니다.');
     }
   });
 
