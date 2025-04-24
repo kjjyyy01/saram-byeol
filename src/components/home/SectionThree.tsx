@@ -1,6 +1,5 @@
 import Image from 'next/image';
-import { Input } from '../ui/input';
-import { Button } from '../ui/button';
+import SectionThreeEmail from './SectionThreeEmail';
 
 const SectionThree = () => {
   return (
@@ -11,12 +10,7 @@ const SectionThree = () => {
             사람별과 함께 관계의 가치를 새롭게 경험해보세요.
           </h2>
           <span className='mb-12 text-2xl font-medium'>추가기능이 나올 때 마다 이메일로 보내드릴게요.</span>
-          <div className='flex flex-row gap-6'>
-            <Input placeholder='이메일을 입력해주세요.' className='box-border h-14 w-[324px] p-4' />
-            <Button className='h-14 bg-primary-500 px-6 py-4 hover:bg-primary-600 active:bg-primary-700'>
-              구독하기
-            </Button>
-          </div>
+          <SectionThreeEmail />
         </div>{' '}
       </div>
       <footer className='flex w-full flex-col items-center justify-between gap-12 bg-grey-50 px-6 pb-16 pt-8 text-center'>
@@ -26,10 +20,10 @@ const SectionThree = () => {
             <div className='font-gmarket text-2xl font-bold'>사람,별</div>
           </div>
           <div className='flex flex-row gap-9 text-base font-normal text-grey-200 transition-all duration-500'>
-            <p className='hover:font-semibold hover:text-grey-500'>개인정보처리방침</p>
-            <p className='hover:font-semibold hover:text-grey-500'>사람,별 공지</p>
-            <p className='hover:font-semibold hover:text-grey-500'>고객 문의</p>
-            <p className='hover:font-semibold hover:text-grey-500'>구독 문의</p>
+            <p className='cursor-pointer hover:font-semibold hover:text-grey-500'>개인정보처리방침</p>
+            <p className='cursor-pointer hover:font-semibold hover:text-grey-500'>사람,별 공지</p>
+            <p className='cursor-pointer hover:font-semibold hover:text-grey-500'>고객 문의</p>
+            <p className='cursor-pointer hover:font-semibold hover:text-grey-500'>구독 문의</p>
           </div>
         </div>
         <div className='flex flex-col gap-2 text-sm text-grey-100'>
