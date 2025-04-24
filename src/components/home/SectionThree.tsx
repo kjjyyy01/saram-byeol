@@ -19,17 +19,17 @@ const SectionThree = () => {
           </div>
         </div>{' '}
       </div>
-      <footer className='flex w-full flex-col items-center justify-between gap-12 bg-grey-50 px-6 py-16 text-center'>
+      <footer className='flex w-full flex-col items-center justify-between gap-12 bg-grey-50 px-6 pb-16 pt-8 text-center'>
         <div className='flex flex-row items-center gap-16'>
           <div className='flex flex-row items-center gap-5'>
             <Image src={'/nav/app-logo-greyscale.png'} alt={'app logo greyscale'} width={50} height={47} />
             <div className='font-gmarket text-2xl font-bold'>사람,별</div>
           </div>
-          <div className='flex flex-row gap-9 text-base font-normal text-grey-200'>
-            <p className='font-semibold text-grey-500'>개인정보처리방침</p>
-            <p>사람,별 공지</p>
-            <p>고객 문의</p>
-            <p>구독 문의</p>
+          <div className='flex flex-row gap-9 text-base font-normal text-grey-200 transition-all duration-500'>
+            <p className='hover:font-semibold hover:text-grey-500'>개인정보처리방침</p>
+            <p className='hover:font-semibold hover:text-grey-500'>사람,별 공지</p>
+            <p className='hover:font-semibold hover:text-grey-500'>고객 문의</p>
+            <p className='hover:font-semibold hover:text-grey-500'>구독 문의</p>
           </div>
         </div>
         <div className='flex flex-col gap-2 text-sm text-grey-100'>
