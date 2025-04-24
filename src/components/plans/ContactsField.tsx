@@ -1,6 +1,6 @@
 'use client';
 
-import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
 import { useFormContext } from 'react-hook-form';
 import useGetContactsByUserID from '@/hooks/queries/useGetContactsByUserID';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
@@ -11,6 +11,7 @@ import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, Command
 import { useState } from 'react';
 import { UserType } from '@/types/contacts';
 import { User } from '@phosphor-icons/react';
+import { useDemoStore } from '@/store/zustand/useDemoStore';
 
 interface Props {
   userId: UserType['user_id'];
@@ -18,9 +19,11 @@ interface Props {
 }
 
 const ContactsField = ({ userId, enabled }: Props) => {
+  const { isDemoUser, demoContacts } = useDemoStore();
   const [open, setOpen] = useState(false);
   const { control, setValue } = useFormContext();
-  const { data: contacts = [] } = useGetContactsByUserID(userId, enabled);
+  const { data = [] } = useGetContactsByUserID(userId, enabled);
+  const contacts = isDemoUser ? demoContacts : data;
 
   return (
     <FormField
@@ -29,10 +32,12 @@ const ContactsField = ({ userId, enabled }: Props) => {
       render={({ field }) => {
         return (
           <FormItem className='flex items-center justify-start gap-8'>
-            <FormLabel className='relative flex w-14 flex-shrink-0 flex-grow-0 flex-col items-center justify-center gap-1'>
-              <User size={24} className='h-6 w-6 flex-shrink-0 flex-grow-0' />{' '}
-              <p className='text-center text-sm'>내 사람</p>
-            </FormLabel>
+            <div className='relative flex w-14 flex-shrink-0 flex-grow-0 flex-col items-center justify-center gap-1'>
+              <User size={24} className='h-6 w-6 flex-shrink-0 flex-grow-0' />
+              <p className='text-center text-sm'>
+                내 사람<span className='text-status-error'>*</span>
+              </p>
+            </div>
             <div className='flex w-full flex-col'>
               <Popover open={open} onOpenChange={setOpen}>
                 <PopoverTrigger asChild>

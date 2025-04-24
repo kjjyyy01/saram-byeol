@@ -4,6 +4,7 @@ import { CalendarBlank, MapPin, Star, TextAa, TextAlignLeft, User } from '@phosp
 import React from 'react';
 import { ConfirmToast } from '../toast/ConfirmToast';
 import { toast } from 'react-toastify';
+import { useDemoStore } from '@/store/zustand/useDemoStore';
 
 interface SelectPlanProps {
   plans: SelectPlanType[];
@@ -13,8 +14,13 @@ interface SelectPlanProps {
 
 const SelectPlan = ({ plans, onEdit, onDeleteSuccess }: SelectPlanProps) => {
   const { mutate } = useMutateDeleteSelectPlan();
+  const {isDemoUser} = useDemoStore();
 
   const deletePlanHandler = (planId: string) => {
+    if (isDemoUser) {
+      toast.info('데모체험중에는 제한된 기능입니다.');
+      return;
+    }
     ConfirmToast({
       message: '정말로 해당 약속을 삭제하시겠습니까?',
       onConfirm: () => {
