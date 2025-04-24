@@ -12,8 +12,6 @@ import { PencilSimple, Trash } from '@phosphor-icons/react';
 import { useDemoStore } from '@/store/zustand/useDemoStore';
 import { PlansType } from '@/types/plans';
 import { mutateDeletePlan } from '@/app/api/supabase/service';
-// import { useQueryClient } from '@tanstack/react-query';
-// import { QUERY_KEY } from '@/constants/queryKey';
 
 interface Props {
   contact: ContactDetailType;
@@ -25,7 +23,6 @@ const ContactProfile = ({ contact, plans, onDeleteSuccess }: Props) => {
   const [isEditContactOpen, setIsEditContactOpen] = useState(false); // 사이드시트 상태
   const { isDemoUser } = useDemoStore();
   const { mutate: deleteContact } = useMutateDeleteContact();
-  // const queryClient = useQueryClient();
 
   const deleteContactHandler = () => {
     if (isDemoUser) {
@@ -41,7 +38,6 @@ const ContactProfile = ({ contact, plans, onDeleteSuccess }: Props) => {
           deleteContact(contact.contacts_id, {
             onSuccess: () => {
               toast.success('성공적으로 삭제되었습니다.');
-              // queryClient.invalidateQueries({ queryKey: [QUERY_KEY.CONTACTS] });
               onDeleteSuccess();
             },
             onError: (error) => {
