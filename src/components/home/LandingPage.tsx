@@ -1,11 +1,16 @@
 'use client';
 import useWheel from '@/hooks/useWheel';
 import { useCallback } from 'react';
+import SectionOne from '@/components/home/SectionOne';
+import SectionTwo from '@/components/home/SectionTwo';
+import SectionThree from '@/components/home/SectionThree';
+import MainHeader from './MainHeader';
 
 const LandingPage = () => {
   //deltaY는 휠이 이동한 방향 중 y축 방향으로의 벡터값 / scrollTop은 현재 휠이 스크롤 된 영역에서 최 상단의 좌표값
   //scrolltop으로 현재 어느 영역에 위치하고 있는지 알아내고, deltaY로 어느 섹션으로 이동할건지 알아내고, ref.scrollTop을 이용해서 특정 섹션으로 이동한다.
-  const wheelHandler = useCallback( //계산하는 부분이니까 메모이제이션 시켜서 처리
+  const wheelHandler = useCallback(
+    //계산하는 부분이니까 메모이제이션 시켜서 처리
     (ref: React.RefObject<HTMLDivElement>, deltaY: number, scrollTop: number | undefined) => {
       const pageHeight = window.innerHeight; //예: 1080px
 
@@ -15,7 +20,8 @@ const LandingPage = () => {
       if (deltaY > 0) {
         if (scrollTop !== undefined) {
           const dest = Math.floor(scrollTop / pageHeight) + 1;
-          ref.current?.scrollTo({ // 실제 스크롤을 이동시키는 부분 
+          ref.current?.scrollTo({
+            // 실제 스크롤을 이동시키는 부분
             top: pageHeight * dest, // 예: 1080*dest
             left: 0,
             behavior: 'smooth',
@@ -39,11 +45,14 @@ const LandingPage = () => {
   const containerRef = useWheel({ callback: wheelHandler });
 
   return (
-    <div className='h-screen overflow-y-hidden' ref={containerRef}>
-      <div className='flex h-screen items-center justify-center bg-yellow-200 text-4xl'>1</div>
-      <div className='flex h-screen items-center justify-center bg-blue-200 text-4xl'>2</div>
-      <div className='flex h-screen items-center justify-center bg-green-200 text-4xl'>3</div>
-    </div>
+    <>
+      <MainHeader />
+      <div className='h-screen overflow-y-hidden' ref={containerRef}>
+        <SectionOne />
+        <SectionTwo />
+        <SectionThree />
+      </div>
+    </>
   );
 };
 
