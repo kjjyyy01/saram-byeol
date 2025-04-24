@@ -6,9 +6,10 @@ import React, { useState } from 'react';
 interface ContactItemProps {
   contact: ContactItemType;
   onTogglePin: (contactId: string, isPinned: boolean) => void;
+  isSelected?: boolean;
 }
 
-const ContactItem = ({ contact, onTogglePin }: ContactItemProps) => {
+const ContactItem = ({ contact, onTogglePin, isSelected = false }: ContactItemProps) => {
   const [isPinHovering, setIsPinHovering] = useState(false);
   const handlePinClick = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -17,7 +18,9 @@ const ContactItem = ({ contact, onTogglePin }: ContactItemProps) => {
   };
 
   return (
-    <div className='flex h-24 w-[410px] cursor-pointer items-center justify-between border-b border-gray-200 hover:bg-gray-50'>
+    <div  className={`flex h-24 w-full cursor-pointer items-center justify-between border-b border-gray-200 ${
+      isSelected ? 'bg-gray-200' : 'hover:bg-gray-50'
+    }`}>
       {/* 내부 상자 - 프로필 및 이름 영역 */}
       <div className='ml-5 flex h-[50px] w-[330px] items-center'>
         {/* 프로필 이미지 */}
