@@ -227,6 +227,7 @@ export default function Calendar() {
           events={combinedEvents}
           onEventDrop={moveEventsHandler}
           activeTab={activeTab}
+          holidays={holidays}
           onSelectPlan={(planId) => setSelectedPlanId(planId)}
           setSelectPlan={(plan) => {
             setSelectPlan(plan);
