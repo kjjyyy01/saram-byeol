@@ -52,12 +52,12 @@ const ProfileImageUpload = ({ imageSource, setImageSource, setValue }: ProfileIm
       {/* 이미지 프리뷰 */}
       <label
         onClick={openFileDialog}
-        className="relative h-40 w-40 cursor-pointer flex-shrink-0 rounded-full bg-gray-200 overflow-hidden"
+        className="relative h-40 w-40 cursor-pointer flex-shrink-0 rounded-full bg-grey-100 overflow-hidden"
       >
         {imageSource
           ? <Image src={imageSource} alt="프로필" fill className="object-cover" />
           : (
-            <div className="flex h-full w-full flex-col items-center justify-center text-gray-500">
+            <div className="flex h-full w-full flex-col items-center justify-center text-black">
               <ImageSquare className="mb-1 h-6 w-6" />
             </div>
           )

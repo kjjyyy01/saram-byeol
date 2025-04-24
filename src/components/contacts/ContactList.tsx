@@ -101,7 +101,7 @@ export default function ContactList({ peopleSelectedId ,onSelectedContact }: Con
       {/* 추가 버튼 */}
       <div className='mt-12 flex justify-center'>
         <button
-          className='flex h-12 w-full max-w-sm items-center justify-center rounded-lg border border-gray-300 font-medium text-gray-700 transition-colors hover:bg-gray-100'
+          className='flex h-12 w-full max-w-sm items-center justify-center rounded-lg border border-grey-50 font-medium text-grey-50 transition-colors bg-primary-500 hover:bg-primary-600'
           onClick={() => setIsAddContactOpen(true)}
         >
           <UserPlus size={20} className='mr-2' />
@@ -118,8 +118,8 @@ export default function ContactList({ peopleSelectedId ,onSelectedContact }: Con
             {/* 핀된 연락처 */}
             {(isDemoUser ? demoPinned : pinnedContacts).length > 0 && (
               <section className='mb-6'>
-                <div className='flex items-center bg-gray-50 px-6 py-3'>
-                  <h2 className='text-sm font-semibold text-gray-700'>고정됨</h2>
+                <div className='flex items-center px-6 py-3'>
+                  <h2 className='text-sm font-semibold text-grey-700'>고정됨</h2>
                 </div>
                 <ul className='flex flex-col'>
                   {(isDemoUser ? demoPinned : pinnedContacts).map((c) => (
@@ -136,8 +136,8 @@ export default function ContactList({ peopleSelectedId ,onSelectedContact }: Con
             {/* 일반 연락처 */}
             <section>
               {(isDemoUser ? demoRegular : regularContacts).length > 0 && (
-                <div className='flex items-center bg-gray-50 px-6 py-3'>
-                  <h2 className='text-sm font-semibold text-gray-700'>리스트</h2>
+                <div className='flex items-center px-6 py-3'>
+                  <h2 className='text-sm font-semibold text-grey-700'>리스트</h2>
                 </div>
               )}
               <ul className='flex flex-col'>
@@ -153,7 +153,7 @@ export default function ContactList({ peopleSelectedId ,onSelectedContact }: Con
               {/* 무한 스크롤 트리거 */}
               {!isDemoUser && (
                 <div ref={loadMoreRef} className='flex justify-center py-4'>
-                  {isFetchingNextPage && <div className='text-sm text-gray-500'>연락처를 더 불러오는 중...</div>}
+                  {isFetchingNextPage && <div className='text-sm text-grey-500'>연락처를 더 불러오는 중...</div>}
                 </div>
               )}
             </section>
