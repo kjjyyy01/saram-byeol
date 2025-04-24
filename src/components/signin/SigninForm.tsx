@@ -29,7 +29,6 @@ const SigninForm = () => {
 
   return (
     <form onSubmit={handleSubmit(SignInHandler)} className='md: flex flex-col items-center justify-center md:gap-8'>
-      {/* <div className='w-[375px] px-5 md:w-full md:px-0'> */}
       <div className='mx-auto w-full max-w-[375px] px-5 md:max-w-full md:px-0'>
         <div className='mb-8 flex flex-col'>
           <div className='flex flex-col justify-start gap-1'>
