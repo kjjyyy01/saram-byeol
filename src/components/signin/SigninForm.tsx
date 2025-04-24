@@ -23,6 +23,7 @@ const SigninForm = () => {
     resolver: zodResolver(signInSchema),
   });
 
+  // 컴포넌트가 마운트될 때 로컬스토리지에서 저장된 이메일을 불러와 이메일 필드에 초기값으로 설정
   useEffect(() => {
     const savedEmail = localStorage.getItem('saved-email') || '';
     setValue('email', savedEmail);
@@ -94,9 +95,9 @@ const SigninForm = () => {
               const checked = e.target.checked;
               setIsChecked(checked);
               if (checked) {
-                toast.success('앞으로 로그인 정보가 저장됩니다.');
+                toast.success('앞으로 로그인 정보가 저장됩니다.'); //체크박스를 체크하면 나오는 toast
               } else {
-                toast.warning('앞으로 로그인 정보가 저장되지않습니다.');
+                toast.warning('앞으로 로그인 정보가 저장되지않습니다.'); //체크박스를 해제하면 나오는 toast
               }
             }}
             className='mr-2 h-5 w-5'

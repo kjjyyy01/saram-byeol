@@ -14,6 +14,7 @@ export const useSignin = (getValues: UseFormGetValues<SignInFormType>, isChecked
 
     const { data, error } = await signInUser(value);
     if (data.session) {
+      //체크박스가 체크되면 입력한 email값을 로컬스토리지에 저장,아니면 로컬스토리지에서 삭제
       if (isChecked) {
         localStorage.setItem('saved-email', email);
       } else {
