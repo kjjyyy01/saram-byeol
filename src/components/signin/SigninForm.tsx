@@ -22,9 +22,9 @@ const SigninForm = () => {
   });
 
   useEffect(() => {
-    const aaa = localStorage.getItem('id') || '';
-    setValue('email', aaa);
-  }, [isChecked, setValue]);
+    const savedEmail = localStorage.getItem('saved-email') || '';
+    setValue('email', savedEmail);
+  }, [setValue]);
 
   //로그인 커스텀 훅
   const { SignInHandler } = useSignin(getValues, isChecked);
@@ -88,7 +88,15 @@ const SigninForm = () => {
             type='checkbox'
             id='saveId'
             checked={isChecked}
-            onChange={(e) => setIsChecked(e.target.checked)}
+            onChange={(e) => {
+              const checked = e.target.checked;
+              setIsChecked(checked);
+              if (checked) {
+                toast.success('앞으로 로그인 정보가 저장됩니다.');
+              } else {
+                toast.warning('앞으로 로그인 정보가 저장되지않습니다.');
+              }
+            }}
             className='mr-2 h-5 w-5'
           />
           로그인 정보 저장

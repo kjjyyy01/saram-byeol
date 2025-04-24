@@ -15,9 +15,9 @@ export const useSignin = (getValues: UseFormGetValues<SignInFormType>, isChecked
     const { data, error } = await signInUser(value);
     if (data.session) {
       if (isChecked) {
-        localStorage.setItem('id', email);
+        localStorage.setItem('saved-email', email);
       } else {
-        localStorage.removeItem('id');
+        localStorage.removeItem('saved-email');
       }
       toast.success(`로그인에 성공했습니다. '내사람'으로 이동합니다.`);
       router.replace(PEOPLE);
