@@ -16,6 +16,11 @@ export async function GET(req: Request) {
     }
 
     const data = await res.json();
+    // 데이터 구조 검증
+    if (!data.response || !data.response.body) {
+      console.error('유효하지 않은 API 응답 형식:', data);
+      return NextResponse.json({ error: '공휴일 데이터 형식이 올바르지 않습니다' }, { status: 500 });
+    }
     return NextResponse.json(data);
   } catch (error) {
     console.error('공휴일 데이터 호출 중 오류 발생:', error);
