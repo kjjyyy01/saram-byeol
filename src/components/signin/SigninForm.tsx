@@ -4,7 +4,7 @@ import { PLACEHOLDER_EMAIL, PLACEHOLDER_PASSWORD } from '@/constants/placeholder
 import { useSignin } from '@/hooks/useSignin';
 import { signInSchema } from '@/lib/schemas/signinSchema';
 import { zodResolver } from '@hookform/resolvers/zod';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 
@@ -14,13 +14,20 @@ export interface SignInFormType {
 }
 
 const SigninForm = () => {
-  const { register, handleSubmit, formState } = useForm<SignInFormType>({
+  const [isChecked, setIsChecked] = useState<boolean>(false);
+
+  const { register, handleSubmit, formState, setValue, getValues } = useForm<SignInFormType>({
     mode: 'onChange',
     resolver: zodResolver(signInSchema),
   });
 
+  useEffect(() => {
+    const aaa = localStorage.getItem('id') || '';
+    setValue('email', aaa);
+  }, [isChecked, setValue]);
+
   //로그인 커스텀 훅
-  const { SignInHandler } = useSignin();
+  const { SignInHandler } = useSignin(getValues, isChecked);
 
   //준비중인 기능을 알리기 위한 핸들러함수
   const alreadyServiceHandler = () => {
@@ -77,7 +84,13 @@ const SigninForm = () => {
       </div>
       <div className='mb-[22px] mt-9 flex w-full items-center justify-between px-5 md:mb-0 md:mt-0 md:flex md:justify-between md:px-0'>
         <label htmlFor='saveId' className='flex items-center justify-center text-sm md:text-base'>
-          <input type='checkbox' id='saveId' onClick={alreadyServiceHandler} className='mr-2 h-5 w-5' />
+          <input
+            type='checkbox'
+            id='saveId'
+            checked={isChecked}
+            onChange={(e) => setIsChecked(e.target.checked)}
+            className='mr-2 h-5 w-5'
+          />
           로그인 정보 저장
         </label>
         <button type='button' onClick={alreadyServiceHandler} className='hidden md:block'>

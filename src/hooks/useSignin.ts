@@ -2,15 +2,23 @@ import { signInUser } from '@/app/api/supabase/service';
 import { SignInFormType } from '@/components/signin/SigninForm';
 import { PEOPLE } from '@/constants/paths';
 import { useRouter } from 'next/navigation';
+import { UseFormGetValues } from 'react-hook-form';
 import { toast } from 'react-toastify';
 
-export const useSignin = () => {
+export const useSignin = (getValues: UseFormGetValues<SignInFormType>, isChecked: boolean) => {
   const router = useRouter();
 
   //로그인 기능 핸들러
   const SignInHandler = async (value: SignInFormType) => {
+    const email = getValues('email');
+
     const { data, error } = await signInUser(value);
     if (data.session) {
+      if (isChecked) {
+        localStorage.setItem('id', email);
+      } else {
+        localStorage.removeItem('id');
+      }
       toast.success(`로그인에 성공했습니다. '내사람'으로 이동합니다.`);
       router.replace(PEOPLE);
     } else if (error) {
