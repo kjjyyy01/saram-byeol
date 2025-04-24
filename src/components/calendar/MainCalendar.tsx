@@ -20,6 +20,8 @@ interface MainCalendarProps {
     onShowUpcomingPlans: () => void;
     onAddPlan: () => void;
   };
+  activeTab: string;
+  holidays: { date: string; title: string }[];
 }
 
 const localizer = dateFnsLocalizer({
@@ -37,6 +39,8 @@ const MainCalendar = ({
   moment,
   setMoment,
   onEventDrop,
+  activeTab,
+  holidays,
 }: MainCalendarProps) => {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null); //선택한 셀 날짜
   const [isPopOverOpen, setIsPopOverOpen] = useState(false); //팝오버 오픈 여부
@@ -44,7 +48,7 @@ const MainCalendar = ({
   const DnDCalendar = withDragAndDrop<CalendarEventType>(Calendar); //DnD 사용 캘린더
 
   return (
-    <div>
+    <div className='h-screen'>
       <DnDCalendar
         selectable
         localizer={localizer}
@@ -59,9 +63,9 @@ const MainCalendar = ({
         defaultView='month'
         views={['month']}
         components={{
-          toolbar: (props) => <CustomToolbar {...props} {...CustomToolbarProps} />, // 상단 툴바(달 이동)
+          toolbar: (props) => <CustomToolbar {...props} {...CustomToolbarProps} activeTab={activeTab} />, // 상단 툴바(달 이동)
           month: {
-            dateHeader: CustomDateHeader, // 날짜 셀의 숫자
+            dateHeader: (props) => <CustomDateHeader {...props} holidays={holidays ?? []} />, // 날짜 셀의 숫자
           },
         }}
         eventPropGetter={holidayStyle}
@@ -70,7 +74,7 @@ const MainCalendar = ({
           setIsPopOverOpen(true); // 모달 열기
         }}
         onSelectEvent={(event) => onSelectPlan(event.id)}
-        style={{ height: '100vh' }}
+        className='h-full'
       />
       {isPopOverOpen && selectedDate && (
         <CalendarPopOver open={isPopOverOpen} onOpenChange={setIsPopOverOpen} date={selectedDate} />

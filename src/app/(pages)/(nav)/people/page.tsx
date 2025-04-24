@@ -34,13 +34,13 @@ const People = () => {
     <div className='flex h-screen'>
       {/* 왼쪽 연락처 리스트 영역 */}
       <div className='h-full w-[410px] overflow-y-auto rounded-[20px] border border-gray-200'>
-        <ContactList onSelectedContact={setPeopleSelectedId} />
+        <ContactList peopleSelectedId={peopleSelectedId} onSelectedContact={setPeopleSelectedId} />
       </div>
 
       {/* 오른쪽 상세 정보 영역 */}
-      <div className='flex-1 overflow-y-auto'>
+      <div className='flex-1 overflow-y-visible'>
         {peopleSelectedId ? (
-          <PeopleDetailPanel contactsId={peopleSelectedId} />
+          <PeopleDetailPanel contactsId={peopleSelectedId} onDeleteSuccess={() => setPeopleSelectedId(null)} />
         ) : (
           <div className='flex h-full items-center justify-center p-8 text-xl text-gray-500'>사람을 선택해주세요.</div>
         )}

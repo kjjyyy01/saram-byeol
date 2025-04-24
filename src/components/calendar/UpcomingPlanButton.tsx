@@ -2,7 +2,12 @@ import { getUserPlans } from '@/app/api/supabase/service';
 import { useAuthStore } from '@/store/zustand/store';
 import React, { useEffect, useState } from 'react';
 
-const UpcomingPlanButton = ({ onClick }: { onClick: () => void }) => {
+interface Props {
+  onClick: () => void;
+  activeTab: string;
+}
+
+const UpcomingPlanButton = ({ onClick, activeTab }: Props) => {
   const user = useAuthStore((state) => state.user);
   const [upcomingCount, setUpcomingCount] = useState<number | null>(null);
 
@@ -18,10 +23,13 @@ const UpcomingPlanButton = ({ onClick }: { onClick: () => void }) => {
 
   return (
     <div>
-      <button onClick={onClick} className='mr-6 rounded-md border-[1px] px-5 py-3 text-[14px] font-bold'>
+      <button
+        onClick={onClick}
+        className={`mr-6 rounded-md border-[1px] px-5 py-3 text-[14px] font-bold ${activeTab === 'upcoming' ? 'border-primary-500 text-primary-500' : 'border-grey-300 text-grey-700'}`}
+      >
         다가오는 약속
-        <span className='m-1 rounded-full bg-black px-1 text-white'>
-          {upcomingCount !== null ? upcomingCount : '-'}
+        <span className={`m-1 rounded-full px-1 text-white ${activeTab === 'upcoming' ? 'bg-[#0066FF]' : 'bg-black'}`}>
+          {upcomingCount !== null ? upcomingCount : ''}
         </span>
       </button>
     </div>

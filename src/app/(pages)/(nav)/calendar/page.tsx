@@ -68,6 +68,9 @@ export default function Calendar() {
   const { showPlanForm, setShowPlanForm } = usePlanFormStore();
   const { mutate: updateEvent } = useUpadateEventMutate();
 
+  // 툴바 버튼 동적
+  const [activeTab, setActiveTab] = useState<'upcoming' | 'add'>('upcoming');
+
   //캘린더 페이지 마운트 후, 로그인 여부 판단
   useEffect(() => {
     setHasMounted(true);
@@ -79,7 +82,7 @@ export default function Calendar() {
     }
   }, [hasMounted, isAccessGranted, router]);
 
-  // planId가 바뀔 때마다 refetch
+  // 약속바 클릭마다 약속 상세 refetch
   useEffect(() => {
     if (selectedPlanId) {
       refetchSelectedPlan();
@@ -104,7 +107,7 @@ export default function Calendar() {
       setIsEditMode(false);
       setEditPlan(null);
     }
-  }, [selectedPlanData]);
+  }, [selectedPlanData, setShowPlanForm]);
 
   //처음 받아오는 readonly 약속을 조작 가능하도록 복사
   useEffect(() => {
@@ -223,6 +226,8 @@ export default function Calendar() {
           setMoment={setMoment}
           events={combinedEvents}
           onEventDrop={moveEventsHandler}
+          activeTab={activeTab}
+          holidays={holidays}
           onSelectPlan={(planId) => setSelectedPlanId(planId)}
           setSelectPlan={(plan) => {
             setSelectPlan(plan);
@@ -238,6 +243,7 @@ export default function Calendar() {
               setShowPlanForm(false);
               setIsEditMode(false);
               setEditPlan(null);
+              setActiveTab('upcoming');
             },
             onAddPlan: () => {
               setSelectPlan(null);
@@ -246,6 +252,7 @@ export default function Calendar() {
               setIsEditMode(false);
               setEditPlan(null);
               setInitialFormData(planFormDefaultValues);
+              setActiveTab('add');
             },
           }}
         />

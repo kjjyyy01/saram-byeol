@@ -81,135 +81,139 @@ const SignupForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit(SignUpHandler)} className='flex flex-col gap-8'>
-      <div className='flex flex-col'>
-        <div className='flex flex-col justify-start'>
-          <label
-            className={`self-stretch text-sm font-bold leading-[150%] ${formState.errors.nickname ? `text-status-error` : `text-grey-900`}`}
-          >
-            이름(닉네임)
-          </label>
-          <div className='flex flex-row gap-6'>
-            <input
-              className={`w-full flex-1 items-center gap-2 self-stretch rounded-lg border p-4 ${formState.errors.nickname ? `border-status-error focus:outline-none` : `border-grey-200`}`}
-              type='text'
-              id='nickname'
-              maxLength={8}
-              placeholder={PLACEHOLDER_NICKNAME}
-              {...register('nickname')}
-            />
-            <button
-              type='button'
-              className='duration-300" rounded-lg border border-grey-500 bg-grey-0 px-6 py-4 transition hover:bg-primary-600 hover:text-grey-0'
-              onClick={NicknameDuplicateTestHandler}
+    <form onSubmit={handleSubmit(SignUpHandler)} className='flex flex-col'>
+      <div className='mx-auto w-full max-w-[375px] px-5 md:max-w-full md:px-0'>
+        <div className='mb-6 flex flex-col gap-1 md:mb-8'>
+          <div className='flex flex-col justify-start gap-1'>
+            <label
+              className={`md:text- self-stretch text-sm font-bold leading-[150%] ${formState.errors.nickname ? `text-status-error` : `text-grey-900`}`}
             >
-              중복 검사
-            </button>
+              이름(닉네임)
+            </label>
+            <div className='flex flex-row gap-6'>
+              <input
+                className={`w-full flex-1 items-center gap-2 self-stretch rounded-lg border p-4 ${formState.errors.nickname ? `border-status-error focus:outline-none` : `border-grey-200`}`}
+                type='text'
+                id='nickname'
+                maxLength={8}
+                placeholder={PLACEHOLDER_NICKNAME}
+                {...register('nickname')}
+              />
+              <button
+                type='button'
+                className='duration-300" rounded-lg border border-grey-500 bg-grey-0 px-6 py-4 transition hover:bg-primary-600 hover:text-grey-0'
+                onClick={NicknameDuplicateTestHandler}
+              >
+                중복 검사
+              </button>
+            </div>
           </div>
+          {formState.errors.nickname ? (
+            <span className='self-stretch text-sm leading-[150%] text-status-error'>
+              {formState.errors.nickname.message}
+            </span>
+          ) : (
+            <span className='self-stretch text-xs font-normal not-italic leading-[150%] text-grey-100 md:text-base'>
+              2자 이상 8자 이하로 입력해주세요.
+            </span>
+          )}
         </div>
-        {formState.errors.nickname ? (
-          <span className='self-stretch text-sm leading-[150%] text-status-error'>
-            {formState.errors.nickname.message}
-          </span>
-        ) : (
-          <span className='self-stretch font-normal not-italic leading-[150%] text-grey-100'>
-            2자 이상 8자 이하로 입력해주세요.
-          </span>
-        )}
-      </div>
 
-      <div className='flex flex-col'>
-        <div className='flex flex-col justify-start'>
-          <label
-            className={`self-stretch text-sm font-bold leading-[150%] ${formState.errors.email ? `text-status-error` : `text-grey-900`}`}
-          >
-            아이디(이메일)
-          </label>
-          <div className='flex flex-row gap-6'>
-            <input
-              className={`w-full flex-1 items-center gap-2 self-stretch rounded-lg border p-4 ${formState.errors.email ? `border-status-error focus:outline-none` : `border-grey-200`}`}
-              type='email'
-              id='email'
-              placeholder={PLACEHOLDER_EMAIL}
-              {...register('email')}
-            />
-            <button
-              type='button'
-              className='duration-300" rounded-lg border border-grey-500 bg-grey-0 px-6 py-4 transition hover:bg-primary-600 hover:text-grey-0'
-              onClick={EmailDuplicateTestHandler}
+        <div className='mb-6 flex flex-col gap-1 md:mb-8'>
+          <div className='flex flex-col justify-start gap-1'>
+            <label
+              className={`self-stretch text-sm font-bold leading-[150%] ${formState.errors.email ? `text-status-error` : `text-grey-900`}`}
             >
-              중복 검사
-            </button>
+              아이디(이메일)
+            </label>
+            <div className='flex flex-row gap-6'>
+              <input
+                className={`w-full flex-1 items-center gap-2 self-stretch rounded-lg border p-4 ${formState.errors.email ? `border-status-error focus:outline-none` : `border-grey-200`}`}
+                type='email'
+                id='email'
+                placeholder={PLACEHOLDER_EMAIL}
+                {...register('email')}
+              />
+              <button
+                type='button'
+                className='duration-300" rounded-lg border border-grey-500 bg-grey-0 px-6 py-4 transition hover:bg-primary-600 hover:text-grey-0'
+                onClick={EmailDuplicateTestHandler}
+              >
+                중복 검사
+              </button>
+            </div>
           </div>
+          {formState.errors.email ? (
+            <span className='self-stretch text-sm leading-[150%] text-status-error'>
+              {formState.errors.email.message}
+            </span>
+          ) : (
+            <span className='self-stretch text-xs font-normal not-italic leading-[150%] text-grey-100 md:text-base'>
+              이메일 형식에 맞게 입력해주세요.
+            </span>
+          )}
         </div>
-        {formState.errors.email ? (
-          <span className='self-stretch text-sm leading-[150%] text-status-error'>
-            {formState.errors.email.message}
-          </span>
-        ) : (
-          <span className='self-stretch font-normal not-italic leading-[150%] text-grey-100'>
-            이메일 형식에 맞게 입력해주세요.
-          </span>
-        )}
-      </div>
 
-      <div className='flex flex-col'>
-        <div className='flex flex-col justify-start'>
-          <label
-            className={`self-stretch text-sm font-bold leading-[150%] ${formState.errors.password ? `text-status-error` : `text-grey-900`}`}
-          >
-            비밀번호
-          </label>
-          <input
-            className={`w-full flex-1 items-center gap-2 self-stretch rounded-lg border p-4 ${formState.errors.password ? `border-status-error focus:outline-none` : `border-grey-200`}`}
-            type='password'
-            id='password'
-            placeholder={PLACEHOLDER_PASSWORD}
-            {...register('password')}
-          />
+        <div className='mb-6 flex flex-col gap-1 md:mb-8'>
+          <div className='flex flex-col justify-start gap-1'>
+            <label
+              className={`self-stretch text-sm font-bold leading-[150%] ${formState.errors.password ? `text-status-error` : `text-grey-900`}`}
+            >
+              비밀번호
+            </label>
+            <input
+              className={`w-full flex-1 items-center gap-2 self-stretch rounded-lg border p-4 ${formState.errors.password ? `border-status-error focus:outline-none` : `border-grey-200`}`}
+              type='password'
+              id='password'
+              placeholder={PLACEHOLDER_PASSWORD}
+              {...register('password')}
+            />
+          </div>
+          {formState.errors.password ? (
+            <span className='self-stretch text-sm leading-[150%] text-status-error'>
+              {formState.errors.password.message}
+            </span>
+          ) : (
+            <span className='self-stretch text-xs font-normal not-italic leading-[150%] text-grey-100 md:text-base'>
+              특수문자(!@#$%^&*)를 1개 이상 포함하여 입력해주세요.
+            </span>
+          )}
         </div>
-        {formState.errors.password ? (
-          <span className='self-stretch text-sm leading-[150%] text-status-error'>
-            {formState.errors.password.message}
-          </span>
-        ) : (
-          <span className='self-stretch font-normal not-italic leading-[150%] text-grey-100'>
-            특수문자(!@#$%^&*)를 1개 이상 포함하여 입력해주세요.
-          </span>
-        )}
-      </div>
 
-      <div className='flex flex-col'>
-        <div className='flex flex-col justify-start'>
-          <label
-            className={`self-stretch text-sm font-bold leading-[150%] ${formState.errors.passwordCheck ? `text-status-error` : `text-grey-900`}`}
-          >
-            비밀번호 확인
-          </label>
-          <input
-            className={`w-full flex-1 items-center gap-2 self-stretch rounded-lg border p-4 ${formState.errors.passwordCheck ? `border-status-error focus:outline-none` : `border-grey-200`}`}
-            type='password'
-            id='passwordCheck'
-            placeholder={PLACEHOLDER_PASSWORD_CHECK}
-            {...register('passwordCheck')}
-          />
+        <div className='mb-6 flex flex-col gap-1 md:mb-8'>
+          <div className='flex flex-col justify-start gap-1'>
+            <label
+              className={`self-stretch text-sm font-bold leading-[150%] ${formState.errors.passwordCheck ? `text-status-error` : `text-grey-900`}`}
+            >
+              비밀번호 확인
+            </label>
+            <input
+              className={`w-full flex-1 items-center gap-2 self-stretch rounded-lg border p-4 ${formState.errors.passwordCheck ? `border-status-error focus:outline-none` : `border-grey-200`}`}
+              type='password'
+              id='passwordCheck'
+              placeholder={PLACEHOLDER_PASSWORD_CHECK}
+              {...register('passwordCheck')}
+            />
+          </div>
+          {formState.errors.passwordCheck ? (
+            <span className='self-stretch text-sm leading-[150%] text-status-error'>
+              {formState.errors.passwordCheck.message}
+            </span>
+          ) : (
+            <span className='self-stretch text-xs font-normal not-italic leading-[150%] text-grey-100 md:text-base'>
+              비밀번호를 한번 더 입력해주세요.
+            </span>
+          )}
         </div>
-        {formState.errors.passwordCheck ? (
-          <span className='self-stretch text-sm leading-[150%] text-status-error'>
-            {formState.errors.passwordCheck.message}
-          </span>
-        ) : (
-          <span className='self-stretch font-normal not-italic leading-[150%] text-grey-100'>
-            비밀번호를 한번 더 입력해주세요.
-          </span>
-        )}
       </div>
-      <button
-        type='submit'
-        className='duration-600 bg-h w-[456px] justify-start rounded-lg bg-primary-500 px-6 py-4 font-bold leading-[135%] text-white transition hover:bg-primary-600 active:bg-primary-700'
-      >
-        회원가입
-      </button>
+      <div className='w-full px-[10px] md:px-0'>
+        <button
+          type='submit'
+          className='duration-600 mx-auto w-full rounded-lg bg-primary-500 px-6 py-4 font-bold leading-[135%] text-white transition hover:bg-primary-600 active:bg-primary-700 md:w-[456px]'
+        >
+          회원가입
+        </button>
+      </div>
     </form>
   );
 };
