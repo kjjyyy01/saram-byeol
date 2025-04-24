@@ -6,14 +6,15 @@ import SideSheet from '@/components/contacts/SideSheet';
 import { useAuthStore } from '@/store/zustand/store';
 import { useDemoStore } from '@/store/zustand/useDemoStore';
 import { toast } from 'react-toastify';
-import { useMutateInfiniteContact } from '@/hooks/mutations/useMutateTogglePinContact';
+import { useMutateInfiniteContact } from '@/hooks/mutations/useMutateInfiniteContact';
 import { usePinnedContacts, useRegularContactsInfinite } from '@/hooks/queries/useGetContactsForInfinite';
 
 interface ContactListProps {
+  peopleSelectedId: string | null;
   onSelectedContact: (id: string) => void;
 }
 
-export default function ContactList({ onSelectedContact }: ContactListProps) {
+export default function ContactList({ peopleSelectedId ,onSelectedContact }: ContactListProps) {
   const [isAddContactOpen, setIsAddContactOpen] = useState(false);
   const handleClose = () => setIsAddContactOpen(false);
 
@@ -57,7 +58,7 @@ export default function ContactList({ onSelectedContact }: ContactListProps) {
     pinMutation.mutate({ contactId, isPinned });
   };
 
-  // 무한 스크롤 옵저버 세팅 (MDN: IntersectionObserver API 참고)
+  // 무한 스크롤 옵저버 세팅 (MDN: IntersectionObserver API)
   const loadMoreRef = useRef<HTMLDivElement>(null);
   const handleObserver = useCallback(
     (entries: IntersectionObserverEntry[]) => {
@@ -124,7 +125,7 @@ export default function ContactList({ onSelectedContact }: ContactListProps) {
                   {(isDemoUser ? demoPinned : pinnedContacts).map((c) => (
                     <li key={`pinned-${c.contacts_id}`}>
                       <div onClick={() => onSelectedContact(c.contacts_id)}>
-                        <ContactItem contact={c} onTogglePin={handleTogglePin} />
+                        <ContactItem contact={c} onTogglePin={handleTogglePin} isSelected={peopleSelectedId === c.contacts_id} />
                       </div>
                     </li>
                   ))}
@@ -143,7 +144,7 @@ export default function ContactList({ onSelectedContact }: ContactListProps) {
                 {(isDemoUser ? demoRegular : regularContacts).map((c) => (
                   <li key={c.contacts_id}>
                     <div onClick={() => onSelectedContact(c.contacts_id)} className='w-full'>
-                      <ContactItem contact={c} onTogglePin={handleTogglePin} />
+                      <ContactItem contact={c} onTogglePin={handleTogglePin} isSelected={peopleSelectedId === c.contacts_id}  />
                     </div>
                   </li>
                 ))}
