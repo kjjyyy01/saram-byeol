@@ -28,6 +28,8 @@ export const useContactForm = () => {
 
   // 폼 제출 함수
   const onSubmit = async (data: ContactFormValues) => {
+    if (!userId) return;
+
     try {
       setIsSubmitting(true);
       
@@ -46,8 +48,14 @@ export const useContactForm = () => {
       // 연락처 저장
       await mutateInsertContacts(contactData);
 
-      // 연락처 목록 쿼리 무효화
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEY.CONTACTS, userId] });
+      // 고정된 연락처(pinned) 무효화
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEY.CONTACTS, 'pinned', userId],
+      });
+      // 일반 연락처(infinite) 무효화
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEY.CONTACTS_INFINITE, 'regular', userId],
+      });
       
       // 성공 토스트 메시지
       toast.success(`${data.name} 연락처가 성공적으로 추가되었습니다.`);
