@@ -71,3 +71,8 @@ export interface ContactWithPlansDetailType {
   contact: ContactDetailType;
   plans: PlanDetailType[];
 }
+
+export interface fetchRegularInfiniteContacts {
+  contacts: ContactItemType[];
+  nextPage?: number;
+}
