@@ -65,7 +65,7 @@ const MainCalendar = ({
         components={{
           toolbar: (props) => <CustomToolbar {...props} {...CustomToolbarProps} activeTab={activeTab} />, // 상단 툴바(달 이동)
           month: {
-            dateHeader: (props) => <CustomDateHeader {...props} holidays={holidays} />, // 날짜 셀의 숫자
+            dateHeader: (props) => <CustomDateHeader {...props} holidays={holidays ?? []} />, // 날짜 셀의 숫자
           },
         }}
         eventPropGetter={holidayStyle}
