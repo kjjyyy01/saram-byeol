@@ -6,11 +6,8 @@ import SideSheet from '@/components/contacts/SideSheet';
 import { useAuthStore } from '@/store/zustand/store';
 import { useDemoStore } from '@/store/zustand/useDemoStore';
 import { toast } from 'react-toastify';
-import { useMutateTogglePinContact } from '@/hooks/mutations/useMutateTogglePinContact';
-import {
-  usePinnedContacts,
-  useRegularContactsInfinite,
-} from '@/hooks/queries/useGetContactsForInfinite';
+import { useMutateInfiniteContact } from '@/hooks/mutations/useMutateTogglePinContact';
+import { usePinnedContacts, useRegularContactsInfinite } from '@/hooks/queries/useGetContactsForInfinite';
 
 interface ContactListProps {
   onSelectedContact: (id: string) => void;
@@ -27,8 +24,8 @@ export default function ContactList({ onSelectedContact }: ContactListProps) {
   const isAuthenticated = Boolean(userId);
 
   // 데모 모드에서는 demoContacts만 사용
-  const demoPinned = useMemo(() => demoContacts.filter(c => c.is_pinned), [demoContacts]);
-  const demoRegular = useMemo(() => demoContacts.filter(c => !c.is_pinned), [demoContacts]);
+  const demoPinned = useMemo(() => demoContacts.filter((c) => c.is_pinned), [demoContacts]);
+  const demoRegular = useMemo(() => demoContacts.filter((c) => !c.is_pinned), [demoContacts]);
 
   // 실제 모드: 고정된 연락처
   const {
@@ -48,13 +45,10 @@ export default function ContactList({ onSelectedContact }: ContactListProps) {
   } = useRegularContactsInfinite(userId as string);
 
   // 페이징된 일반 연락처 배열 합치기
-  const regularContacts = useMemo(
-    () => regularPages?.pages.flatMap(page => page.contacts) || [],
-    [regularPages]
-  );
+  const regularContacts = useMemo(() => regularPages?.pages.flatMap((page) => page.contacts) || [], [regularPages]);
 
   // 핀 토글 뮤테이션
-  const pinMutation = useMutateTogglePinContact(userId as string);
+  const pinMutation = useMutateInfiniteContact(userId as string);
   const handleTogglePin = (contactId: string, isPinned: boolean) => {
     if (isDemoUser) {
       toast.info('데모 체험 중에는 이 기능을 사용할 수 없습니다.');
@@ -88,48 +82,46 @@ export default function ContactList({ onSelectedContact }: ContactListProps) {
   // 인증·로딩·에러 처리
   if (!isAuthenticated) {
     return (
-      <div className="flex h-full flex-col items-center justify-center">
-        <p className="text-lg text-gray-600">로그인이 필요한 서비스입니다.</p>
+      <div className='flex h-full flex-col items-center justify-center'>
+        <p className='text-lg text-gray-600'>로그인이 필요한 서비스입니다.</p>
       </div>
     );
   }
-  const isLoading = isDemoUser
-    ? false
-    : isPinnedLoading || isRegularLoading;
+  const isLoading = isDemoUser ? false : isPinnedLoading || isRegularLoading;
   if (pinnedError || regularError) {
     console.error('연락처 로딩 실패', { pinnedError, regularError });
   }
 
   return (
-    <div className="flex h-full flex-col overflow-x-hidden">
+    <div className='flex h-full flex-col overflow-x-hidden'>
       {/* 헤더 */}
-      <h1 className="pl-6 pt-6 text-2xl font-bold">내 사람 목록</h1>
+      <h1 className='pl-6 pt-6 text-2xl font-bold'>내 사람 목록</h1>
 
       {/* 추가 버튼 */}
-      <div className="mt-12 flex justify-center">
+      <div className='mt-12 flex justify-center'>
         <button
-          className="flex h-12 w-full max-w-sm items-center justify-center rounded-lg border border-gray-300 font-medium text-gray-700 transition-colors hover:bg-gray-100"
+          className='flex h-12 w-full max-w-sm items-center justify-center rounded-lg border border-gray-300 font-medium text-gray-700 transition-colors hover:bg-gray-100'
           onClick={() => setIsAddContactOpen(true)}
         >
-          <UserPlus size={20} className="mr-2" />
+          <UserPlus size={20} className='mr-2' />
           <span>내 사람 추가</span>
         </button>
       </div>
 
       {/* 연락처 리스트 */}
-      <div className="mt-12 flex-1 overflow-y-auto">
+      <div className='mt-12 flex-1 overflow-y-auto'>
         {isLoading ? (
-          <div className="py-8 text-center">연락처를 불러오는 중...</div>
+          <div className='py-8 text-center'>연락처를 불러오는 중...</div>
         ) : (
           <>
             {/* 핀된 연락처 */}
             {(isDemoUser ? demoPinned : pinnedContacts).length > 0 && (
-              <section className="mb-6">
-                <div className="flex items-center bg-gray-50 px-6 py-3">
-                  <h2 className="text-sm font-semibold text-gray-700">고정됨</h2>
+              <section className='mb-6'>
+                <div className='flex items-center bg-gray-50 px-6 py-3'>
+                  <h2 className='text-sm font-semibold text-gray-700'>고정됨</h2>
                 </div>
-                <ul className="flex flex-col">
-                  {(isDemoUser ? demoPinned : pinnedContacts).map(c => (
+                <ul className='flex flex-col'>
+                  {(isDemoUser ? demoPinned : pinnedContacts).map((c) => (
                     <li key={`pinned-${c.contacts_id}`}>
                       <div onClick={() => onSelectedContact(c.contacts_id)}>
                         <ContactItem contact={c} onTogglePin={handleTogglePin} />
@@ -143,14 +135,14 @@ export default function ContactList({ onSelectedContact }: ContactListProps) {
             {/* 일반 연락처 */}
             <section>
               {(isDemoUser ? demoRegular : regularContacts).length > 0 && (
-                <div className="flex items-center bg-gray-50 px-6 py-3">
-                  <h2 className="text-sm font-semibold text-gray-700">리스트</h2>
+                <div className='flex items-center bg-gray-50 px-6 py-3'>
+                  <h2 className='text-sm font-semibold text-gray-700'>리스트</h2>
                 </div>
               )}
-              <ul className="flex flex-col">
-                {(isDemoUser ? demoRegular : regularContacts).map(c => (
+              <ul className='flex flex-col'>
+                {(isDemoUser ? demoRegular : regularContacts).map((c) => (
                   <li key={c.contacts_id}>
-                    <div onClick={() => onSelectedContact(c.contacts_id)} className="w-full">
+                    <div onClick={() => onSelectedContact(c.contacts_id)} className='w-full'>
                       <ContactItem contact={c} onTogglePin={handleTogglePin} />
                     </div>
                   </li>
@@ -159,12 +151,8 @@ export default function ContactList({ onSelectedContact }: ContactListProps) {
 
               {/* 무한 스크롤 트리거 */}
               {!isDemoUser && (
-                <div ref={loadMoreRef} className="py-4 flex justify-center">
-                  {isFetchingNextPage && (
-                    <div className="text-sm text-gray-500">
-                      연락처를 더 불러오는 중...
-                    </div>
-                  )}
+                <div ref={loadMoreRef} className='flex justify-center py-4'>
+                  {isFetchingNextPage && <div className='text-sm text-gray-500'>연락처를 더 불러오는 중...</div>}
                 </div>
               )}
             </section>
