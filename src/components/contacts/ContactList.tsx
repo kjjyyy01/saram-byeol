@@ -6,7 +6,7 @@ import SideSheet from '@/components/contacts/SideSheet';
 import { useAuthStore } from '@/store/zustand/store';
 import { useDemoStore } from '@/store/zustand/useDemoStore';
 import { toast } from 'react-toastify';
-import { useMutateInfiniteContact } from '@/hooks/mutations/useMutateTogglePinContact';
+import { useMutateInfiniteContact } from '@/hooks/mutations/useMutateInfiniteContact';
 import { usePinnedContacts, useRegularContactsInfinite } from '@/hooks/queries/useGetContactsForInfinite';
 
 interface ContactListProps {
