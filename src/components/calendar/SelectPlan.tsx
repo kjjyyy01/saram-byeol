@@ -29,6 +29,9 @@ const SelectPlan = ({ plans, onEdit, onDeleteSuccess }: SelectPlanProps) => {
             toast.success('성공적으로 삭제되었습니다.');
             onDeleteSuccess();
           },
+          onError: () => {
+            toast.error('삭제에 실패했습니다.');
+          },
         });
       },
     });

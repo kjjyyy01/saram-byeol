@@ -38,9 +38,9 @@ const People = () => {
       </div>
 
       {/* 오른쪽 상세 정보 영역 */}
-      <div className='flex-1 overflow-y-auto'>
+      <div className='flex-1 overflow-y-visible'>
         {peopleSelectedId ? (
-          <PeopleDetailPanel contactsId={peopleSelectedId} />
+          <PeopleDetailPanel contactsId={peopleSelectedId} onDeleteSuccess={() => setPeopleSelectedId(null)} />
         ) : (
           <div className='flex h-full items-center justify-center p-8 text-xl text-gray-500'>사람을 선택해주세요.</div>
         )}
