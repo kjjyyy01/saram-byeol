@@ -4,7 +4,7 @@ import React from 'react';
 
 const Home = () => {
   return (
-    <div className={`overflow-hidden [&::-webkit-scrollbar]:hidden`}>
+    <div >
       {/* <MainDoor /> */}
       <LandingPage />
     </div>
