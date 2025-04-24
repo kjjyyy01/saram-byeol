@@ -8,7 +8,7 @@ const SectionOne = () => {
           <Image src={'/home/landing-mockup.png'} alt={'메인랜딩'} width={580} height={490} />
         </div>
         <div className='flex h-full w-full flex-col items-center justify-center gap-12'>
-          <h2 className='text-[40px] font-bold leading-snug'>내 사람과 약속을 쉽게 관리하는 서비스</h2>
+          <h2 className='font-gmarket text-[40px] font-bold leading-snug'>내 사람과 약속을 쉽게 관리하는 서비스</h2>
           <p>
             사람별은 소중한 사람들과의 관계를 더 깊고 전문적으로 관리할 수 있는 퍼스널 스케줄 서비스입니다.
             <br />

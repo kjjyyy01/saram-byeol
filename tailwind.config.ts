@@ -90,8 +90,9 @@ const config: Config = {
           '5': 'hsl(var(--chart-5))',
         },
       },
-      fontFamily:{
-        pretendard: ['var(--font-pretendard)']
+      fontFamily: {
+        pretendard: ['var(--font-pretendard)'],
+        gmarket: ['var(--font-gmarket)', 'sans-serif'],
       },
       borderRadius: {
         lg: 'var(--radius)',
@@ -101,10 +102,10 @@ const config: Config = {
       screens: {
         'sm': '640px',
         // => @media (min-width: 576px) { ... }
-  
+
         'md': '960px',
         // => @media (min-width: 960px) { ... }
-  
+
         'lg': '1440px',
         // => @media (min-width: 1440px) { ... }
       },
