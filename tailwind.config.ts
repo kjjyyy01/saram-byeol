@@ -109,6 +109,9 @@ const config: Config = {
         'lg': '1440px',
         // => @media (min-width: 1440px) { ... }
       },
+      boxShadow: {
+        'app-logo': '0px 6px 15px 0px rgba(0, 0, 0, 0.15)',
+      },
     },
   },
   plugins: [require('tailwindcss-animate')],

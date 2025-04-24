@@ -1,6 +1,6 @@
 'use client';
 import useWheel from '@/hooks/useWheel';
-import { useCallback } from 'react';
+import { useCallback, useRef } from 'react';
 import SectionOne from '@/components/home/SectionOne';
 import SectionTwo from '@/components/home/SectionTwo';
 import SectionThree from '@/components/home/SectionThree';
@@ -43,14 +43,29 @@ const LandingPage = () => {
   );
 
   const containerRef = useWheel({ callback: wheelHandler });
+  const sectionRef = {
+    about: useRef<HTMLDivElement>(null),
+    function: useRef<HTMLDivElement>(null),
+    subscription: useRef<HTMLDivElement>(null),
+  };
+
+  const scrollToSection = (key: keyof typeof sectionRef) => {
+    sectionRef[key].current?.scrollIntoView({ behavior: 'smooth' });
+  };
 
   return (
     <>
-      <MainHeader />
+      <MainHeader onNavClick={scrollToSection} />
       <div className='h-screen overflow-y-hidden' ref={containerRef}>
-        <SectionOne />
-        <SectionTwo />
-        <SectionThree />
+        <div ref={sectionRef.about}>
+          <SectionOne />
+        </div>
+        <div ref={sectionRef.function}>
+          <SectionTwo />
+        </div>
+        <div ref={sectionRef.subscription}>
+          <SectionThree />
+        </div>
       </div>
     </>
   );
