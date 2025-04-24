@@ -23,6 +23,14 @@ const SideSheet = ({
   }, [isOpen]);
 
   return (
+   <>
+   {/* 오버레이 */}
+   {isOpen && (
+    <div
+      className='fixed inset-0 bg-black bg-opacity-40 z-40'
+      onClick={onClose}
+    />
+   )}
     <div
       className={`
         fixed right-0 top-0 z-50 h-screen w-full transform
@@ -56,6 +64,7 @@ const SideSheet = ({
         </div>
       </div>
     </div>
+   </>
   );
 };
 
