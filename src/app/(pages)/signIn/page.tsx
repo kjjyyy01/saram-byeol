@@ -44,8 +44,14 @@ const SignIn = () => {
           </section>
         </section>
 
-        <section className='hidden md:relative md:h-full md:w-full lg:block'>
-          <Image src={'/saram-byeol_img.avif'} alt='metaphor image' fill className='object-contain' />
+        <section className='hidden md:flex md:h-full md:w-full md:items-center md:justify-center lg:block'>
+          <Image
+            src={'/saram-byeol_img.avif'}
+            alt='metaphor image'
+            width={950}
+            height={1080}
+            className='object-contain'
+          />
         </section>
       </div>
     </div>

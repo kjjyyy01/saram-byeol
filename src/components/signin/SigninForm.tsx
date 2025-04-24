@@ -75,7 +75,7 @@ const SigninForm = () => {
           )}
         </div>
       </div>
-      <div className='mb-[22px] mt-9 flex w-[375px] items-center justify-between px-5 md:mb-0 md:mt-0 md:flex md:w-full md:justify-between md:px-0'>
+      <div className='mb-[22px] mt-9 flex w-full items-center justify-between px-5 md:mb-0 md:mt-0 md:flex md:justify-between md:px-0'>
         <label htmlFor='saveId' className='flex items-center justify-center text-sm md:text-base'>
           <input type='checkbox' id='saveId' onClick={alreadyServiceHandler} className='mr-2 h-5 w-5' />
           로그인 정보 저장
@@ -87,7 +87,7 @@ const SigninForm = () => {
           비밀번호찾기
         </button>
       </div>
-      <div className='w-[375px] px-[10px] md:w-full md:px-0'>
+      <div className='w-full px-[10px] md:px-0'>
         <button
           type='submit'
           className='duration-600 mx-auto w-full rounded-lg bg-primary-500 px-6 py-4 font-bold leading-[135%] text-white transition hover:bg-primary-600 active:bg-primary-700 md:w-[456px]'

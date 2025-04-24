@@ -82,7 +82,7 @@ const SignupForm = () => {
 
   return (
     <form onSubmit={handleSubmit(SignUpHandler)} className='flex flex-col'>
-      <div className='mx-auto w-[375px] px-5 md:w-full md:px-0'>
+      <div className='mx-auto w-full max-w-[375px] px-5 md:max-w-full md:px-0'>
         <div className='mb-6 flex flex-col gap-1 md:mb-8'>
           <div className='flex flex-col justify-start gap-1'>
             <label
@@ -206,7 +206,7 @@ const SignupForm = () => {
           )}
         </div>
       </div>
-      <div className='w-[375px] px-[10px] md:w-full md:px-0'>
+      <div className='w-full px-[10px] md:px-0'>
         <button
           type='submit'
           className='duration-600 mx-auto w-full rounded-lg bg-primary-500 px-6 py-4 font-bold leading-[135%] text-white transition hover:bg-primary-600 active:bg-primary-700 md:w-[456px]'
