@@ -17,13 +17,15 @@ import { toast } from 'react-toastify';
 import ColorOptions from '@/components/calendar/popOver/ColorOptions';
 import { useAuthStore } from '@/store/zustand/store';
 import { usePlanColorStore, usePlanFormStore } from '@/store/zustand/usePlanFormStore';
+import { useDemoStore } from '@/store/zustand/useDemoStore';
 
-const PlanForm = ({ handleCancel }: { handleCancel: (show: boolean) => void }) => {
+const PlanForm = ({ onClose }: { onClose: () => void }) => {
   const { initialFormData } = usePlanFormStore();
   const [inputValue, setInputValue] = useState('');
   const { selectedColor, setSelectedColor } = usePlanColorStore(); // 선택 색상
   const user = useAuthStore((state) => state.user);
-  const userId = user ? user?.id : 'a27fc897-4216-4863-9e7b-f8868a8369ff';
+  const { isDemoUser, demoUser } = useDemoStore();
+  const userId = user?.id || demoUser.id;
   const isAuthenticated = !!userId;
 
   const form = useForm<PlanFormType>({
@@ -48,6 +50,11 @@ const PlanForm = ({ handleCancel }: { handleCancel: (show: boolean) => void }) =
   const { mutate: insertNewPlan } = useMutateInsertNewPlan();
 
   const planSubmitHandler = (data: PlanFormType) => {
+    if (isDemoUser) {
+      toast.info('데모체험중에는 제한된 기능입니다.');
+      onClose()
+      return;
+    }
     if (!isAuthenticated) {
       toast.warning('약속추가는 로그인 후 가능합니다.');
       return;
@@ -60,6 +67,7 @@ const PlanForm = ({ handleCancel }: { handleCancel: (show: boolean) => void }) =
             form.reset();
             setInputValue('');
             toast.success('약속이 추가되었습니다.');
+            onClose();
           },
           onError: () => {
             toast.error('약속 저장에 실패했습니다.');
@@ -70,7 +78,7 @@ const PlanForm = ({ handleCancel }: { handleCancel: (show: boolean) => void }) =
   };
 
   const cancelBtnHandler = () => {
-    handleCancel(false);
+    onClose();
   };
 
   return (

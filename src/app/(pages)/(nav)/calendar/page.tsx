@@ -18,6 +18,7 @@ import { toast } from 'react-toastify';
 import { useUpadateEventMutate } from '@/hooks/mutations/useUpadateEventMutate';
 import { useGetSelectPlan } from '@/hooks/queries/useGetSelectPlan';
 import { format } from 'date-fns';
+import { useDemoStore } from '@/store/zustand/useDemoStore';
 
 interface UpdatedEventType {
   id: string;
@@ -57,6 +58,10 @@ export default function Calendar() {
   const [editPlan, setEditPlan] = useState<SelectPlanType | null>(null); //수정하는 약속
   const [isEditMode, setIsEditMode] = useState(false); //수정 모드 여부
 
+  //demoState
+  const { isDemoUser } = useDemoStore();
+  const isAccessGranted = isSignIn || isDemoUser; //로그인하거나, 데모유저일 때 접근가능하도록 함
+
   //옵션 더보기
   const { setInitialFormData } = usePlanFormStore();
   // showPlanForm 상태와 setShowPlanForm 함수 가져오기
@@ -69,10 +74,10 @@ export default function Calendar() {
   }, []);
 
   useEffect(() => {
-    if (hasMounted && !isSignIn) {
+    if (hasMounted && !isAccessGranted) {
       router.replace(SIGNIN);
     }
-  }, [hasMounted, isSignIn, router]);
+  }, [hasMounted, isAccessGranted, router]);
 
   // planId가 바뀔 때마다 refetch
   useEffect(() => {
@@ -199,9 +204,9 @@ export default function Calendar() {
     })),
   ];
 
-  if (!hasMounted || !isSignIn) return null;
+  if (!hasMounted || !isAccessGranted) return null;
 
-  if (isPending) {
+  if (isPending && !isDemoUser) {
     return <div>로딩 중입니다...</div>;
   }
 
@@ -252,8 +257,8 @@ export default function Calendar() {
             <h2 className='mb-4 text-xl font-bold'>약속 추가</h2>
             <div className='m-6'>
               <PlanForm
-                handleCancel={(show) => {
-                  setShowPlanForm(show);
+                onClose={() => {
+                  setShowPlanForm(false);
                   setShowUpcoming(true);
                 }}
               />

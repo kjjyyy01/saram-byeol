@@ -1,5 +1,6 @@
 import { mutateUpdateContacts } from '@/app/api/supabase/service';
 import { contactFormSchema, ContactFormValues } from '@/lib/schemas/contactFormSchema';
+import { useDemoStore } from '@/store/zustand/useDemoStore';
 import { ContactDetailType } from '@/types/contacts';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useQueryClient } from '@tanstack/react-query';
@@ -12,6 +13,7 @@ export const useMutateEditContact = (contactData: ContactDetailType, onClose: ()
   const [relationshipType, setRelationshipType] = useState(contactData.relationship_level || '친구');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const queryClient = useQueryClient();
+  const isDemoUser = useDemoStore((state) => state.isDemoUser);
 
   // 폼 초기화
   const form = useForm<ContactFormValues>({
@@ -30,6 +32,11 @@ export const useMutateEditContact = (contactData: ContactDetailType, onClose: ()
 
   // 폼 제출 함수
   const onSubmit = async (data: ContactFormValues) => {
+    if (isDemoUser) {
+      toast.info('데모체험중에는 제한된 기능입니다.');
+      onClose();
+      return;
+    }
     try {
       setIsSubmitting(true);
 

@@ -11,6 +11,7 @@ import { TextAa } from '@phosphor-icons/react';
 import { useFormContext } from 'react-hook-form';
 import { useAuthStore } from '@/store/zustand/store';
 import { usePlanFormStore } from '@/store/zustand/usePlanFormStore';
+import { useDemoStore } from '@/store/zustand/useDemoStore';
 
 interface Props {
   selectedColor: string;
@@ -20,6 +21,7 @@ interface Props {
 
 const PopOverForm = ({ selectedColor, onOpenFullForm, onClosePopOver }: Props) => {
   const user = useAuthStore((state) => state.user);
+  const { isDemoUser } = useDemoStore();
   const form = useFormContext<PlanFormType>();
   const { mutate: insertNewPlan, isPending } = useMutateInsertNewPlan();
 
@@ -37,6 +39,10 @@ const PopOverForm = ({ selectedColor, onOpenFullForm, onClosePopOver }: Props) =
 
   const planSubmitHandler = useCallback(
     (data: PlanFormType) => {
+      if (isDemoUser) {
+        toast.info('데모체험중에는 제한된 기능입니다.');
+        return;
+      }
       if (!user) return null;
       const inputData = mappingFormData(data);
       insertNewPlan(
@@ -53,7 +59,7 @@ const PopOverForm = ({ selectedColor, onOpenFullForm, onClosePopOver }: Props) =
         }
       );
     },
-    [insertNewPlan, form, selectedColor, user, clearFormData]
+    [insertNewPlan, form, selectedColor, user, clearFormData, isDemoUser]
   );
 
   useEffect(() => {

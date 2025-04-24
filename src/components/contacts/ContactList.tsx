@@ -6,6 +6,8 @@ import SideSheet from '@/components/contacts/SideSheet';
 import { useAuthStore } from '@/store/zustand/store';
 import useGetContactsByUserID from '@/hooks/queries/useGetContactsByUserID';
 import { useTogglePinContact } from '@/hooks/mutations/useMutateTogglePinContact';
+import { useDemoStore } from '@/store/zustand/useDemoStore';
+import { toast } from 'react-toastify';
 
 interface ContactListProps {
   onSelectedContact: (id: string) => void;
@@ -17,28 +19,33 @@ const ContactList = ({ onSelectedContact }: ContactListProps) => {
 
   // useAuthStore에서 사용자 정보 가져오기
   const { user } = useAuthStore();
-  const userId = user?.id; // 현재 로그인된 사용자의 ID
+  const { isDemoUser, demoContacts, demoUser } = useDemoStore();
+  const userId = isDemoUser ? demoUser.id : user?.id; // 데모 유무에 따라 유저아이디 변경
 
-  // 로그인 되지 않은 경우를 위한 처리
+  // 로그인이나 데모가 아닌경우
   const isAuthenticated = !!userId;
 
   const { data: contacts = [], isPending, error } = useGetContactsByUserID(userId as string, isAuthenticated);
+  const contactsList = isDemoUser ? demoContacts : contacts; //데모 유무에 따라 연락처 리스트업
 
   // Pin 업데이트 뮤테이션
   const pinMutation = useTogglePinContact(userId);
 
   // 핀된 연락처와 일반 연락처 분리
   const { pinnedContacts, regularContacts } = useMemo(() => {
-    const pinned = contacts.filter((contact) => contact.is_pinned);
-    const regular = contacts.filter((contact) => !contact.is_pinned);
+    const pinned = contactsList.filter((contact) => contact.is_pinned);
+    const regular = contactsList.filter((contact) => !contact.is_pinned);
     return { pinnedContacts: pinned, regularContacts: regular };
-  }, [contacts]);
+  }, [contactsList]);
 
   // 핀 토글 핸들러
   const handleTogglePin = (contactId: string, isPinned: boolean) => {
+    if (isDemoUser) {
+      toast.info('데모체험중에는 제한된 기능입니다.');
+      return;
+    }
     pinMutation.mutate({ contactId, isPinned });
   };
-
   if (error) {
     console.error('연락처 로딩 실패', error);
   }

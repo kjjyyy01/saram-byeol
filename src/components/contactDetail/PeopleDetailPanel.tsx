@@ -4,6 +4,7 @@ import ContactProfile from '@/components/contactDetail/ContactProfile';
 import ContactPlans from '@/components/contactDetail/ContactPlans';
 import Tabs from '@/components/ui/Tabs';
 import { useAuthStore } from '@/store/zustand/store';
+import { useDemoStore } from '@/store/zustand/useDemoStore';
 
 interface Props {
   contactsId: string;
@@ -11,18 +12,25 @@ interface Props {
 
 const PeopleDetailPanel = ({ contactsId }: Props) => {
   const user = useAuthStore((state) => state.user);
-  const userId = user?.id;
-
+  const { isDemoUser, getContactsWithPlans: getData } = useDemoStore();
+  const userId = user?.id; // 데모 유무에 따라 유저아이디
+  const demoData = getData(contactsId);
   const { data, isPending, error } = useQuery({
     queryKey: ['contactWithPlans', contactsId],
     queryFn: () => getContactsWithPlans(userId!, contactsId),
-    enabled: !!userId && !!contactsId,
+    enabled: !isDemoUser && !!userId && !!contactsId, //데모모드이면 통신하지 않도록 처리
   });
 
-  if (isPending) return <div className='flex h-full items-center justify-center p-8 text-xl text-gray-500'>로딩 중...</div>;
-  if (error) return <div className='flex h-full items-center justify-center p-8 text-xl text-gray-500'>내 사람 데이터를 불러오던 중 오류가 발생했습니다</div>;
+  const { contact, plans } = data || demoData;
 
-  const { contact, plans } = data;
+  if (isPending && !isDemoUser)
+    return <div className='flex h-full items-center justify-center p-8 text-xl text-gray-500'>로딩 중...</div>;
+  if (error)
+    return (
+      <div className='flex h-full items-center justify-center p-8 text-xl text-gray-500'>
+        내 사람 데이터를 불러오던 중 오류가 발생했습니다
+      </div>
+    );
 
   return (
     <div className='container mx-auto px-4 pt-8'>
