@@ -4,7 +4,7 @@ import { Button } from '../ui/button';
 
 const SectionThree = () => {
   return (
-    <div className='flex h-screen flex-col items-center justify-between'>
+    <div className='flex h-screen flex-col items-center justify-between pt-24'>
       <div className='flex h-full flex-col items-center justify-center p-6'>
         <div className='flex flex-col items-center justify-center'>
           <h2 className='mb-4 text-[40px] font-bold leading-snug'>사람별과 함께 관계의 가치를 새롭게 경험해보세요.</h2>

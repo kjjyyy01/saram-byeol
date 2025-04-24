@@ -2,7 +2,7 @@ import Image from 'next/image';
 
 const SectionTwo = () => {
   return (
-    <div className='flex h-screen items-center justify-center bg-zinc-50 p-6'>
+    <div className='flex h-screen items-center justify-center bg-zinc-50 p-6 pt-24'>
       <div className='flex flex-col items-center justify-center gap-10'>
         <div className='flex items-center justify-center'>
           <div className='flex flex-row gap-8 rounded-full bg-primary-50 px-6 py-4'>

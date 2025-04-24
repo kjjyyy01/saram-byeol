@@ -2,7 +2,7 @@ import React from 'react';
 
 const MainHeader = () => {
   return (
-    <div className='fixed box-border flex h-28 w-full items-center justify-center'>
+    <div className='fixed box-border flex h-24 w-full items-center justify-center'>
       <div className='container flex flex-row items-center justify-between px-6'>
         <div>로고</div>
         <div className='flex flex-row items-center justify-center'>
