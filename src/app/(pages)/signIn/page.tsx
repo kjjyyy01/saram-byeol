@@ -21,7 +21,7 @@ const SignIn = () => {
 
   return (
     <div className='h-screen w-screen'>
-      <div className='flex h-full items-center justify-center overflow-hidden overflow-y-auto pb-8 pt-4 md:pb-0 md:pt-0'>
+      <div className='flex h-full w-full items-center justify-center overflow-hidden pb-8 pt-4 md:pb-0 md:pt-0'>
         <section className='flex w-full flex-col items-center justify-center'>
           <h1 className='mb-10 text-center text-[28px] font-bold text-primary-500'>사람, 별 로그인</h1>
           <section className='mb-8 md:mb-6'>
@@ -44,13 +44,13 @@ const SignIn = () => {
           </section>
         </section>
 
-        <section className='hidden md:flex md:h-full md:w-full md:items-center md:justify-center lg:block'>
+        <section className='hidden md:flex md:h-full md:w-full md:items-center md:justify-center lg:flex'>
           <Image
             src={'/saram-byeol_img.avif'}
             alt='metaphor image'
             width={950}
             height={1080}
-            className='object-contain'
+            className='mx-auto object-contain'
           />
         </section>
       </div>
