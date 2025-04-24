@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { ChangeEvent, ReactNode, useEffect, useRef, useState } from 'react';
 import { Control } from 'react-hook-form';
 import { FormField, FormControl, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
@@ -13,7 +13,7 @@ interface ContactTextFieldProps {
   maxLength?: number;
   debounceTime?: number;
   required?: boolean;
-  icon?: React.ReactNode;
+  icon?: ReactNode;
 }
 
 const ContactTextField = ({
@@ -28,41 +28,42 @@ const ContactTextField = ({
   icon,
 }: ContactTextFieldProps) => {
   const [isTyping, setIsTyping] = useState(false);
-  const debounceTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const debounceTimer = useRef<number | null>(null);
 
   useEffect(() => {
     return () => {
-      if (debounceTimerRef.current) {
-        clearTimeout(debounceTimerRef.current);
+      if (debounceTimer.current !== null) {
+        clearTimeout(debounceTimer.current);
       }
     };
   }, []);
 
   return (
     <FormField
-    control={control}
-    name={name}
-    render={({ field, fieldState }) => {
-      const { error } = fieldState;
+      control={control}
+      name={name}
+      render={({ field, fieldState }) => {
+        const { error } = fieldState;
 
-      const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setIsTyping(true);
-        if (debounceTimerRef.current) {
-          clearTimeout(debounceTimerRef.current);
-        }
+        const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+          setIsTyping(true);
+          // 기존 타이머 취소
+          if (debounceTimer.current !== null) {
+            clearTimeout(debounceTimer.current);
+          }
 
-        let value = e.target.value;
-        if (name === 'phone') {
-          value = value.replace(/[^0-9]/g, '');
-        }
+          let value = e.target.value;
+          if (name === 'phone') {
+            value = value.replace(/[^0-9]/g, '');
+          }
+          field.onChange(value);
 
-        field.onChange(value);
-
-        debounceTimerRef.current = setTimeout(() => {
-          setIsTyping(false);
-          field.onBlur();
-        }, debounceTime);
-      };
+          // 브라우저용 setTimeout은 number를 반환
+          debounceTimer.current = window.setTimeout(() => {
+            setIsTyping(false);
+            field.onBlur();
+          }, debounceTime);
+        };
 
       return (
         <div className='flex w-full items-start'>

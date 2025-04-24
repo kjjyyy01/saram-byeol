@@ -8,6 +8,7 @@ import ProfileImageUpload from './ProfileImageUpload';
 import { ContactFormValues } from '@/lib/schemas/contactFormSchema';
 import { User, Phone, EnvelopeSimple, Cake } from '@phosphor-icons/react';
 import { ContactMemoField } from './ContactMemoField';
+import ContactFormCancelButton from './ContactFormCancelButton';
 
 interface AddContactFormProps {
   onClose: () => void;
@@ -72,15 +73,23 @@ const AddContactForm = ({ onClose }: AddContactFormProps) => {
           />
 
           {/* 생일 필드 */}
-          <ContactTextField control={form.control} name='birthday' label='생일' placeholder='' type='date' icon={<Cake size={24} />} />
-
-          {/* 메모 필드 */}
-          <ContactMemoField
+          <ContactTextField
             control={form.control}
+            name='birthday'
+            label='생일'
+            placeholder=''
+            type='date'
+            icon={<Cake size={24} />}
           />
 
-          {/* 제출 버튼 */}
-          <ContactFormSubmitButton isSubmitting={isSubmitting} />
+          {/* 메모 필드 */}
+          <ContactMemoField control={form.control} />
+
+          {/* 버튼 그룹 */}
+          <div className='flex w-full space-x-8'>
+            <ContactFormCancelButton onClose={onClose} />
+            <ContactFormSubmitButton isSubmitting={isSubmitting} />
+          </div>
         </form>
       </Form>
     </div>

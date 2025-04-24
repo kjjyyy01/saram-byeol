@@ -1,59 +1,70 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState, useMemo } from 'react';
 import ContactItem from '@/components/contacts/ContactItem';
 import { UserPlus } from '@phosphor-icons/react';
 import AddContactForm from '@/components/contacts/addContactForm/AddContactForm';
 import SideSheet from '@/components/contacts/SideSheet';
 import { useAuthStore } from '@/store/zustand/store';
-import { useTogglePinContact } from '@/hooks/mutations/useMutateTogglePinContact';
-import { usePinnedContacts, useRegularContactsInfinite } from '@/hooks/queries/useGetContactsForInfinite';
+import { useDemoStore } from '@/store/zustand/useDemoStore';
+import { toast } from 'react-toastify';
+import { useMutateTogglePinContact } from '@/hooks/mutations/useMutateTogglePinContact';
+import {
+  usePinnedContacts,
+  useRegularContactsInfinite,
+} from '@/hooks/queries/useGetContactsForInfinite';
 
 interface ContactListProps {
   onSelectedContact: (id: string) => void;
 }
 
-const ContactList = ({ onSelectedContact }: ContactListProps) => {
+export default function ContactList({ onSelectedContact }: ContactListProps) {
   const [isAddContactOpen, setIsAddContactOpen] = useState(false);
   const handleClose = () => setIsAddContactOpen(false);
 
-  // 무한 스크롤을 위한 observer 설정
-  const observerRef = useRef<IntersectionObserver | null>(null);
-  const loadMoreRef = useRef<HTMLDivElement>(null);
+  // 사용자 정보
+  const { user } = useAuthStore();
+  const { isDemoUser, demoContacts, demoUser } = useDemoStore();
+  const userId = isDemoUser ? demoUser.id : user?.id;
+  const isAuthenticated = Boolean(userId);
 
-  // useAuthStore에서 사용자 정보 가져오기
-  const userId = useAuthStore(state => state.user?.id);
-  
-  // 로그인 되지 않은 경우를 위한 처리
-  const isAuthenticated = !!userId;
+  // 데모 모드에서는 demoContacts만 사용
+  const demoPinned = useMemo(() => demoContacts.filter(c => c.is_pinned), [demoContacts]);
+  const demoRegular = useMemo(() => demoContacts.filter(c => !c.is_pinned), [demoContacts]);
 
-  // 고정된 연락처(pinned) 조회
-  const { 
-    data: pinnedContacts = [], 
-    isLoading: isPinnedLoading, 
-    error: pinnedError 
+  // 실제 모드: 고정된 연락처
+  const {
+    data: pinnedContacts = [],
+    isLoading: isPinnedLoading,
+    error: pinnedError,
   } = usePinnedContacts(userId as string);
 
-  // 일반 연락처(regular) 무한 스크롤 조회
+  // 실제 모드: 일반 연락처 무한 스크롤
   const {
-    data: regularContactsData,
+    data: regularPages,
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
     isLoading: isRegularLoading,
-    error: regularError
+    error: regularError,
   } = useRegularContactsInfinite(userId as string);
 
-  // 모든 일반 연락처 페이지 데이터 병합
-  const regularContacts = regularContactsData?.pages.flatMap(page => page.contacts) || [];
+  // 페이징된 일반 연락처 배열 합치기
+  const regularContacts = useMemo(
+    () => regularPages?.pages.flatMap(page => page.contacts) || [],
+    [regularPages]
+  );
 
-  // Pin 업데이트 뮤테이션
-  const pinMutation = useTogglePinContact(userId);
-
-  // 핀 토글 핸들러
+  // 핀 토글 뮤테이션
+  const pinMutation = useMutateTogglePinContact(userId as string);
   const handleTogglePin = (contactId: string, isPinned: boolean) => {
+    if (isDemoUser) {
+      toast.info('데모 체험 중에는 이 기능을 사용할 수 없습니다.');
+      return;
+    }
     pinMutation.mutate({ contactId, isPinned });
   };
 
-  // 무한 스크롤 설정
+  // 무한 스크롤 옵저버 세팅 (MDN: IntersectionObserver API 참고)
+  const loadMoreRef = useRef<HTMLDivElement>(null);
   const handleObserver = useCallback(
     (entries: IntersectionObserverEntry[]) => {
       const [entry] = entries;
@@ -64,113 +75,100 @@ const ContactList = ({ onSelectedContact }: ContactListProps) => {
     [fetchNextPage, hasNextPage, isFetchingNextPage]
   );
 
-  // 옵저버 설정 및 해제
   useEffect(() => {
+    if (isDemoUser) return; // 데모 모드에서는 옵저버 비활성
     const observer = new IntersectionObserver(handleObserver, {
       rootMargin: '0px 0px 200px 0px',
       threshold: 0.1,
     });
-    
-    if (loadMoreRef.current) {
-      observer.observe(loadMoreRef.current);
-    }
-    
-    observerRef.current = observer;
-    
-    return () => {
-      if (observerRef.current) {
-        observerRef.current.disconnect();
-      }
-    };
-  }, [handleObserver]);
+    if (loadMoreRef.current) observer.observe(loadMoreRef.current);
+    return () => observer.disconnect();
+  }, [handleObserver, isDemoUser]);
 
-  // 에러 처리
+  // 인증·로딩·에러 처리
+  if (!isAuthenticated) {
+    return (
+      <div className="flex h-full flex-col items-center justify-center">
+        <p className="text-lg text-gray-600">로그인이 필요한 서비스입니다.</p>
+      </div>
+    );
+  }
+  const isLoading = isDemoUser
+    ? false
+    : isPinnedLoading || isRegularLoading;
   if (pinnedError || regularError) {
     console.error('연락처 로딩 실패', { pinnedError, regularError });
   }
 
-  // 비로그인 상태 처리
-  if (!isAuthenticated) {
-    return (
-      <div className='flex h-full flex-col items-center justify-center'>
-        <p className='text-lg text-gray-600'>로그인이 필요한 서비스입니다.</p>
-      </div>
-    );
-  }
-
-  const isLoading = isPinnedLoading || isRegularLoading;
-
-
   return (
-    <div className='flex h-full flex-col overflow-x-hidden'>
-      {/* 헤더 - 내 사람 목록 텍스트 */}
-      <h1 className='pl-6 pt-6 text-2xl font-bold'>내 사람 목록</h1>
+    <div className="flex h-full flex-col overflow-x-hidden">
+      {/* 헤더 */}
+      <h1 className="pl-6 pt-6 text-2xl font-bold">내 사람 목록</h1>
 
-      {/* 내 사람 추가 버튼 */}
-      <div className='mt-12 flex justify-center'>
+      {/* 추가 버튼 */}
+      <div className="mt-12 flex justify-center">
         <button
-          className='flex h-12 w-full max-w-sm items-center justify-center rounded-lg border border-gray-300 font-medium text-gray-700 transition-colors hover:bg-gray-100'
-          onClick={() => {
-            setIsAddContactOpen(true);
-          }}
+          className="flex h-12 w-full max-w-sm items-center justify-center rounded-lg border border-gray-300 font-medium text-gray-700 transition-colors hover:bg-gray-100"
+          onClick={() => setIsAddContactOpen(true)}
         >
-          <UserPlus size={20} className='mr-2' />
+          <UserPlus size={20} className="mr-2" />
           <span>내 사람 추가</span>
         </button>
       </div>
 
       {/* 연락처 리스트 */}
-      <div className='mt-12 flex-1 overflow-y-auto'>
+      <div className="mt-12 flex-1 overflow-y-auto">
         {isLoading ? (
-          <div className='py-8 text-center'>연락처를 불러오는 중...</div>
+          <div className="py-8 text-center">연락처를 불러오는 중...</div>
         ) : (
-          <div>
-            {/* 핀 고정 영역 */}
-            {pinnedContacts.length > 0 && (
-              <div className='mb-6'>
-                <div className='flex items-center bg-gray-50 px-6 py-3'>
-                  <h2 className='text-sm font-semibold text-gray-700'>고정됨</h2>
+          <>
+            {/* 핀된 연락처 */}
+            {(isDemoUser ? demoPinned : pinnedContacts).length > 0 && (
+              <section className="mb-6">
+                <div className="flex items-center bg-gray-50 px-6 py-3">
+                  <h2 className="text-sm font-semibold text-gray-700">고정됨</h2>
                 </div>
-                <ul className='flex flex-col'>
-                  {pinnedContacts.map((contact) => (
-                    <li key={`pinned-${contact.contacts_id}`}>
-                      <div onClick={() => onSelectedContact(contact.contacts_id)}>
-                        <ContactItem contact={contact} onTogglePin={handleTogglePin} />
+                <ul className="flex flex-col">
+                  {(isDemoUser ? demoPinned : pinnedContacts).map(c => (
+                    <li key={`pinned-${c.contacts_id}`}>
+                      <div onClick={() => onSelectedContact(c.contacts_id)}>
+                        <ContactItem contact={c} onTogglePin={handleTogglePin} />
                       </div>
                     </li>
                   ))}
                 </ul>
-              </div>
+              </section>
             )}
 
-            {/* 일반 연락처 영역 - 무한 스크롤 적용 */}
-            <div>
-              {pinnedContacts.length > 0 && (
-                <div className='flex items-center bg-gray-50 px-6 py-3'>
-                  <h2 className='text-sm font-semibold text-gray-700'>리스트</h2>
+            {/* 일반 연락처 */}
+            <section>
+              {(isDemoUser ? demoRegular : regularContacts).length > 0 && (
+                <div className="flex items-center bg-gray-50 px-6 py-3">
+                  <h2 className="text-sm font-semibold text-gray-700">리스트</h2>
                 </div>
               )}
-              <ul className='flex flex-col'>
-                {regularContacts.map((contact) => (
-                  <li key={contact.contacts_id}>
-                    <div onClick={() => onSelectedContact(contact.contacts_id)} className='w-full'>
-                      <ContactItem contact={contact} onTogglePin={handleTogglePin} />
+              <ul className="flex flex-col">
+                {(isDemoUser ? demoRegular : regularContacts).map(c => (
+                  <li key={c.contacts_id}>
+                    <div onClick={() => onSelectedContact(c.contacts_id)} className="w-full">
+                      <ContactItem contact={c} onTogglePin={handleTogglePin} />
                     </div>
                   </li>
                 ))}
               </ul>
-              
-              {/* 무한 스크롤 감지 영역 */}
-              <div 
-                ref={loadMoreRef} 
-                className='py-4 flex justify-center'
-              >
-                {isFetchingNextPage && (
-                  <div className='text-sm text-gray-500'>연락처를 더 불러오는 중...</div>
-                )}
-              </div>
-            </div>
-          </div>
+
+              {/* 무한 스크롤 트리거 */}
+              {!isDemoUser && (
+                <div ref={loadMoreRef} className="py-4 flex justify-center">
+                  {isFetchingNextPage && (
+                    <div className="text-sm text-gray-500">
+                      연락처를 더 불러오는 중...
+                    </div>
+                  )}
+                </div>
+              )}
+            </section>
+          </>
         )}
       </div>
 
@@ -180,6 +178,4 @@ const ContactList = ({ onSelectedContact }: ContactListProps) => {
       </SideSheet>
     </div>
   );
-};
-
-export default ContactList;
+}
