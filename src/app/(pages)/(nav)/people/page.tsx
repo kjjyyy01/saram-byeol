@@ -34,7 +34,7 @@ const People = () => {
     <div className='flex h-screen'>
       {/* 왼쪽 연락처 리스트 영역 */}
       <div className='h-full w-[410px] overflow-y-auto rounded-[20px] border border-gray-200'>
-        <ContactList onSelectedContact={setPeopleSelectedId} />
+        <ContactList peopleSelectedId={peopleSelectedId} onSelectedContact={setPeopleSelectedId} />
       </div>
 
       {/* 오른쪽 상세 정보 영역 */}
