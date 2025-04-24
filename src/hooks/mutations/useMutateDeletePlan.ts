@@ -9,6 +9,10 @@ export const useMutateDeletePlan = () => {
     mutationFn: (planId: string) => mutateDeletePlan(planId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [QUERY_KEY.CONTACT_WITH_PLANS] });
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEY.PLANS] });
+    },
+    onError: (error) => {
+      console.error('약속 삭제 실패:', error.message);
     },
   });
 
