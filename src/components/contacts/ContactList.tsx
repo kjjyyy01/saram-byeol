@@ -8,6 +8,7 @@ import useGetContactsByUserID from '@/hooks/queries/useGetContactsByUserID';
 import { useTogglePinContact } from '@/hooks/mutations/useMutateTogglePinContact';
 import { useDemoStore } from '@/store/zustand/useDemoStore';
 import { toast } from 'react-toastify';
+import Loading from '@/app/loading';
 
 interface ContactListProps {
   onSelectedContact: (id: string) => void;
@@ -79,7 +80,9 @@ const ContactList = ({ onSelectedContact }: ContactListProps) => {
       {/* 연락처 리스트 */}
       <div className='mt-12 flex-1'>
         {isPending ? (
-          <div className='py-8 text-center'>연락처를 불러오는 중...</div>
+          <div className='py-8 text-center'>
+            <Loading />
+          </div>
         ) : (
           <div>
             {/* 핀 고정 영역 */}
