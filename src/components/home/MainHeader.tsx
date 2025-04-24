@@ -31,7 +31,7 @@ const MainHeader = ({ onNavClick }: Props) => {
         </div>
         <div className='flex flex-row items-center justify-center gap-6'>
           <Link href={SIGNIN}>로그인</Link>
-          <Button className='box-border h-[54px] w-[180px] rounded-lg bg-primary-500 px-6 py-4 font-bold hover:bg-primary-600 active:bg-primary-700'>
+          <Button className='box-border h-14 w-[180px] rounded-lg bg-primary-500 px-6 py-4 font-bold hover:bg-primary-600 active:bg-primary-700'>
             지금 무료로 시작하기
           </Button>
         </div>
