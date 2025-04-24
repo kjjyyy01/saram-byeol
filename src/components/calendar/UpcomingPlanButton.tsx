@@ -25,7 +25,7 @@ const UpcomingPlanButton = ({ onClick, activeTab }: Props) => {
     <div>
       <button
         onClick={onClick}
-        className={`mr-6 rounded-md border-[1px] px-5 py-3 text-[14px] font-bold ${activeTab === 'upcoming' ? 'border-primary-500 text-primary-500' : 'border-grey-300'}`}
+        className={`mr-6 rounded-md border-[1px] px-5 py-3 text-[14px] font-bold ${activeTab === 'upcoming' ? 'border-primary-500 text-primary-500' : 'border-grey-300 text-grey-700'}`}
       >
         다가오는 약속
         <span className={`m-1 rounded-full px-1 text-white ${activeTab === 'upcoming' ? 'bg-[#0066FF]' : 'bg-black'}`}>
