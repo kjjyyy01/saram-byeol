@@ -19,7 +19,7 @@ import { useUpadateEventMutate } from '@/hooks/mutations/useUpadateEventMutate';
 import { useGetSelectPlan } from '@/hooks/queries/useGetSelectPlan';
 import { format } from 'date-fns';
 import { useDemoStore } from '@/store/zustand/useDemoStore';
-import Loading from '@/components/loading';
+import Loading from '@/components/Loading';
 
 interface UpdatedEventType {
   id: string;
