@@ -21,6 +21,7 @@ interface MainCalendarProps {
     onAddPlan: () => void;
   };
   activeTab: string;
+  holidays: { date: string; title: string }[];
 }
 
 const localizer = dateFnsLocalizer({
@@ -39,6 +40,7 @@ const MainCalendar = ({
   setMoment,
   onEventDrop,
   activeTab,
+  holidays,
 }: MainCalendarProps) => {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null); //선택한 셀 날짜
   const [isPopOverOpen, setIsPopOverOpen] = useState(false); //팝오버 오픈 여부
@@ -63,7 +65,7 @@ const MainCalendar = ({
         components={{
           toolbar: (props) => <CustomToolbar {...props} {...CustomToolbarProps} activeTab={activeTab} />, // 상단 툴바(달 이동)
           month: {
-            dateHeader: CustomDateHeader, // 날짜 셀의 숫자
+            dateHeader: (props) => <CustomDateHeader {...props} holidays={holidays ?? []} />, // 날짜 셀의 숫자
           },
         }}
         eventPropGetter={holidayStyle}
