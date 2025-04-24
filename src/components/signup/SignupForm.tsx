@@ -83,7 +83,7 @@ const SignupForm = () => {
   return (
     <form onSubmit={handleSubmit(SignUpHandler)} className='flex flex-col'>
       <div className='mx-auto w-[375px] px-5 md:w-full md:px-0'>
-        <div className='mb-6 flex flex-col md:mb-8'>
+        <div className='mb-6 flex flex-col gap-1 md:mb-8'>
           <div className='flex flex-col justify-start gap-1'>
             <label
               className={`md:text- self-stretch text-sm font-bold leading-[150%] ${formState.errors.nickname ? `text-status-error` : `text-grey-900`}`}
@@ -119,7 +119,7 @@ const SignupForm = () => {
           )}
         </div>
 
-        <div className='mb-6 flex flex-col md:mb-8'>
+        <div className='mb-6 flex flex-col gap-1 md:mb-8'>
           <div className='flex flex-col justify-start gap-1'>
             <label
               className={`self-stretch text-sm font-bold leading-[150%] ${formState.errors.email ? `text-status-error` : `text-grey-900`}`}
@@ -154,7 +154,7 @@ const SignupForm = () => {
           )}
         </div>
 
-        <div className='mb-6 flex flex-col md:mb-8'>
+        <div className='mb-6 flex flex-col gap-1 md:mb-8'>
           <div className='flex flex-col justify-start gap-1'>
             <label
               className={`self-stretch text-sm font-bold leading-[150%] ${formState.errors.password ? `text-status-error` : `text-grey-900`}`}
@@ -180,7 +180,7 @@ const SignupForm = () => {
           )}
         </div>
 
-        <div className='mb-6 flex flex-col md:mb-8'>
+        <div className='mb-6 flex flex-col gap-1 md:mb-8'>
           <div className='flex flex-col justify-start gap-1'>
             <label
               className={`self-stretch text-sm font-bold leading-[150%] ${formState.errors.passwordCheck ? `text-status-error` : `text-grey-900`}`}
