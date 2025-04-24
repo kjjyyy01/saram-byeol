@@ -14,7 +14,9 @@ export interface SignInFormType {
 }
 
 const SigninForm = () => {
-  const [isChecked, setIsChecked] = useState<boolean>(false);
+  const [isChecked, setIsChecked] = useState<boolean>(() => {
+    return !!localStorage.getItem('saved-email');
+  });
 
   const { register, handleSubmit, formState, setValue, getValues } = useForm<SignInFormType>({
     mode: 'onChange',
