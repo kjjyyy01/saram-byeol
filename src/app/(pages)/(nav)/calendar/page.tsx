@@ -68,6 +68,9 @@ export default function Calendar() {
   const { showPlanForm, setShowPlanForm } = usePlanFormStore();
   const { mutate: updateEvent } = useUpadateEventMutate();
 
+  // 툴바 버튼 동적
+  const [activeTab, setActiveTab] = useState<'upcoming' | 'add'>('upcoming');
+
   //캘린더 페이지 마운트 후, 로그인 여부 판단
   useEffect(() => {
     setHasMounted(true);
@@ -223,6 +226,7 @@ export default function Calendar() {
           setMoment={setMoment}
           events={combinedEvents}
           onEventDrop={moveEventsHandler}
+          activeTab={activeTab}
           onSelectPlan={(planId) => setSelectedPlanId(planId)}
           setSelectPlan={(plan) => {
             setSelectPlan(plan);
@@ -238,6 +242,7 @@ export default function Calendar() {
               setShowPlanForm(false);
               setIsEditMode(false);
               setEditPlan(null);
+              setActiveTab('upcoming');
             },
             onAddPlan: () => {
               setSelectPlan(null);
@@ -246,6 +251,7 @@ export default function Calendar() {
               setIsEditMode(false);
               setEditPlan(null);
               setInitialFormData(planFormDefaultValues);
+              setActiveTab('add');
             },
           }}
         />
