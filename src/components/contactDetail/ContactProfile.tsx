@@ -12,6 +12,7 @@ import { PencilSimple, Trash } from '@phosphor-icons/react';
 import { useDemoStore } from '@/store/zustand/useDemoStore';
 import { PlansType } from '@/types/plans';
 import { mutateDeletePlan } from '@/app/api/supabase/service';
+import { sortPlansByDate } from '@/lib/utils/sortPlansByDate';
 
 interface Props {
   contact: ContactDetailType;
@@ -141,7 +142,7 @@ const ContactProfile = ({ contact, plans, onDeleteSuccess }: Props) => {
           <div className='w-full md:w-1/2'>
             <h2 className='mb-4 text-xl font-bold text-gray-800'>다가오는 약속</h2>
             <div className='grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2'>
-              {plans.map((plan) => (
+              {sortPlansByDate(plans).map((plan) => (
                 <ContactPlansCard
                   key={plan.plan_id}
                   title={plan.title}

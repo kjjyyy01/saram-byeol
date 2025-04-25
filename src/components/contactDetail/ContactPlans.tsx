@@ -51,8 +51,6 @@ const ContactPlans = ({ plans }: Props) => {
     });
   };
 
-  const sortedPlans = sortPlansByDate(plans);
-
   return (
     <div>
       {/* 타이틀 & 추가 버튼 라인 */}
@@ -78,7 +76,7 @@ const ContactPlans = ({ plans }: Props) => {
           </li>
 
           {/* 약속 카드 모음 */}
-          {sortedPlans.map((plan) => (
+          {sortPlansByDate(plans).map((plan) => (
             <li key={plan.plan_id}>
               <ContactPlansCard
                 title={plan.title}
