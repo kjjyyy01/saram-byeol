@@ -1,6 +1,7 @@
 import { updateEventInSupabase } from '@/app/api/supabase/service';
 import { QUERY_KEY } from '@/constants/queryKey';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { toast } from 'react-toastify';
 
 interface Props {
   id: string;
@@ -18,7 +19,8 @@ export const useUpadateEventMutate = () => {
       queryClient.invalidateQueries({ queryKey: [QUERY_KEY.PLANS] }); //무효화(리페칭)
     },
     onError: (error) => {
-      console.error('약속 업데이트에 실패했습니다.', error);
+      toast.error('업데이트에 실패했습니다.');
+      console.error(error);
     },
   });
 };
