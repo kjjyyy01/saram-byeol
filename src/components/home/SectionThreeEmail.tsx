@@ -11,6 +11,7 @@ const SectionThreeEmail = () => {
     e.preventDefault();
     if (!email.trim()) {
       toast.error('이메일을 입력해주세요.');
+      return;
     }
     setEmail('');
     toast.info('구독 신청이 완료되었습니다. 감사합니다:)');
