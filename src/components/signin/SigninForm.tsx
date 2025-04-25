@@ -4,7 +4,7 @@ import { PLACEHOLDER_EMAIL, PLACEHOLDER_PASSWORD } from '@/constants/placeholder
 import { useSignin } from '@/hooks/useSignin';
 import { signInSchema } from '@/lib/schemas/signinSchema';
 import { zodResolver } from '@hookform/resolvers/zod';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 
@@ -14,13 +14,26 @@ export interface SignInFormType {
 }
 
 const SigninForm = () => {
-  const { register, handleSubmit, formState } = useForm<SignInFormType>({
+  const [isChecked, setIsChecked] = useState<boolean>(false);
+
+  const { register, handleSubmit, formState, setValue, getValues } = useForm<SignInFormType>({
     mode: 'onChange',
     resolver: zodResolver(signInSchema),
   });
 
+  useEffect(() => {
+    const saved = localStorage.getItem('saved-email');
+    setIsChecked(!!saved);
+  }, []);
+
+  // 컴포넌트가 마운트될 때 로컬스토리지에서 저장된 이메일을 불러와 이메일 필드에 초기값으로 설정
+  useEffect(() => {
+    const savedEmail = localStorage.getItem('saved-email') || '';
+    setValue('email', savedEmail);
+  }, [setValue]);
+
   //로그인 커스텀 훅
-  const { SignInHandler } = useSignin();
+  const { SignInHandler } = useSignin(getValues, isChecked);
 
   //준비중인 기능을 알리기 위한 핸들러함수
   const alreadyServiceHandler = () => {
@@ -77,7 +90,21 @@ const SigninForm = () => {
       </div>
       <div className='mb-[22px] mt-9 flex w-full items-center justify-between px-5 md:mb-0 md:mt-0 md:flex md:justify-between md:px-0'>
         <label htmlFor='saveId' className='flex items-center justify-center text-sm md:text-base'>
-          <input type='checkbox' id='saveId' onClick={alreadyServiceHandler} className='mr-2 h-5 w-5' />
+          <input
+            type='checkbox'
+            id='saveId'
+            checked={isChecked}
+            onChange={(e) => {
+              const checked = e.target.checked;
+              setIsChecked(checked);
+              if (checked) {
+                toast.success('앞으로 로그인 정보가 저장됩니다.'); //체크박스를 체크하면 나오는 toast
+              } else {
+                toast.warning('앞으로 로그인 정보가 저장되지않습니다.'); //체크박스를 해제하면 나오는 toast
+              }
+            }}
+            className='mr-2 h-5 w-5'
+          />
           로그인 정보 저장
         </label>
         <button type='button' onClick={alreadyServiceHandler} className='hidden md:block'>
