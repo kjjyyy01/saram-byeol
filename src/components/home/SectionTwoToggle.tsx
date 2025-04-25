@@ -30,7 +30,7 @@ const SectionTwoToggle = () => {
 
       <div className='relative h-[560px] w-[960px] overflow-hidden'>
         <div
-          className='flex w-screen flex-row items-center justify-between transition-transform duration-500 ease-in-out'
+          className='flex w-full flex-row items-center justify-between transition-transform duration-500 ease-in-out'
           style={{ transform: `translateX(${checked ? '0%' : '-100%'})`, width: '100%' }}
         >
           <Image src={'/home/landing-people.png'} width={960} height={540} alt='calendar Image' />
