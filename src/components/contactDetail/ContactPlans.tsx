@@ -8,10 +8,10 @@ import EditPlanForm from '@/components/contactDetail/editPlanForm/EditPlanForm';
 import { EditPlanType, PlansType } from '@/types/plans';
 import { useMutateDeletePlan } from '@/hooks/mutations/useMutateDeletePlan';
 import { toast } from 'react-toastify';
-import { Button } from '@/components/ui/button';
 import PlanForm from '@/components/plans/PlanForm';
 import { ConfirmToast } from '../toast/ConfirmToast';
 import { useDemoStore } from '@/store/zustand/useDemoStore';
+import { Plus } from '@phosphor-icons/react';
 
 interface Props {
   plans: PlanDetailType[] | PlansType[];
@@ -55,9 +55,6 @@ const ContactPlans = ({ plans }: Props) => {
       {/* 타이틀 & 추가 버튼 라인 */}
       <div className='mb-4 flex items-center gap-12'>
         <h2 className='text-xl font-semibold'>약속 전체보기</h2>
-        <Button variant='outline' size='sm' onClick={() => setIsAddPlanOpen(true)}>
-          약속 추가
-        </Button>
       </div>
 
       {/* 약속 카드 목록 */}
@@ -65,6 +62,18 @@ const ContactPlans = ({ plans }: Props) => {
         <p>등록된 약속이 없습니다.</p>
       ) : (
         <ul className='grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3'>
+          {/* 약속 추가 버튼 */}
+          <li>
+            <button
+              onClick={() => setIsAddPlanOpen(true)}
+              className='flex h-full w-full flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-white p-6 text-blue-500 transition hover:border-blue-400 hover:bg-blue-50 hover:text-blue-600'
+            >
+              <Plus size={28} weight='bold' />
+              <span className='mt-1 text-sm font-medium'>약속 추가</span>
+            </button>
+          </li>
+
+          {/* 약속 카드 모음 */}
           {plans.map((plan) => (
             <li key={plan.plan_id}>
               <ContactPlansCard
@@ -81,7 +90,7 @@ const ContactPlans = ({ plans }: Props) => {
 
       {/* 사이드 시트 - 약속 추가 */}
       <SideSheet isOpen={isAddPlanOpen} onClose={() => setIsAddPlanOpen(false)} title='약속 추가'>
-        <PlanForm onClose={()=>setIsAddPlanOpen(false)} />
+        <PlanForm onClose={() => setIsAddPlanOpen(false)} />
       </SideSheet>
 
       {/* 사이드 시트 - 약속 수정 */}
