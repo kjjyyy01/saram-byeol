@@ -5,3 +5,5 @@ const isDev = process.env.NODE_ENV === 'development';
 const BASE_URL = isDev ? process.env.NEXT_PUBLIC_LOCAL_BASE_URL : process.env.NEXT_PUBLIC_PROJECT_BASE_URL;
 
 export const REDIRECT_TO = `${BASE_URL}/auth/callback`;
+
+export const REDIRECT_TO_CHANGE_PASSWORD = `${BASE_URL}/change-password`;
