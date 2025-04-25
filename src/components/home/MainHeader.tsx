@@ -20,17 +20,26 @@ const MainHeader = ({ onNavClick }: Props) => {
           height={85}
           className='rounded-[20px] shadow-app-logo'
         />
-        <div className='flex flex-row items-center justify-center gap-14 text-2xl font-bold'>
-          <div onClick={() => onNavClick('about')} className='cursor-pointer'>
+        <nav className='flex flex-row items-center justify-center gap-14 text-2xl font-bold'>
+          <button
+            onClick={() => onNavClick('about')}
+            className='aria-label="사람별 소개로 이동" cursor-pointer border-none bg-transparent text-2xl'
+          >
             사람별이란?
-          </div>
-          <div onClick={() => onNavClick('function')} className='cursor-pointer'>
+          </button>
+          <button
+            onClick={() => onNavClick('function')}
+            className='aria-label="기능 소개로 이동" cursor-pointer border-none bg-transparent text-2xl'
+          >
             기능소개
-          </div>
-          <div onClick={() => onNavClick('subscription')} className='cursor-pointer'>
+          </button>
+          <button
+            onClick={() => onNavClick('subscription')}
+            className='aria-label="구독 정보로 이동" cursor-pointer border-none bg-transparent text-2xl'
+          >
             구독
-          </div>
-        </div>
+          </button>
+        </nav>
         <div className='flex flex-row items-center justify-center gap-6'>
           <Link href={SIGNIN}>로그인</Link>
           <Link
