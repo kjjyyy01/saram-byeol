@@ -6,6 +6,7 @@ import SideSheet from '@/components/contacts/SideSheet';
 import { useAuthStore } from '@/store/zustand/store';
 import { useDemoStore } from '@/store/zustand/useDemoStore';
 import { toast } from 'react-toastify';
+import Loading from '@/components/Loading';
 import { useMutateInfiniteContact } from '@/hooks/mutations/useMutateInfiniteContact';
 import { usePinnedContacts, useRegularContactsInfinite } from '@/hooks/queries/useGetContactsForInfinite';
 
@@ -14,7 +15,7 @@ interface ContactListProps {
   onSelectedContact: (id: string) => void;
 }
 
-export default function ContactList({ peopleSelectedId ,onSelectedContact }: ContactListProps) {
+export default function ContactList({ peopleSelectedId, onSelectedContact }: ContactListProps) {
   const [isAddContactOpen, setIsAddContactOpen] = useState(false);
   const handleClose = () => setIsAddContactOpen(false);
 
@@ -112,7 +113,9 @@ export default function ContactList({ peopleSelectedId ,onSelectedContact }: Con
       {/* 연락처 리스트 */}
       <div className='mt-12 flex-1 overflow-y-auto'>
         {isLoading ? (
-          <div className='py-8 text-center'>연락처를 불러오는 중...</div>
+          <div className='py-8 text-center'>
+            <Loading />
+          </div>
         ) : (
           <>
             {/* 핀된 연락처 */}
@@ -125,7 +128,11 @@ export default function ContactList({ peopleSelectedId ,onSelectedContact }: Con
                   {(isDemoUser ? demoPinned : pinnedContacts).map((c) => (
                     <li key={`pinned-${c.contacts_id}`}>
                       <div onClick={() => onSelectedContact(c.contacts_id)}>
-                        <ContactItem contact={c} onTogglePin={handleTogglePin} isSelected={peopleSelectedId === c.contacts_id} />
+                        <ContactItem
+                          contact={c}
+                          onTogglePin={handleTogglePin}
+                          isSelected={peopleSelectedId === c.contacts_id}
+                        />
                       </div>
                     </li>
                   ))}
@@ -144,7 +151,11 @@ export default function ContactList({ peopleSelectedId ,onSelectedContact }: Con
                 {(isDemoUser ? demoRegular : regularContacts).map((c) => (
                   <li key={c.contacts_id}>
                     <div onClick={() => onSelectedContact(c.contacts_id)} className='w-full'>
-                      <ContactItem contact={c} onTogglePin={handleTogglePin} isSelected={peopleSelectedId === c.contacts_id}  />
+                      <ContactItem
+                        contact={c}
+                        onTogglePin={handleTogglePin}
+                        isSelected={peopleSelectedId === c.contacts_id}
+                      />
                     </div>
                   </li>
                 ))}

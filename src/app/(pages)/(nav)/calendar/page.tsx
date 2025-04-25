@@ -19,6 +19,7 @@ import { useUpadateEventMutate } from '@/hooks/mutations/useUpadateEventMutate';
 import { useGetSelectPlan } from '@/hooks/queries/useGetSelectPlan';
 import { format } from 'date-fns';
 import { useDemoStore } from '@/store/zustand/useDemoStore';
+import Loading from '@/components/Loading';
 
 interface UpdatedEventType {
   id: string;
@@ -210,7 +211,11 @@ export default function Calendar() {
   if (!hasMounted || !isAccessGranted) return null;
 
   if (isPending && !isDemoUser) {
-    return <div>로딩 중입니다...</div>;
+    return (
+      <div>
+        <Loading />
+      </div>
+    );
   }
 
   if (isError) {
