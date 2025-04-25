@@ -8,11 +8,6 @@ const SectionTwoToggle = () => {
 
   const toggleCheckHandler = () => {
     setChecked((prev) => !prev);
-    if (checked) {
-      console.log('내사람');
-    } else {
-      console.log('캘린더');
-    }
   };
   return (
     <>
@@ -44,11 +39,11 @@ const SectionTwoToggle = () => {
       </div>
 
       <div className='transition-all duration-500'>
-        <div className={`text-center text-2xl font-medium ${checked === true ? 'hidden' : 'block'}`}>
+        <div className={`text-center text-2xl font-medium ${checked === true ? 'block' : 'hidden'}`}>
           <p>연락처 기반으로 사람을 추가해서 내 사람들과의 인맥을 관리할 수 있습니다.</p>
           <p>등록한 인맥과의 약속을 모아볼 수도 있고 관련된 앨범(준비 중)도 볼 수 있습니다.</p>
         </div>
-        <div className={`text-center text-2xl font-medium ${checked === false ? 'hidden' : 'block'}`}>
+        <div className={`text-center text-2xl font-medium ${checked === false ? 'block' : 'hidden'}`}>
           <p>내 사람들과의 약속을 캘린더에서 확인 할 수 있습니다.</p>
           <p>까먹지 않게 다가오는 약속도 챙겨줍니다.</p>
         </div>
