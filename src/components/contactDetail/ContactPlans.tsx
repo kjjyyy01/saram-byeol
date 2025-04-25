@@ -12,6 +12,7 @@ import PlanForm from '@/components/plans/PlanForm';
 import { ConfirmToast } from '../toast/ConfirmToast';
 import { useDemoStore } from '@/store/zustand/useDemoStore';
 import { Plus } from '@phosphor-icons/react';
+import { sortPlansByDate } from '@/lib/utils/sortPlansByDate';
 
 interface Props {
   plans: PlanDetailType[] | PlansType[];
@@ -50,6 +51,8 @@ const ContactPlans = ({ plans }: Props) => {
     });
   };
 
+  const sortedPlans = sortPlansByDate(plans);
+
   return (
     <div>
       {/* 타이틀 & 추가 버튼 라인 */}
@@ -67,6 +70,7 @@ const ContactPlans = ({ plans }: Props) => {
             <button
               onClick={() => setIsAddPlanOpen(true)}
               className='flex h-full w-full flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-white p-6 text-blue-500 transition hover:border-blue-400 hover:bg-blue-50 hover:text-blue-600'
+              style={{ boxShadow: '0 4px 10px rgba(0, 0, 0, 0.1)' }}
             >
               <Plus size={28} weight='bold' />
               <span className='mt-1 text-sm font-medium'>약속 추가</span>
@@ -74,7 +78,7 @@ const ContactPlans = ({ plans }: Props) => {
           </li>
 
           {/* 약속 카드 모음 */}
-          {plans.map((plan) => (
+          {sortedPlans.map((plan) => (
             <li key={plan.plan_id}>
               <ContactPlansCard
                 title={plan.title}
