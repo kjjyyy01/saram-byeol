@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import SectionThreeEmail from './SectionThreeEmail';
+import Link from 'next/link';
 
 const SectionThree = () => {
   return (
@@ -20,10 +21,21 @@ const SectionThree = () => {
             <div className='font-gmarket text-2xl font-bold'>사람,별</div>
           </div>
           <div className='flex flex-row gap-9 text-base font-normal text-grey-200 transition-all duration-500'>
-            <p className='cursor-pointer hover:font-semibold hover:text-grey-500'>개인정보처리방침</p>
-            <p className='cursor-pointer hover:font-semibold hover:text-grey-500'>사람,별 공지</p>
-            <p className='cursor-pointer hover:font-semibold hover:text-grey-500'>고객 문의</p>
-            <p className='cursor-pointer hover:font-semibold hover:text-grey-500'>구독 문의</p>
+            <Link
+              href='#'
+              className='aria-label="개인정보처리방침" cursor-pointer hover:font-semibold hover:text-grey-500'
+            >
+              개인정보처리방침
+            </Link>
+            <Link href='#' className='aria-label="사람,별 공지" cursor-pointer hover:font-semibold hover:text-grey-500'>
+              사람,별 공지
+            </Link>
+            <Link href='#' className='aria-label="고객 문의" cursor-pointer hover:font-semibold hover:text-grey-500'>
+              고객 문의
+            </Link>
+            <Link href='#' className='aria-label="구독 문의" cursor-pointer hover:font-semibold hover:text-grey-500'>
+              구독 문의
+            </Link>
           </div>
         </div>
         <div className='flex flex-col gap-2 text-sm text-grey-100'>
