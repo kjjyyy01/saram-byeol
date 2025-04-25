@@ -20,8 +20,8 @@ import { useGetSelectPlan } from '@/hooks/queries/useGetSelectPlan';
 import { format } from 'date-fns';
 import { useDemoStore } from '@/store/zustand/useDemoStore';
 import GenericError from '@/components/Error';
-import Loading from '@/components/Loading';
 import { useMultiQueryStatus } from '@/hooks/useMultiQuery';
+import Loading from '@/components/Loading';
 
 interface UpdatedEventType {
   id: string;
