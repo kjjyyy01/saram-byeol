@@ -1,4 +1,9 @@
-import { ContactDetailType, ContactItemType, ContactWithPlansDetailType, fetchRegularInfiniteContacts } from '@/types/contacts';
+import {
+  ContactDetailType,
+  ContactItemType,
+  ContactWithPlansDetailType,
+  fetchRegularInfiniteContacts,
+} from '@/types/contacts';
 import { supabase } from '@/app/api/supabase/client';
 import { InsertNewPlansType, PlansType } from '@/types/plans';
 import { CONTACTS, PLANS, USERS } from '@/constants/supabaseTable';
@@ -346,27 +351,25 @@ export const mutateDeletePlan = async (planId: string): Promise<void> => {
 };
 
 // pin으로 고정된 연락처만 조회
-export const fetchPinnedContacts = async (
-  userId: string
-): Promise<ContactItemType[]> => {
+export const fetchPinnedContacts = async (userId: string): Promise<ContactItemType[]> => {
   const { data, error } = await supabase
     .from(CONTACTS)
     .select('contacts_id, name, relationship_level, contacts_profile_img, is_pinned')
     .eq('user_id', userId)
     .eq('is_pinned', true)
-    .order('name', { ascending: true })
+    .order('name', { ascending: true });
 
-  if (error) throw error
-  return data || []
-}
+  if (error) throw error;
+  return data || [];
+};
 
 export const fetchRegularContactsInfinite = async (
   userId: string,
   pageParam = 0,
   limit = 10
 ): Promise<fetchRegularInfiniteContacts> => {
-  const from = pageParam * limit
-  const to = from + limit - 1
+  const from = pageParam * limit;
+  const to = from + limit - 1;
 
   const { data, error } = await supabase
     .from(CONTACTS)
@@ -374,10 +377,10 @@ export const fetchRegularContactsInfinite = async (
     .eq('user_id', userId)
     .eq('is_pinned', false)
     .order('name', { ascending: true })
-    .range(from, to)
+    .range(from, to);
 
-  if (error) throw error
+  if (error) throw error;
 
-  const nextPage = data.length === limit ? pageParam + 1 : undefined
-  return { contacts: data, nextPage }
-}
+  const nextPage = data.length === limit ? pageParam + 1 : undefined;
+  return { contacts: data, nextPage };
+};
