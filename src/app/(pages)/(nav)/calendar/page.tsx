@@ -19,7 +19,9 @@ import { useUpadateEventMutate } from '@/hooks/mutations/useUpadateEventMutate';
 import { useGetSelectPlan } from '@/hooks/queries/useGetSelectPlan';
 import { format } from 'date-fns';
 import { useDemoStore } from '@/store/zustand/useDemoStore';
-import Loading from '@/components/loading';
+import GenericError from '@/components/Error';
+import Loading from '@/components/Loading';
+import { useMultiQueryStatus } from '@/hooks/useMultiQuery';
 
 interface UpdatedEventType {
   id: string;
@@ -44,11 +46,27 @@ export default function Calendar() {
   const [moment, setMoment] = useState(new Date()); //해당 달
   const calendarYear = moment.getFullYear(); //해당 달의 년도
 
-  const { data: holidays } = useGetHolidays(String(calendarYear)); //공휴일
-  const { data: events, isPending, isError, error } = useGetCalendarPlans(user, calendarYear, moment); //약속(readonly)
+  const {
+    data: holidays,
+    isError: isHolidaysError,
+    error: holidaysError,
+    refetch: refetchHolidays,
+  } = useGetHolidays(String(calendarYear)); //공휴일
+  const {
+    data: events,
+    isPending,
+    isError: isPlansError,
+    error: plansError,
+    refetch: refetchPlans,
+  } = useGetCalendarPlans(user, calendarYear, moment); //약속(readonly)
 
   const [selectedPlanId, setSelectedPlanId] = useState<string | null>(null);
-  const { data: selectedPlanData, refetch: refetchSelectedPlan } = useGetSelectPlan(selectedPlanId ?? '');
+  const {
+    data: selectedPlanData,
+    isError: isSelectedPlanError,
+    error: selectedPlanError,
+    refetch: refetchSelectedPlan,
+  } = useGetSelectPlan(selectedPlanId ?? '');
 
   const [localEvents, setLocalEvents] = useState<CalendarEventType[]>([]); //직접 조작하는 약속(edit)
 
@@ -67,7 +85,7 @@ export default function Calendar() {
   const { setInitialFormData } = usePlanFormStore();
   // showPlanForm 상태와 setShowPlanForm 함수 가져오기
   const { showPlanForm, setShowPlanForm } = usePlanFormStore();
-  const { mutate: updateEvent } = useUpadateEventMutate();
+  const { mutate: updateEvent, isError: isUpdateEventError, error: updateEventError } = useUpadateEventMutate();
 
   // 툴바 버튼 동적
   const [activeTab, setActiveTab] = useState<'upcoming' | 'add'>('upcoming');
@@ -208,6 +226,13 @@ export default function Calendar() {
     })),
   ];
 
+  const { isAnyError, error, refetch } = useMultiQueryStatus(
+    { isError: isHolidaysError, error: holidaysError, refetch: refetchHolidays },
+    { isError: isPlansError, error: plansError, refetch: refetchPlans },
+    { isError: isUpdateEventError, error: updateEventError },
+    { isError: isSelectedPlanError, error: selectedPlanError, refetch: refetchSelectedPlan }
+  );
+
   if (!hasMounted || !isAccessGranted) return null;
 
   if (isPending && !isDemoUser) {
@@ -218,8 +243,12 @@ export default function Calendar() {
     );
   }
 
-  if (isError) {
-    return <div>캘린더 에러 발생 : {error.message}</div>;
+  if (isAnyError) {
+    return (
+      <div>
+        <GenericError message='캘린더 에러 발생 : ' error={error} refetch={refetch} />
+      </div>
+    );
   }
 
   return (
