@@ -66,7 +66,7 @@ export default function Calendar() {
   const selectedPlanData = isDemoUser ? demoData : data;
   const demoEvents = useGetDemoPlans();
   const events = isDemoUser ? demoEvents : trueEvents;
-  const userId = isDemoUser ? demoUser.id : user?.id || demoUser.id;
+  const userId = isDemoUser ? demoUser.id : user?.id;
 
   //옵션 더보기
   const { setInitialFormData } = usePlanFormStore();
@@ -318,7 +318,8 @@ export default function Calendar() {
           </>
         ) : (
           showUpcoming &&
-          isAccessGranted && <UpcomingPlans userId={userId} onSelectPlan={(plan) => setSelectPlan([plan])} />
+          isAccessGranted &&
+          userId && <UpcomingPlans userId={userId} onSelectPlan={(plan) => setSelectPlan([plan])} />
         )}
       </div>
     </div>
