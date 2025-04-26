@@ -45,7 +45,7 @@ const SectionTwoToggle = () => {
         </div>
         <div className={`text-center text-2xl font-medium ${checked === false ? 'block' : 'hidden'}`}>
           <p>내 사람들과의 약속을 캘린더에서 확인 할 수 있습니다.</p>
-          <p>까먹지 않게 다가오는 약속도 챙겨줍니다.</p>
+          <p>드래그 앤 드롭으로 간편하게 일정을 변경해보세요.</p>
         </div>
       </div>
     </>
