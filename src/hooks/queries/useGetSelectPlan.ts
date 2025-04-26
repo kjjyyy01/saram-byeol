@@ -8,7 +8,7 @@ export const useGetSelectPlan = (planId: string) => {
   return useQuery({
     queryKey: [QUERY_KEY.SELECT_PLAN, planId],
     queryFn: () => getSelectPlan(planId),
-    enabled: !!planId || !isDemoUser, // planId가 있거나 데모상태가 아닐때만 실행 
+    enabled: isDemoUser ? false : !!planId, // 데모 사용자인 경우 항상 비활성화, 그렇지 않으면 planId가 있을 때만 활성화
     staleTime: 1000 * 60 * 5, // 5분
     select: (res) => res, // 응답 그대로 넘기기
   });
