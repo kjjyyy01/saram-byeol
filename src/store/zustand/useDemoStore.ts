@@ -18,6 +18,7 @@ interface DemoState {
     plans: PlansType[];
   };
   getPlan: (id: string) => { data: SelectPlanType[]; error: null };
+  getPlanInMonth: () => { filterdData: PlansType[] };
   clearAll: () => void;
 }
 
@@ -62,6 +63,21 @@ export const useDemoStore = create<DemoState>()(
           data: enrichedPlans,
           error: null,
         };
+      },
+      getPlanInMonth: () => {
+        const currentDate = new Date();
+        currentDate.setHours(0, 0, 0, 0);
+
+        const monthLater = new Date();
+        monthLater.setDate(currentDate.getDate() + 30);
+        monthLater.setHours(23, 59, 59, 999);
+
+        const filterdData = demoPlans.filter((plan) => {
+          const planStartDate = new Date(plan.start_date);
+          return planStartDate >= currentDate && planStartDate <= monthLater;
+        });
+
+        return { filterdData };
       },
       clearAll: () =>
         set(() => {
