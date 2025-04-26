@@ -105,8 +105,10 @@ export default function Calendar() {
     // 클릭한 약속 바
     const clickPlan = selectedPlanData.data[0];
 
-    // 이미 같은 ID를 가진 plan이 selectPlan에 있다면 무시
-    if (selectPlan?.[0]?.plan_id === clickPlan.plan_id) return;
+    if (isDemoUser) {
+      // 이미 같은 ID를 가진 plan이 selectPlan에 있다면 무시
+      if (selectPlan?.[0]?.plan_id === clickPlan.plan_id) return;
+    }
 
     const formattedPlan = {
       ...clickPlan,
