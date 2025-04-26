@@ -45,7 +45,7 @@ export default function Calendar() {
   const calendarYear = moment.getFullYear(); //해당 달의 년도
 
   const { data: holidays } = useGetHolidays(String(calendarYear)); //공휴일
-  const { data: trueEvents, isPending, isError, error } = useGetCalendarPlans(user, calendarYear, moment); //약속(readonly)
+  const { data: events, isPending, isError, error } = useGetCalendarPlans(user, calendarYear, moment); //약속(readonly)
   const [selectedPlanId, setSelectedPlanId] = useState<string | null>(null);
   const { data, refetch: refetchSelectedPlan } = useGetSelectPlan(selectedPlanId ?? '');
 
@@ -65,7 +65,7 @@ export default function Calendar() {
   const demoData = getPlan(selectedPlanId ?? '');
   const selectedPlanData = isDemoUser ? demoData : data;
   const demoEvents = useGetDemoPlans();
-  const events = isDemoUser ? demoEvents : trueEvents;
+
   const userId = isDemoUser ? demoUser.id : user?.id;
 
   //옵션 더보기
@@ -87,7 +87,7 @@ export default function Calendar() {
       router.replace(SIGNIN);
     }
   }, [hasMounted, isAccessGranted, router]);
-
+  console.log('리렌더링 됨');
   // 약속바 클릭마다 약속 상세 refetch
   useEffect(() => {
     if (isDemoUser) {
@@ -96,6 +96,7 @@ export default function Calendar() {
     if (selectedPlanId) {
       refetchSelectedPlan();
     }
+    console.log('refetch');
   }, [selectedPlanId, refetchSelectedPlan]);
 
   // 가져온 데이터로 selectPlan 세팅
@@ -104,18 +105,17 @@ export default function Calendar() {
 
     // 클릭한 약속 바
     const clickPlan = selectedPlanData.data[0];
-
     if (isDemoUser) {
       // 이미 같은 ID를 가진 plan이 selectPlan에 있다면 무시
       if (selectPlan?.[0]?.plan_id === clickPlan.plan_id) return;
     }
-
     const formattedPlan = {
       ...clickPlan,
       contacts: Array.isArray(clickPlan.contacts)
         ? (clickPlan.contacts[0] ?? { name: '' }) // 배열이면 첫 번째 꺼내고
         : (clickPlan.contacts ?? { name: '' }), // 객체거나 null이면 그대로
     };
+    console.log('selectplan');
     setSelectPlan([formattedPlan]);
     setShowUpcoming(false);
     setShowPlanForm(false);
@@ -125,9 +125,13 @@ export default function Calendar() {
 
   //처음 받아오는 readonly 약속을 조작 가능하도록 복사
   useEffect(() => {
+    if (isDemoUser) {
+      setLocalEvents(demoEvents);
+    }
     if (events) {
       setLocalEvents((prev) => (prev.length === 0 || events.length !== prev.length ? events : prev));
     }
+    console.log('events');
   }, [events]);
 
   const updateLocalEvent = (updatedEvent: UpdatedEventType) => {
