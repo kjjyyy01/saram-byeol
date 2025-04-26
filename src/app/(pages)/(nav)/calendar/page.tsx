@@ -19,8 +19,6 @@ import { useUpadateEventMutate } from '@/hooks/mutations/useUpadateEventMutate';
 import { useGetSelectPlan } from '@/hooks/queries/useGetSelectPlan';
 import { format } from 'date-fns';
 import { useDemoStore } from '@/store/zustand/useDemoStore';
-import GenericError from '@/components/Error';
-import { useMultiQueryStatus } from '@/hooks/useMultiQuery';
 import Loading from '@/components/Loading';
 
 interface UpdatedEventType {
@@ -46,25 +44,13 @@ export default function Calendar() {
   const [moment, setMoment] = useState(new Date()); //해당 달
   const calendarYear = moment.getFullYear(); //해당 달의 년도
 
-  const {
-    data: holidays,
-    isError: isHolidaysError,
-    error: holidaysError,
-    refetch: refetchHolidays,
-  } = useGetHolidays(String(calendarYear)); //공휴일
-  const {
-    data: events,
-    isPending,
-    isError: isPlansError,
-    error: plansError,
-    refetch: refetchPlans,
-  } = useGetCalendarPlans(user, calendarYear, moment); //약속(readonly)
+  const { data: holidays, error: holidaysError } = useGetHolidays(String(calendarYear)); //공휴일
+  const { data: events, isPending, error: plansError } = useGetCalendarPlans(user, calendarYear, moment); //약속(readonly)
 
   const [selectedPlanId, setSelectedPlanId] = useState<string | null>(null);
   const {
     data: selectedPlanData,
-    isError: isSelectedPlanError,
-    error: selectedPlanError,
+    error: selectPlanError,
     refetch: refetchSelectedPlan,
   } = useGetSelectPlan(selectedPlanId ?? '');
 
@@ -85,7 +71,7 @@ export default function Calendar() {
   const { setInitialFormData } = usePlanFormStore();
   // showPlanForm 상태와 setShowPlanForm 함수 가져오기
   const { showPlanForm, setShowPlanForm } = usePlanFormStore();
-  const { mutate: updateEvent, isError: isUpdateEventError, error: updateEventError } = useUpadateEventMutate();
+  const { mutate: updateEvent, error: updatePlanError } = useUpadateEventMutate();
 
   // 툴바 버튼 동적
   const [activeTab, setActiveTab] = useState<'upcoming' | 'add'>('upcoming');
@@ -226,13 +212,6 @@ export default function Calendar() {
     })),
   ];
 
-  const { isAnyError, error, refetch } = useMultiQueryStatus(
-    { isError: isHolidaysError, error: holidaysError, refetch: refetchHolidays },
-    { isError: isPlansError, error: plansError, refetch: refetchPlans },
-    { isError: isUpdateEventError, error: updateEventError },
-    { isError: isSelectedPlanError, error: selectedPlanError, refetch: refetchSelectedPlan }
-  );
-
   if (!hasMounted || !isAccessGranted) return null;
 
   if (isPending && !isDemoUser) {
@@ -243,19 +222,18 @@ export default function Calendar() {
     );
   }
 
-  if (isAnyError) {
-    return (
-      <div>
-        <GenericError message='캘린더 에러 발생 : ' error={error} refetch={refetch} />
-      </div>
-    );
+  if (holidaysError || plansError || selectPlanError || updatePlanError) {
+    const error = new Error('캘린더 데이터를 불러오는 중 문제가 발생했습니다.') as Error & {
+      originalError?: Error | null;
+    };
+    error.originalError = holidaysError ?? plansError ?? selectPlanError ?? updatePlanError;
+    throw error;
   }
 
   return (
     <div className='flex flex-col gap-4 md:flex-row'>
       <div className='md:flex-grow'>
         <MainCalendar
-          // user={user}
           moment={moment}
           setMoment={setMoment}
           events={combinedEvents}
