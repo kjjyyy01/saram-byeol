@@ -90,13 +90,27 @@ const config: Config = {
           '5': 'hsl(var(--chart-5))',
         },
       },
-      fontFamily:{
-        pretendard: ['var(--font-pretendard)']
+      fontFamily: {
+        pretendard: ['var(--font-pretendard)'],
+        gmarket: ['var(--font-gmarket)', 'sans-serif'],
       },
       borderRadius: {
         lg: 'var(--radius)',
         md: 'calc(var(--radius) - 2px)',
         sm: 'calc(var(--radius) - 4px)',
+      },
+      screens: {
+        'sm': '640px',
+        // => @media (min-width: 576px) { ... }
+
+        'md': '960px',
+        // => @media (min-width: 960px) { ... }
+
+        'lg': '1440px',
+        // => @media (min-width: 1440px) { ... }
+      },
+      boxShadow: {
+        'app-logo': '0px 6px 15px 0px rgba(0, 0, 0, 0.15)',
       },
     },
   },
