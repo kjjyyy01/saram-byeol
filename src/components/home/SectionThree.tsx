@@ -23,17 +23,18 @@ const SectionThree = () => {
           <div className='flex flex-row gap-9 text-base font-normal text-grey-200 transition-all duration-500'>
             <Link
               href='#'
-              className='aria-label="개인정보처리방침" cursor-pointer hover:font-semibold hover:text-grey-500'
+              className='cursor-pointer hover:font-semibold hover:text-grey-500'
+              aria-label='개인정보처리방침'
             >
               개인정보처리방침
             </Link>
-            <Link href='#' className='aria-label="사람,별 공지" cursor-pointer hover:font-semibold hover:text-grey-500'>
+            <Link href='#' className='cursor-pointer hover:font-semibold hover:text-grey-500' aria-label='사람,별 공지'>
               사람,별 공지
             </Link>
-            <Link href='#' className='aria-label="고객 문의" cursor-pointer hover:font-semibold hover:text-grey-500'>
+            <Link href='#' className='cursor-pointer hover:font-semibold hover:text-grey-500' aria-label='고객 문의'>
               고객 문의
             </Link>
-            <Link href='#' className='aria-label="구독 문의" cursor-pointer hover:font-semibold hover:text-grey-500'>
+            <Link href='#' className='cursor-pointer hover:font-semibold hover:text-grey-500' aria-label='구독 문의'>
               구독 문의
             </Link>
           </div>

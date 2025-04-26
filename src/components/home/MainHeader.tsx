@@ -18,24 +18,27 @@ const MainHeader = ({ onNavClick }: Props) => {
           alt='app-logo-icon'
           width={88}
           height={85}
-          className='rounded-[20px] shadow-app-logo'
+          className='shadow-app-logo rounded-[20px]'
         />
         <nav className='flex flex-row items-center justify-center gap-14 text-2xl font-bold'>
           <button
             onClick={() => onNavClick('about')}
-            className='aria-label="사람별 소개로 이동" cursor-pointer border-none bg-transparent text-2xl'
+            className='cursor-pointer border-none bg-transparent text-2xl'
+            aria-label='사람별 소개로 이동'
           >
             사람별이란?
           </button>
           <button
             onClick={() => onNavClick('function')}
-            className='aria-label="기능 소개로 이동" cursor-pointer border-none bg-transparent text-2xl'
+            className='cursor-pointer border-none bg-transparent text-2xl'
+            aria-label='기능 소개로 이동'
           >
             기능소개
           </button>
           <button
             onClick={() => onNavClick('subscription')}
-            className='aria-label="구독 정보로 이동" cursor-pointer border-none bg-transparent text-2xl'
+            className='cursor-pointer border-none bg-transparent text-2xl'
+            aria-label='구독 정보로 이동'
           >
             구독
           </button>
