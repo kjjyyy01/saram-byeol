@@ -34,8 +34,8 @@ const UpcomingPlans = ({ userId, onSelectPlan }: UpcomingPlansProps) => {
     return <div className='p-4 text-center'>향후 30일 내에 예정된 일정이 없습니다.</div>;
 
   return (
-    <div className='max-h-[calc(100vh-2rem)] space-y-4 overflow-auto'>
-      <h2 className='mb-4 text-xl font-bold'>다가오는 일정</h2>
+    <div className='max-h-[calc(100vh-2rem)] space-y-4 overflow-visible'>
+      <h2 className='mb-4 text-xl font-bold'>다가오는 약속</h2>
       <div className='space-y-3'>
         {plans.map((plan) => (
           <div key={plan.plan_id} onClick={() => onSelectPlan(plan)} className='cursor-pointer'>
