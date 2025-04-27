@@ -87,7 +87,7 @@ export default function Calendar() {
       router.replace(SIGNIN);
     }
   }, [hasMounted, isAccessGranted, router]);
-  console.log('리렌더링 됨');
+
   // 약속바 클릭마다 약속 상세 refetch
   useEffect(() => {
     if (isDemoUser) {
@@ -96,7 +96,6 @@ export default function Calendar() {
     if (selectedPlanId) {
       refetchSelectedPlan();
     }
-    console.log('refetch');
   }, [selectedPlanId, refetchSelectedPlan]);
 
   // 가져온 데이터로 selectPlan 세팅
@@ -115,7 +114,6 @@ export default function Calendar() {
         ? (clickPlan.contacts[0] ?? { name: '' }) // 배열이면 첫 번째 꺼내고
         : (clickPlan.contacts ?? { name: '' }), // 객체거나 null이면 그대로
     };
-    console.log('selectplan');
     setSelectPlan([formattedPlan]);
     setShowUpcoming(false);
     setShowPlanForm(false);
@@ -131,7 +129,6 @@ export default function Calendar() {
     if (events) {
       setLocalEvents((prev) => (prev.length === 0 || events.length !== prev.length ? events : prev));
     }
-    console.log('events');
   }, [events, isDemoUser]);
 
   const updateLocalEvent = (updatedEvent: UpdatedEventType) => {
@@ -242,10 +239,7 @@ export default function Calendar() {
   if (isError) {
     return <div>캘린더 에러 발생 : {error.message}</div>;
   }
-  console.log('showUpcoming', showUpcoming);
-  console.log('isAccessGranted', isAccessGranted);
-  console.log('userId', userId);
-  console.log('selectPlan', selectPlan);
+
   return (
     <div className='flex flex-col gap-4 md:flex-row'>
       <div className='md:flex-grow'>
