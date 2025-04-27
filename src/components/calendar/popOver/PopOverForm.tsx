@@ -21,9 +21,10 @@ interface Props {
 
 const PopOverForm = ({ selectedColor, onOpenFullForm, onClosePopOver }: Props) => {
   const user = useAuthStore((state) => state.user);
-  const { isDemoUser } = useDemoStore();
+  const { isDemoUser, demoUser } = useDemoStore();
   const form = useFormContext<PlanFormType>();
   const { mutate: insertNewPlan, isPending } = useMutateInsertNewPlan();
+  const userId = user?.id || demoUser.id;
 
   // 팝오버에 작성된 내용
   const { setInitialFormData, clearFormData } = usePlanFormStore();
@@ -83,7 +84,7 @@ const PopOverForm = ({ selectedColor, onOpenFullForm, onClosePopOver }: Props) =
               />
             </section>
             <DateInputField />
-            {user && <ContactsField userId={user.id} enabled={!!user.id} />}
+            <ContactsField userId={userId} enabled={!!userId} />
             <div className='flex justify-between'>
               <button
                 type='button'
