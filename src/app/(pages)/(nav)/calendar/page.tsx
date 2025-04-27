@@ -121,7 +121,7 @@ export default function Calendar() {
     setShowPlanForm(false);
     setIsEditMode(false);
     setEditPlan(null);
-  }, [selectedPlanData, setShowPlanForm]);
+  }, [selectedPlanData]);
 
   //처음 받아오는 readonly 약속을 조작 가능하도록 복사
   useEffect(() => {
@@ -132,7 +132,7 @@ export default function Calendar() {
       setLocalEvents((prev) => (prev.length === 0 || events.length !== prev.length ? events : prev));
     }
     console.log('events');
-  }, [events]);
+  }, [events, isDemoUser]);
 
   const updateLocalEvent = (updatedEvent: UpdatedEventType) => {
     setLocalEvents((prevEvents) =>
@@ -242,7 +242,10 @@ export default function Calendar() {
   if (isError) {
     return <div>캘린더 에러 발생 : {error.message}</div>;
   }
-
+  console.log('showUpcoming', showUpcoming);
+  console.log('isAccessGranted', isAccessGranted);
+  console.log('userId', userId);
+  console.log('selectPlan', selectPlan);
   return (
     <div className='flex flex-col gap-4 md:flex-row'>
       <div className='md:flex-grow'>
@@ -263,6 +266,14 @@ export default function Calendar() {
           }}
           CustomToolbarProps={{
             onShowUpcomingPlans: () => {
+              if (isDemoUser) {
+                setShowUpcoming(true);
+                setShowPlanForm(false);
+                setIsEditMode(false);
+                setEditPlan(null);
+                setActiveTab('upcoming');
+                return;
+              }
               setSelectPlan(null);
               setShowUpcoming(true);
               setShowPlanForm(false);
@@ -271,6 +282,15 @@ export default function Calendar() {
               setActiveTab('upcoming');
             },
             onAddPlan: () => {
+              if (isDemoUser) {
+                setShowUpcoming(false);
+                setShowPlanForm(true);
+                setIsEditMode(false);
+                setEditPlan(null);
+                setInitialFormData(planFormDefaultValues);
+                setActiveTab('add');
+                return;
+              }
               setSelectPlan(null);
               setShowUpcoming(false);
               setShowPlanForm(true);
@@ -303,6 +323,8 @@ export default function Calendar() {
               <EditPlanForm plan={editPlan} onClose={handleEditClose} />
             </div>
           </>
+        ) : showUpcoming && isAccessGranted && userId ? (
+          <UpcomingPlans userId={userId} onSelectPlan={(plan) => setSelectPlan([plan])} />
         ) : selectPlan ? (
           <>
             <h2 className='mb-4 text-xl font-bold'>약속 상세</h2>
@@ -320,11 +342,7 @@ export default function Calendar() {
               />
             </div>
           </>
-        ) : (
-          showUpcoming &&
-          isAccessGranted &&
-          userId && <UpcomingPlans userId={userId} onSelectPlan={(plan) => setSelectPlan([plan])} />
-        )}
+        ) : null}
       </div>
     </div>
   );
