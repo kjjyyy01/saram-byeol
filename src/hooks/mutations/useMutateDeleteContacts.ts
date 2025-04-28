@@ -10,9 +10,9 @@ export const useMutateDeleteContacts = (userId: string) => {
       onSuccess: () => {
         
         // 고정된 연락처 목록 갱신
-        queryClient.invalidateQueries({queryKey: [QUERY_KEY.CONTACTS, 'pinned', userId]})
+        queryClient.invalidateQueries({queryKey: [QUERY_KEY.CONTACT_LIST.PINNED_CONTACTS, userId]})
         // 일반 연락처(infinite) 목록 갱신
-        queryClient.invalidateQueries({queryKey: [QUERY_KEY.CONTACTS_INFINITE, 'regular',userId]})
+        queryClient.invalidateQueries({queryKey: [QUERY_KEY.CONTACT_LIST.REGULAR_CONTACTS,userId]})
       },
     }
   );
