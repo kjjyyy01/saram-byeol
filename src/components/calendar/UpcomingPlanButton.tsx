@@ -1,5 +1,6 @@
 import { getUserPlans } from '@/app/api/supabase/service';
 import { useAuthStore } from '@/store/zustand/store';
+import { useDemoStore } from '@/store/zustand/useDemoStore';
 import React, { useEffect, useState } from 'react';
 
 interface Props {
@@ -10,16 +11,20 @@ interface Props {
 const UpcomingPlanButton = ({ onClick, activeTab }: Props) => {
   const user = useAuthStore((state) => state.user);
   const [upcomingCount, setUpcomingCount] = useState<number | null>(null);
+  const { isDemoUser, getPlanInMonth } = useDemoStore();
 
   useEffect(() => {
     const fetchPlans = async () => {
-      if (user?.id) {
+      if (isDemoUser) {
+        const { filterdData } = getPlanInMonth();
+        setUpcomingCount(filterdData.length);
+      } else if (user?.id) {
         const upcomingPlans = await getUserPlans(user.id);
         setUpcomingCount(upcomingPlans.length); // 데이터 도착한 후에만 업데이트
       }
     };
     fetchPlans();
-  }, [user?.id]);
+  }, [user?.id, getPlanInMonth, isDemoUser]);
 
   return (
     <div>

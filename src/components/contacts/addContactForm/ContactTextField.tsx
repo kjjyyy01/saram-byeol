@@ -69,8 +69,8 @@ const ContactTextField = ({
         <div className='flex w-full items-start'>
           {/* 아이콘 & 라벨 */}
           <div className='w-24 flex flex-col items-center pt-1'>
-            {icon && <div className='mb-1 text-gray-600'>{icon}</div>}
-            <div className='text-sm text-center peer-invalid:text-gray-600'>
+            {icon && <div className='mb-1 text-grey-600'>{icon}</div>}
+            <div className='text-sm text-center peer-invalid:text-grey-600'>
               {label}
               {required && <span className='ml-1 text-red-500'>*</span>}
             </div>

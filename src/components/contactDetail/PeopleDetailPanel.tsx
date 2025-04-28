@@ -14,7 +14,7 @@ interface Props {
 const PeopleDetailPanel = ({ contactsId, onDeleteSuccess }: Props) => {
   const user = useAuthStore((state) => state.user);
   const { isDemoUser, getContactsWithPlans: getData } = useDemoStore();
-  const userId = user?.id; // 데모 유무에 따라 유저아이디
+  const userId = user?.id; 
   const demoData = getData(contactsId);
   const { data, isPending, error } = useQuery({
     queryKey: ['contactWithPlans', contactsId],

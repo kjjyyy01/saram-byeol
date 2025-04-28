@@ -1,12 +1,10 @@
 import { getMonthlyPlans } from '@/app/api/supabase/service';
 import { QUERY_KEY } from '@/constants/queryKey';
-import { useDemoStore } from '@/store/zustand/useDemoStore';
 import { CalendarEventType, PlansType } from '@/types/plans';
 import { User } from '@supabase/supabase-js';
 import { useQuery } from '@tanstack/react-query';
 
 export const useGetCalendarPlans = (user: User | null, year: number, monthDate: Date) => {
-  const { isDemoUser, demoPlans } = useDemoStore();
   const month = monthDate.getMonth() + 1; // Date 객체 -> 숫자 전환
 
   return useQuery<CalendarEventType[]>({
@@ -28,14 +26,7 @@ export const useGetCalendarPlans = (user: User | null, year: number, monthDate: 
         colors: plan.colors,
       }));
 
-      const demoEvents: CalendarEventType[] = demoPlans.map((plan) => ({
-        id: plan.plan_id,
-        title: plan.title,
-        start: new Date(plan.start_date),
-        end: new Date(plan.end_date),
-        colors: plan.colors,
-      }));
-      return isDemoUser ? demoEvents : events;
+      return events;
     },
     staleTime: 24 * 60 * 60 * 1000, // 1일
   });
