@@ -11,8 +11,7 @@ export async function GET(req: Request) {
     const res = await fetch(url);
 
     if (!res.ok) {
-      console.error('공휴일 API 응답 오류:', res.statusText);
-      return NextResponse.json({ error: '공휴일 정보를 가져오는 데 실패했습니다.' }, { status: res.status });
+      throw new Error(`공휴일 API 응답 오류: ${res.statusText}`);
     }
 
     const data = await res.json();
@@ -21,7 +20,7 @@ export async function GET(req: Request) {
       console.error('유효하지 않은 API 응답 형식:', data);
       return NextResponse.json({ error: '공휴일 데이터 형식이 올바르지 않습니다' }, { status: 500 });
     }
-    return NextResponse.json(data);
+    return NextResponse.json(data); //정상 응답 반환
   } catch (error) {
     console.error('공휴일 데이터 호출 중 오류 발생:', error);
     return NextResponse.json({ error: '공휴일을 불러올 수 없습니다' }, { status: 500 });
