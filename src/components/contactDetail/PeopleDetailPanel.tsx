@@ -14,7 +14,7 @@ interface Props {
 const PeopleDetailPanel = ({ contactsId, onDeleteSuccess }: Props) => {
   const user = useAuthStore((state) => state.user);
   const { isDemoUser, getContactsWithPlans: getData } = useDemoStore();
-  const userId = user?.id; // 데모 유무에 따라 유저아이디
+  const userId = user?.id; 
   const demoData = getData(contactsId);
   const { data, isPending, error } = useQuery({
     queryKey: ['contactWithPlans', contactsId],
@@ -36,7 +36,7 @@ const PeopleDetailPanel = ({ contactsId, onDeleteSuccess }: Props) => {
   return (
     <div className='container mx-auto px-4 pt-8'>
       <Tabs tabs={['내사람정보', '약속']}>
-        {[<ContactProfile key='profile' contact={contact} plans={plans} onDeleteSuccess={onDeleteSuccess} />, <ContactPlans key='plans' plans={plans} />]}
+        {[<ContactProfile key='profile' contact={contact} plans={plans} onDeleteSuccess={onDeleteSuccess} />, <ContactPlans key='plans' plans={plans} contactId={contact.contacts_id} />]}
       </Tabs>
     </div>
   );

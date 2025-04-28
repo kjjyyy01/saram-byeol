@@ -23,10 +23,18 @@ const SideSheet = ({
   }, [isOpen]);
 
   return (
+   <>
+   {/* 오버레이 */}
+   {isOpen && (
+    <div
+      className='fixed inset-0 bg-black bg-opacity-40 z-40'
+      onClick={onClose}
+    />
+   )}
     <div
       className={`
         fixed right-0 top-0 z-50 h-screen w-full transform
-        bg-white shadow-lg transition-all duration-300 ease-in-out border-l border-gray-200
+        bg-white shadow-lg transition-all duration-300 ease-in-out border-l border-grey-200
         md:w-[474px]
         ${isOpen ? 'translate-x-0' : 'translate-x-full'}
       `}
@@ -37,11 +45,11 @@ const SideSheet = ({
     >
       <div className="flex h-full flex-col">
         {/* 1) 고정된 타이틀 영역 */}
-        <div className="flex items-center justify-between p-4 border-gray-200">
+        <div className="flex items-center justify-between p-4 border-grey-200">
           <h2 className="text-2xl font-bold">{title}</h2>
           <button
             onClick={onClose}
-            className="rounded-full p-1 hover:bg-gray-100 transition-colors duration-200"
+            className="rounded-full p-1 hover:bg-grey-100 transition-colors duration-200"
           >
             <X size={24} />
           </button>
@@ -56,6 +64,7 @@ const SideSheet = ({
         </div>
       </div>
     </div>
+   </>
   );
 };
 

@@ -40,7 +40,7 @@ const LeftNavBar = () => {
       <div className='flex flex-col items-center justify-around'>
         <div className='py-8'>
           <Link href={HOME}>
-            <Image src={'/app-logo.png'} width={80} height={80} alt='app logo' />
+            <Image src={'/nav/app-logo.png'} width={80} height={80} alt='app logo' />
           </Link>
         </div>
         <div>
