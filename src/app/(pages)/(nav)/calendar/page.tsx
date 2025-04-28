@@ -20,6 +20,7 @@ import { useGetSelectPlan } from '@/hooks/queries/useGetSelectPlan';
 import { format } from 'date-fns';
 import { useDemoStore } from '@/store/zustand/useDemoStore';
 import Loading from '@/components/Loading';
+import { useGetDemoPlans } from '@/hooks/queries/useGetDemoPlans';
 
 interface UpdatedEventType {
   id: string;
@@ -40,15 +41,14 @@ export default function Calendar() {
   const router = useRouter();
   const user = useAuthStore((state) => state.user); //현재 로그인 한 유저
   const isSignIn = useAuthStore((state) => state.isSignIn); //로그인 상태
-
   const [moment, setMoment] = useState(new Date()); //해당 달
   const calendarYear = moment.getFullYear(); //해당 달의 년도
 
-  const { data: holidays } = useGetHolidays(String(calendarYear)); //공휴일
-  const { data: events, isPending, isError, error } = useGetCalendarPlans(user, calendarYear, moment); //약속(readonly)
+  const { data: holidays, error: holidaysError } = useGetHolidays(String(calendarYear)); //공휴일
+  const { data: events, isPending, error: plansError } = useGetCalendarPlans(user, calendarYear, moment); //약속(readonly)
 
   const [selectedPlanId, setSelectedPlanId] = useState<string | null>(null);
-  const { data: selectedPlanData, refetch: refetchSelectedPlan } = useGetSelectPlan(selectedPlanId ?? '');
+  const { data, error: selectPlanError, refetch: refetchSelectedPlan } = useGetSelectPlan(selectedPlanId ?? '');
 
   const [localEvents, setLocalEvents] = useState<CalendarEventType[]>([]); //직접 조작하는 약속(edit)
 
@@ -59,15 +59,21 @@ export default function Calendar() {
   const [editPlan, setEditPlan] = useState<SelectPlanType | null>(null); //수정하는 약속
   const [isEditMode, setIsEditMode] = useState(false); //수정 모드 여부
 
-  //demoState
-  const { isDemoUser } = useDemoStore();
+  //demoStates
+  const { isDemoUser, demoUser } = useDemoStore();
+  const getPlan = useDemoStore((state) => state.getPlan);
   const isAccessGranted = isSignIn || isDemoUser; //로그인하거나, 데모유저일 때 접근가능하도록 함
+  const demoData = getPlan(selectedPlanId ?? '');
+  const selectedPlanData = isDemoUser ? demoData : data;
+  const demoEvents = useGetDemoPlans();
+
+  const userId = isDemoUser ? demoUser.id : user?.id;
 
   //옵션 더보기
   const { setInitialFormData } = usePlanFormStore();
   // showPlanForm 상태와 setShowPlanForm 함수 가져오기
   const { showPlanForm, setShowPlanForm } = usePlanFormStore();
-  const { mutate: updateEvent } = useUpadateEventMutate();
+  const { mutate: updateEvent, error: updatePlanError } = useUpadateEventMutate();
 
   // 툴바 버튼 동적
   const [activeTab, setActiveTab] = useState<'upcoming' | 'add'>('upcoming');
@@ -85,6 +91,9 @@ export default function Calendar() {
 
   // 약속바 클릭마다 약속 상세 refetch
   useEffect(() => {
+    if (isDemoUser) {
+      return;
+    }
     if (selectedPlanId) {
       refetchSelectedPlan();
     }
@@ -92,30 +101,36 @@ export default function Calendar() {
 
   // 가져온 데이터로 selectPlan 세팅
   useEffect(() => {
-    if (selectedPlanData?.data?.length) {
-      // 클릭한 약속 바
-      const clickPlan = selectedPlanData.data[0];
+    if (!selectedPlanData?.data?.length) return;
 
-      const formattedPlan = {
-        ...clickPlan,
-        contacts: Array.isArray(clickPlan.contacts)
-          ? (clickPlan.contacts[0] ?? { name: '' }) // 배열이면 첫 번째 꺼내고
-          : (clickPlan.contacts ?? { name: '' }), // 객체거나 null이면 그대로
-      };
-      setSelectPlan([formattedPlan]);
-      setShowUpcoming(false);
-      setShowPlanForm(false);
-      setIsEditMode(false);
-      setEditPlan(null);
+    // 클릭한 약속 바
+    const clickPlan = selectedPlanData.data[0];
+    if (isDemoUser) {
+      // 이미 같은 ID를 가진 plan이 selectPlan에 있다면 무시
+      if (selectPlan?.[0]?.plan_id === clickPlan.plan_id) return;
     }
-  }, [selectedPlanData, setShowPlanForm]);
+    const formattedPlan = {
+      ...clickPlan,
+      contacts: Array.isArray(clickPlan.contacts)
+        ? (clickPlan.contacts[0] ?? { name: '' }) // 배열이면 첫 번째 꺼내고
+        : (clickPlan.contacts ?? { name: '' }), // 객체거나 null이면 그대로
+    };
+    setSelectPlan([formattedPlan]);
+    setShowUpcoming(false);
+    setShowPlanForm(false);
+    setIsEditMode(false);
+    setEditPlan(null);
+  }, [selectedPlanData]);
 
   //처음 받아오는 readonly 약속을 조작 가능하도록 복사
   useEffect(() => {
+    if (isDemoUser) {
+      setLocalEvents(demoEvents);
+    }
     if (events) {
       setLocalEvents((prev) => (prev.length === 0 || events.length !== prev.length ? events : prev));
     }
-  }, [events]);
+  }, [events, isDemoUser]);
 
   const updateLocalEvent = (updatedEvent: UpdatedEventType) => {
     setLocalEvents((prevEvents) =>
@@ -171,6 +186,10 @@ export default function Calendar() {
   };
 
   const moveEventsHandler = ({ event, start, end }: DragEventType) => {
+    if (isDemoUser) {
+      toast.info('데모체험중에는 제한된 기능입니다.');
+      return;
+    }
     // 캘린더에서는 Date 객체를 유지
     updateLocalEvent({
       id: event.id,
@@ -218,15 +237,18 @@ export default function Calendar() {
     );
   }
 
-  if (isError) {
-    return <div>캘린더 에러 발생 : {error.message}</div>;
+  if (holidaysError || plansError || selectPlanError || updatePlanError) {
+    const error = new Error('캘린더 데이터를 불러오는 중 문제가 발생했습니다.') as Error & {
+      originalError?: Error | null;
+    };
+    error.originalError = holidaysError ?? plansError ?? selectPlanError ?? updatePlanError;
+    throw error;
   }
 
   return (
     <div className='flex flex-col gap-4 md:flex-row'>
       <div className='md:flex-grow'>
         <MainCalendar
-          // user={user}
           moment={moment}
           setMoment={setMoment}
           events={combinedEvents}
@@ -243,6 +265,14 @@ export default function Calendar() {
           }}
           CustomToolbarProps={{
             onShowUpcomingPlans: () => {
+              if (isDemoUser) {
+                setShowUpcoming(true);
+                setShowPlanForm(false);
+                setIsEditMode(false);
+                setEditPlan(null);
+                setActiveTab('upcoming');
+                return;
+              }
               setSelectPlan(null);
               setShowUpcoming(true);
               setShowPlanForm(false);
@@ -251,6 +281,15 @@ export default function Calendar() {
               setActiveTab('upcoming');
             },
             onAddPlan: () => {
+              if (isDemoUser) {
+                setShowUpcoming(false);
+                setShowPlanForm(true);
+                setIsEditMode(false);
+                setEditPlan(null);
+                setInitialFormData(planFormDefaultValues);
+                setActiveTab('add');
+                return;
+              }
               setSelectPlan(null);
               setShowUpcoming(false);
               setShowPlanForm(true);
@@ -283,6 +322,8 @@ export default function Calendar() {
               <EditPlanForm plan={editPlan} onClose={handleEditClose} />
             </div>
           </>
+        ) : showUpcoming && isAccessGranted && userId ? (
+          <UpcomingPlans userId={userId} onSelectPlan={(plan) => setSelectPlan([plan])} />
         ) : selectPlan ? (
           <>
             <h2 className='mb-4 text-xl font-bold'>약속 상세</h2>
@@ -300,9 +341,7 @@ export default function Calendar() {
               />
             </div>
           </>
-        ) : (
-          showUpcoming && user?.id && <UpcomingPlans userId={user.id} onSelectPlan={(plan) => setSelectPlan([plan])} />
-        )}
+        ) : null}
       </div>
     </div>
   );
