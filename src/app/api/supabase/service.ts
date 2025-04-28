@@ -8,7 +8,7 @@ import { supabase } from '@/app/api/supabase/client';
 import { InsertNewPlansType, PlansType } from '@/types/plans';
 import { CONTACTS, PLANS, USERS } from '@/constants/supabaseTable';
 import { User } from '@supabase/supabase-js';
-import { REDIRECT_TO } from '@/constants/redirecturl';
+import { REDIRECT_TO, REDIRECT_TO_FINISH_SIGNUP } from '@/constants/redirecturl';
 
 export const getContacts = async (userId: string): Promise<ContactItemType[]> => {
   try {
@@ -61,7 +61,7 @@ export const signUpUser = async (value: { email: string; password: string; nickn
   const { data, error } = await supabase.auth.signUp({
     email,
     password,
-    options: { data: { nickname } },
+    options: { data: { nickname }, emailRedirectTo: REDIRECT_TO_FINISH_SIGNUP },
   });
 
   return { data, error };
