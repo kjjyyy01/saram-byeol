@@ -14,8 +14,8 @@ export default function GenericError({ error, refetch, originalError }: GenericE
       {error?.message ||
         (originalError?.message && (
           <section className='flex flex-col items-center text-[23px] text-primary-500'>
-            <p>{error?.message}</p>
-            <p>Detail: {originalError?.message}</p>
+            {error?.message && <p>{error?.message}</p>}
+            {originalError?.message && <p>Detail: {originalError?.message}</p>}
           </section>
         ))}
       {refetch && (
