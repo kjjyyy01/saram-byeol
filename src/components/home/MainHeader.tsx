@@ -18,7 +18,7 @@ const MainHeader = ({ onNavClick }: Props) => {
           alt='app-logo-icon'
           width={88}
           height={85}
-          className='shadow-app-logo rounded-[20px]'
+          className='rounded-[20px] shadow-app-logo'
         />
         <nav className='flex flex-row items-center justify-center gap-14 text-2xl font-bold'>
           <button
@@ -44,13 +44,14 @@ const MainHeader = ({ onNavClick }: Props) => {
           </button>
         </nav>
         <div className='flex flex-row items-center justify-center gap-6'>
-          <Link href={SIGNIN}>로그인</Link>
+          <Link href={PEOPLE} onClick={setDemoUser}>
+            데모 체험
+          </Link>
           <Link
-            href={PEOPLE}
+            href={SIGNIN}
             className='box-border h-14 w-[180px] rounded-lg bg-primary-500 px-6 py-4 text-center font-bold text-grey-0 hover:bg-primary-600 active:bg-primary-700'
-            onClick={setDemoUser}
           >
-            지금 데모 체험하기
+            지금 바로 로그인
           </Link>
         </div>
       </div>
