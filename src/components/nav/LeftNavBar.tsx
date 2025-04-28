@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { CALENDER, HOME, PEOPLE, SIGNIN } from '@/constants/paths';
-import { Users, CalendarBlank, SignOut, Books } from '@phosphor-icons/react';
+import { Users, CalendarBlank, SignOut, ImagesSquare } from '@phosphor-icons/react';
 import { useAuthStore } from '@/store/zustand/store';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
@@ -70,7 +70,7 @@ const LeftNavBar = () => {
                 'flex h-36 w-36 cursor-pointer flex-col items-center justify-center gap-2 bg-grey-0 px-5 hover:bg-grey-50'
               }
             >
-              <Books size={24} />
+              <ImagesSquare size={24} />
               추억 앨범
             </div>
           </button>
