@@ -20,6 +20,8 @@ interface DemoState {
   getPlan: (id: string) => { data: SelectPlanType[]; error: null };
   getPlanInMonth: () => { filterdData: PlansType[] };
   clearAll: () => void;
+  // 데모 플랜을 업데이트하는 함수 추가
+  updateDemoPlan: (planId: string, start: string, end: string) => void;
 }
 
 const initialState = {
@@ -72,7 +74,7 @@ export const useDemoStore = create<DemoState>()(
         monthLater.setDate(currentDate.getDate() + 30);
         monthLater.setHours(23, 59, 59, 999);
 
-        const filterdData = demoPlans.filter((plan) => {
+        const filterdData = get().demoPlans.filter((plan) => {
           const planStartDate = new Date(plan.start_date);
           return planStartDate >= currentDate && planStartDate <= monthLater;
         });
@@ -83,6 +85,14 @@ export const useDemoStore = create<DemoState>()(
         set(() => {
           localStorage.clear();
           return initialState;
+        }),
+
+      updateDemoPlan: (planId, start, end) =>
+        set((state) => {
+          const updatedPlans = state.demoPlans.map((plan) =>
+            plan.plan_id === planId ? { ...plan, start_date: start, end_date: end } : plan
+          );
+          return { demoPlans: updatedPlans };
         }),
     }),
     {
