@@ -50,7 +50,7 @@ const LeftNavBar = () => {
         <div>
           <Link href={PEOPLE}>
             <div
-              className={`flex h-32 w-32 flex-col items-center justify-center gap-2 bg-grey-0 px-5 ${page === 'people' ? 'pointer-events-none cursor-default bg-primary-500 text-grey-0' : 'hover: cursor-pointer hover:bg-grey-50'}`}
+              className={`flex h-36 w-36 flex-col items-center justify-center gap-2 bg-grey-0 px-5 ${page === 'people' ? 'pointer-events-none cursor-default bg-primary-500 text-grey-0' : 'hover: cursor-pointer hover:bg-grey-50'}`}
             >
               <Users size={24} />
               내사람
@@ -58,7 +58,7 @@ const LeftNavBar = () => {
           </Link>
           <Link href={CALENDER}>
             <div
-              className={`flex h-32 w-32 flex-col items-center justify-center gap-2 bg-grey-0 px-5 ${page === 'calendar' ? 'pointer-events-none cursor-default bg-primary-500 text-grey-0' : 'hover: cursor-pointer hover:bg-grey-50'}`}
+              className={`flex h-36 w-36 flex-col items-center justify-center gap-2 bg-grey-0 px-5 ${page === 'calendar' ? 'pointer-events-none cursor-default bg-primary-500 text-grey-0' : 'hover: cursor-pointer hover:bg-grey-50'}`}
             >
               <CalendarBlank size={24} />
               캘린더
@@ -67,7 +67,7 @@ const LeftNavBar = () => {
           <button onClick={notifyHandler}>
             <div
               className={
-                'flex h-32 w-32 cursor-pointer flex-col items-center justify-center gap-2 bg-grey-0 px-5 hover:bg-grey-50'
+                'flex h-36 w-36 cursor-pointer flex-col items-center justify-center gap-2 bg-grey-0 px-5 hover:bg-grey-50'
               }
             >
               <Books size={24} />
@@ -77,7 +77,7 @@ const LeftNavBar = () => {
         </div>
         <div>
           {isAccessGranted ? (
-            <div className='flex w-32 flex-col items-center justify-center gap-6 px-5 text-grey-1000'>
+            <div className='flex w-36 flex-col items-center justify-center gap-6 px-5 text-grey-1000'>
               <div className='flex flex-col items-center justify-center gap-2 text-center'>
                 <Image
                   src={profile}
@@ -93,7 +93,7 @@ const LeftNavBar = () => {
                 )}
               </div>
               <div
-                className={`flex h-auto w-auto cursor-pointer flex-col items-center justify-center gap-2 p-2 text-base hover:font-bold hover:text-primary-500`}
+                className={`flex h-auto w-auto cursor-pointer flex-row items-center justify-center gap-2 p-2 text-base hover:font-bold hover:text-primary-500`}
                 onClick={logoutHandler}
               >
                 <SignOut size={20} />
@@ -102,7 +102,7 @@ const LeftNavBar = () => {
             </div>
           ) : (
             <Link href={SIGNIN}>
-              <div className='flex h-32 w-32 items-center justify-center hover:bg-grey-50'>로그인하러가기</div>
+              <div className='flex h-36 w-36 items-center justify-center hover:bg-grey-50'>로그인하러가기</div>
             </Link>
           )}
         </div>
