@@ -297,16 +297,12 @@ export const getUserPlans = async (userId: string): Promise<PlansType[]> => {
     if (error) {
       console.log('계획 데이터를 가져오는 중 오류가 발생했습니다.', error);
       throw new Error('계획 데이터를 가져오는 중 문제가 발생했습니다. 다시 시도해주세요.');
-
-      return [];
     }
 
     return data || [];
   } catch (error) {
     console.error('Supabase 쿼리 중 예외가 발생했습니다:', error);
     throw new Error('약속을 불러오는 중 문제가 발생했습니다. 다시 시도해주세요.');
-
-    return [];
   }
 };
 
