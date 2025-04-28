@@ -316,19 +316,27 @@ export const getSelectPlan = async (plan_id: string) => {
 };
 
 // contacts 데이터 삭제
-export const mutateDeleteContacts = async (contactsId: string): Promise<void> => {
+export const mutateDeleteContacts = async (
+  userId: string,
+  contactsId: string
+): Promise<void> => {
   try {
-    const { error } = await supabase.from(CONTACTS).delete().eq('contacts_id', contactsId);
+    const { error } = await supabase
+      .from(CONTACTS)
+      .delete()
+      .eq('contacts_id', contactsId)
+      .eq('user_id', userId)   // userId 조건 추가
 
     if (error) {
-      console.error('연락처 삭제 중 오류가 발생했습니다:', error);
-      throw error;
+      console.error('연락처 삭제 중 오류가 발생했습니다:', error)
+      throw error
     }
+
   } catch (error) {
-    console.error('연락처 삭제 요청 실패:', error);
-    throw error;
+    console.error('연락처 삭제 요청 실패:', error)
+    throw error
   }
-};
+}
 
 // plans 데이터 삭제
 export const mutateDeletePlan = async (planId: string): Promise<void> => {
@@ -357,7 +365,7 @@ export const fetchPinnedContacts = async (
     .order('name', { ascending: true })
 
   if (error) throw error
-  return data || []
+  return data || [];
 }
 
 export const fetchRegularContactsInfinite = async (
