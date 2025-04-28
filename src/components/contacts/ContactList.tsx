@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState, useMemo } from 'react';
 import ContactItem from '@/components/contacts/ContactItem';
-import { Check, Pencil, UserPlus } from '@phosphor-icons/react';
+import { Check, PencilSimple, UserPlus } from '@phosphor-icons/react';
 import AddContactForm from '@/components/contacts/addContactForm/AddContactForm';
 import SideSheet from '@/components/contacts/SideSheet';
 import { useAuthStore } from '@/store/zustand/store';
@@ -152,7 +152,7 @@ export default function ContactList({ peopleSelectedId, onSelectedContact }: Con
             </>
           ) : (
             <>
-              <Pencil size={20} className='mr-1' />
+              <PencilSimple size={20} className='mr-1' />
               <span>편집</span>
             </>
           )}
