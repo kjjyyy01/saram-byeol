@@ -82,6 +82,8 @@ const EditPlanForm = ({ plan, onClose }: Props) => {
       { planId: plan.plan_id, updatedData: { ...restFormData, user_id: plan.user_id, start_date, end_date } },
       {
         onSuccess: () => {
+          toast.success('약속이 수정되었습니다.');
+
           const updatedPlan = {
             ...plan,
             ...restFormData,
