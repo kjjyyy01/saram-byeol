@@ -349,11 +349,11 @@ export const mutateDeletePlan = async (planId: string): Promise<void> => {
 
     if (error) {
       console.error('약속 삭제 중 오류가 발생했습니다:', error);
-      throw new Error('연락처 삭제 중 문제가 발생했습니다.');
+      throw new Error('약속 삭제 중 문제가 발생했습니다.');
     }
   } catch (error) {
     console.error('약속 삭제 요청 실패:', error);
-    throw new Error('연락처 삭제 중 문제가 발생했습니다. 다시 시도해주세요.');
+    throw new Error('약속 삭제 중 문제가 발생했습니다. 다시 시도해주세요.');
   }
 };
 
