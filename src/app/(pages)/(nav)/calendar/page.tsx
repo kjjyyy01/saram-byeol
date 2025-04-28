@@ -44,10 +44,11 @@ export default function Calendar() {
   const [moment, setMoment] = useState(new Date()); //해당 달
   const calendarYear = moment.getFullYear(); //해당 달의 년도
 
-  const { data: holidays } = useGetHolidays(String(calendarYear)); //공휴일
-  const { data: events, isPending, isError, error } = useGetCalendarPlans(user, calendarYear, moment); //약속(readonly)
+  const { data: holidays, error: holidaysError } = useGetHolidays(String(calendarYear)); //공휴일
+  const { data: events, isPending, error: plansError } = useGetCalendarPlans(user, calendarYear, moment); //약속(readonly)
+
   const [selectedPlanId, setSelectedPlanId] = useState<string | null>(null);
-  const { data, refetch: refetchSelectedPlan } = useGetSelectPlan(selectedPlanId ?? '');
+  const { data, error: selectPlanError, refetch: refetchSelectedPlan } = useGetSelectPlan(selectedPlanId ?? '');
 
   const [localEvents, setLocalEvents] = useState<CalendarEventType[]>([]); //직접 조작하는 약속(edit)
 
@@ -72,7 +73,7 @@ export default function Calendar() {
   const { setInitialFormData } = usePlanFormStore();
   // showPlanForm 상태와 setShowPlanForm 함수 가져오기
   const { showPlanForm, setShowPlanForm } = usePlanFormStore();
-  const { mutate: updateEvent } = useUpadateEventMutate();
+  const { mutate: updateEvent, error: updatePlanError } = useUpadateEventMutate();
 
   // 툴바 버튼 동적
   const [activeTab, setActiveTab] = useState<'upcoming' | 'add'>('upcoming');
@@ -236,8 +237,12 @@ export default function Calendar() {
     );
   }
 
-  if (isError) {
-    return <div>캘린더 에러 발생 : {error.message}</div>;
+  if (holidaysError || plansError || selectPlanError || updatePlanError) {
+    const error = new Error('캘린더 데이터를 불러오는 중 문제가 발생했습니다.') as Error & {
+      originalError?: Error | null;
+    };
+    error.originalError = holidaysError ?? plansError ?? selectPlanError ?? updatePlanError;
+    throw error;
   }
 
   return (

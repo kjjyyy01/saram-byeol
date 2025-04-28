@@ -1,4 +1,9 @@
-import { ContactDetailType, ContactItemType, ContactWithPlansDetailType, fetchRegularInfiniteContacts } from '@/types/contacts';
+import {
+  ContactDetailType,
+  ContactItemType,
+  ContactWithPlansDetailType,
+  fetchRegularInfiniteContacts,
+} from '@/types/contacts';
 import { supabase } from '@/app/api/supabase/client';
 import { InsertNewPlansType, PlansType } from '@/types/plans';
 import { CONTACTS, PLANS, USERS } from '@/constants/supabaseTable';
@@ -14,7 +19,7 @@ export const getContacts = async (userId: string): Promise<ContactItemType[]> =>
 
     if (error) {
       console.error('Supabase에서 Contact 테이블 데이터를 가져오는 중 오류가 발생했습니다:', error);
-      throw error;
+      throw new Error('Supabase에서 Contact 테이블 데이터를 가져오는 중 문제가 발생했습니다. 다시 시도해주세요.');
     }
 
     // 한국어 로케일을 사용한 정렬
@@ -23,7 +28,7 @@ export const getContacts = async (userId: string): Promise<ContactItemType[]> =>
     return sortedData;
   } catch (error) {
     console.error('연락처를 불러오는 중 오류가 발생했습니다:', error);
-    throw error;
+    throw new Error('연락처를 불러오는 중 문제가 발생했습니다. 다시 시도해주세요.');
   }
 };
 
@@ -43,7 +48,7 @@ export const getContactsWithPlans = async (userId: string, contactsId: string): 
 
   if (error) {
     console.error('연락처 정보를 가져오는 중 오류가 발생했습니다:', error);
-    throw error;
+    throw new Error('연락처 정보를 가져오는 중 문제가 발생했습니다. 다시 시도해주세요.');
   }
 
   return { contact: data, plans: data.plans || [] };
@@ -78,8 +83,8 @@ export const signInUser = async (value: { email: string; password: string }) => 
 export const SignOutUser = async () => {
   const { error } = await supabase.auth.signOut();
   if (error) {
-    console.error('로그아웃에 실패했습니다. 다시 시도해주세요.', error);
-    throw error;
+    console.error('로그아웃에 실패했습니다.', error);
+    throw new Error('로그아웃 중 문제가 발생했습니다. 다시 시도해주세요.');
   }
 };
 
@@ -98,7 +103,7 @@ export const emailDuplicateTest = async (email: string) => {
 // 매 달의 plans 데이터 가져오기
 export const getMonthlyPlans = async (user: User, year: number, month: number): Promise<PlansType[]> => {
   if (!user) {
-    throw new Error('로그인된 사용자가 없습니다.');
+    throw new Error('로그인된 사용자가 없습니다. 다시 시도해주세요.');
   }
 
   const startOfMonth = new Date(year, month - 1, 1); //첫 날
@@ -115,7 +120,8 @@ export const getMonthlyPlans = async (user: User, year: number, month: number): 
     .gte('end_date', startOfMonth.toISOString()); // 일정이 달의 첫 날보다 같거나 이후에 끝
 
   if (error) {
-    throw new Error(error.message);
+    console.error('캘린더 데이터를 불러오는 중 문제가 발생했습니다.', error);
+    throw new Error('캘린더 데이터를 불러오는 중 문제가 발생했습니다. 다시 시도해주세요.');
   }
   return plans;
 };
@@ -131,7 +137,8 @@ export const updateEventInSupabase = async (id: string, { start, end }: { start:
     .eq('plan_id', id);
 
   if (error) {
-    console.error('약속 업데이트에 실패했습니다.', error.message);
+    console.error('약속 업데이트에 실패했습니다.', error);
+    throw new Error('약속 업데이트 중 문제가 발생했습니다. 다시 시도해주세요.');
   }
 };
 
@@ -143,8 +150,8 @@ export const mutateInsertNewPlan = async (newPlan: InsertNewPlansType) => {
 
     return plan;
   } catch (err) {
-    console.error(err);
-    throw err;
+    console.error('약속 추가 중 문제가 발생했습니다.', err);
+    throw new Error('약속 추가 중 문제가 발생했습니다. 다시 시도해주세요.');
   }
 };
 
@@ -157,13 +164,13 @@ export const mutateInsertContacts = async (
 
     if (error) {
       console.error('연락처 저장 중 오류가 발생했습니다:', error);
-      throw error;
+      throw new Error('연락처 저장 중 문제가 발생했습니다. 다시 시도해주세요.');
     }
 
     return data[0];
   } catch (error) {
     console.error('연락처 저장 중 오류가 발생했습니다:', error);
-    throw error;
+    throw new Error('연락처 저장 중 문제가 발생했습니다. 다시 시도해주세요.');
   }
 };
 
@@ -177,11 +184,11 @@ export const mutateUpdateContacts = async (
 
     if (error) {
       console.error('연락처 수정 중 오류가 발생했습니다:', error);
-      throw error;
+      throw new Error('연락처 수정 중 문제가 발생했습니다. 다시 시도해주세요.');
     }
   } catch (error) {
     console.error('연락처 수정 중 오류가 발생했습니다:', error);
-    throw error;
+    throw new Error('연락처 수정 중 문제가 발생했습니다. 다시 시도해주세요.');
   }
 };
 
@@ -195,13 +202,14 @@ export const mutateUpdateContactPin = async (contactId: string, isPinned: boolea
       .select();
 
     if (error) {
-      throw error;
+      console.error('연락처 핀 업데이트 실패:', error);
+      throw new Error('내 사람 고정 중 문제가 발생했습니다. 다시 시도해주세요.');
     }
 
     return data;
   } catch (error) {
     console.error('연락처 핀 업데이트 실패:', error);
-    throw error;
+    throw new Error('내 사람 고정 중 문제가 발생했습니다. 다시 시도해주세요.');
   }
 };
 
@@ -244,7 +252,7 @@ export const getPlans = async (planId: string): Promise<PlansType> => {
 
   if (error) {
     console.error('약속을 불러오는 중 오류가 발생했습니다:', error);
-    throw error;
+    throw new Error('약속을 불러오는 중 문제가 발생했습니다. 다시 시도해주세요.');
   }
 
   return data;
@@ -256,7 +264,7 @@ export const mutateUpdatePlan = async (planId: string, updatedData: InsertNewPla
 
   if (error) {
     console.error('약속 수정 중 오류가 발생했습니다:', error);
-    throw error;
+    throw new Error('약속 수정 중 문제가 발생했습니다. 다시 시도해주세요.');
   }
 
   return data;
@@ -288,13 +296,13 @@ export const getUserPlans = async (userId: string): Promise<PlansType[]> => {
 
     if (error) {
       console.log('계획 데이터를 가져오는 중 오류가 발생했습니다.', error);
-      return [];
+      throw new Error('계획 데이터를 가져오는 중 문제가 발생했습니다. 다시 시도해주세요.');
     }
 
     return data || [];
   } catch (error) {
     console.error('Supabase 쿼리 중 예외가 발생했습니다:', error);
-    return [];
+    throw new Error('약속을 불러오는 중 문제가 발생했습니다. 다시 시도해주세요.');
   }
 };
 
@@ -308,8 +316,8 @@ export const getSelectPlan = async (plan_id: string) => {
     .eq('plan_id', plan_id);
 
   if (error) {
-    console.error('약속 정보 가져오기 실패:', error.message);
-    return { data: null, error };
+    console.error('약속 정보 가져오기 실패:', error);
+    throw new Error('약속을 불러오는 중 문제가 발생했습니다. 다시 시도해주세요.');
   } else {
     return { data, error: null };
   }
@@ -322,11 +330,11 @@ export const mutateDeleteContacts = async (contactsId: string): Promise<void> =>
 
     if (error) {
       console.error('연락처 삭제 중 오류가 발생했습니다:', error);
-      throw error;
+      throw new Error('연락처 삭제 중 문제가 발생했습니다.');
     }
   } catch (error) {
     console.error('연락처 삭제 요청 실패:', error);
-    throw error;
+    throw new Error('연락처 삭제 중 문제가 발생했습니다. 다시 시도해주세요.');
   }
 };
 
@@ -337,36 +345,37 @@ export const mutateDeletePlan = async (planId: string): Promise<void> => {
 
     if (error) {
       console.error('약속 삭제 중 오류가 발생했습니다:', error);
-      throw error;
+      throw new Error('약속 삭제 중 문제가 발생했습니다.');
     }
   } catch (error) {
     console.error('약속 삭제 요청 실패:', error);
-    throw error;
+    throw new Error('약속 삭제 중 문제가 발생했습니다. 다시 시도해주세요.');
   }
 };
 
 // pin으로 고정된 연락처만 조회
-export const fetchPinnedContacts = async (
-  userId: string
-): Promise<ContactItemType[]> => {
+export const fetchPinnedContacts = async (userId: string): Promise<ContactItemType[]> => {
   const { data, error } = await supabase
     .from(CONTACTS)
     .select('contacts_id, name, relationship_level, contacts_profile_img, is_pinned')
     .eq('user_id', userId)
     .eq('is_pinned', true)
-    .order('name', { ascending: true })
+    .order('name', { ascending: true });
 
-  if (error) throw error
-  return data || []
-}
+  if (error) {
+    console.error('고정죈 사람 중 문제가 발생했습니다.', error);
+    throw new Error('고정죈 사람 중 문제가 발생했습니다. 다시 시도해주세요.');
+  }
+  return data || [];
+};
 
 export const fetchRegularContactsInfinite = async (
   userId: string,
   pageParam = 0,
   limit = 10
 ): Promise<fetchRegularInfiniteContacts> => {
-  const from = pageParam * limit
-  const to = from + limit - 1
+  const from = pageParam * limit;
+  const to = from + limit - 1;
 
   const { data, error } = await supabase
     .from(CONTACTS)
@@ -374,10 +383,13 @@ export const fetchRegularContactsInfinite = async (
     .eq('user_id', userId)
     .eq('is_pinned', false)
     .order('name', { ascending: true })
-    .range(from, to)
+    .range(from, to);
 
-  if (error) throw error
+  if (error) {
+    console.error('고정죈 사람 중 문제가 발생했습니다.', error);
+    throw new Error('고정죈 사람 중 문제가 발생했습니다. 다시 시도해주세요.');
+  }
 
-  const nextPage = data.length === limit ? pageParam + 1 : undefined
-  return { contacts: data, nextPage }
-}
+  const nextPage = data.length === limit ? pageParam + 1 : undefined;
+  return { contacts: data, nextPage };
+};
