@@ -4,7 +4,7 @@ import { useState } from 'react';
 import SideSheet from '@/components/contacts/SideSheet';
 import EditContactForm from '@/components/contactDetail/editContactForm/EditContactForm';
 import { Button } from '@/components/ui/button';
-import { useMutateDeleteContact } from '@/hooks/mutations/useMutateDeleteContact';
+import { useMutateDeleteContacts } from '@/hooks/mutations/useMutateDeleteContacts';
 import { toast } from 'react-toastify';
 import ContactPlansCard from '@/components/contactDetail/ContactPlansCard';
 import { ConfirmToast } from '@/components/toast/ConfirmToast';
@@ -22,11 +22,11 @@ interface Props {
 const ContactProfile = ({ contact, plans, onDeleteSuccess }: Props) => {
   const [isEditContactOpen, setIsEditContactOpen] = useState(false); // 사이드시트 상태
   const { isDemoUser } = useDemoStore();
-  const { mutate: deleteContact } = useMutateDeleteContact();
+  const { mutate: deleteContact } = useMutateDeleteContacts();
 
   const deleteContactHandler = () => {
     if (isDemoUser) {
-      toast.info('데모체험중에는 제한된 기능입니다.')
+      toast.info('데모체험중에는 제한된 기능입니다.');
       return;
     }
     ConfirmToast({
@@ -127,7 +127,7 @@ const ContactProfile = ({ contact, plans, onDeleteSuccess }: Props) => {
         {plans.length > 0 && (
           <div className='w-full md:w-1/2'>
             <h2 className='mb-4 text-xl font-bold text-gray-800'>다가오는 약속</h2>
-            <div className='grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2'>
+            <div className='grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-2 lg:grid-cols-2'>
               {plans.map((plan) => (
                 <ContactPlansCard
                   key={plan.plan_id}
