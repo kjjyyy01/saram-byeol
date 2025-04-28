@@ -52,7 +52,7 @@ const SigninForm = () => {
               아이디(이메일)
             </label>
             <input
-              className={`w-full flex-1 items-center gap-2 self-stretch rounded-lg border p-4 ${formState.errors.email ? `border-status-error focus:outline-none` : `border-grey-200`}`}
+              className={`w-full flex-1 items-center gap-2 self-stretch rounded-lg border p-4 placeholder-grey-100 ${formState.errors.email ? `border-status-error focus:outline-none` : `border-grey-200`}`}
               type='email'
               id='email'
               placeholder={PLACEHOLDER_EMAIL}
@@ -74,7 +74,7 @@ const SigninForm = () => {
               비밀번호
             </label>
             <input
-              className={`w-full flex-1 items-center gap-2 self-stretch rounded-lg border p-4 ${formState.errors.password ? `border-status-error focus:outline-none` : `border-grey-200`}`}
+              className={`w-full flex-1 items-center gap-2 self-stretch rounded-lg border p-4 placeholder-grey-100 ${formState.errors.password ? `border-status-error focus:outline-none` : `border-grey-200`}`}
               type='password'
               id='password'
               placeholder={PLACEHOLDER_PASSWORD}
