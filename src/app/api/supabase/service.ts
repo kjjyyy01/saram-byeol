@@ -8,7 +8,7 @@ import { supabase } from '@/app/api/supabase/client';
 import { InsertNewPlansType, PlansType } from '@/types/plans';
 import { CONTACTS, PLANS, USERS } from '@/constants/supabaseTable';
 import { User } from '@supabase/supabase-js';
-import { REDIRECT_TO, REDIRECT_TO_FINISH_SIGNUP } from '@/constants/redirecturl';
+import { REDIRECT_TO, REDIRECT_TO_CHANGE_PASSWORD, REDIRECT_TO_FINISH_SIGNUP } from '@/constants/redirecturl';
 
 export const getContacts = async (userId: string): Promise<ContactItemType[]> => {
   try {
@@ -392,4 +392,26 @@ export const fetchRegularContactsInfinite = async (
 
   const nextPage = data.length === limit ? pageParam + 1 : undefined;
   return { contacts: data, nextPage };
+};
+
+export const changePassword = async (newPassword: string) => {
+  const { data, error } = await supabase.auth.updateUser({ password: newPassword });
+  if (error) {
+    console.error('비밀번호 재설정 중 문제가 발생했습니다.', error);
+    throw new Error('비밀번호 재설정 중 문제가 발생했습니다. 다시 시도해주세요.');
+  }
+
+  return data;
+};
+
+export const sendPasswordResetEmail = async (email: string) => {
+  const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
+    redirectTo: REDIRECT_TO_CHANGE_PASSWORD,
+  });
+  if (error) {
+    console.error('비밀번호 재설정 이메일 전송 중 문제가 발생했습니다.', error);
+    throw new Error('비밀번호 재설정 이메일 전송 중 문제가 발생했습니다. 다시 시도해주세요.');
+  }
+
+  return data;
 };
