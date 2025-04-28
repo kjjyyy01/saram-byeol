@@ -22,6 +22,7 @@ interface DemoState {
   clearAll: () => void;
   // 데모 플랜을 업데이트하는 함수 추가
   updateDemoPlan: (planId: string, start: string, end: string) => void;
+  toggleContactPin: (contactId: string) => void;
 }
 
 const initialState = {
@@ -93,6 +94,14 @@ export const useDemoStore = create<DemoState>()(
             plan.plan_id === planId ? { ...plan, start_date: start, end_date: end } : plan
           );
           return { demoPlans: updatedPlans };
+        }),
+
+      toggleContactPin: (contactId) =>
+        set((state) => {
+          const pinUpdated = state.demoContacts.map((p) =>
+            p.contacts_id === contactId ? { ...p, is_pinned: !p.is_pinned } : p
+          );
+          return { demoContacts: pinUpdated };
         }),
     }),
     {
