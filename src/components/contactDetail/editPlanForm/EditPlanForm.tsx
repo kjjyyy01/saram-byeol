@@ -97,8 +97,8 @@ const EditPlanForm = ({ plan, onClose }: Props) => {
       <form onSubmit={form.handleSubmit(editPlanHandler)} className='flex flex-col justify-start gap-9'>
         <ColorOptions selectedColor={selectedColor} setSelectedColor={setSelectedColor} />
         <TitleField />
-        <DateInputField />
         <ContactsField userId={userId} enabled={true} />
+        <DateInputField />
         <PlaceField inputValue={inputValue} setInputValue={setInputValue} />
         <PriorityField />
         <DetailField />
