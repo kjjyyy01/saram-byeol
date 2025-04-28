@@ -13,7 +13,7 @@ import { useAuthStore } from '@/store/zustand/store';
 import { useDemoStore } from '@/store/zustand/useDemoStore';
 import { EditPlanType } from '@/types/plans';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 
@@ -54,6 +54,12 @@ const EditPlanForm = ({ plan, onClose }: Props) => {
     mode: 'onChange',
     defaultValues: convertToFormValues(plan),
   });
+
+  useEffect(() => {
+    if (plan) {
+      form.reset(convertToFormValues(plan));
+    }
+  }, [plan, form]);
 
   const handleCancel = () => {
     onClose(null);
