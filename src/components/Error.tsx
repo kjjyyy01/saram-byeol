@@ -11,13 +11,12 @@ export default function GenericError({ error, refetch, originalError }: GenericE
     <div className='flex min-h-screen flex-col items-center justify-center gap-8'>
       <Warning size={60} className='text-secondary-600' />
       <h2 className='title text-[45px] font-bold text-primary-700'>Error!</h2>
-      {error?.message ||
-        (originalError?.message && (
-          <section className='flex flex-col items-center text-[23px] text-primary-500'>
-            {error?.message && <p>{error?.message}</p>}
-            {originalError?.message && <p>Detail: {originalError?.message}</p>}
-          </section>
-        ))}
+      {error?.message && originalError?.message && (
+        <section className='flex flex-col items-center text-[23px] text-primary-500'>
+          <p>{error?.message}</p>
+          <p>Detail: {originalError?.message}</p>
+        </section>
+      )}
       {refetch && (
         <button
           onClick={refetch}
