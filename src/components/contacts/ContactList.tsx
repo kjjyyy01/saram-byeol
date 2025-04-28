@@ -10,6 +10,7 @@ import Loading from '@/components/Loading';
 import { useMutateInfiniteContact } from '@/hooks/mutations/useMutateInfiniteContact';
 import { usePinnedContacts, useRegularContactsInfinite } from '@/hooks/queries/useGetContactsForInfinite';
 import { useMutateDeleteContacts } from '@/hooks/mutations/useMutateDeleteContacts';
+import { ConfirmToast } from '@/components/toast/ConfirmToast';
 
 interface ContactListProps {
   peopleSelectedId: string | null;
@@ -67,33 +68,35 @@ export default function ContactList({ peopleSelectedId, onSelectedContact }: Con
 
   // 연락처 삭제 핸들러
   const handleDeleteContact = (contactId: string, e: React.MouseEvent) => {
-    e.stopPropagation(); // 이벤트 버블링 방지
-
+    e.stopPropagation();
+  
     if (isDemoUser) {
       toast.info('데모 체험 중에는 이 기능을 사용할 수 없습니다.');
       return;
     }
-
-    if (window.confirm('이 연락처를 삭제하시겠습니까?')) {
-      deleteMutation.mutate(
-        {
-          userId: userId as string,
-          contactsId: contactId,
-        },
-        {
-          onSuccess: () => {
-            toast.success('연락처가 삭제되었습니다.');
-            // 선택된 연락처가 삭제된 경우 선택 해제
-            if (peopleSelectedId === contactId) {
-              onSelectedContact('');
-            }
-          },
-          onError: () => {
-            toast.error('연락처 삭제에 실패했습니다.');
-          },
-        }
-      );
-    }
+  
+    // ConfirmToast를 그대로 호출
+    ConfirmToast({
+      message: '이 연락처를 삭제하시겠습니까?',
+      onConfirm: () => {
+        // 삭제 뮤테이션 실행
+        deleteMutation.mutate(
+          { userId: userId as string, contactsId: contactId },
+          {
+            onSuccess: () => {
+              toast.success('연락처가 삭제되었습니다.');
+              if (peopleSelectedId === contactId) {
+                onSelectedContact('');
+              }
+            },
+            onError: () => {
+              toast.error('연락처 삭제에 실패했습니다.');
+            },
+          }
+        );
+      },
+      // 기본값으로 confirmText='삭제', cancelText='취소'를 쓰니까 생략 가능
+    });
   };
 
   // 편집 모드 토글
