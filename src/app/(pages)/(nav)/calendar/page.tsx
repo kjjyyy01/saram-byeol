@@ -15,12 +15,12 @@ import { planFormDefaultValues } from '@/lib/schemas/plansSchema';
 import { useGetHolidays } from '@/hooks/queries/useGetHolidays';
 import { useGetCalendarPlans } from '@/hooks/queries/useGetCalendarPlans';
 import { toast } from 'react-toastify';
-import { useUpadateEventMutate } from '@/hooks/mutations/useUpadateEventMutate';
 import { useGetSelectPlan } from '@/hooks/queries/useGetSelectPlan';
 import { format } from 'date-fns';
 import { useDemoStore } from '@/store/zustand/useDemoStore';
 import Loading from '@/components/Loading';
 import { useGetDemoPlans } from '@/hooks/queries/useGetDemoPlans';
+import { useUpdateEventMutate } from '@/hooks/mutations/useUpadateEventMutate';
 
 interface UpdatedEventType {
   id: string;
@@ -73,7 +73,7 @@ export default function Calendar() {
   const { setInitialFormData } = usePlanFormStore();
   // showPlanForm 상태와 setShowPlanForm 함수 가져오기
   const { showPlanForm, setShowPlanForm } = usePlanFormStore();
-  const { mutate: updateEvent, error: updatePlanError } = useUpadateEventMutate();
+  const { mutate: updateEvent, error: updatePlanError } = useUpdateEventMutate();
 
   // 툴바 버튼 동적
   const [activeTab, setActiveTab] = useState<'upcoming' | 'add'>('upcoming');
