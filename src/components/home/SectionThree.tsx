@@ -10,14 +10,23 @@ const SectionThree = () => {
           <h2 className='mb-4 text-center text-[40px] font-bold leading-snug'>
             사람별과 함께 관계의 가치를 새롭게 경험해보세요.
           </h2>
-          <span className='mb-12 text-2xl font-medium'>추가기능이 나올 때 마다 이메일로 보내드릴게요.</span>
+          <span className='text-2xl font-medium'>추가기능이 나올 때 마다 이메일로 보내드릴게요.</span>
+          <p className='mb-12 ml-1 mt-2 text-xs text-status-caution'>
+            준비중인 기능으로 이메일은 수집되지 않습니다.(2025.05 기준)
+          </p>
+
           <SectionThreeEmail />
         </div>{' '}
       </div>
       <footer className='flex w-full flex-col items-center justify-between gap-12 bg-grey-50 px-6 pb-16 pt-8 text-center'>
         <div className='flex flex-row items-center gap-16'>
           <div className='flex flex-row items-center gap-5'>
-            <Image src={'/nav/app-logo-greyscale.png'} alt={'app logo greyscale'} width={50} height={47} />
+            <Image
+              src={'/nav/app-logo-greyscale.png'}
+              alt={'app logo greyscale'}
+              width={50}
+              style={{ height: 'auto' }}
+            />
             <div className='font-gmarket text-2xl font-bold'>사람,별</div>
           </div>
           <div className='flex flex-row gap-9 text-base font-normal text-grey-200 transition-all duration-500'>

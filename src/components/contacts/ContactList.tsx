@@ -5,7 +5,6 @@ import AddContactForm from '@/components/contacts/addContactForm/AddContactForm'
 import SideSheet from '@/components/contacts/SideSheet';
 import { useAuthStore } from '@/store/zustand/store';
 import { useDemoStore } from '@/store/zustand/useDemoStore';
-import { toast } from 'react-toastify';
 import Loading from '@/components/Loading';
 import { useMutateInfiniteContact } from '@/hooks/mutations/useMutateInfiniteContact';
 import { usePinnedContacts, useRegularContactsInfinite } from '@/hooks/queries/useGetContactsForInfinite';
@@ -25,7 +24,7 @@ export default function ContactList({ peopleSelectedId, onSelectedContact }: Con
 
   // 사용자 정보
   const { user } = useAuthStore();
-  const { isDemoUser, demoContacts, demoUser } = useDemoStore();
+  const { isDemoUser, demoContacts, demoUser, toggleContactPin } = useDemoStore();
   const userId = isDemoUser ? demoUser.id : user?.id;
   const isAuthenticated = Boolean(userId);
 
@@ -60,7 +59,7 @@ export default function ContactList({ peopleSelectedId, onSelectedContact }: Con
 
   const handleTogglePin = (contactId: string, isPinned: boolean) => {
     if (isDemoUser) {
-      toast.info('데모 체험 중에는 이 기능을 사용할 수 없습니다.');
+      toggleContactPin(contactId);
       return;
     }
     pinMutation.mutate({ contactId, isPinned });
