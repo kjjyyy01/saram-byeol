@@ -97,13 +97,13 @@ const SignupForm = () => {
         <div className='mb-6 flex flex-col gap-1 md:mb-8'>
           <div className='flex flex-col justify-start gap-1'>
             <label
-              className={`md:text- self-stretch text-sm font-bold leading-[150%] ${formState.errors.nickname ? `text-status-error` : `text-grey-900`}`}
+              className={`md:text- self-stretch text-sm font-bold leading-[150%] ${formState.errors.nickname && getValues('nickname').length > 0 ? `text-status-error` : `text-grey-900`}`}
             >
               이름(닉네임)
             </label>
             <div className='flex flex-row gap-6'>
               <input
-                className={`w-full flex-1 items-center gap-2 self-stretch rounded-lg border p-4 placeholder-grey-100 ${formState.errors.nickname ? `border-status-error focus:outline-none` : `border-grey-200`}`}
+                className={`w-full flex-1 items-center gap-2 self-stretch rounded-lg border p-4 placeholder-grey-100 ${formState.errors.nickname && getValues('nickname').length > 0 ? `border-status-error focus:outline-none` : `border-grey-200`}`}
                 type='text'
                 id='nickname'
                 maxLength={8}
@@ -119,7 +119,7 @@ const SignupForm = () => {
               </button>
             </div>
           </div>
-          {formState.errors.nickname ? (
+          {formState.errors.nickname && getValues('nickname').length > 0 ? (
             <span className='self-stretch text-sm leading-[150%] text-status-error'>
               {formState.errors.nickname.message}
             </span>
@@ -133,13 +133,13 @@ const SignupForm = () => {
         <div className='mb-6 flex flex-col gap-1 md:mb-8'>
           <div className='flex flex-col justify-start gap-1'>
             <label
-              className={`self-stretch text-sm font-bold leading-[150%] ${formState.errors.email ? `text-status-error` : `text-grey-900`}`}
+              className={`self-stretch text-sm font-bold leading-[150%] ${formState.errors.email && getValues('email').length > 0 ? `text-status-error` : `text-grey-900`}`}
             >
               아이디(이메일)
             </label>
             <div className='flex flex-row'>
               <input
-                className={`w-full flex-1 items-center gap-2 self-stretch rounded-lg border p-4 placeholder-grey-100 ${formState.errors.email ? `border-status-error focus:outline-none` : `border-grey-200`}`}
+                className={`w-full flex-1 items-center gap-2 self-stretch rounded-lg border p-4 placeholder-grey-100 ${formState.errors.email && getValues('email').length > 0 ? `border-status-error focus:outline-none` : `border-grey-200`}`}
                 type='text'
                 id='email'
                 placeholder={
@@ -171,7 +171,7 @@ const SignupForm = () => {
               </button>
             </div>
           </div>
-          {formState.errors.email ? (
+          {formState.errors.email && getValues('email').length > 0 ? (
             <span className='self-stretch text-sm leading-[150%] text-status-error'>
               {formState.errors.email.message}
             </span>
@@ -185,19 +185,19 @@ const SignupForm = () => {
         <div className='mb-6 flex flex-col gap-1 md:mb-8'>
           <div className='flex flex-col justify-start gap-1'>
             <label
-              className={`self-stretch text-sm font-bold leading-[150%] ${formState.errors.password ? `text-status-error` : `text-grey-900`}`}
+              className={`self-stretch text-sm font-bold leading-[150%] ${formState.errors.password && getValues('password').length > 0 ? `text-status-error` : `text-grey-900`}`}
             >
               비밀번호
             </label>
             <input
-              className={`w-full flex-1 items-center gap-2 self-stretch rounded-lg border p-4 placeholder-grey-100 ${formState.errors.password ? `border-status-error focus:outline-none` : `border-grey-200`}`}
+              className={`w-full flex-1 items-center gap-2 self-stretch rounded-lg border p-4 placeholder-grey-100 ${formState.errors.password && getValues('password').length > 0 ? `border-status-error focus:outline-none` : `border-grey-200`}`}
               type='password'
               id='password'
               placeholder={PLACEHOLDER_PASSWORD}
               {...register('password')}
             />
           </div>
-          {formState.errors.password ? (
+          {formState.errors.password && getValues('password').length > 0 ? (
             <span className='self-stretch text-sm leading-[150%] text-status-error'>
               {formState.errors.password.message}
             </span>
@@ -211,19 +211,19 @@ const SignupForm = () => {
         <div className='mb-6 flex flex-col gap-1 md:mb-8'>
           <div className='flex flex-col justify-start gap-1'>
             <label
-              className={`self-stretch text-sm font-bold leading-[150%] ${formState.errors.passwordCheck ? `text-status-error` : `text-grey-900`}`}
+              className={`self-stretch text-sm font-bold leading-[150%] ${formState.errors.passwordCheck && getValues('passwordCheck').length > 0 ? `text-status-error` : `text-grey-900`}`}
             >
               비밀번호 확인
             </label>
             <input
-              className={`w-full flex-1 items-center gap-2 self-stretch rounded-lg border p-4 placeholder-grey-100 ${formState.errors.passwordCheck ? `border-status-error focus:outline-none` : `border-grey-200`}`}
+              className={`w-full flex-1 items-center gap-2 self-stretch rounded-lg border p-4 placeholder-grey-100 ${formState.errors.passwordCheck && getValues('passwordCheck').length > 0 ? `border-status-error focus:outline-none` : `border-grey-200`}`}
               type='password'
               id='passwordCheck'
               placeholder={PLACEHOLDER_PASSWORD_CHECK}
               {...register('passwordCheck')}
             />
           </div>
-          {formState.errors.passwordCheck ? (
+          {formState.errors.passwordCheck && getValues('passwordCheck').length > 0 ? (
             <span className='self-stretch text-sm leading-[150%] text-status-error'>
               {formState.errors.passwordCheck.message}
             </span>

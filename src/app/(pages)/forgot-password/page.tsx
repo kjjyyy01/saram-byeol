@@ -41,7 +41,7 @@ const ForgotPassword = () => {
               <div className='flex flex-col justify-start gap-1'>
                 <label
                   htmlFor='email'
-                  className={`self-stretch text-sm font-bold leading-[150%] ${formState.errors.email ? `text-status-error` : `text-grey-900`}`}
+                  className={`self-stretch text-sm font-bold leading-[150%] ${formState.errors.email && getValues('email').length > 0 ? `text-status-error` : `text-grey-900`}`}
                 >
                   이메일
                 </label>
@@ -50,10 +50,10 @@ const ForgotPassword = () => {
                   id='email'
                   placeholder={PLACEHOLDER_EMAIL}
                   {...register('email')}
-                  className={`w-full flex-1 items-center gap-2 self-stretch rounded-lg border p-4 placeholder-grey-100 ${formState.errors.email ? `border-status-error focus:outline-none` : `border-grey-200`}`}
+                  className={`w-full flex-1 items-center gap-2 self-stretch rounded-lg border p-4 placeholder-grey-100 ${formState.errors.email && getValues('email').length > 0 ? `border-status-error focus:outline-none` : `border-grey-200`}`}
                 />
               </div>
-              {formState.errors.email ? (
+              {formState.errors.email && getValues('email').length > 0 ? (
                 <span className='mt-1 self-stretch text-sm leading-[150%] text-status-error'>
                   {formState.errors.email.message}
                 </span>

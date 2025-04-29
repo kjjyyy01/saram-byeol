@@ -43,20 +43,20 @@ const SigninForm = () => {
         <div className='mb-8 flex flex-col'>
           <div className='flex flex-col justify-start gap-1'>
             <label
-              className={`self-stretch text-sm font-bold leading-[150%] ${formState.errors.email ? `text-status-error` : `text-grey-900`}`}
+              className={`self-stretch text-sm font-bold leading-[150%] ${formState.errors.email && getValues('email').length > 0 ? `text-status-error` : `text-grey-900`}`}
               htmlFor='email'
             >
               아이디(이메일)
             </label>
             <input
-              className={`w-full flex-1 items-center gap-2 self-stretch rounded-lg border p-4 placeholder-grey-100 ${formState.errors.email ? `border-status-error focus:outline-none` : `border-grey-200`}`}
+              className={`w-full flex-1 items-center gap-2 self-stretch rounded-lg border p-4 placeholder-grey-100 ${formState.errors.email && getValues('email').length > 0 ? `border-status-error focus:outline-none` : `border-grey-200`}`}
               type='email'
               id='email'
               placeholder={PLACEHOLDER_EMAIL}
               {...register('email')}
             />
           </div>
-          {formState.errors.email && (
+          {formState.errors.email && getValues('email').length > 0 && (
             <span className='self-stretch text-sm leading-[150%] text-status-error'>
               {formState.errors.email.message}
             </span>
@@ -65,20 +65,20 @@ const SigninForm = () => {
         <div className='flex flex-col'>
           <div className='flex flex-col justify-start gap-1'>
             <label
-              className={`self-stretch text-sm font-bold leading-[150%] ${formState.errors.password ? `text-status-error` : `text-grey-900`}`}
+              className={`self-stretch text-sm font-bold leading-[150%] ${formState.errors.password && getValues('password').length > 0 ? `text-status-error` : `text-grey-900`}`}
               htmlFor='password'
             >
               비밀번호
             </label>
             <input
-              className={`w-full flex-1 items-center gap-2 self-stretch rounded-lg border p-4 placeholder-grey-100 ${formState.errors.password ? `border-status-error focus:outline-none` : `border-grey-200`}`}
+              className={`w-full flex-1 items-center gap-2 self-stretch rounded-lg border p-4 placeholder-grey-100 ${formState.errors.password && getValues('password').length > 0 ? `border-status-error focus:outline-none` : `border-grey-200`}`}
               type='password'
               id='password'
               placeholder={PLACEHOLDER_PASSWORD}
               {...register('password')}
             />
           </div>
-          {formState.errors.password && (
+          {formState.errors.password && getValues('password').length > 0 && (
             <span className='self-stretch text-sm leading-[150%] text-status-error'>
               {formState.errors.password.message}
             </span>
