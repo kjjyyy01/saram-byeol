@@ -105,6 +105,11 @@
   background-color: rgba(102, 102, 102, 0.2);
 }
 
+/* 공휴일 이벤트에 호버 스타일 제거 */
+.rbc-event-holiday:hover::after {
+  background-color: transparent !important;
+}
+
 /* 오늘 */
 .rbc-today {
   background-color: #f1f7e2 !important;
