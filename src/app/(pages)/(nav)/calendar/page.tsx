@@ -348,8 +348,8 @@ export default function Calendar() {
       <div className='flex-shrink-0 md:w-auto'>
         {showPlanForm ? (
           <>
-            <h2 className='mb-4 text-xl font-bold'>약속 추가</h2>
-            <div className='m-6'>
+            <h2 className='mb-4 ml-[30px] mt-12 text-xl font-bold'>약속 추가</h2>
+            <div className='m-6 w-96'>
               <PlanForm
                 onClose={() => {
                   setShowPlanForm(false);
@@ -360,17 +360,22 @@ export default function Calendar() {
           </>
         ) : isEditMode && editPlan ? (
           <>
-            <h2 className='mb-4 text-xl font-bold'>약속 수정</h2>
-            <div className='m-7'>
+            <h2 className='mb-4 ml-[30px] mt-12 text-xl font-bold'>약속 수정</h2>
+            <div className='m-6 w-96'>
               <EditPlanForm plan={editPlan} onClose={handleEditClose} />
             </div>
           </>
         ) : showUpcoming && isAccessGranted && userId ? (
-          <UpcomingPlans userId={userId} onSelectPlan={(plan) => setSelectPlan([plan])} />
+          <>
+            <h2 className='mb-4 ml-[30px] mt-12 text-xl font-bold'>다가오는 약속</h2>
+            <div className='m-6 w-96'>
+              <UpcomingPlans userId={userId} onSelectPlan={(plan) => setSelectPlan([plan])} />
+            </div>
+          </>
         ) : selectPlan ? (
           <>
-            <h2 className='mb-4 text-xl font-bold'>약속 상세</h2>
-            <div className='p-11'>
+            <h2 className='mb-4 ml-[30px] mt-12 text-xl font-bold'>약속 상세</h2>
+            <div className='m-6 w-96 p-11'>
               <SelectPlan
                 plans={selectPlan}
                 onEdit={() => {
