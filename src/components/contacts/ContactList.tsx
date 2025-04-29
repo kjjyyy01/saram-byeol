@@ -10,6 +10,7 @@ import { useMutateInfiniteContact } from '@/hooks/mutations/useMutateInfiniteCon
 import { usePinnedContacts, useRegularContactsInfinite } from '@/hooks/queries/useGetContactsForInfinite';
 import { useMutateDeleteContacts } from '@/hooks/mutations/useMutateDeleteContacts';
 import { ConfirmToast } from '@/components/toast/ConfirmToast';
+import { toast } from 'react-toastify';
 
 interface ContactListProps {
   peopleSelectedId: string | null;
