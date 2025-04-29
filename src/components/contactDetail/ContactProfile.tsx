@@ -15,15 +15,17 @@ import { mutateDeletePlan } from '@/app/api/supabase/service';
 import { sortPlansByDate } from '@/lib/utils/sortPlansByDate';
 
 interface Props {
+  userId: string;
   contact: ContactDetailType;
   plans: PlanDetailType[] | PlansType[];
   onDeleteSuccess: () => void;
 }
 
-const ContactProfile = ({ contact, plans, onDeleteSuccess }: Props) => {
+const ContactProfile = ({ userId, contact, plans, onDeleteSuccess }: Props) => {
   const [isEditContactOpen, setIsEditContactOpen] = useState(false); // 사이드시트 상태
+
   const { isDemoUser } = useDemoStore();
-  const { mutate: deleteContact } = useMutateDeleteContacts();
+  const { mutate: deleteContact } = useMutateDeleteContacts(userId as string);
 
   const deleteContactHandler = () => {
     if (isDemoUser) {
@@ -36,16 +38,22 @@ const ContactProfile = ({ contact, plans, onDeleteSuccess }: Props) => {
         try {
           await Promise.all(plans.map((plan) => mutateDeletePlan(plan.plan_id)));
 
-          deleteContact(contact.contacts_id, {
-            onSuccess: () => {
-              toast.success('성공적으로 삭제되었습니다.');
-              onDeleteSuccess();
+          deleteContact(
+            {
+              userId: userId as string,
+              contactsId: contact.contacts_id,
             },
-            onError: (error) => {
-              console.error(error);
-              toast.error('삭제에 실패했습니다.');
-            },
-          });
+            {
+              onSuccess: () => {
+                toast.success('성공적으로 삭제되었습니다.');
+                onDeleteSuccess();
+              },
+              onError: (error) => {
+                console.error(error);
+                toast.error('삭제에 실패했습니다.');
+              },
+            }
+          );
         } catch (error) {
           console.error('내 사람 또는 약속 삭제 중 오류가 발생했습니다:', error);
           toast.error('내 사람 삭제 중 오류가 발생했습니다.');
