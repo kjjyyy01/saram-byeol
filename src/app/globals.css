@@ -132,6 +132,10 @@
   color: #ffffff !important;
 }
 
+.rbc-event:active {
+  cursor: grabbing !important;
+}
+
 /* 컬러시스템 */
 /* globals.css */
 :root {
