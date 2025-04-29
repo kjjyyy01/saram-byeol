@@ -14,7 +14,7 @@ const SectionThreeEmail = () => {
       return;
     }
     setEmail('');
-    toast.info('구독 신청이 완료되었습니다. 감사합니다:)');
+    toast.info('준비중인 기능입니다.');
   };
   return (
     <div>

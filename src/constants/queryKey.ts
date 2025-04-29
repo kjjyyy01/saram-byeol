@@ -7,4 +7,8 @@ export const QUERY_KEY = Object.freeze({
   CONTACTS_INFINITE: 'contactsInfinite',
   UPCOMING_COUNT: 'upcomingCount',
   DEMO: 'demo',
+  CONTACT_LIST: {
+    PINNED_CONTACTS: 'pinnedContacts',
+    REGULAR_CONTACTS: 'regularContacts',
+  },
 });

@@ -324,19 +324,27 @@ export const getSelectPlan = async (plan_id: string) => {
 };
 
 // contacts 데이터 삭제
-export const mutateDeleteContacts = async (contactsId: string): Promise<void> => {
+export const mutateDeleteContacts = async (
+  userId: string,
+  contactsId: string
+): Promise<void> => {
   try {
-    const { error } = await supabase.from(CONTACTS).delete().eq('contacts_id', contactsId);
+    const { error } = await supabase
+      .from(CONTACTS)
+      .delete()
+      .eq('contacts_id', contactsId)
+      .eq('user_id', userId)   // userId 조건 추가
 
     if (error) {
-      console.error('연락처 삭제 중 오류가 발생했습니다:', error);
-      throw new Error('연락처 삭제 중 문제가 발생했습니다.');
+      console.error('연락처 삭제 중 오류가 발생했습니다:', error)
+      throw new Error('연락처 삭제 중 문제가 발생했습니다.')
     }
+
   } catch (error) {
-    console.error('연락처 삭제 요청 실패:', error);
-    throw new Error('연락처 삭제 중 문제가 발생했습니다. 다시 시도해주세요.');
+    console.error('연락처 삭제 요청 실패:', error)
+    throw new Error('연락처 삭제 중 문제가 발생했습니다. 다시 시도해주세요.')
   }
-};
+}
 
 // plans 데이터 삭제
 export const mutateDeletePlan = async (planId: string): Promise<void> => {
@@ -363,8 +371,8 @@ export const fetchPinnedContacts = async (userId: string): Promise<ContactItemTy
     .order('name', { ascending: true });
 
   if (error) {
-    console.error('고정죈 사람 중 문제가 발생했습니다.', error);
-    throw new Error('고정죈 사람 중 문제가 발생했습니다. 다시 시도해주세요.');
+    console.error('고정된 사람을 불러오는 중 문제가 발생했습니다.', error);
+    throw new Error('고정된 사람을 불러오는 중 문제가 발생했습니다. 다시 시도해주세요.');
   }
   return data || [];
 };
@@ -386,10 +394,11 @@ export const fetchRegularContactsInfinite = async (
     .range(from, to);
 
   if (error) {
-    console.error('고정죈 사람 중 문제가 발생했습니다.', error);
-    throw new Error('고정죈 사람 중 문제가 발생했습니다. 다시 시도해주세요.');
+    console.error('연락처를 불러오는 중 문제가 발생했습니다.', error);
+    throw new Error('연락처를 불러오는 중 문제가 발생했습니다. 다시 시도해주세요.');
   }
 
   const nextPage = data.length === limit ? pageParam + 1 : undefined;
   return { contacts: data, nextPage };
 };
+
