@@ -8,7 +8,7 @@ import { supabase } from '@/app/api/supabase/client';
 import { InsertNewPlansType, PlansType } from '@/types/plans';
 import { CONTACTS, PLANS, USERS } from '@/constants/supabaseTable';
 import { User } from '@supabase/supabase-js';
-import { REDIRECT_TO } from '@/constants/redirecturl';
+import { REDIRECT_TO, REDIRECT_TO_CHANGE_PASSWORD, REDIRECT_TO_FINISH_SIGNUP } from '@/constants/redirecturl';
 
 export const getContacts = async (userId: string): Promise<ContactItemType[]> => {
   try {
@@ -61,7 +61,7 @@ export const signUpUser = async (value: { email: string; password: string; nickn
   const { data, error } = await supabase.auth.signUp({
     email,
     password,
-    options: { data: { nickname } },
+    options: { data: { nickname }, emailRedirectTo: REDIRECT_TO_FINISH_SIGNUP },
   });
 
   return { data, error };
@@ -143,10 +143,10 @@ export const updateEventInSupabase = async (id: string, { start, end }: { start:
 };
 
 // plans - 약속추가
-export const mutateInsertNewPlan = async (newPlan: InsertNewPlansType) => {
+export const mutateInsertNewPlan = async (newPlan: InsertNewPlansType): Promise<PlansType> => {
   try {
-    const { data: plan, error } = await supabase.from(PLANS).insert([newPlan]).select();
-    if (error) throw new Error(`약속 추가 중 오류가 발생했습니다 : ${error.message}`);
+    const { data: plan, error } = await supabase.from(PLANS).insert([newPlan]).select().single<PlansType>();
+    if (error || !plan) throw new Error(`약속 추가 중 오류가 발생했습니다 : ${error.message}`);
 
     return plan;
   } catch (err) {
@@ -324,9 +324,9 @@ export const getSelectPlan = async (plan_id: string) => {
 };
 
 // contacts 데이터 삭제
-export const mutateDeleteContacts = async (contactsId: string): Promise<void> => {
+export const mutateDeleteContacts = async (userId: string, contactsId: string): Promise<void> => {
   try {
-    const { error } = await supabase.from(CONTACTS).delete().eq('contacts_id', contactsId);
+    const { error } = await supabase.from(CONTACTS).delete().eq('contacts_id', contactsId).eq('user_id', userId); // userId 조건 추가
 
     if (error) {
       console.error('연락처 삭제 중 오류가 발생했습니다:', error);
@@ -363,8 +363,8 @@ export const fetchPinnedContacts = async (userId: string): Promise<ContactItemTy
     .order('name', { ascending: true });
 
   if (error) {
-    console.error('고정죈 사람 중 문제가 발생했습니다.', error);
-    throw new Error('고정죈 사람 중 문제가 발생했습니다. 다시 시도해주세요.');
+    console.error('고정된 사람을 불러오는 중 문제가 발생했습니다.', error);
+    throw new Error('고정된 사람을 불러오는 중 문제가 발생했습니다. 다시 시도해주세요.');
   }
   return data || [];
 };
@@ -386,10 +386,32 @@ export const fetchRegularContactsInfinite = async (
     .range(from, to);
 
   if (error) {
-    console.error('고정죈 사람 중 문제가 발생했습니다.', error);
-    throw new Error('고정죈 사람 중 문제가 발생했습니다. 다시 시도해주세요.');
+    console.error('연락처를 불러오는 중 문제가 발생했습니다.', error);
+    throw new Error('연락처를 불러오는 중 문제가 발생했습니다. 다시 시도해주세요.');
   }
 
   const nextPage = data.length === limit ? pageParam + 1 : undefined;
   return { contacts: data, nextPage };
+};
+
+export const changePassword = async (newPassword: string) => {
+  const { data, error } = await supabase.auth.updateUser({ password: newPassword });
+  if (error) {
+    console.error('비밀번호 재설정 중 문제가 발생했습니다.', error);
+    throw new Error('비밀번호 재설정 중 문제가 발생했습니다. 다시 시도해주세요.');
+  }
+
+  return data;
+};
+
+export const sendPasswordResetEmail = async (email: string) => {
+  const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
+    redirectTo: REDIRECT_TO_CHANGE_PASSWORD,
+  });
+  if (error) {
+    console.error('비밀번호 재설정 이메일 전송 중 문제가 발생했습니다.', error);
+    throw new Error('비밀번호 재설정 이메일 전송 중 문제가 발생했습니다. 다시 시도해주세요.');
+  }
+
+  return data;
 };

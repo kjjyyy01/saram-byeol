@@ -5,6 +5,7 @@ import ContactPlans from '@/components/contactDetail/ContactPlans';
 import Tabs from '@/components/ui/Tabs';
 import { useAuthStore } from '@/store/zustand/store';
 import { useDemoStore } from '@/store/zustand/useDemoStore';
+import Loading from '@/components/Loading';
 
 interface Props {
   contactsId: string;
@@ -14,7 +15,7 @@ interface Props {
 const PeopleDetailPanel = ({ contactsId, onDeleteSuccess }: Props) => {
   const user = useAuthStore((state) => state.user);
   const { isDemoUser, getContactsWithPlans: getData } = useDemoStore();
-  const userId = user?.id; 
+  const userId = user?.id;
   const demoData = getData(contactsId);
   const { data, isPending, error } = useQuery({
     queryKey: ['contactWithPlans', contactsId],
@@ -22,10 +23,20 @@ const PeopleDetailPanel = ({ contactsId, onDeleteSuccess }: Props) => {
     enabled: !isDemoUser && !!userId && !!contactsId, //데모모드이면 통신하지 않도록 처리
   });
 
+  if (!userId) {
+    return (
+      <div className='flex h-full items-center justify-center p-8 text-xl text-gray-500'>사용자 정보가 없습니다.</div>
+    );
+  }
+
   const { contact, plans } = data || demoData;
 
   if (isPending && !isDemoUser)
-    return <div className='flex h-full items-center justify-center p-8 text-xl text-gray-500'>로딩 중...</div>;
+    return (
+      <div className='flex h-full items-center justify-center p-8 text-xl text-gray-500'>
+        <Loading />
+      </div>
+    );
   if (error)
     return (
       <div className='flex h-full items-center justify-center p-8 text-xl text-gray-500'>
@@ -36,7 +47,16 @@ const PeopleDetailPanel = ({ contactsId, onDeleteSuccess }: Props) => {
   return (
     <div className='container mx-auto px-4 pt-8'>
       <Tabs tabs={['내사람정보', '약속']}>
-        {[<ContactProfile key='profile' contact={contact} plans={plans} onDeleteSuccess={onDeleteSuccess} />, <ContactPlans key='plans' plans={plans} contactId={contact.contacts_id} />]}
+        {[
+          <ContactProfile
+            key='profile'
+            userId={userId}
+            contact={contact}
+            plans={plans}
+            onDeleteSuccess={onDeleteSuccess}
+          />,
+          <ContactPlans key='plans' plans={plans} contactId={contact.contacts_id} />,
+        ]}
       </Tabs>
     </div>
   );
