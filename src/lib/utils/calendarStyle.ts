@@ -8,6 +8,9 @@ export const holidayStyle = (event: Props) => {
   if (event.isHoliday) {
     return {
       className: 'rbc-event-holiday',
+      style: {
+        cursor: 'default', // 마우스 커서 변경
+      },
     };
   }
 
