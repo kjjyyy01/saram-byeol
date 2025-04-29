@@ -17,7 +17,7 @@ const useMutateInsertNewPlan = () => {
     onMutate: async (newPlan) => {
       await queryClient.cancelQueries({ queryKey: [QUERY_KEY.PLANS] });
 
-      const prevPlans = queryClient.getQueryData<PlansType[]>([QUERY_KEY.PLANS]);
+      const prevPlans = queryClient.getQueryData<PlansType[]>([QUERY_KEY.PLANS]) ?? [];
 
       if (prevPlans) {
         queryClient.setQueryData<PlansType[]>(
