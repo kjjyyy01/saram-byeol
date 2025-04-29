@@ -13,6 +13,7 @@ import { useDemoStore } from '@/store/zustand/useDemoStore';
 import { PlansType } from '@/types/plans';
 import { mutateDeletePlan } from '@/app/api/supabase/service';
 import { sortPlansByDate } from '@/lib/utils/sortPlansByDate';
+import { differenceInCalendarDays } from 'date-fns';
 
 interface Props {
   contact: ContactDetailType;
@@ -53,6 +54,13 @@ const ContactProfile = ({ contact, plans, onDeleteSuccess }: Props) => {
       },
     });
   };
+
+  const filteredPlans = plans.filter((plan) => {
+    const today = new Date();
+    const start = new Date(plan.start_date);
+    const dDay = differenceInCalendarDays(start, today);
+    return dDay >= 0; // D+인 약속 제외, D-Day, D-인 약속만 표시
+  });
 
   return (
     <div className='space-y-8'>
@@ -138,11 +146,11 @@ const ContactProfile = ({ contact, plans, onDeleteSuccess }: Props) => {
         </div>
 
         {/* 다가오는 약속 */}
-        {plans.length > 0 && (
+        {filteredPlans.length > 0 && (
           <div className='w-full md:w-1/2'>
             <h2 className='mb-4 text-xl font-bold text-gray-800'>다가오는 약속</h2>
             <div className='grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2'>
-              {sortPlansByDate(plans).map((plan) => (
+              {sortPlansByDate(filteredPlans).map((plan) => (
                 <ContactPlansCard
                   key={plan.plan_id}
                   title={plan.title}
