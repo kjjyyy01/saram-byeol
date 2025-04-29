@@ -15,12 +15,12 @@ import { planFormDefaultValues } from '@/lib/schemas/plansSchema';
 import { useGetHolidays } from '@/hooks/queries/useGetHolidays';
 import { useGetCalendarPlans } from '@/hooks/queries/useGetCalendarPlans';
 import { toast } from 'react-toastify';
-import { useUpadateEventMutate } from '@/hooks/mutations/useUpadateEventMutate';
 import { useGetSelectPlan } from '@/hooks/queries/useGetSelectPlan';
 import { format } from 'date-fns';
 import { useDemoStore } from '@/store/zustand/useDemoStore';
 import Loading from '@/components/Loading';
 import { useGetDemoPlans } from '@/hooks/queries/useGetDemoPlans';
+import { useUpdateEventMutate } from '@/hooks/mutations/useUpadateEventMutate';
 
 interface UpdatedEventType {
   id: string;
@@ -60,7 +60,7 @@ export default function Calendar() {
   const [isEditMode, setIsEditMode] = useState(false); //수정 모드 여부
 
   //demoStates
-  const { isDemoUser, demoUser } = useDemoStore();
+  const { isDemoUser, demoUser, updateDemoPlan } = useDemoStore();
   const getPlan = useDemoStore((state) => state.getPlan);
   const isAccessGranted = isSignIn || isDemoUser; //로그인하거나, 데모유저일 때 접근가능하도록 함
   const demoData = getPlan(selectedPlanId ?? '');
@@ -73,7 +73,7 @@ export default function Calendar() {
   const { setInitialFormData } = usePlanFormStore();
   // showPlanForm 상태와 setShowPlanForm 함수 가져오기
   const { showPlanForm, setShowPlanForm } = usePlanFormStore();
-  const { mutate: updateEvent, error: updatePlanError } = useUpadateEventMutate();
+  const { mutate: updateEvent, error: updatePlanError } = useUpdateEventMutate();
 
   // 툴바 버튼 동적
   const [activeTab, setActiveTab] = useState<'upcoming' | 'add'>('upcoming');
@@ -186,10 +186,6 @@ export default function Calendar() {
   };
 
   const moveEventsHandler = ({ event, start, end }: DragEventType) => {
-    if (isDemoUser) {
-      toast.info('데모체험중에는 제한된 기능입니다.');
-      return;
-    }
     // 캘린더에서는 Date 객체를 유지
     updateLocalEvent({
       id: event.id,
@@ -201,6 +197,10 @@ export default function Calendar() {
     const formattedStart = format(start, 'yyyy-MM-dd HH:mm:ss');
     const formattedEnd = format(end, 'yyyy-MM-dd HH:mm:ss');
 
+    if (isDemoUser) {
+      updateDemoPlan(event.id, formattedStart, formattedEnd);
+      return;
+    }
     updateEvent(
       { id: event.id, start: formattedStart, end: formattedEnd },
       {

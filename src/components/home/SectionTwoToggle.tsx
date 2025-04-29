@@ -33,8 +33,8 @@ const SectionTwoToggle = () => {
           className='flex w-full flex-row items-center justify-between transition-transform duration-500 ease-in-out'
           style={{ transform: `translateX(${checked ? '0%' : '-100%'})`, width: '100%' }}
         >
-          <Image src={'/home/landing-people.png'} width={960} height={540} alt='people Image' />
-          <Image src={'/home/landing-calendar.png'} width={960} height={540} alt='calendar Image' />
+          <Image src={'/home/landing-people.png'} width={960} style={{ height: 'auto' }} alt='people Image' />
+          <Image src={'/home/landing-calendar.png'} width={960} style={{ height: 'auto' }} alt='calendar Image' />
         </div>
       </div>
 

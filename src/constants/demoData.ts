@@ -28,7 +28,7 @@ export const demoContacts: ContactType[] = [
     birth: '1995-07-12',
     contacts_profile_img:
       'https://sogssbvoxwlfglnmwmge.supabase.co/storage/v1/object/sign/demo-storage/user-profile/aiony-haust-orYdcTza06E-unsplash.jpg?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJkZW1vLXN0b3JhZ2UvdXNlci1wcm9maWxlL2Fpb255LWhhdXN0LW9yWWRjVHphMDZFLXVuc3BsYXNoLmpwZyIsImlhdCI6MTc0NTIzMzEwMCwiZXhwIjoxNzc2NzY5MTAwfQ.R0xrr6BGPU3kDAVABl1C4BmQxW7m_PxVOxMDh82zi5c',
-    is_pinned: false,
+    is_pinned: true,
   },
   {
     id: '94',
