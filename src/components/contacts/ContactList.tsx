@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState, useMemo } from 'react';
 import ContactItem from '@/components/contacts/ContactItem';
-import { UserPlus } from '@phosphor-icons/react';
+import { Check, PencilSimple, UserPlus } from '@phosphor-icons/react';
 import AddContactForm from '@/components/contacts/addContactForm/AddContactForm';
 import SideSheet from '@/components/contacts/SideSheet';
 import { useAuthStore } from '@/store/zustand/store';
@@ -8,6 +8,8 @@ import { useDemoStore } from '@/store/zustand/useDemoStore';
 import Loading from '@/components/Loading';
 import { useMutateInfiniteContact } from '@/hooks/mutations/useMutateInfiniteContact';
 import { usePinnedContacts, useRegularContactsInfinite } from '@/hooks/queries/useGetContactsForInfinite';
+import { useMutateDeleteContacts } from '@/hooks/mutations/useMutateDeleteContacts';
+import { ConfirmToast } from '@/components/toast/ConfirmToast';
 
 interface ContactListProps {
   peopleSelectedId: string | null;
@@ -16,6 +18,8 @@ interface ContactListProps {
 
 export default function ContactList({ peopleSelectedId, onSelectedContact }: ContactListProps) {
   const [isAddContactOpen, setIsAddContactOpen] = useState(false);
+  const [isEditMode, setIsEditMode] = useState(false);
+
   const handleClose = () => setIsAddContactOpen(false);
 
   // 사용자 정보
@@ -50,12 +54,53 @@ export default function ContactList({ peopleSelectedId, onSelectedContact }: Con
 
   // 핀 토글 뮤테이션
   const pinMutation = useMutateInfiniteContact(userId as string);
+  // 삭제 뮤테이션
+  const deleteMutation = useMutateDeleteContacts(userId as string);
+
   const handleTogglePin = (contactId: string, isPinned: boolean) => {
     if (isDemoUser) {
       toggleContactPin(contactId);
       return;
     }
     pinMutation.mutate({ contactId, isPinned });
+  };
+
+  // 연락처 삭제 핸들러
+  const handleDeleteContact = (contactId: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+  
+    if (isDemoUser) {
+      toast.info('데모 체험 중에는 이 기능을 사용할 수 없습니다.');
+      return;
+    }
+  
+    // ConfirmToast를 그대로 호출
+    ConfirmToast({
+      message: '이 연락처를 삭제하시겠습니까?',
+      onConfirm: () => {
+        // 삭제 뮤테이션 실행
+        deleteMutation.mutate(
+          { userId: userId as string, contactsId: contactId },
+          {
+            onSuccess: () => {
+              toast.success('연락처가 삭제되었습니다.');
+              if (peopleSelectedId === contactId) {
+                onSelectedContact('');
+              }
+            },
+            onError: () => {
+              toast.error('연락처 삭제에 실패했습니다.');
+            },
+          }
+        );
+      },
+      // 기본값으로 confirmText='삭제', cancelText='취소'를 쓰니까 생략 가능
+    });
+  };
+
+  // 편집 모드 토글
+  const toggleEditMode = () => {
+    setIsEditMode((prev) => !prev);
   };
 
   // 무한 스크롤 옵저버 세팅 (MDN: IntersectionObserver API)
@@ -96,7 +141,22 @@ export default function ContactList({ peopleSelectedId, onSelectedContact }: Con
   return (
     <div className='flex h-full flex-col overflow-x-hidden'>
       {/* 헤더 */}
-      <h1 className='pl-6 pt-6 text-2xl font-bold'>내 사람 목록</h1>
+      <div className='flex items-center justify-between pl-6 pr-6 pt-6'>
+        <h1 className='text-2xl font-bold'>내 사람 목록</h1>
+        <button className='flex items-center text-gray-600 hover:text-primary-500' onClick={toggleEditMode}>
+          {isEditMode ? (
+            <>
+              <Check size={20} className='mr-1' />
+              <span>편집 완료</span>
+            </>
+          ) : (
+            <>
+              <PencilSimple size={20} className='mr-1' />
+              <span>편집</span>
+            </>
+          )}
+        </button>
+      </div>
 
       {/* 추가 버튼 */}
       <div className='mt-12 flex justify-center'>
@@ -131,6 +191,8 @@ export default function ContactList({ peopleSelectedId, onSelectedContact }: Con
                           contact={c}
                           onTogglePin={handleTogglePin}
                           isSelected={peopleSelectedId === c.contacts_id}
+                          isEditMode={isEditMode}
+                          onDeleteContact={(e) => handleDeleteContact(c.contacts_id, e)}
                         />
                       </div>
                     </li>
@@ -154,6 +216,8 @@ export default function ContactList({ peopleSelectedId, onSelectedContact }: Con
                         contact={c}
                         onTogglePin={handleTogglePin}
                         isSelected={peopleSelectedId === c.contacts_id}
+                        isEditMode={isEditMode}
+                        onDeleteContact={(e) => handleDeleteContact(c.contacts_id, e)}
                       />
                     </div>
                   </li>

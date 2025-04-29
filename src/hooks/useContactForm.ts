@@ -50,11 +50,11 @@ export const useContactForm = () => {
 
       // 고정된 연락처(pinned) 무효화
       queryClient.invalidateQueries({
-        queryKey: [QUERY_KEY.CONTACTS, 'pinned', userId],
+        queryKey: [QUERY_KEY.CONTACT_LIST.PINNED_CONTACTS, userId],
       });
       // 일반 연락처(infinite) 무효화
       queryClient.invalidateQueries({
-        queryKey: [QUERY_KEY.CONTACTS_INFINITE, 'regular', userId],
+        queryKey: [QUERY_KEY.CONTACT_LIST.REGULAR_CONTACTS, userId],
       });
       
       // 성공 토스트 메시지
