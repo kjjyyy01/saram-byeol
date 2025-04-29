@@ -123,11 +123,8 @@
 /* 공휴일 */
 .rbc-event-holiday {
   @apply rounded-[4px] p-[2px] text-[13px];
-  background-color: #dbdbdb !important;
-  color: #000000 !important;
-}
-.rbc-event-holiday:hover {
-  background-color: #a7a7a7 !important;
+  background-color: #e52222 !important;
+  color: #ffffff !important;
 }
 
 /* 컬러시스템 */
