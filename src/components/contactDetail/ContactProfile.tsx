@@ -12,6 +12,7 @@ import { PencilSimple, Trash } from '@phosphor-icons/react';
 import { useDemoStore } from '@/store/zustand/useDemoStore';
 import { PlansType } from '@/types/plans';
 import { mutateDeletePlan } from '@/app/api/supabase/service';
+import { sortPlansByDate } from '@/lib/utils/sortPlansByDate';
 
 interface Props {
   contact: ContactDetailType;
@@ -26,7 +27,7 @@ const ContactProfile = ({ contact, plans, onDeleteSuccess }: Props) => {
 
   const deleteContactHandler = () => {
     if (isDemoUser) {
-      toast.info('데모체험중에는 제한된 기능입니다.')
+      toast.info('데모체험중에는 제한된 기능입니다.');
       return;
     }
     ConfirmToast({
@@ -86,12 +87,25 @@ const ContactProfile = ({ contact, plans, onDeleteSuccess }: Props) => {
         </div>
 
         {/* 우측 버튼 */}
-        <div className='space-x-2'>
-          <Button variant='outline' size='sm' onClick={() => setIsEditContactOpen(true)}>
-            <PencilSimple size={16} />내 사람 수정
+        <div className='flex items-center gap-3 pt-[3.8rem]'>
+          {/* 수정 버튼 */}
+          <Button
+            variant='ghost'
+            size='sm'
+            className='h-9 rounded-md border border-blue-500 px-4 text-sm font-semibold text-blue-600 transition hover:bg-blue-50 hover:shadow-sm'
+            onClick={() => setIsEditContactOpen(true)}
+          >
+            <PencilSimple size={16} className='mr-2' />내 사람 수정
           </Button>
-          <Button variant='destructive' size='sm' onClick={deleteContactHandler}>
-            <Trash size={16} />내 사람 삭제
+
+          {/* 삭제 버튼 */}
+          <Button
+            variant='ghost'
+            size='sm'
+            className='h-9 rounded-md border border-gray-300 px-4 text-sm font-semibold text-gray-700 transition hover:bg-gray-100 hover:shadow-sm'
+            onClick={deleteContactHandler}
+          >
+            <Trash size={16} className='mr-2' />내 사람 삭제
           </Button>
         </div>
       </div>
@@ -128,7 +142,7 @@ const ContactProfile = ({ contact, plans, onDeleteSuccess }: Props) => {
           <div className='w-full md:w-1/2'>
             <h2 className='mb-4 text-xl font-bold text-gray-800'>다가오는 약속</h2>
             <div className='grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2'>
-              {plans.map((plan) => (
+              {sortPlansByDate(plans).map((plan) => (
                 <ContactPlansCard
                   key={plan.plan_id}
                   title={plan.title}

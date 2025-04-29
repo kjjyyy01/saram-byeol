@@ -43,7 +43,7 @@ const PeopleDetailPanel = ({ contactsId, onDeleteSuccess }: Props) => {
       <Tabs tabs={['내사람정보', '약속']}>
         {[
           <ContactProfile key='profile' contact={contact} plans={plans} onDeleteSuccess={onDeleteSuccess} />,
-          <ContactPlans key='plans' plans={plans} />,
+          <ContactPlans key='plans' plans={plans} contactId={contact.contacts_id} />,
         ]}
       </Tabs>
     </div>
