@@ -95,11 +95,11 @@ const ContactProfile = ({ userId, contact, plans, onDeleteSuccess }: Props) => {
 
         {/* 중앙 - 이름 및 이메일 */}
         <div className='ml-5 flex flex-1 flex-col p-4'>
-          <h1 className='mb-1 text-xl font-bold leading-tight'>{contact.name}</h1>
-          <div className='mt-0.5 flex h-6 w-16 items-center justify-center rounded-2xl bg-yellow-300'>
+          <div className='mt-0.5 mb-1 flex h-6 w-16 items-center justify-center rounded-2xl bg-yellow-300'>
             <span className='text-xs font-bold text-gray-800'>{contact.relationship_level}</span>
           </div>
-          <p className='mt-2 text-sm text-gray-600'>{contact.email}</p>
+          <h1 className='mb-0.5 text-xl font-bold leading-tight'>{contact.name}</h1>
+          <p className='mt-0.5 text-sm text-gray-600'>{contact.email}</p>
         </div>
 
         {/* 우측 버튼 */}
@@ -157,7 +157,7 @@ const ContactProfile = ({ userId, contact, plans, onDeleteSuccess }: Props) => {
         {filteredPlans.length > 0 && (
           <div className='w-full md:w-1/2'>
             <h2 className='mb-4 text-xl font-bold text-gray-800'>다가오는 약속</h2>
-            <div className='grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2'>
+            <div className='grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-2 lg:grid-cols-2'>
               {sortPlansByDate(filteredPlans).map((plan) => (
                 <ContactPlansCard
                   key={plan.plan_id}

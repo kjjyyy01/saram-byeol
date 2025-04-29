@@ -19,10 +19,10 @@ export const useMutateEditContact = (contactData: ContactDetailType, onClose: ()
   const form = useForm<ContactFormValues>({
     resolver: zodResolver(contactFormSchema),
     defaultValues: {
-      name: contactData.name,
-      memo: contactData.notes,
-      phone: contactData.phone,
-      email: contactData.email,
+      name: contactData.name || '',
+      memo: contactData.notes || '',
+      phone: contactData.phone || '',
+      email: contactData.email || '',
       birthday: contactData.birth || '',
       profileImage: contactData.contacts_profile_img ?? '',
       relationshipType: contactData.relationship_level,
