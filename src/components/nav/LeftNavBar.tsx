@@ -82,7 +82,7 @@ const LeftNavBar = () => {
                 <Image
                   src={profile}
                   width={40}
-                  height={40}
+                  style={{ height: 'auto' }}
                   alt='유저 프로필 이미지'
                   className='h-10 w-10 rounded-full object-cover'
                 />

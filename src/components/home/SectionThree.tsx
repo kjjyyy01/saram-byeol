@@ -17,7 +17,12 @@ const SectionThree = () => {
       <footer className='flex w-full flex-col items-center justify-between gap-12 bg-grey-50 px-6 pb-16 pt-8 text-center'>
         <div className='flex flex-row items-center gap-16'>
           <div className='flex flex-row items-center gap-5'>
-            <Image src={'/nav/app-logo-greyscale.png'} alt={'app logo greyscale'} width={50} height={47} />
+            <Image
+              src={'/nav/app-logo-greyscale.png'}
+              alt={'app logo greyscale'}
+              width={50}
+              style={{ height: 'auto' }}
+            />
             <div className='font-gmarket text-2xl font-bold'>사람,별</div>
           </div>
           <div className='flex flex-row gap-9 text-base font-normal text-grey-200 transition-all duration-500'>
