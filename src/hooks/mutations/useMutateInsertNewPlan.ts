@@ -10,6 +10,9 @@ interface Context {
 
 const useMutateInsertNewPlan = () => {
   const user = useAuthStore((s) => s.user);
+  if (!user) {
+    throw new Error('로그인 정보가 없습니다. 새 약속을 추가할 수 없습니다.');
+  }
   const queryClient = useQueryClient();
 
   return useMutation<PlansType, Error, InsertNewPlansType, Context>({
