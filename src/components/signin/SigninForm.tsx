@@ -1,9 +1,11 @@
 'use client';
 
+import { FORGOT_PASSWORD } from '@/constants/paths';
 import { PLACEHOLDER_EMAIL, PLACEHOLDER_PASSWORD } from '@/constants/placeholders';
 import { useSignin } from '@/hooks/useSignin';
 import { signInSchema } from '@/lib/schemas/signinSchema';
 import { zodResolver } from '@hookform/resolvers/zod';
+import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
@@ -34,11 +36,6 @@ const SigninForm = () => {
 
   //로그인 커스텀 훅
   const { SignInHandler } = useSignin(getValues, isChecked);
-
-  //준비중인 기능을 알리기 위한 핸들러함수
-  const alreadyServiceHandler = () => {
-    toast.info('아직 준비중인 기능입니다.');
-  };
 
   return (
     <form onSubmit={handleSubmit(SignInHandler)} className='md: flex flex-col items-center justify-center md:gap-8'>
@@ -107,12 +104,12 @@ const SigninForm = () => {
           />
           로그인 정보 저장
         </label>
-        <button type='button' onClick={alreadyServiceHandler} className='hidden md:block'>
+        <Link href={FORGOT_PASSWORD} className='hidden md:block'>
           비밀번호를 잊어버리셨습니까?
-        </button>
-        <button type='button' onClick={alreadyServiceHandler} className='block text-sm md:hidden'>
-          비밀번호찾기
-        </button>
+        </Link>
+        <Link href={FORGOT_PASSWORD} className='block text-sm md:hidden'>
+          비밀번호 재설정
+        </Link>
       </div>
       <div className='w-full px-[10px] md:px-0'>
         <button
