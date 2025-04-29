@@ -132,8 +132,13 @@
   color: #ffffff !important;
 }
 
+/* 공휴일 이벤트만 grabbing 막고 기본 커서로 설정 */
+.rbc-event-holiday:active {
+  cursor: default !important;
+}
+
 .rbc-event:active {
-  cursor: grabbing !important;
+  cursor: grabbing;
 }
 
 /* 컬러시스템 */
