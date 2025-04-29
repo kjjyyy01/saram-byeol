@@ -371,8 +371,8 @@ export const fetchPinnedContacts = async (userId: string): Promise<ContactItemTy
     .order('name', { ascending: true });
 
   if (error) {
-    console.error('고정죈 사람 중 문제가 발생했습니다.', error);
-    throw new Error('고정죈 사람 중 문제가 발생했습니다. 다시 시도해주세요.');;
+    console.error('고정된 사람을 불러오는 중 문제가 발생했습니다.', error);
+    throw new Error('고정된 사람을 불러오는 중 문제가 발생했습니다. 다시 시도해주세요.');
   }
   return data || [];
 };
@@ -394,10 +394,11 @@ export const fetchRegularContactsInfinite = async (
     .range(from, to);
 
   if (error) {
-    console.error('고정죈 사람 중 문제가 발생했습니다.', error);
-    throw new Error('고정죈 사람 중 문제가 발생했습니다. 다시 시도해주세요.');
+    console.error('연락처를 불러오는 중 문제가 발생했습니다.', error);
+    throw new Error('연락처를 불러오는 중 문제가 발생했습니다. 다시 시도해주세요.');
   }
 
   const nextPage = data.length === limit ? pageParam + 1 : undefined;
   return { contacts: data, nextPage };
 };
+
