@@ -50,7 +50,7 @@ export default function Calendar() {
   const calendarYear = moment.getFullYear(); //해당 달의 년도
 
   const { data: holidays, error: holidaysError } = useGetHolidays(String(calendarYear)); //공휴일
-  const { data: events, isFetching, error: plansError } = useGetCalendarPlans(user, calendarYear, moment); //약속(readonly)
+  const { data: events, isPening, error: plansError } = useGetCalendarPlans(user, calendarYear, moment); //약속(readonly)
 
   const [selectedPlanId, setSelectedPlanId] = useState<string | null>(null);
   const { data, error: selectPlanError, refetch: refetchSelectedPlan } = useGetSelectPlan(selectedPlanId ?? '');
@@ -270,7 +270,7 @@ export default function Calendar() {
 
   if (!hasMounted || !isAccessGranted) return null;
 
-  if (isFetching && !isDemoUser) {
+  if (isPening && !isDemoUser) {
     return (
       <div>
         <Loading />
