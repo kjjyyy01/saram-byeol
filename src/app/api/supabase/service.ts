@@ -180,7 +180,13 @@ export const mutateUpdateContacts = async (
   contactData: Omit<ContactDetailType, 'contacts_id'>
 ): Promise<void> => {
   try {
-    const { error } = await supabase.from(CONTACTS).update(contactData).eq('contacts_id', contactsId);
+    const cleanedContactData = Object.fromEntries(
+      Object.entries(contactData).map(([key, value]) => {
+        return [key, value === '' ? null : value];
+      })
+    );
+
+    const { error } = await supabase.from(CONTACTS).update(cleanedContactData).eq('contacts_id', contactsId);
 
     if (error) {
       console.error('연락처 수정 중 오류가 발생했습니다:', error);
