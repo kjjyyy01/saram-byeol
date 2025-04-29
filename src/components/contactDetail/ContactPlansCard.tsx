@@ -16,9 +16,12 @@ const ContactPlansCard = ({ title, startDate, onEdit, onDelete, color = '#ec4899
   const dDay = differenceInCalendarDays(start, today);
   const monthDay = format(start, 'M월 d일', { locale: ko });
 
+  // D+인 경우 투명도를 추가하는 클래스 설정
+  const cardClassName = dDay < 0 ? 'opacity-60' : ''; // D+인 경우 opacity를 60%로 설정
+
   return (
     <div
-      className='relative flex flex-col gap-2 rounded-lg border border-gray-100 bg-white p-4 shadow-md'
+      className={`relative flex flex-col gap-2 rounded-lg border border-gray-100 bg-white p-4 shadow-md ${cardClassName}`}
       style={{ boxShadow: '0 4px 10px rgba(0, 0, 0, 0.1)' }}
     >
       {/* 왼쪽 라인 */}
