@@ -143,12 +143,12 @@ export const updateEventInSupabase = async (id: string, { start, end }: { start:
 };
 
 // plans - 약속추가
-export const mutateInsertNewPlan = async (newPlan: InsertNewPlansType) => {
+export const mutateInsertNewPlan = async (newPlan: InsertNewPlansType): Promise<PlansType> => {
   try {
-    const { data: plan, error } = await supabase.from(PLANS).insert([newPlan]).select();
+    const { data: plan, error } = await supabase.from(PLANS).insert([newPlan]).select().single();
     if (error) throw new Error(`약속 추가 중 오류가 발생했습니다 : ${error.message}`);
 
-    return plan;
+    return { ...plan, plan_id: plan.plan_id } as PlansType;
   } catch (err) {
     console.error('약속 추가 중 문제가 발생했습니다.', err);
     throw new Error('약속 추가 중 문제가 발생했습니다. 다시 시도해주세요.');
