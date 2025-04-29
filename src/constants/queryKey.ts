@@ -4,5 +4,7 @@ export const QUERY_KEY = Object.freeze({
   PLANS: 'plans',
   CONTACT_WITH_PLANS: 'contactWithPlans',
   SELECT_PLAN: 'selectPlan',
-  CONTACTS_INFINITE: 'contactsInfinite'
+  CONTACTS_INFINITE: 'contactsInfinite',
+  UPCOMING_COUNT: 'upcomingCount',
+  DEMO: 'demo',
 });
