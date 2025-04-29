@@ -247,6 +247,7 @@ export default function Calendar() {
 
   // 프리페칭 함수 (hover 시 호출)
   const prefetchCalendarPlans = async (action: 'NEXT' | 'PREV' | 'TODAY' | 'DATE') => {
+    if (!user && !isDemoUser) return;
     if (action === 'DATE') return; // DATE 액션은 prefetch 안 함
 
     const newDate = calculateNewDate(moment, action);
