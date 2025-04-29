@@ -50,7 +50,7 @@ export default function Calendar() {
   const calendarYear = moment.getFullYear(); //해당 달의 년도
 
   const { data: holidays, error: holidaysError } = useGetHolidays(String(calendarYear)); //공휴일
-  const { data: events, isPening, error: plansError } = useGetCalendarPlans(user, calendarYear, moment); //약속(readonly)
+  const { data: events, isPending, error: plansError } = useGetCalendarPlans(user, calendarYear, moment); //약속(readonly)
 
   const [selectedPlanId, setSelectedPlanId] = useState<string | null>(null);
   const { data, error: selectPlanError, refetch: refetchSelectedPlan } = useGetSelectPlan(selectedPlanId ?? '');
@@ -261,6 +261,7 @@ export default function Calendar() {
   };
 
   // 네비게이션 핸들러 (click 시 호출)
+  // action === 'DATE'는 날짜 직접 선택인 경우를 의미함. 현재는 버튼 세 개로만 이동하기 때문데 분기 처리 X
   const handleNavigate = (action: NavigateAction) => {
     if (action === 'NEXT' || action === 'PREV' || action === 'TODAY') {
       const newDate = calculateNewDate(moment, action);
@@ -270,7 +271,7 @@ export default function Calendar() {
 
   if (!hasMounted || !isAccessGranted) return null;
 
-  if (isPening && !isDemoUser) {
+  if (isPending && !isDemoUser) {
     return (
       <div>
         <Loading />
