@@ -7,6 +7,7 @@ import UpcomingPlanCard from '@/components/schedule/UpcomingPlanCard';
 import { QUERY_KEY } from '@/constants/queryKey';
 import { SelectPlanType } from '@/types/plans';
 import { useDemoStore } from '@/store/zustand/useDemoStore';
+import Loading from '@/components/Loading';
 
 interface UpcomingPlansProps {
   userId: string;
@@ -33,7 +34,12 @@ const UpcomingPlans = ({ userId, onSelectPlan }: UpcomingPlansProps) => {
   );
   const plans = isDemoUser ? sortedFiteredData : data;
 
-  if (isPending && !isDemoUser) return <div className='p-4 text-center'>불러오는 중...</div>;
+  if (isPending && !isDemoUser)
+    return (
+      <div className='p-4 text-center'>
+        <Loading />
+      </div>
+    );
   if (error) return <div className='p-4 text-red-500'>계획을 불러오는 중 오류가 발생했습니다.</div>;
   if (!plans || plans.length === 0)
     return <div className='p-4 text-center'>향후 30일 내에 예정된 일정이 없습니다.</div>;
