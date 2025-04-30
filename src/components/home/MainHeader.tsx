@@ -17,6 +17,7 @@ const MainHeader = ({ onNavClick }: Props) => {
           src={'/home/app-logo-icon-noShadow.png'}
           alt='app-logo-icon'
           width={88}
+          height={85}
           className='rounded-[20px] shadow-app-logo'
           style={{ height: 'auto' }}
         />
