@@ -95,7 +95,7 @@ const ContactProfile = ({ userId, contact, plans, onDeleteSuccess }: Props) => {
 
         {/* 중앙 - 이름 및 이메일 */}
         <div className='ml-5 flex flex-1 flex-col p-4'>
-          <div className='mt-0.5 mb-1 flex h-6 w-16 items-center justify-center rounded-2xl bg-yellow-300'>
+          <div className='mb-1 mt-0.5 flex h-6 w-16 items-center justify-center rounded-2xl bg-yellow-300'>
             <span className='text-xs font-bold text-gray-800'>{contact.relationship_level}</span>
           </div>
           <h1 className='mb-0.5 text-xl font-bold leading-tight'>{contact.name}</h1>
@@ -154,9 +154,10 @@ const ContactProfile = ({ userId, contact, plans, onDeleteSuccess }: Props) => {
         </div>
 
         {/* 다가오는 약속 */}
-        {filteredPlans.length > 0 && (
-          <div className='w-full md:w-1/2'>
-            <h2 className='mb-4 text-xl font-bold text-gray-800'>다가오는 약속</h2>
+        <div className='w-full md:w-1/2'>
+          <h2 className='mb-4 text-xl font-bold text-gray-800'>다가오는 약속</h2>
+
+          {filteredPlans.length > 0 ? (
             <div className='grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-2 lg:grid-cols-2'>
               {sortPlansByDate(filteredPlans).map((plan) => (
                 <ContactPlansCard
@@ -167,8 +168,10 @@ const ContactProfile = ({ userId, contact, plans, onDeleteSuccess }: Props) => {
                 />
               ))}
             </div>
-          </div>
-        )}
+          ) : (
+            <p className='text-sm text-gray-500'>다가오는 약속이 없습니다.</p>
+          )}
+        </div>
       </div>
 
       {/* 사이드 시트 - 연락처 수정 */}
