@@ -190,6 +190,7 @@ export default function Calendar() {
     toast.success('약속이 수정되었습니다.');
   };
 
+  // DnD 실행 핸들러
   const moveEventsHandler = ({ event, start, end }: DragEventType) => {
     // 캘린더에서는 Date 객체를 유지
     updateLocalEvent({
@@ -268,6 +269,14 @@ export default function Calendar() {
     }
   };
 
+  // 클릭한 약속 상세 쿼리 무효화(동일한 약속 보여주기 위해)
+  const handleClickPlan = async (planId: string) => {
+    setSelectPlan(null); // 현재 상태 초기화
+    setSelectedPlanId(null); // 상태 완전히 초기화
+    await queryClient.invalidateQueries({ queryKey: [QUERY_KEY.SELECT_PLAN, planId] });
+    setSelectedPlanId(planId);
+  };
+
   if (!hasMounted || !isAccessGranted) return null;
 
   if (isPending && !isDemoUser) {
@@ -296,7 +305,7 @@ export default function Calendar() {
           onEventDrop={moveEventsHandler}
           activeTab={activeTab}
           holidays={holidays}
-          onSelectPlan={(planId) => setSelectedPlanId(planId)}
+          onSelectPlan={handleClickPlan}
           setSelectPlan={(plan) => {
             setSelectPlan(plan);
             setShowUpcoming(false);
