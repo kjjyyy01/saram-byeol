@@ -14,7 +14,7 @@ const People = () => {
   const isSignIn = useAuthStore((state) => state.isSignIn);
   const isDemoUser = useDemoStore((state) => state.isDemoUser);
   const router = useRouter();
-  const isAccessGranted = isSignIn || isDemoUser; //로그인하거나, 데모유저일 때 접근가능하도록 함
+  const isAccessGranted = isSignIn || isDemoUser;
 
   // 마운트 이후에만 렌더링
   useEffect(() => {
@@ -33,7 +33,7 @@ const People = () => {
   return (
     <div className='flex h-screen'>
       {/* 왼쪽 연락처 리스트 영역 */}
-      <div className='h-full w-[410px] overflow-y-auto rounded-[20px] border border-gray-200'>
+      <div className='mx-5 mt-12 h-full w-96 overflow-y-auto rounded-2xl border border-grey-100'>
         <ContactList peopleSelectedId={peopleSelectedId} onSelectedContact={setPeopleSelectedId} />
       </div>
 
@@ -42,7 +42,7 @@ const People = () => {
         {peopleSelectedId ? (
           <PeopleDetailPanel contactsId={peopleSelectedId} onDeleteSuccess={() => setPeopleSelectedId(null)} />
         ) : (
-          <div className='flex h-full items-center justify-center p-8 text-xl text-gray-500'>사람을 선택해주세요.</div>
+          <div className='flex h-full items-center justify-center p-8 text-xl text-grey-500'>사람을 선택해주세요.</div>
         )}
       </div>
     </div>
