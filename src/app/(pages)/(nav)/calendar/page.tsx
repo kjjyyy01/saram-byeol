@@ -191,6 +191,7 @@ export default function Calendar() {
     toast.success('약속이 수정되었습니다.');
   };
 
+  // DnD 실행 핸들러
   const moveEventsHandler = ({ event, start, end }: DragEventType) => {
     // 캘린더에서는 Date 객체를 유지
     updateLocalEvent({
@@ -258,6 +259,14 @@ export default function Calendar() {
     }
   };
 
+  // 클릭한 약속 상세 쿼리 무효화(동일한 약속 보여주기 위해)
+  const handleClickPlan = async (planId: string) => {
+    setSelectPlan(null); // 현재 상태 초기화
+    setSelectedPlanId(null); // 상태 완전히 초기화
+    await queryClient.invalidateQueries({ queryKey: [QUERY_KEY.SELECT_PLAN, planId] });
+    setSelectedPlanId(planId);
+  };
+
   if (!hasMounted || !isAccessGranted) return null;
 
   if (isPending && !isDemoUser) {
@@ -278,7 +287,7 @@ export default function Calendar() {
 
   return (
     <div className='flex flex-col gap-4 md:flex-row'>
-      <div className='md:flex-grow'>
+      <div className='border-[1px] border-r-grey-200 md:flex-grow'>
         <MainCalendar
           moment={moment}
           setMoment={setMoment}
@@ -286,7 +295,7 @@ export default function Calendar() {
           onEventDrop={moveEventsHandler}
           activeTab={activeTab}
           holidays={holidays}
-          onSelectPlan={(planId) => setSelectedPlanId(planId)}
+          onSelectPlan={handleClickPlan}
           setSelectPlan={(plan) => {
             setSelectPlan(plan);
             setShowUpcoming(false);
@@ -338,8 +347,8 @@ export default function Calendar() {
       <div className='flex-shrink-0 md:w-auto'>
         {showPlanForm ? (
           <>
-            <h2 className='mb-4 text-xl font-bold'>약속 추가</h2>
-            <div className='m-6'>
+            <h2 className='mb-4 ml-[30px] mt-12 text-xl font-bold'>약속 추가</h2>
+            <div className='m-6 w-96'>
               <PlanForm
                 onClose={() => {
                   setShowPlanForm(false);
@@ -350,17 +359,28 @@ export default function Calendar() {
           </>
         ) : isEditMode && editPlan ? (
           <>
-            <h2 className='mb-4 text-xl font-bold'>약속 수정</h2>
-            <div className='m-7'>
+            <h2 className='mb-4 ml-[30px] mt-12 text-xl font-bold'>약속 수정</h2>
+            <div className='m-6 w-96'>
               <EditPlanForm plan={editPlan} onClose={handleEditClose} />
             </div>
           </>
         ) : showUpcoming && isAccessGranted && userId ? (
-          <UpcomingPlans userId={userId} onSelectPlan={(plan) => setSelectPlan([plan])} />
+          <>
+            <h2 className='mb-4 ml-[30px] mt-12 text-xl font-bold'>다가오는 약속</h2>
+            <div className='m-6 w-96'>
+              <UpcomingPlans
+                userId={userId}
+                onSelectPlan={(plan) => {
+                  setSelectPlan([plan]);
+                  setShowUpcoming(false);
+                }}
+              />
+            </div>
+          </>
         ) : selectPlan ? (
           <>
-            <h2 className='mb-4 text-xl font-bold'>약속 상세</h2>
-            <div className='p-11'>
+            <h2 className='mb-4 ml-[30px] mt-12 text-xl font-bold'>약속 상세</h2>
+            <div className='m-6 w-96'>
               <SelectPlan
                 plans={selectPlan}
                 onEdit={() => {

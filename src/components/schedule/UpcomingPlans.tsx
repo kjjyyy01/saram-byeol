@@ -16,7 +16,7 @@ interface UpcomingPlansProps {
 
 const UpcomingPlans = ({ userId, onSelectPlan }: UpcomingPlansProps) => {
   const { isDemoUser, getPlanInMonth } = useDemoStore();
-  
+
   // Tanstack Query 사용해서 데이터 페칭
   const {
     data = [],
@@ -29,8 +29,8 @@ const UpcomingPlans = ({ userId, onSelectPlan }: UpcomingPlansProps) => {
     refetchOnWindowFocus: false, // 창 포커스시 자동 리패치 비활성화
     enabled: !!userId && !isDemoUser,
   });
-  
-  //데모 약속 불러오기 처리 
+
+  //데모 약속 불러오기 처리
   const { filterdData } = getPlanInMonth();
   const sortedFiteredData = filterdData.sort(
     (a, b) => new Date(a.start_date).getTime() - new Date(b.start_date).getTime()
@@ -49,7 +49,6 @@ const UpcomingPlans = ({ userId, onSelectPlan }: UpcomingPlansProps) => {
 
   return (
     <div className='max-h-[calc(100vh-2rem)] space-y-4 overflow-visible'>
-      <h2 className='mb-4 text-xl font-bold'>다가오는 약속</h2>
       <div className='space-y-3'>
         {plans.map((plan) => (
           <div key={plan.plan_id} onClick={() => onSelectPlan(plan)} className='cursor-pointer'>
