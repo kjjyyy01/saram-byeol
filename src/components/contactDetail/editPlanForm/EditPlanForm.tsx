@@ -33,7 +33,7 @@ const EditPlanForm = ({ plan, onClose }: Props) => {
 
   const [inputValue, setInputValue] = useState(plan.location?.place_name || '');
   const [selectedColor, setSelectedColor] = useState(plan.colors || '#2F80ED');
-  const [contactsId, setContactsId] = useState<string>(''); // ✅ 실제 선택된 contacts_id
+  const [contactsId, setContactsId] = useState<string>(''); // 실제 선택된 contacts_id
 
   useEffect(() => {
     const fetchContactsId = async () => {
