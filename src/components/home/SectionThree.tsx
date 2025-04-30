@@ -25,6 +25,7 @@ const SectionThree = () => {
               src={'/nav/app-logo-greyscale.png'}
               alt={'app logo greyscale'}
               width={50}
+              height={47}
               style={{ height: 'auto' }}
             />
             <div className='font-gmarket text-2xl font-bold'>사람,별</div>
