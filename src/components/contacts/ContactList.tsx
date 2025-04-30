@@ -10,6 +10,7 @@ import { useMutateInfiniteContact } from '@/hooks/mutations/useMutateInfiniteCon
 import { usePinnedContacts, useRegularContactsInfinite } from '@/hooks/queries/useGetContactsForInfinite';
 import { useMutateDeleteContacts } from '@/hooks/mutations/useMutateDeleteContacts';
 import { ConfirmToast } from '@/components/toast/ConfirmToast';
+import { toast } from 'react-toastify';
 
 interface ContactListProps {
   peopleSelectedId: string | null;
@@ -68,12 +69,12 @@ export default function ContactList({ peopleSelectedId, onSelectedContact }: Con
   // 연락처 삭제 핸들러
   const handleDeleteContact = (contactId: string, e: React.MouseEvent) => {
     e.stopPropagation();
-  
+
     if (isDemoUser) {
       toast.info('데모 체험 중에는 이 기능을 사용할 수 없습니다.');
       return;
     }
-  
+
     // ConfirmToast를 그대로 호출
     ConfirmToast({
       message: '이 연락처를 삭제하시겠습니까?',
