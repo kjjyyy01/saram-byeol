@@ -2,15 +2,16 @@
 
 import { emailDuplicateTest, NicknameDuplicateTest } from '@/app/api/supabase/service';
 import {
-  PLACEHOLDER_EMAIL,
+  PLACEHOLDER_DEFAULT_DOMAIN,
   PLACEHOLDER_NICKNAME,
   PLACEHOLDER_PASSWORD,
   PLACEHOLDER_PASSWORD_CHECK,
+  PLACEHOLDER_SELECTED_DOMAIN,
 } from '@/constants/placeholders';
 import { useSignup } from '@/hooks/useSignup';
-import { signUpSchema } from '@/lib/schemas/signupSchema';
+import { signupSchemaWithDomain, signupSchemaWithoutDomain } from '@/lib/schemas/signupSchema';
 import { zodResolver } from '@hookform/resolvers/zod';
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 
@@ -22,12 +23,14 @@ export interface SignUpFormType {
 }
 
 const SignupForm = () => {
+  const [emailDomain, setEmailDomain] = useState<string>('');
+
   //회원가입 커스텀 훅
-  const { SignUpHandler, setIsEmailChecked, setIsNicknameChecked } = useSignup();
+  const { SignUpHandler, setIsEmailChecked, setIsNicknameChecked } = useSignup(emailDomain);
 
   const { register, handleSubmit, getValues, formState, setFocus } = useForm<SignUpFormType>({
     mode: 'onChange',
-    resolver: zodResolver(signUpSchema),
+    resolver: zodResolver(emailDomain === '' ? signupSchemaWithoutDomain : signupSchemaWithDomain),
   });
 
   //닉네임 중복 검사 핸들러
@@ -41,7 +44,7 @@ const SignupForm = () => {
       return;
     }
 
-    if (data) {
+    if (data?.nickname) {
       toast.warning('중복된 닉네임이 존재합니다.');
       setFocus('nickname');
       setIsNicknameChecked(false);
@@ -57,10 +60,18 @@ const SignupForm = () => {
 
   //이메일 중복 검사 핸들러
   const EmailDuplicateTestHandler = async () => {
-    const email = getValues('email');
-    const data = await emailDuplicateTest(email);
+    const emailPrefix = getValues('email');
+    let fullEmail = '';
 
-    if (!email) {
+    if (emailDomain === '') {
+      fullEmail = emailPrefix;
+    } else {
+      fullEmail = emailPrefix + emailDomain;
+    }
+
+    const data = await emailDuplicateTest(fullEmail);
+
+    if (!emailPrefix) {
       toast.warning('이메일을 입력해주세요.');
       setFocus('email');
       return;
@@ -82,7 +93,7 @@ const SignupForm = () => {
 
   return (
     <form onSubmit={handleSubmit(SignUpHandler)} className='flex flex-col'>
-      <div className='mx-auto w-full max-w-[375px] px-5 md:max-w-full md:px-0'>
+      <div className='mx-auto w-full max-w-[375px] px-5 md:max-w-[456px] md:px-0'>
         <div className='mb-6 flex flex-col gap-1 md:mb-8'>
           <div className='flex flex-col justify-start gap-1'>
             <label
@@ -126,14 +137,31 @@ const SignupForm = () => {
             >
               아이디(이메일)
             </label>
-            <div className='flex flex-row gap-6'>
+            <div className='flex flex-row'>
               <input
                 className={`w-full flex-1 items-center gap-2 self-stretch rounded-lg border p-4 placeholder-grey-100 ${formState.errors.email ? `border-status-error focus:outline-none` : `border-grey-200`}`}
-                type='email'
+                type='text'
                 id='email'
-                placeholder={PLACEHOLDER_EMAIL}
+                placeholder={
+                  emailDomain === '' || emailDomain === 'default'
+                    ? PLACEHOLDER_DEFAULT_DOMAIN
+                    : PLACEHOLDER_SELECTED_DOMAIN
+                }
                 {...register('email')}
               />
+              <select
+                id='domain'
+                value={emailDomain}
+                onChange={(e) => setEmailDomain(e.target.value)}
+                className='mr-6 rounded-lg border border-grey-200 p-4'
+              >
+                <option value=''>도메인 선택</option>
+                <option value='naver.com'>naver.com</option>
+                <option value='gmail.com'>gmail.com</option>
+                <option value='daum.net'>daum.net</option>
+                <option value='hanmail.net'>hanmail.net</option>
+                <option value='nate.com'>nate.com</option>
+              </select>
               <button
                 type='button'
                 className='duration-300" rounded-lg border border-grey-500 bg-grey-0 px-6 py-4 transition hover:bg-primary-600 hover:text-grey-0'
@@ -211,7 +239,7 @@ const SignupForm = () => {
           type='submit'
           className='duration-600 mx-auto w-full rounded-lg bg-primary-500 px-6 py-4 font-bold leading-[135%] text-white transition hover:bg-primary-600 active:bg-primary-700 md:w-[456px]'
         >
-          회원가입
+          이메일 인증 가입
         </button>
       </div>
     </form>
