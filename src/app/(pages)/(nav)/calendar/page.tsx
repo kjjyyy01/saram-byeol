@@ -375,7 +375,7 @@ export default function Calendar() {
         ) : selectPlan ? (
           <>
             <h2 className='mb-4 ml-[30px] mt-12 text-xl font-bold'>약속 상세</h2>
-            <div className='m-6 w-96 p-11'>
+            <div className='m-6 w-96'>
               <SelectPlan
                 plans={selectPlan}
                 onEdit={() => {
