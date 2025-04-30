@@ -68,7 +68,7 @@ export const useContactForm = () => {
       console.error('연락처 추가 중 오류 발생:', error);
       
       // 오류 토스트 메시지
-      toast.error("이름과 한줄소개를 모두 입력 해주세요.");
+      toast.error("필수 값을 입력 해주세요.");
     } finally {
       setIsSubmitting(false);
     }
