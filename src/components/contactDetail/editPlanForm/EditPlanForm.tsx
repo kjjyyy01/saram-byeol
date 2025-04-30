@@ -85,6 +85,34 @@ const EditPlanForm = ({ plan, onClose }: Props) => {
     }
   }, [contactsId, form]);
 
+  useEffect(() => {
+    if (plan && contactsId) {
+      form.reset({
+        title: plan.title || '',
+        detail: plan.detail || '',
+        contacts: contactsId,
+        priority: plan.priority || '',
+        dateInput: {
+          from: new Date(plan.start_date),
+          to: new Date(plan.end_date),
+        },
+        location: {
+          place_name: plan.location?.place_name || '',
+          road_address_name: plan.location?.road_address_name || '',
+          place_url: plan.location?.place_url || '',
+          id: plan.location?.id || '',
+          phone: plan.location?.phone || '',
+          x: plan.location?.x || '',
+          y: plan.location?.y || '',
+        },
+        colors: plan.colors ?? '',
+      });
+      setInputValue(plan.location?.place_name || '');
+      setSelectedColor(plan.colors || '#2F80ED');
+    }
+  }, [plan, contactsId, form]);
+  
+  
   const handleCancel = () => {
     onClose(null);
   };
