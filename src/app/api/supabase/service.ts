@@ -100,7 +100,7 @@ export const emailDuplicateTest = async (email: string) => {
 };
 
 // 매 달의 plans 데이터 가져오기
-export const getMonthlyPlans = async (user: User, year: number, month: number): Promise<PlansType[]> => {
+export const getMonthlyPlans = async (user: User | null, year: number, month: number): Promise<PlansType[]> => {
   if (!user) {
     throw new Error('로그인된 사용자가 없습니다. 다시 시도해주세요.');
   }

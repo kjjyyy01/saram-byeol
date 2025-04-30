@@ -105,6 +105,11 @@
   background-color: rgba(102, 102, 102, 0.2);
 }
 
+/* 공휴일 이벤트에 호버 스타일 제거 */
+.rbc-event-holiday:hover::after {
+  background-color: transparent !important;
+}
+
 /* 오늘 */
 .rbc-today {
   background-color: #f1f7e2 !important;
@@ -123,11 +128,17 @@
 /* 공휴일 */
 .rbc-event-holiday {
   @apply rounded-[4px] p-[2px] text-[13px];
-  background-color: #dbdbdb !important;
-  color: #000000 !important;
+  background-color: #e52222 !important;
+  color: #ffffff !important;
 }
-.rbc-event-holiday:hover {
-  background-color: #a7a7a7 !important;
+
+/* 공휴일 이벤트만 grabbing 막고 기본 커서로 설정 */
+.rbc-event-holiday:active {
+  cursor: default !important;
+}
+
+.rbc-event:active {
+  cursor: grabbing;
 }
 
 /* 컬러시스템 */

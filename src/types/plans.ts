@@ -19,6 +19,7 @@ export interface CalendarEventType {
   start: Date;
   end: Date;
   colors?: string;
+  isHoliday?: boolean;
 }
 
 // 공휴일 타입

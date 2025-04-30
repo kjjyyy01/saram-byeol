@@ -1,4 +1,4 @@
-import { Calendar, dateFnsLocalizer } from 'react-big-calendar';
+import { Calendar, dateFnsLocalizer, NavigateAction } from 'react-big-calendar';
 import { format, parse, startOfWeek, getDay } from 'date-fns';
 import CustomToolbar from '@/components/calendar/CustomToolbar';
 import { useState } from 'react';
@@ -19,6 +19,8 @@ interface MainCalendarProps {
   CustomToolbarProps: {
     onShowUpcomingPlans: () => void;
     onAddPlan: () => void;
+    onPrefetch: (action: NavigateAction) => Promise<void>;
+    onNavigate: (navigate: NavigateAction, date?: Date) => void;
   };
   activeTab: string;
   holidays: { date: string; title: string }[];
@@ -68,6 +70,7 @@ const MainCalendar = ({
             dateHeader: (props) => <CustomDateHeader {...props} holidays={holidays ?? []} />, // 날짜 셀의 숫자
           },
         }}
+        draggableAccessor={(events) => !events.isHoliday}
         eventPropGetter={holidayStyle}
         onSelectSlot={(slotInfo) => {
           setSelectedDate(slotInfo.start); // 클릭한 날짜(시작일)
