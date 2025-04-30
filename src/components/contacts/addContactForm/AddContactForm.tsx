@@ -35,7 +35,7 @@ const AddContactForm = ({ onClose }: AddContactFormProps) => {
           setRelationshipType={setRelationshipType}
           setValue={form.setValue}
         />
-``
+
         <Form {...form}>
           <form onSubmit={form.handleSubmit(handleSubmit)} className='space-y-10'>
             {/* 이름 필드 */}
