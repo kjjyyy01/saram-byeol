@@ -319,7 +319,7 @@ export default function Calendar() {
           <>
             <h2 className='mb-4 text-xl font-bold'>약속 수정</h2>
             <div className='m-7'>
-              <EditPlanForm plan={editPlan} onClose={handleEditClose} />
+              <EditPlanForm plan={editPlan as EditPlanType} onClose={handleEditClose} />
             </div>
           </>
         ) : showUpcoming && isAccessGranted && userId ? (
