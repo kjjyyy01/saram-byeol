@@ -297,7 +297,7 @@ export default function Calendar() {
 
   return (
     <div className='flex flex-col gap-4 md:flex-row'>
-      <div className='md:flex-grow'>
+      <div className='border-[1px] border-r-grey-200 md:flex-grow'>
         <MainCalendar
           moment={moment}
           setMoment={setMoment}
