@@ -1,3 +1,5 @@
+import { ContactItemType } from "./contacts";
+
 export interface PlansType {
   plan_id: string;
   user_id: string;
@@ -86,6 +88,7 @@ export interface EditPlanType {
   plan_id: string;
   user_id: string;
   contacts_id: string;
+  contacts?: ContactItemType;
   title: string;
   detail: string;
   priority: string;
