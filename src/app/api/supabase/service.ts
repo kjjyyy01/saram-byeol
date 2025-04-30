@@ -32,14 +32,13 @@ export const getContacts = async (userId: string): Promise<ContactItemType[]> =>
   }
 };
 
-// contacts, plans 데이터 함께 가져오기
 export const getContactsWithPlans = async (userId: string, contactsId: string): Promise<ContactWithPlansDetailType> => {
   const { data, error } = await supabase
     .from(CONTACTS)
     .select(
       `
       contacts_id, user_id, name, email, relationship_level, notes, phone, birth, contacts_profile_img,
-      plans:plans(plan_id, created_at, user_id, start_date, end_date, title, detail, priority, location, colors)
+      plans:plans(plan_id, created_at, user_id, start_date, end_date, title, detail, priority, location, colors, contacts(name))
     `
     )
     .eq('contacts_id', contactsId)
