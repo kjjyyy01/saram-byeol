@@ -70,6 +70,7 @@ const MainCalendar = ({
             dateHeader: (props) => <CustomDateHeader {...props} holidays={holidays ?? []} />, // 날짜 셀의 숫자
           },
         }}
+        draggableAccessor={(events) => !events.isHoliday}
         eventPropGetter={holidayStyle}
         onSelectSlot={(slotInfo) => {
           setSelectedDate(slotInfo.start); // 클릭한 날짜(시작일)
