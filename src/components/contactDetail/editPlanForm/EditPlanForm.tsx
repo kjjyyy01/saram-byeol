@@ -97,16 +97,25 @@ const EditPlanForm = ({ plan, onClose }: Props) => {
       <form onSubmit={form.handleSubmit(editPlanHandler)} className='flex flex-col justify-start gap-9'>
         <ColorOptions selectedColor={selectedColor} setSelectedColor={setSelectedColor} />
         <TitleField />
-        <DateInputField />
         <ContactsField userId={userId} enabled={true} />
+        <DateInputField />
         <PlaceField inputValue={inputValue} setInputValue={setInputValue} />
         <PriorityField />
         <DetailField />
         <div className='flex w-full flex-row items-center justify-center gap-4'>
-          <Button type='button' variant='outline' onClick={handleCancel} className='flex-1'>
+          <Button
+            type='button'
+            variant='outline'
+            onClick={handleCancel}
+            className='min-h-12 flex-1 border border-grey-500 px-6 py-4 font-bold hover:bg-grey-50 active:bg-grey-100'
+          >
             취소
           </Button>
-          <Button type='submit' disabled={form.formState.isSubmitting} className='flex-1'>
+          <Button
+            type='submit'
+            disabled={form.formState.isSubmitting}
+            className='min-h-12 flex-1 bg-primary-500 px-6 py-4 font-bold text-white hover:bg-primary-600 hover:text-white active:bg-primary-700'
+          >
             수정
           </Button>
         </div>
