@@ -40,19 +40,19 @@ const ChangePassword = () => {
             <div className='mb-8 flex flex-col gap-1'>
               <div className='flex flex-col justify-start gap-1'>
                 <label
-                  className={`self-stretch text-sm font-bold leading-[150%] ${formState.errors.password ? `text-status-error` : `text-grey-900`}`}
+                  className={`self-stretch text-sm font-bold leading-[150%] ${formState.errors.password && getValues('password').length > 0 ? `text-status-error` : `text-grey-900`}`}
                 >
                   새로운 비밀번호
                 </label>
                 <input
-                  className={`w-full flex-1 items-center gap-2 self-stretch rounded-lg border p-4 placeholder-grey-100 ${formState.errors.password ? `border-status-error focus:outline-none` : `border-grey-200`}`}
+                  className={`w-full flex-1 items-center gap-2 self-stretch rounded-lg border p-4 placeholder-grey-100 ${formState.errors.password && getValues('password').length > 0 ? `border-status-error focus:outline-none` : `border-grey-200`}`}
                   type='password'
                   id='password'
                   placeholder={PLACEHOLDER_PASSWORD}
                   {...register('password')}
                 />
               </div>
-              {formState.errors.password ? (
+              {formState.errors.password && getValues('password').length > 0 ? (
                 <span className='mt-1 self-stretch text-sm leading-[150%] text-status-error'>
                   {formState.errors.password.message}
                 </span>
@@ -66,19 +66,19 @@ const ChangePassword = () => {
             <div className='mb-10 flex flex-col gap-1'>
               <div className='flex flex-col justify-start gap-1'>
                 <label
-                  className={`self-stretch text-sm font-bold leading-[150%] ${formState.errors.passwordCheck ? `text-status-error` : `text-grey-900`}`}
+                  className={`self-stretch text-sm font-bold leading-[150%] ${formState.errors.passwordCheck && getValues('passwordCheck').length > 0 ? `text-status-error` : `text-grey-900`}`}
                 >
                   새로운 비밀번호 확인
                 </label>
                 <input
-                  className={`w-full flex-1 items-center gap-2 self-stretch rounded-lg border p-4 placeholder-grey-100 ${formState.errors.passwordCheck ? `border-status-error focus:outline-none` : `border-grey-200`}`}
+                  className={`w-full flex-1 items-center gap-2 self-stretch rounded-lg border p-4 placeholder-grey-100 ${formState.errors.passwordCheck && getValues('passwordCheck').length > 0 ? `border-status-error focus:outline-none` : `border-grey-200`}`}
                   type='password'
                   id='passwordCheck'
                   placeholder={PLACEHOLDER_PASSWORD_CHECK}
                   {...register('passwordCheck')}
                 />
               </div>
-              {formState.errors.passwordCheck ? (
+              {formState.errors.passwordCheck && getValues('passwordCheck').length > 0 ? (
                 <span className='mt-1 self-stretch text-sm leading-[150%] text-status-error'>
                   {formState.errors.passwordCheck.message}
                 </span>

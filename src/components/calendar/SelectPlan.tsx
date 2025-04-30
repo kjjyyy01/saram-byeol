@@ -5,6 +5,7 @@ import React from 'react';
 import { ConfirmToast } from '../toast/ConfirmToast';
 import { toast } from 'react-toastify';
 import { useDemoStore } from '@/store/zustand/useDemoStore';
+import { Button } from '@/components/ui/button';
 
 interface SelectPlanProps {
   plans: SelectPlanType[];
@@ -14,7 +15,7 @@ interface SelectPlanProps {
 
 const SelectPlan = ({ plans, onEdit, onDeleteSuccess }: SelectPlanProps) => {
   const { mutate } = useMutateDeleteSelectPlan();
-  const {isDemoUser} = useDemoStore();
+  const { isDemoUser } = useDemoStore();
 
   const deletePlanHandler = (planId: string) => {
     if (isDemoUser) {
@@ -72,19 +73,19 @@ const SelectPlan = ({ plans, onEdit, onDeleteSuccess }: SelectPlanProps) => {
               </section>
               <section className='flex items-center gap-8'>
                 <div className='relative flex w-14 flex-shrink-0 flex-grow-0 flex-col items-center justify-center gap-1'>
+                  <User size={24} className='h-6 w-6 flex-shrink-0 flex-grow-0' />{' '}
+                  <p className='text-center text-sm'>내 사람</p>
+                </div>
+                <p>{plan.contacts?.name ?? '없음'}</p>
+              </section>
+              <section className='flex items-center gap-8'>
+                <div className='relative flex w-14 flex-shrink-0 flex-grow-0 flex-col items-center justify-center gap-1'>
                   <CalendarBlank className='h-6 w-6 flex-shrink-0 flex-grow-0' />
                   <p className='text-center text-sm'>약속</p>
                 </div>
                 <p>
                   {formatDate(plan.start_date)} ~ {formatDate(plan.end_date)}
                 </p>
-              </section>
-              <section className='flex items-center gap-8'>
-                <div className='relative flex w-14 flex-shrink-0 flex-grow-0 flex-col items-center justify-center gap-1'>
-                  <User size={24} className='h-6 w-6 flex-shrink-0 flex-grow-0' />{' '}
-                  <p className='text-center text-sm'>내 사람</p>
-                </div>
-                <p>{plan.contacts?.name ?? '없음'}</p>
               </section>
               <section className='flex items-center gap-8'>
                 <div className='relative flex w-14 flex-shrink-0 flex-grow-0 flex-col items-center justify-center gap-1'>
@@ -107,19 +108,23 @@ const SelectPlan = ({ plans, onEdit, onDeleteSuccess }: SelectPlanProps) => {
                 </div>
                 <p className='w-[200px]'>{plan.detail}</p>
               </section>
-              <section className='mt-12 flex justify-between'>
-                <button
+              <section className='mt-12 flex gap-4'>
+                <Button
+                  type='button'
+                  variant={'outline'}
                   onClick={() => deletePlanHandler(plan.plan_id)}
-                  className='w-[132px] rounded-[8px] border-[1px] border-grey-500 px-6 py-4 font-normal'
+                  className='min-h-12 flex-1 border border-grey-500 px-6 py-4 font-bold hover:bg-grey-50 active:bg-grey-100'
                 >
                   삭제
-                </button>
-                <button
+                </Button>
+                <Button
+                  type='button'
+                  variant={'outline'}
                   onClick={onEdit}
-                  className='w-[132px] rounded-[8px] border-[1px] bg-primary-500 px-6 py-4 font-normal text-grey-0'
+                  className='min-h-12 flex-1 bg-primary-500 px-6 py-4 font-bold text-white hover:bg-primary-600 hover:text-white active:bg-primary-700'
                 >
                   수정
-                </button>
+                </Button>
               </section>
             </div>
           ))}
