@@ -378,7 +378,13 @@ export default function Calendar() {
           <>
             <h2 className='mb-4 ml-[30px] mt-12 text-xl font-bold'>다가오는 약속</h2>
             <div className='m-6 w-96'>
-              <UpcomingPlans userId={userId} onSelectPlan={(plan) => setSelectPlan([plan])} />
+              <UpcomingPlans
+                userId={userId}
+                onSelectPlan={(plan) => {
+                  setSelectPlan([plan]);
+                  setShowUpcoming(false);
+                }}
+              />
             </div>
           </>
         ) : selectPlan ? (
