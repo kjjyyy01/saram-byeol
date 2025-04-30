@@ -2,22 +2,23 @@ import { getMonthlyPlans } from '@/app/api/supabase/service';
 import { QUERY_KEY } from '@/constants/queryKey';
 import { CalendarEventType, PlansType } from '@/types/plans';
 import { User } from '@supabase/supabase-js';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, UseQueryOptions } from '@tanstack/react-query'; // ✨ UseQueryOptions 임포트 추가
 
 export const useGetCalendarPlans = (user: User | null, year: number, monthDate: Date) => {
-  const month = monthDate.getMonth() + 1; // Date 객체 -> 숫자 전환
+  const month = monthDate.getMonth() + 1;
 
-  return useQuery<CalendarEventType[]>({
-    queryKey: [QUERY_KEY.PLANS, user?.id, year, month], //달마다 캐싱
+  return useQuery<CalendarEventType[], Error, CalendarEventType[], [string, string | undefined, number, number]>({
+    queryKey: [QUERY_KEY.PLANS, user?.id, year, month],
     enabled: !!user,
+    staleTime: 24 * 60 * 60 * 1000,
+    keepPreviousData: true, // 달 이동해도 프리페칭 된 데이터 보여줌
     queryFn: async () => {
       if (!user) {
         throw new Error('로그인된 사용자가 없습니다.');
       }
 
-      const plans: PlansType[] = await getMonthlyPlans(user, year, month); // supabase에서 plans 데이터 가져오기
+      const plans: PlansType[] = await getMonthlyPlans(user, year, month);
 
-      // 캘린더에 적용되도록 데이터 가공하기
       const events: CalendarEventType[] = plans.map((plan) => ({
         id: plan.plan_id,
         title: plan.title,
@@ -28,6 +29,5 @@ export const useGetCalendarPlans = (user: User | null, year: number, monthDate: 
 
       return events;
     },
-    staleTime: 24 * 60 * 60 * 1000, // 1일
-  });
+  } as UseQueryOptions<CalendarEventType[], Error, CalendarEventType[], [string, string | undefined, number, number]>); // 타입 캐스팅
 };

@@ -21,6 +21,10 @@ import { useDemoStore } from '@/store/zustand/useDemoStore';
 import Loading from '@/components/Loading';
 import { useGetDemoPlans } from '@/hooks/queries/useGetDemoPlans';
 import { useUpdateEventMutate } from '@/hooks/mutations/useUpadateEventMutate';
+import { useQueryClient } from '@tanstack/react-query';
+import { QUERY_KEY } from '@/constants/queryKey';
+import { fetchCalendarPlans } from '@/lib/utils/fetchCalendarPlans';
+import { NavigateAction } from 'react-big-calendar';
 
 interface UpdatedEventType {
   id: string;
@@ -38,6 +42,7 @@ export interface DragEventType {
 }
 
 export default function Calendar() {
+  const queryClient = useQueryClient();
   const router = useRouter();
   const user = useAuthStore((state) => state.user); //현재 로그인 한 유저
   const isSignIn = useAuthStore((state) => state.isSignIn); //로그인 상태
@@ -227,6 +232,44 @@ export default function Calendar() {
     })),
   ];
 
+  // 날짜 계산 함수 (공통)
+  const calculateNewDate = (moment: Date, action: 'NEXT' | 'PREV' | 'TODAY' | 'DATE') => {
+    let newDate = new Date(moment);
+    if (action === 'NEXT') {
+      newDate.setMonth(newDate.getMonth() + 1);
+    } else if (action === 'PREV') {
+      newDate.setMonth(newDate.getMonth() - 1);
+    } else if (action === 'TODAY') {
+      newDate = new Date(); // 오늘
+    }
+    return newDate;
+  };
+
+  // 프리페칭 함수 (hover 시 호출)
+  const prefetchCalendarPlans = async (action: 'NEXT' | 'PREV' | 'TODAY' | 'DATE') => {
+    if (!user && !isDemoUser) return;
+    if (action === 'DATE') return; // DATE 액션은 prefetch 안 함
+
+    const newDate = calculateNewDate(moment, action);
+    const newYear = newDate.getFullYear();
+    const newMonth = newDate.getMonth() + 1;
+
+    await queryClient.prefetchQuery({
+      queryKey: [QUERY_KEY.PLANS, user?.id, newYear, newMonth],
+      queryFn: () => fetchCalendarPlans({ user, year: newYear, date: newDate }),
+      staleTime: 5 * 60 * 1000, // 5분 동안은 fresh
+    });
+  };
+
+  // 네비게이션 핸들러 (click 시 호출)
+  // action === 'DATE'는 날짜 직접 선택인 경우를 의미함. 현재는 버튼 세 개로만 이동하기 때문데 분기 처리 X
+  const handleNavigate = (action: NavigateAction) => {
+    if (action === 'NEXT' || action === 'PREV' || action === 'TODAY') {
+      const newDate = calculateNewDate(moment, action);
+      setMoment(newDate);
+    }
+  };
+
   if (!hasMounted || !isAccessGranted) return null;
 
   if (isPending && !isDemoUser) {
@@ -298,6 +341,8 @@ export default function Calendar() {
               setInitialFormData(planFormDefaultValues);
               setActiveTab('add');
             },
+            onPrefetch: prefetchCalendarPlans,
+            onNavigate: handleNavigate,
           }}
         />
       </div>
