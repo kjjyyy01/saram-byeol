@@ -23,7 +23,7 @@ const PeopleDetailPanel = ({ contactsId, onDeleteSuccess }: Props) => {
     enabled: !isDemoUser && !!userId && !!contactsId, //데모모드이면 통신하지 않도록 처리
   });
 
-  if (!userId) {
+  if (!userId && !isDemoUser) {
     return (
       <div className='flex h-full items-center justify-center p-8 text-xl text-gray-500'>사용자 정보가 없습니다.</div>
     );

@@ -3,6 +3,7 @@ import { mutateInsertNewPlan } from '@/app/api/supabase/service';
 import { QUERY_KEY } from '@/constants/queryKey';
 import { useAuthStore } from '@/store/zustand/store';
 import { InsertNewPlansType, PlansType } from '@/types/plans';
+import { useDemoStore } from '@/store/zustand/useDemoStore';
 
 interface Context {
   prevPlans: PlansType[] | undefined;
@@ -10,7 +11,8 @@ interface Context {
 
 const useMutateInsertNewPlan = () => {
   const user = useAuthStore((s) => s.user);
-  if (!user) {
+  const isDemoUser = useDemoStore((e) => e.isDemoUser);
+  if (!user && !isDemoUser) {
     throw new Error('로그인 정보가 없습니다. 새 약속을 추가할 수 없습니다.');
   }
   const queryClient = useQueryClient();

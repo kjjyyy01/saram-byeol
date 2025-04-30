@@ -15,7 +15,7 @@ import { mutateDeletePlan } from '@/app/api/supabase/service';
 import { sortPlansByDate } from '@/lib/utils/sortPlansByDate';
 
 interface Props {
-  userId: string;
+  userId: string | undefined;
   contact: ContactDetailType;
   plans: PlanDetailType[] | PlansType[];
   onDeleteSuccess: () => void;
