@@ -25,6 +25,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { QUERY_KEY } from '@/constants/queryKey';
 import { fetchCalendarPlans } from '@/lib/utils/fetchCalendarPlans';
 import { NavigateAction } from 'react-big-calendar';
+import { calculateNewDate } from '@/lib/utils/calculateNewDate';
 
 interface UpdatedEventType {
   id: string;
@@ -233,21 +234,9 @@ export default function Calendar() {
     })),
   ];
 
-  // 날짜 계산 함수 (공통)
-  const calculateNewDate = (moment: Date, action: 'NEXT' | 'PREV' | 'TODAY' | 'DATE') => {
-    let newDate = new Date(moment);
-    if (action === 'NEXT') {
-      newDate.setMonth(newDate.getMonth() + 1);
-    } else if (action === 'PREV') {
-      newDate.setMonth(newDate.getMonth() - 1);
-    } else if (action === 'TODAY') {
-      newDate = new Date(); // 오늘
-    }
-    return newDate;
-  };
-
   // 프리페칭 함수 (hover 시 호출)
   const prefetchCalendarPlans = async (action: 'NEXT' | 'PREV' | 'TODAY' | 'DATE') => {
+    if (!user && !isDemoUser) return;
     if (action === 'DATE') return; // DATE 액션은 prefetch 안 함
 
     const newDate = calculateNewDate(moment, action);
@@ -262,6 +251,7 @@ export default function Calendar() {
   };
 
   // 네비게이션 핸들러 (click 시 호출)
+  // action === 'DATE'는 날짜 직접 선택인 경우를 의미함. 현재는 버튼 세 개로만 이동하기 때문데 분기 처리 X
   const handleNavigate = (action: NavigateAction) => {
     if (action === 'NEXT' || action === 'PREV' || action === 'TODAY') {
       const newDate = calculateNewDate(moment, action);

@@ -160,7 +160,7 @@ export default function ContactList({ peopleSelectedId, onSelectedContact }: Con
       </div>
 
       {/* 추가 버튼 */}
-      <div className='mt-12 flex justify-center'>
+      <div className='mt-12 flex justify-center px-6'>
         <button
           className='flex h-12 w-full max-w-sm items-center justify-center rounded-lg border border-grey-50 bg-primary-500 font-medium text-grey-50 transition-colors hover:bg-primary-600'
           onClick={() => setIsAddContactOpen(true)}
