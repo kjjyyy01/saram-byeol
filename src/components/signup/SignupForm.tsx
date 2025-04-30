@@ -156,11 +156,11 @@ const SignupForm = () => {
                 className='mr-6 rounded-lg border border-grey-200 p-4'
               >
                 <option value=''>도메인 선택</option>
-                <option value='naver.com'>naver.com</option>
-                <option value='gmail.com'>gmail.com</option>
-                <option value='daum.net'>daum.net</option>
-                <option value='hanmail.net'>hanmail.net</option>
-                <option value='nate.com'>nate.com</option>
+                <option value='@naver.com'>@naver.com</option>
+                <option value='@gmail.com'>@gmail.com</option>
+                <option value='@daum.net'>@daum.net</option>
+                <option value='@hanmail.net'>@hanmail.net</option>
+                <option value='@nate.com'>@nate.com</option>
               </select>
               <button
                 type='button'
