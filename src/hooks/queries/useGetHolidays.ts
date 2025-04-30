@@ -33,6 +33,7 @@ export const useGetHolidays = (calendarYear: string) => {
           parseInt(dateStr.slice(4, 6), 10) - 1, // month (0-indexed)
           parseInt(dateStr.slice(6, 8), 10) // day
         ),
+        isHoliday: true,
       };
     });
     return formattedHolidays;
