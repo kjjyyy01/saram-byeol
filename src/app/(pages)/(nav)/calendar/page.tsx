@@ -233,7 +233,7 @@ export default function Calendar() {
       colors: '#2F80ED', // 기본 색상
     })),
   ];
-
+ 
   // 프리페칭 함수 (hover 시 호출)
   const prefetchCalendarPlans = async (action: 'NEXT' | 'PREV' | 'TODAY' | 'DATE') => {
     if (!user && !isDemoUser) return;
@@ -242,10 +242,10 @@ export default function Calendar() {
     const newDate = calculateNewDate(moment, action);
     const newYear = newDate.getFullYear();
     const newMonth = newDate.getMonth() + 1;
-
+    const calendarUser = isDemoUser ? demoUser : user;
     await queryClient.prefetchQuery({
       queryKey: [QUERY_KEY.PLANS, user?.id, newYear, newMonth],
-      queryFn: () => fetchCalendarPlans({ user, year: newYear, date: newDate }),
+      queryFn: () => fetchCalendarPlans({ user: calendarUser, year: newYear, date: newDate }),
       staleTime: 5 * 60 * 1000, // 5분 동안은 fresh
     });
   };
