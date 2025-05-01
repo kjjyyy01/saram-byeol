@@ -1,10 +1,3 @@
-<div align="center">
-  <img alt="" src="" />
-</div>
-
-<br>
-<br>
-
 # 💫사람, 별
 
 ## 💬 프로젝트 소개
@@ -115,9 +108,9 @@
 
 ## 🚀 트러블 슈팅
 
-- #### datePicker 날짜와 supabase 데이터 간의 차이 발생 이유 및 대처방안
+- ### datePicker 날짜와 supabase 데이터 간의 차이 발생 이유 및 대처방안
   - https://mangoman-e-ya.tistory.com/116
-- #### Next.js 에러 핸들링 (error.tsx)
+- ### Next.js 에러 핸들링 (error.tsx)
   - https://coco910.tistory.com/129
 
 <br />
