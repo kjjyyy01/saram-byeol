@@ -11,7 +11,7 @@ interface Context {
 
 const useMutateInsertNewPlan = () => {
   const user = useAuthStore((s) => s.user);
-  const isDemoUser = useDemoStore((e) => e.isDemoUser);
+  const isDemoUser = useDemoStore((state) => state.isDemoUser);
   if (!user && !isDemoUser) {
     throw new Error('로그인 정보가 없습니다. 새 약속을 추가할 수 없습니다.');
   }
