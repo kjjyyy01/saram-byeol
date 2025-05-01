@@ -16,7 +16,7 @@ import { sortPlansByDate } from '@/lib/utils/sortPlansByDate';
 import { differenceInCalendarDays } from 'date-fns';
 
 interface Props {
-  userId: string;
+  userId: string | undefined;
   contact: ContactDetailType;
   plans: PlanDetailType[] | PlansType[];
   onDeleteSuccess: () => void;
