@@ -28,13 +28,25 @@ const SectionTwoToggle = () => {
         </div>
       </div>
 
-      <div className='relative h-[560px] w-[960px] overflow-hidden'>
+      <div className='relative mx-auto aspect-[16/9] h-auto w-full max-w-[960px] overflow-hidden'>
         <div
           className='flex w-full flex-row items-center justify-between transition-transform duration-500 ease-in-out'
           style={{ transform: `translateX(${checked ? '0%' : '-100%'})`, width: '100%' }}
         >
-          <Image src={'/home/landing-people.png'} width={960} height={540} style={{ height: 'auto' }} alt='people Image' />
-          <Image src={'/home/landing-calendar.png'} width={960} height={540} style={{ height: 'auto' }} alt='calendar Image' />
+          <Image
+            src={'/home/landing-people.png'}
+            width={960}
+            height={540}
+            className='h-auto w-full object-contain'
+            alt='people Image'
+          />
+          <Image
+            src={'/home/landing-calendar.png'}
+            width={960}
+            height={540}
+            className='h-auto w-full object-contain'
+            alt='calendar Image'
+          />
         </div>
       </div>
 
