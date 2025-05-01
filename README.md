@@ -13,7 +13,7 @@
 <br><br>
 
 > - **작업 기간** : 2025.03.28 ~ 2025.05.01
-> - **배포 주소** : https://www.sarambyeol.com
+> - **배포 주소** : [https://www.sarambyeol.com](https://www.sarambyeol.com)
 
 <br />
 
