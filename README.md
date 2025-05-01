@@ -7,7 +7,7 @@
 
 ## 💬 프로젝트 소개
 
-내 사람과의 략속을 쉽게 관리할 수 있는 서비스 **사람, 별** 💫
+내 사람과의 약속을 쉽게 관리할 수 있는 서비스 **사람, 별** 💫
 <br><br>
 
 > - **작업 기간** : 2025.03.28 ~ 2025.05.01
@@ -88,22 +88,25 @@
 - **TanStack Query**를 사용하여 비동기 데이터 요청 및 캐싱 기능으로 서버 데이터를 효율적으로 관리합니다.
 - **Zustand**를 사용하여 전역 상태관리를 효율적으로 관리합니다.
 - **zod를 사용한 유효성 검사**를 통해 정확한 데이터가 제출되도록 합니다.
-- **app route에 중첩 라우팅**을 이용해 페이지 간 네비게이션을 처리합니다.
+- **app route와 중첩 라우팅**을 이용해 페이지 간 네비게이션을 처리합니다.
 
 <br>
 
 ## 🔗 협업 프로세스
 
 - ### 기능 단위 작업 관리
-  - 각 기능별 이슈 생성
+  - 각 기능별 이슈 생성 https://github.com/DnJ0408/saram-byeol/issues
   - 기능별 feature 브랜치 운영 (`feat/#이슈번호-이슈명`, `style/#이슈번호-이슈명`)
-- ### [Pull Request 템플릿을 활용한 코드 리뷰](여기에 pull request 주소 입력하기)
+- ### Pull Request 템플릿을 활용한 코드 리뷰 https://github.com/DnJ0408/saram-byeol/pulls
 
 <br><br>
 
 ## 🚀 트러블 슈팅
 
-- #### [Read me 에 보여질 제목을 여기에 입력](트러블 슈팅 작성한 주소 여기에 입력)
+- #### datePicker 날짜와 supabase 데이터 간의 차이 발생 이유 및 대처방안
+  - https://mangoman-e-ya.tistory.com/116
+- #### Next.js 에러 핸들링 (error.tsx)
+  - https://coco910.tistory.com/129
 
 <br />
 
