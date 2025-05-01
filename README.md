@@ -5,9 +5,11 @@
 <br>
 <br>
 
+# 💫사람, 별
+
 ## 💬 프로젝트 소개
 
-내 사람과의 약속을 쉽게 관리할 수 있는 서비스 **사람, 별** 💫
+내 사람과의 약속을 쉽게 관리할 수 있는 서비스 **사람, 별**
 <br><br>
 
 > - **작업 기간** : 2025.03.28 ~ 2025.05.01
@@ -22,7 +24,7 @@
     <tr>
       <td align="center" width="300px">
         <a href="https://github.com/DnJ0408">
-          <img src="https://ca.slack-edge.com/T06B9PCLY1E-U080Q1L9Q69-6bea41410ffd-512" width="80" alt="오영진" />
+          <img src="https://avatars.githubusercontent.com/u/190340654?v=4" width="80" alt="오영진" />
           <br />
           <sub><b>깃허브</b></sub>
         </a>
@@ -31,7 +33,7 @@
       </td>
       <td align="center" width="300px">
         <a href="https://github.com/kjjyyy01">
-          <img src="https://ca.slack-edge.com/T06B9PCLY1E-U084YMA16P9-07a25799571b-512" width="80" alt="김종연" />
+          <img src="https://avatars.githubusercontent.com/u/169040000?v=4" width="80" alt="김종연" />
           <br />
           <sub><b>깃허브</b></sub>
         </a>
@@ -40,7 +42,7 @@
       </td>
       <td align="center" width="300px">
         <a href="https://github.com/mangomaneya">
-          <img src="https://ca.slack-edge.com/T06B9PCLY1E-U084NE9HLLC-3771ec60431f-512" width="80" alt="이기리" />
+          <img src="https://avatars.githubusercontent.com/u/87506724?v=4" width="80" alt="이기리" />
           <br />
           <sub><b>깃허브</b></sub>
         </a>
@@ -51,7 +53,7 @@
     <tr>
       <td align="center">
         <a href="https://github.com/JinchaeKim">
-          <img src="https://ca.slack-edge.com/T06B9PCLY1E-U082P06LDK8-a4d17ea170d8-512" width="80" alt="김진채" />
+          <img src="https://avatars.githubusercontent.com/u/192092805?v=4" width="80" alt="김진채" />
           <br />
           <sub><b>깃허브</b></sub>
         </a>
@@ -60,7 +62,7 @@
       </td>
       <td align="center">
         <a href="https://github.com/shoney02">
-          <img src="https://ca.slack-edge.com/T06B9PCLY1E-U0826AQQD8D-21212b12fa34-512" width="80" alt="김시헌" />
+          <img src="https://avatars.githubusercontent.com/u/114558496?v=4" width="80" alt="김시헌" />
           <br />
           <sub><b>깃허브</b></sub>
         </a>
@@ -84,11 +86,20 @@
 
 ## ⚙ 프로젝트 기능 소개
 
-- **Next.js 기반 웹 애플리케이션**입니다.
-- **TanStack Query**를 사용하여 비동기 데이터 요청 및 캐싱 기능으로 서버 데이터를 효율적으로 관리합니다.
-- **Zustand**를 사용하여 전역 상태관리를 효율적으로 관리합니다.
-- **zod를 사용한 유효성 검사**를 통해 정확한 데이터가 제출되도록 합니다.
-- **app route와 중첩 라우팅**을 이용해 페이지 간 네비게이션을 처리합니다.
+- 랜딩 페이지
+  - 서비스에 대한 소개
+- 로그인/회원가입
+  - 이메일, 구글, 카카오 로그인 지원
+  - 로그인 정보 저장 기능
+- 내 사람 페이지
+  - 내 사람 등록 및 약속 CRUD(Create(생성), Read(조회), Update(수정), Delete(삭제))
+- 캘린더 페이지
+  - Drag & Drop으로 약속 일정 조정
+  - 원하는 날짜에 빠른 약속 추가
+  - 30일 이내의 다가오는 약속 확인
+- 데모 체험 모드
+  - 서비스 사용 전 체험해볼 수 있는 기능
+  - CRUD기능 제한
 
 <br>
 
@@ -97,7 +108,8 @@
 - ### 기능 단위 작업 관리
   - 각 기능별 이슈 생성 https://github.com/DnJ0408/saram-byeol/issues
   - 기능별 feature 브랜치 운영 (`feat/#이슈번호-이슈명`, `style/#이슈번호-이슈명`)
-- ### Pull Request 템플릿을 활용한 코드 리뷰 https://github.com/DnJ0408/saram-byeol/pulls
+- ### Pull Request 템플릿을 활용한 코드 리뷰
+  - https://github.com/DnJ0408/saram-byeol/pulls
 
 <br><br>
 
