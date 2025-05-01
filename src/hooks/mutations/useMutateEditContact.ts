@@ -19,10 +19,10 @@ export const useMutateEditContact = (contactData: ContactDetailType, onClose: ()
   const form = useForm<ContactFormValues>({
     resolver: zodResolver(contactFormSchema),
     defaultValues: {
-      name: contactData.name,
-      memo: contactData.notes,
-      phone: contactData.phone,
-      email: contactData.email,
+      name: contactData.name || '',
+      memo: contactData.notes || '',
+      phone: contactData.phone || '',
+      email: contactData.email || '',
       birthday: contactData.birth || '',
       profileImage: contactData.contacts_profile_img ?? '',
       relationshipType: contactData.relationship_level,
@@ -40,8 +40,8 @@ export const useMutateEditContact = (contactData: ContactDetailType, onClose: ()
     try {
       setIsSubmitting(true);
 
-      // 연락처 수정
-      await mutateUpdateContacts(contactData.contacts_id, {
+      // 빈 값을 null로 설정 (예: 빈 문자열이 있을 경우)
+      const contactDataToUpdate = {
         user_id: contactData.user_id,
         name: data.name,
         relationship_level: data.relationshipType || '친구',
@@ -50,7 +50,10 @@ export const useMutateEditContact = (contactData: ContactDetailType, onClose: ()
         email: data.email || '',
         birth: data.birthday || '',
         contacts_profile_img: data.profileImage || '',
-      });
+      };
+
+      // 연락처 수정
+      await mutateUpdateContacts(contactData.contacts_id, contactDataToUpdate);
 
       // 성공 토스트 메시지
       toast.success(`${data.name} 연락처가 성공적으로 수정되었습니다.`);

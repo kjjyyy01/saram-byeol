@@ -32,14 +32,13 @@ export const getContacts = async (userId: string): Promise<ContactItemType[]> =>
   }
 };
 
-// contacts, plans 데이터 함께 가져오기
 export const getContactsWithPlans = async (userId: string, contactsId: string): Promise<ContactWithPlansDetailType> => {
   const { data, error } = await supabase
     .from(CONTACTS)
     .select(
       `
       contacts_id, user_id, name, email, relationship_level, notes, phone, birth, contacts_profile_img,
-      plans:plans(plan_id, title, start_date, end_date, priority, detail, colors)
+      plans:plans(plan_id, created_at, user_id, start_date, end_date, title, detail, priority, location, colors, contacts(name))
     `
     )
     .eq('contacts_id', contactsId)
@@ -180,7 +179,13 @@ export const mutateUpdateContacts = async (
   contactData: Omit<ContactDetailType, 'contacts_id'>
 ): Promise<void> => {
   try {
-    const { error } = await supabase.from(CONTACTS).update(contactData).eq('contacts_id', contactsId);
+    const cleanedContactData = Object.fromEntries(
+      Object.entries(contactData).map(([key, value]) => {
+        return [key, value === '' ? null : value];
+      })
+    );
+
+    const { error } = await supabase.from(CONTACTS).update(cleanedContactData).eq('contacts_id', contactsId);
 
     if (error) {
       console.error('연락처 수정 중 오류가 발생했습니다:', error);
