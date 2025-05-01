@@ -9,6 +9,8 @@ import { ContactFormValues } from '@/lib/schemas/contactFormSchema';
 import { User, Phone, EnvelopeSimple, Cake } from '@phosphor-icons/react';
 import { ContactMemoField } from './ContactMemoField';
 import ContactFormCancelButton from './ContactFormCancelButton';
+import { useDemoStore } from '@/store/zustand/useDemoStore';
+import { toast } from 'react-toastify';
 
 interface AddContactFormProps {
   onClose: () => void;
@@ -17,8 +19,14 @@ interface AddContactFormProps {
 const AddContactForm = ({ onClose }: AddContactFormProps) => {
   const { form, onSubmit, imageSource, setImageSource, relationshipType, setRelationshipType, isSubmitting } =
     useContactForm();
+  const { isDemoUser } = useDemoStore();
 
   const handleSubmit = async (data: ContactFormValues) => {
+    if (isDemoUser) {
+      toast.info('데모체험중에는 제한된 기능입니다.');
+      onClose();
+      return;
+    }
     await onSubmit(data);
     onClose(); // 제출 후 사이드 시트 닫기
   };
