@@ -75,7 +75,7 @@ const ForgotPassword = () => {
 
       <section className='hidden md:flex md:h-full md:w-full md:items-center md:justify-center lg:flex'>
         <Image
-          src={'/saram-byeol_img.avif'}
+          src={'/saram-byeol_img.webp'}
           alt='metaphor image'
           width={950}
           height={1080}
