@@ -51,6 +51,7 @@ const SignIn = () => {
             width={950}
             height={1080}
             className='mx-auto object-contain'
+            priority
           />
         </section>
       </div>
