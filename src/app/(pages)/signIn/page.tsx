@@ -52,6 +52,7 @@ const SignIn = () => {
             height={1080}
             className='mx-auto object-contain'
             priority
+            fetchPriority='high'
           />
         </section>
       </div>
