@@ -6,7 +6,7 @@
 <br><br>
 
 > - **작업 기간** : 2025.03.28 ~ 2025.05.01
-> - **배포 주소** : [https://www.sarambyeol.com](https://www.sarambyeol.com)
+> - **배포 주소** : https://saram-byeol.vercel.app
 
 <br />
 
@@ -150,7 +150,7 @@
 
 ### BaaS
 
-<img src="https://img.shields.io/badge/Supabase-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white"alt="supabase" />
+<img src="https://img.shields.io/badge/Supabase-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white" alt="supabase" />
 
 ### Environment
 
@@ -167,7 +167,7 @@
 <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=JavaScript&logoColor=white" alt="JavaScript"/>
 <img src="https://img.shields.io/badge/Tanstackquery-FF4154?style=for-the-badge&logo=reactquery&logoColor=white" alt="reactquery">
 <img src="https://img.shields.io/badge/Zustand-82612C?style=for-the-badge&logo=&logoColor=white" aly="Zustand">      
-<img src="https://img.shields.io/badge/Tailwind CSS-06B6D4?style=for-the-badge&amp;logo=Tailwind CSS&amp;logoColor=white" alt="Tailwind CSS">
+<img src="https://img.shields.io/badge/Tailwind CSS-06B6D4?style=for-the-badge&amp;logo=TailwindCSS&amp;logoColor=white" alt="Tailwind CSS">
 
 ### Design
 
